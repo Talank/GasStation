@@ -2,7 +2,44 @@
 <?import javafx.scene.layout.GridPane?>
 
 <?import javafx.scene.control.Button?>
+
 <?import javafx.scene.control.Label?>
-<GridPane fx:controller="sample.Controller"
-          xmlns:fx="http://javafx.com/fxml" alignment="center" hgap="10" vgap="10">
-</GridPane>
+<?import javafx.scene.layout.AnchorPane?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" prefHeight="800.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+    <children>
+        <Label fx:id="label" layoutX="126" layoutY="120" minHeight="16" minWidth="69" />
+        <JFXButton id="instantBilling" buttonType="RAISED" layoutX="95.0" layoutY="41.0" onMouseClicked="#instantBillingHandler" prefHeight="180.0" prefWidth="180.0" ripplerFill="#8fff87" style="-fx-background-radius: 90px; -fx-background-color: #61b3a4;" text="Instant &#10;Billing" textFill="#78ff3a">
+            <font>
+                <Font size="20.0" />
+            </font>
+        </JFXButton>
+        <JFXButton id="creditBilling" buttonType="RAISED" layoutX="514.0" layoutY="51.0" onMouseClicked="#creditBillingHandler" prefHeight="180.0" prefWidth="180.0" ripplerFill="#659a61" style="-fx-background-radius: 90px; -fx-background-color: #474141;" text="Credit&#10;Billing" textFill="#a4ae9f">
+            <font>
+                <Font size="20.0" />
+            </font>
+        </JFXButton>
+        <JFXButton id="debt" buttonType="RAISED" layoutX="95.0" layoutY="277.0" onMouseClicked="#debtHandler" prefHeight="180.0" prefWidth="180.0" ripplerFill="#9c00ff" style="-fx-background-radius: 90px; -fx-background-color: #7e06b5;" text="Debt" textFill="#ff75e8">
+            <font>
+                <Font size="20.0" />
+            </font>
+        </JFXButton>
+        <JFXButton id="profitLoss" buttonType="RAISED" layoutX="95.0" layoutY="544.0" onMouseClicked="#profitLossHandler" prefHeight="180.0" prefWidth="180.0" ripplerFill="#6fee65" style="-fx-background-radius: 90px; -fx-background-color: #3fb287;" text="Profit Loss" textFill="#edf8e7">
+            <font>
+                <Font size="20.0" />
+            </font>
+        </JFXButton>
+        <JFXButton id="dailyAnalytics" buttonType="RAISED" layoutX="514.0" layoutY="277.0" onMouseClicked="#dailyAnalyticsHandler" prefHeight="180.0" prefWidth="180.0" ripplerFill="#7187ff" style="-fx-background-radius: 90px; -fx-background-color: #6d39f3;" text="Daily &#10;Analytics" textFill="#003c50">
+            <font>
+                <Font size="20.0" />
+            </font>
+        </JFXButton>
+        <JFXButton id="reFill" buttonType="RAISED" layoutX="514.0" layoutY="544.0" onMouseClicked="#reFillHandler" prefHeight="180.0" prefWidth="180.0" ripplerFill="#efff00e8" style="-fx-background-radius: 90px; -fx-background-color: #e6e600;" text="ReFill" textFill="#537951">
+            <font>
+                <Font size="20.0" />
+            </font>
+        </JFXButton>
+    </children>
+</AnchorPane>
