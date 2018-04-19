@@ -14,6 +14,7 @@ public class Main extends Application {
         primaryStage.setTitle("Ohm Gas Station");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
+        //start 
     }
 
 
