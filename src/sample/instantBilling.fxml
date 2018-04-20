@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.*?>
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import com.jfoenix.controls.JFXCheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
 
-
-<AnchorPane id="instantBillingSceneId" prefHeight="799.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.InstantBilling">
+<AnchorPane id="instantBillingSceneId" prefHeight="799.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.InstantBilling">
    <children>
       <JFXCheckBox layoutX="112.0" layoutY="151.0" prefHeight="75.0" prefWidth="175.0" text="Checkbox" />
+      <Label layoutX="112.0" layoutY="91.0" text="Instant Bill" />
    </children>
 </AnchorPane>
