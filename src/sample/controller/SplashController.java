@@ -10,12 +10,15 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import sample.model.DatabaseHandler;
+
 
 import java.io.IOException;
 
 public class SplashController {
     @FXML
     private JFXTextField dieselMeter,petrolMeter;
+
 
     @FXML
     public void initialize() {
@@ -47,11 +50,16 @@ public class SplashController {
             dieselMeter.resetValidation();
         } else {
             petrolMeter.resetValidation();
-            Parent homeParent=FXMLLoader.load(getClass().getResource("../view/sample.fxml"));
-            Scene homeScene=new Scene(homeParent);
-            Stage window=(Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
-            window.setScene(homeScene);
-            window.show();
+            if(DatabaseHandler.addInitialMeterReading(Float.parseFloat(dieselMeter.getText()),Float.parseFloat(petrolMeter.getText()))) {
+                Parent homeParent=FXMLLoader.load(getClass().getResource("../view/sample.fxml"));
+                Scene homeScene=new Scene(homeParent);
+                Stage window=(Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
+                window.setScene(homeScene);
+                window.show();
+            } else {
+                System.out.println("Error Adding Initial Value");
+            }
+
         }
     }
 }
