@@ -33,10 +33,14 @@ public class SplashController {
         dieselMeter.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)->{
             if(!newValue.matches("[0-9]{0,10}([\\.][0-9]{0,2})?"))
                 dieselMeter.setText(oldValue);
+            else
+                dieselMeter.resetValidation();
         });
         petrolMeter.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)->{
             if(!newValue.matches("[0-9]{0,10}([\\.][0-9]{0,2})?"))
                 petrolMeter.setText(oldValue);
+            else
+                petrolMeter.resetValidation();
         });
 
     }
@@ -51,7 +55,7 @@ public class SplashController {
         } else {
             petrolMeter.resetValidation();
             if(DatabaseHandler.addInitialMeterReading(Float.parseFloat(dieselMeter.getText()),Float.parseFloat(petrolMeter.getText()))) {
-                Parent homeParent=FXMLLoader.load(getClass().getResource("../view/sample.fxml"));
+                Parent homeParent=FXMLLoader.load(getClass().getResource("../view/home.fxml"));
                 Scene homeScene=new Scene(homeParent);
                 Stage window=(Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
                 window.setScene(homeScene);
