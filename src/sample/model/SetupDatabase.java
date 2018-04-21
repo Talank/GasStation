@@ -35,7 +35,7 @@ public class SetupDatabase {
     private static boolean createTable() {
         try {
             Statement createTable=connection.createStatement();
-            createTable.execute("CREATE TABLE MeterReading (IDiesel FLOAT NOT NULL,IPetrol FLOAT NOT NULL,FDiesel FLOAT NOT NULL,FPetrol FLOAT NOT NULL,Date DATE NOT NULL)");
+            createTable.execute("CREATE TABLE MeterReading (ID INT NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1,INCREMENT BY 1),IDiesel FLOAT NOT NULL,IPetrol FLOAT NOT NULL,FDiesel FLOAT NOT NULL,FPetrol FLOAT NOT NULL,Date DATE NOT NULL)");
             return true;
         } catch (Exception e) {
             e.printStackTrace();

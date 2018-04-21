@@ -11,6 +11,10 @@ import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import sample.model.DatabaseHandler;
+import sample.model.SystemStatus;
+
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
 
 
 import java.io.IOException;
@@ -22,6 +26,7 @@ public class SplashController {
 
     @FXML
     public void initialize() {
+        SystemLogging.initializeLogger();
         RequiredFieldValidator dieselValidator=new RequiredFieldValidator();
         dieselValidator.setMessage("Diesel Meter Reading Cannot Be Empty");
         dieselMeter.getValidators().add(dieselValidator);
@@ -54,14 +59,18 @@ public class SplashController {
             dieselMeter.resetValidation();
         } else {
             petrolMeter.resetValidation();
-            if(DatabaseHandler.addInitialMeterReading(Float.parseFloat(dieselMeter.getText()),Float.parseFloat(petrolMeter.getText()))) {
+            float iDiesel=Float.parseFloat(dieselMeter.getText());
+            float iPetrol=Float.parseFloat(petrolMeter.getText());
+            if(DatabaseHandler.addInitialMeterReading(iDiesel,iPetrol)) {
+                SystemStatus.setiDiesel(iDiesel);
+                SystemStatus.setiPetrol(iPetrol);
                 Parent homeParent=FXMLLoader.load(getClass().getResource("../view/home.fxml"));
                 Scene homeScene=new Scene(homeParent);
                 Stage window=(Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
                 window.setScene(homeScene);
                 window.show();
             } else {
-                System.out.println("Error Adding Initial Value");
+                SystemLogging.getLogger().severe("Error Storing Initial Values,System might misbehave!");
             }
 
         }
