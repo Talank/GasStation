@@ -11,7 +11,7 @@ public class SystemLogging {
     public static void initializeLogger() {
         try {
             logger.setLevel(Level.FINER);
-            logger.addHandler(new FileHandler("OilPumpLog.txt"));
+            logger.addHandler(new FileHandler("OilPumpLog.txt",1024*1024,1,true));
         } catch(IOException e) {
             e.printStackTrace();
         }

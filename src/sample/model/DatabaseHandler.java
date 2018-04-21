@@ -70,6 +70,24 @@ public class DatabaseHandler {
         return false;
     }
 
+    public static RateModel getCurrentRate() {
+        RateModel rateModel=new RateModel(0,0);
+        try {
+            Statement getRate=connection.createStatement();
+            ResultSet resultSet=getRate.executeQuery("SELECT * FROM SystemStatus WHERE ID<3");
+            resultSet.next();
+            rateModel.setrDiesel(resultSet.getFloat(2));
+            resultSet.next();
+            rateModel.setrPetrol(resultSet.getFloat(2));
+            resultSet.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rateModel;
+    }
+
+
+
     public static boolean addFinalMeterReading(float finDiesel,float finPetrol) {
         try {
             PreparedStatement insertStat=connection.prepareStatement("UPDATE MeterReading SET FDiesel=?,FPetrol=?");

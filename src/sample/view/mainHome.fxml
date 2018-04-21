@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controller.mainHomeController">
    <center>
       <GridPane style="-fx-background-color: linear-gradient(from 0% 0% to 100% 100%,#ffffff,#aaaaaa);" BorderPane.alignment="CENTER">
         <columnConstraints>
@@ -87,6 +87,7 @@
             <GridPane HBox.hgrow="ALWAYS">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
               </columnConstraints>
               <rowConstraints>
@@ -100,17 +101,26 @@
                               <Font size="20.0" />
                            </font>
                         </Label>
-                        <TextField />
+                        <TextField fx:id="rDiesel" editable="false" />
                      </children>
                   </HBox>
-                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1">
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="2">
                      <children>
                         <Label text="Petrol">
                            <font>
                               <Font size="20.0" />
                            </font>
                         </Label>
-                        <TextField />
+                        <TextField fx:id="rPetrol" editable="false" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="100.0" GridPane.columnIndex="1">
+                     <children>
+                        <JFXButton fx:id="changeButton" buttonType="RAISED" onMouseClicked="#changeRate" style="-fx-background-radius: 50px; -fx-background-color: #61b3a4;" text="CHANGE">
+                           <font>
+                              <Font name="System Bold" size="20.0" />
+                           </font>
+                        </JFXButton>
                      </children>
                   </HBox>
                </children>
