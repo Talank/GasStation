@@ -10,7 +10,7 @@
 <?import javafx.scene.text.Font?>
 
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controller.ChangeRateController">
    <top>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #cccccc;" BorderPane.alignment="CENTER">
          <children>
@@ -27,7 +27,7 @@
          <children>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <JFXTextField labelFloat="true" promptText="Diesel Rate" unFocusColor="#17e76a">
+                  <JFXTextField fx:id="rDiesel" labelFloat="true" promptText="Diesel Rate" unFocusColor="#17e76a">
                      <font>
                         <Font size="20.0" />
                      </font>
@@ -36,7 +36,7 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <JFXTextField labelFloat="true" promptText="Petrol Rate" unFocusColor="#17e76a">
+                  <JFXTextField fx:id="rPetrol" labelFloat="true" promptText="Petrol Rate" unFocusColor="#17e76a">
                      <font>
                         <Font size="20.0" />
                      </font>
@@ -49,7 +49,7 @@
    <bottom>
       <HBox alignment="CENTER" style="-fx-background-color: #cccccc;" BorderPane.alignment="CENTER">
          <children>
-            <JFXButton buttonType="RAISED" style="-fx-background-color: #17e76a;" text="CHANGE">
+            <JFXButton buttonType="RAISED" style="-fx-background-color: #17e76a;" text="CHANGE" onMouseClicked="#setRate">
                <font>
                   <Font size="20.0" />
                </font>

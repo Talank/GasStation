@@ -2,6 +2,7 @@ package sample.model;
 
 import sample.controller.SystemLogging;
 
+import javax.swing.plaf.nimbus.State;
 import java.sql.*;
 
 public class DatabaseHandler {
@@ -84,6 +85,43 @@ public class DatabaseHandler {
             e.printStackTrace();
         }
         return rateModel;
+    }
+
+    public static boolean setCurrentRate(float rDiesel,float rPetrol) {
+        Date today=new Date(new java.util.Date().getTime());
+        try {
+            PreparedStatement setRate=connection.prepareStatement("UPDATE SystemStatus SET VALUE=?,DATE=? WHERE ID=1");
+            setRate.setString(1,String.valueOf(rDiesel));
+            setRate.setDate(2,today);
+            setRate.execute();
+
+            setRate=connection.prepareStatement("UPDATE SystemStatus SET VALUE=?,DATE=? WHERE ID=2");
+            setRate.setString(1,String.valueOf(rPetrol));
+            setRate.setDate(2,today);
+            setRate.execute();
+
+            return true;
+
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static AdminUser getAdminParameters() {
+        AdminUser user=new AdminUser();
+        try {
+            Statement getUserData=connection.createStatement();
+            ResultSet resultSet=getUserData.executeQuery("SELECT * FROM SystemStatus WHERE ID<5 AND ID>2");
+            resultSet.next();
+            String username=resultSet.getString(2);
+            resultSet.next();
+            user.initializeAdmin(username,resultSet.getString(2));
+            resultSet.close();
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return user;
     }
 
 

@@ -23,4 +23,10 @@ public class RateModel {
     public void setrPetrol(float rPetrol) {
         this.rPetrol = rPetrol;
     }
+
+    public boolean storeRate() {
+        if(DatabaseHandler.setCurrentRate(rDiesel,rPetrol))
+            return true;
+        return false;
+    }
 }

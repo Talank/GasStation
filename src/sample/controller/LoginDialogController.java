@@ -4,11 +4,19 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.validation.RequiredFieldValidator;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import sample.model.AdminUser;
 
 import java.io.IOException;
 
@@ -24,6 +32,9 @@ public class LoginDialogController {
     private JFXPasswordField password;
 
     @FXML
+    private Label label;
+
+    @FXML
     public void initialize() {
         RequiredFieldValidator usernameValidator=new RequiredFieldValidator();
         usernameValidator.setMessage("UserName Cannot Be Empty");
@@ -32,11 +43,51 @@ public class LoginDialogController {
         RequiredFieldValidator passwordValidator=new RequiredFieldValidator();
         passwordValidator.setMessage("Password Cannot Be Empty");
         password.getValidators().add(passwordValidator);
+
+        username.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)->{
+            label.setVisible(false);
+            if(newValue.isEmpty())
+                username.validate();
+            else
+                username.resetValidation();
+        });
+
+        password.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)->{
+            label.setVisible(false);
+            if(newValue.isEmpty())
+                password.validate();
+            else
+                password.resetValidation();
+        });
+
+
     }
 
     @FXML
     public void loginUser(MouseEvent e) throws IOException {
+        if(username.getText().isEmpty())
+            username.validate();
 
+        if(password.getText().isEmpty())
+            password.validate();
+
+        if(!password.getText().isEmpty()&&!username.getText().isEmpty()) {
+            AdminUser user=new AdminUser();
+            user.initializeAdmin(username.getText().trim(),password.getText().trim());
+            if(user.validate()) {
+                Stage loginWindow=(Stage)((Node)e.getSource()).getScene().getWindow();
+                loginWindow.close();
+
+                Parent root =FXMLLoader.load(getClass().getResource("../view/changeRateDialog.fxml"));
+                Stage stage=new Stage();
+                Scene scene=new Scene(root);
+                stage.initModality(Modality.APPLICATION_MODAL);
+                stage.setScene(scene);
+                stage.show();
+            } else {
+                label.setVisible(true);
+            }
+        }
     }
 
     @FXML

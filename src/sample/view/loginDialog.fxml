@@ -49,12 +49,17 @@
    <bottom>
       <HBox alignment="CENTER_RIGHT" spacing="20.0" style="-fx-background-color: #cccccc;" BorderPane.alignment="CENTER">
          <children>
-            <JFXButton fx:id="cancel" onMouseClicked="#cancelLogin" buttonType="RAISED" style="-fx-background-color: #1eda34;" text="Cancel">
+            <Label fx:id="label" text="Invalid Username And Password" textFill="RED" visible="false">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <JFXButton fx:id="cancel" buttonType="RAISED" onMouseClicked="#cancelLogin" style="-fx-background-color: #1eda34;" text="Cancel">
                <font>
                   <Font size="25.0" />
                </font>
             </JFXButton>
-            <JFXButton fx:id="login" onMouseClicked="#loginUser" buttonType="RAISED" style="-fx-background-color: #1eda34;" text="Login">
+            <JFXButton fx:id="login" buttonType="RAISED" onMouseClicked="#loginUser" style="-fx-background-color: #1eda34;" text="Login">
                <font>
                   <Font size="25.0" />
                </font>

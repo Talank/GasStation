@@ -39,13 +39,19 @@ public class SplashController {
             if(!newValue.matches("[0-9]{0,10}([\\.][0-9]{0,2})?"))
                 dieselMeter.setText(oldValue);
             else
-                dieselMeter.resetValidation();
+                if(newValue.isEmpty())
+                    dieselMeter.validate();
+                else
+                    dieselMeter.resetValidation();
         });
         petrolMeter.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)->{
             if(!newValue.matches("[0-9]{0,10}([\\.][0-9]{0,2})?"))
                 petrolMeter.setText(oldValue);
             else
-                petrolMeter.resetValidation();
+                if(newValue.isEmpty())
+                    petrolMeter.validate();
+                else
+                    petrolMeter.resetValidation();
         });
 
     }
@@ -54,10 +60,10 @@ public class SplashController {
     public void startButtonClicked(MouseEvent mouseEvent) throws IOException {
         if(dieselMeter.getText().equals(""))
             dieselMeter.validate();
-        else if(petrolMeter.getText().equals("")) {
+        if(petrolMeter.getText().equals("")) {
             petrolMeter.validate();
-            dieselMeter.resetValidation();
-        } else {
+        }
+        if(!dieselMeter.getText().isEmpty()&&!petrolMeter.getText().isEmpty()) {
             petrolMeter.resetValidation();
             float iDiesel=Float.parseFloat(dieselMeter.getText());
             float iPetrol=Float.parseFloat(petrolMeter.getText());
@@ -72,7 +78,6 @@ public class SplashController {
             } else {
                 SystemLogging.getLogger().severe("Error Storing Initial Values,System might misbehave!");
             }
-
         }
     }
 }

@@ -2,6 +2,7 @@ package sample.controller;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
@@ -14,10 +15,17 @@ import javafx.scene.input.MouseEvent;
 import java.io.IOException;
 
 
-public class mainHomeController {
+public class MainHomeController {
+
+    private static MainHomeController instance;
+
 
     @FXML
     private TextField rDiesel,rPetrol;
+
+    public MainHomeController() {
+        instance=this;
+    }
 
     @FXML
     public void initialize() {
@@ -34,6 +42,23 @@ public class mainHomeController {
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(scene);
         stage.show();
+    }
+    @FXML
+    public void loadInstantBilling(MouseEvent e) throws IOException {
+        Parent root=FXMLLoader.load(getClass().getResource("../view/instantBilling.fxml"));
+        Stage stage=(Stage)((Node)e.getSource()).getScene().getWindow();
+        Scene scene=new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    public void setRates(String rDiesel,String rPetrol) {
+        this.rDiesel.setText(rDiesel);
+        this.rPetrol.setText(rPetrol);
+    }
+
+    public static MainHomeController getInstance() {
+        return instance;
     }
 
 }
