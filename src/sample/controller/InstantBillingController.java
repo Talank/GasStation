@@ -9,6 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -25,6 +26,7 @@ public class InstantBillingController {
 
     private static boolean calcNowV =false,calcNowP=false;
     private DecimalFormat decimalFormat;
+    private float rate;
 
     @FXML
     private JFXButton back,print;
@@ -42,6 +44,15 @@ public class InstantBillingController {
     public void initialize() {
 
         diesel.setSelected(true);
+        rate=SystemStatus.getdRate();
+
+        selection.selectedToggleProperty().addListener((ObservableValue<? extends Toggle> ov,Toggle old_toggle, Toggle new_toggle)->{
+            if(((JFXRadioButton)new_toggle).getText().equals("Diesel")) {
+                rate=SystemStatus.getdRate();
+            } else {
+                rate=SystemStatus.getpRate();
+            }
+        });
 
         decimalFormat=new DecimalFormat("#.####");
 
@@ -89,7 +100,7 @@ public class InstantBillingController {
                 else {
                     volume.resetValidation();
                     if(calcNowV) {
-                        price.setText(decimalFormat.format(Float.parseFloat(volume.getText())*SystemStatus.getdRate()));
+                        price.setText(decimalFormat.format(Float.parseFloat(volume.getText())*rate));
                     }
                 }
 
@@ -109,7 +120,7 @@ public class InstantBillingController {
                 else {
                     price.resetValidation();
                     if(calcNowP) {
-                        volume.setText(decimalFormat.format(Float.parseFloat(price.getText())/SystemStatus.getdRate()));
+                        volume.setText(decimalFormat.format(Float.parseFloat(price.getText())/rate));
                     }
                 }
 
@@ -157,7 +168,7 @@ public class InstantBillingController {
 
         if(status==0) {
             InstantBill instantBill=new InstantBill(customerName.getText().trim(),price.getText(),volume.getText(),vehicleNumber.getText().trim(),diesel.isSelected());
-
+            instantBill.printBill();
         }
 
     }

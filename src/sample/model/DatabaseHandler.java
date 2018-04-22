@@ -135,6 +135,17 @@ public class DatabaseHandler {
     }
 
 
+    public static void storeCreditTransaction(CreditTransaction creditTransaction) {
+        try {
+            PreparedStatement insertCredit=connection.prepareStatement("INSERT INTO CreditTransaction ");
+
+
+        }  catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
 
     public static boolean addFinalMeterReading(float finDiesel,float finPetrol) {
         try {

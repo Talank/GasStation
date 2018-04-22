@@ -1,17 +1,33 @@
 package sample.model;
 
-public class InstantBill {
-    private String name,price,volume,vehicleNo;
-    private boolean isDiesel;
+
+import javafx.scene.control.Label;
+import sample.controller.SystemLogging;
+
+public class InstantBill extends Bill {
+    private String name;
 
     public InstantBill(String name, String price, String volume, String vehicleNo, boolean isDiesel) {
+        super(price,volume,vehicleNo,isDiesel);
         this.name = name;
-        this.price = price;
-        this.volume = volume;
-        this.vehicleNo = vehicleNo;
-        this.isDiesel = isDiesel;
     }
 
+    public void printBill() {
+        Label label=new Label();
+        StringBuilder builder=new StringBuilder();
+        builder.append("Ohm Oil Pump\n");
+        builder.append("Name:"+name+"\n");
+        builder.append("Vehicle No:"+vehicleNo+"\n");
+        builder.append("Oil Type:"+type+"\n");
+        builder.append("Volume:"+volume+" Litres\n");
+        builder.append("Price:Rs"+price);
+        label.setText(builder.toString());
+        if(PrintBill.print(label)) {
+            SystemLogging.getLogger().fine("Bill Printed Successfully.");
+        } else {
+            SystemLogging.getLogger().warning("Error Printing Bill!");
+        }
 
+    }
 
 }

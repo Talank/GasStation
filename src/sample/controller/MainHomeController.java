@@ -49,12 +49,14 @@ public class MainHomeController {
     }
     @FXML
     public void loadInstantBilling(MouseEvent e) throws IOException {
-        Parent root=FXMLLoader.load(getClass().getResource("../view/instantBilling.fxml"));
-        Stage stage=(Stage)((Node)e.getSource()).getScene().getWindow();
-        Scene scene=new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        loadStage((Node)e.getSource(),"../view/instantBilling.fxml");
     }
+
+    @FXML
+    public void loadCreditBilling(MouseEvent e) throws IOException {
+        loadStage((Node)e.getSource(),"../view/creditBilling.fxml");
+    }
+
 
     public void setRates(String rDiesel,String rPetrol) {
         this.rDiesel.setText(rDiesel);
@@ -63,6 +65,14 @@ public class MainHomeController {
 
     public static MainHomeController getInstance() {
         return instance;
+    }
+
+    private void loadStage(Node node,String path) throws IOException {
+        Parent root=FXMLLoader.load(getClass().getResource(path));
+        Stage stage=(Stage)node.getScene().getWindow();
+        Scene scene=new Scene(root);
+        stage.setScene(scene);
+        stage.show();
     }
 
 }
