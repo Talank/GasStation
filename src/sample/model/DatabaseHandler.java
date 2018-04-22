@@ -137,11 +137,23 @@ public class DatabaseHandler {
 
     public static void storeCreditTransaction(CreditTransaction creditTransaction) {
         try {
-            PreparedStatement insertCredit=connection.prepareStatement("INSERT INTO CreditTransaction ");
+            Statement getCompanyID=connection.createStatement();
+            ResultSet resultSet=getCompanyID.executeQuery("SELECT ID FROM CreditCompany WHERE COMPANY_NAME='"+creditTransaction.getCompanyName()+"'");
+            resultSet.next();
+            PreparedStatement insertCredit=connection.prepareStatement("INSERT INTO CreditTransaction VALUES(?,?,?,?,?,?)");
+            insertCredit.setInt(1,resultSet.getInt(1));
+            insertCredit.setString(2,creditTransaction.getVehicleNO());
+            insertCredit.setString(3,creditTransaction.getType()+"");
+            insertCredit.setFloat(4,creditTransaction.getVolume());
+            insertCredit.setFloat(5,creditTransaction.getPrice());
+            insertCredit.setDate(6,creditTransaction.getDate());
+            insertCredit.execute();
 
+            SystemLogging.getLogger().fine("Credit Transaction Stored in Database");
 
         }  catch(Exception e) {
             e.printStackTrace();
+            SystemLogging.getLogger().warning("Error Storing Transaction in Database");
         }
     }
 
