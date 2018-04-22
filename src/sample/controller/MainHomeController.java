@@ -12,6 +12,8 @@ import sample.model.DatabaseHandler;
 import sample.model.RateModel;
 
 import javafx.scene.input.MouseEvent;
+import sample.model.SystemStatus;
+
 import java.io.IOException;
 
 
@@ -32,6 +34,8 @@ public class MainHomeController {
         RateModel rateModel=DatabaseHandler.getCurrentRate();
         rDiesel.setText(String.valueOf(rateModel.getrDiesel()));
         rPetrol.setText(String.valueOf(rateModel.getrPetrol()));
+        SystemStatus.setdRate(rateModel.getrDiesel());
+        SystemStatus.setpRate(rateModel.getrPetrol());
     }
 
     @FXML

@@ -4,6 +4,8 @@ import sample.controller.SystemLogging;
 
 import javax.swing.plaf.nimbus.State;
 import java.sql.*;
+import java.util.Calendar;
+
 
 public class DatabaseHandler {
     private static final String DRIVER="org.apache.derby.jdbc.EmbeddedDriver";
@@ -39,13 +41,21 @@ public class DatabaseHandler {
 
 
     public static boolean resumeSystem() {
-        Date today=new Date((new java.util.Date()).getTime());
+        Calendar todayCalendar=Calendar.getInstance();
+        todayCalendar.setTime(new java.util.Date());
         try {
             Statement checkValue=connection.createStatement();
-            ResultSet resultSet=checkValue.executeQuery("SELECT * FROM MeterReading WHERE DATE ='"+today+"' ORDER BY ID DESC FETCH NEXT 1 ROWS ONLY");
-            if(resultSet.getFetchSize()!=0) {
+            ResultSet resultSet=checkValue.executeQuery("SELECT * FROM MeterReading ORDER BY ID DESC FETCH NEXT 1 ROWS ONLY");
+            resultSet.next();
+
+            Calendar dbCalendar=Calendar.getInstance();
+            dbCalendar.setTime(resultSet.getDate(6));
+
+            if((todayCalendar.get(Calendar.YEAR)==dbCalendar.get(Calendar.YEAR))&&(todayCalendar.get(Calendar.MONTH)==dbCalendar.get(Calendar.MONTH))&&(todayCalendar.get(Calendar.DAY_OF_MONTH)==dbCalendar.get(Calendar.DAY_OF_MONTH))) {
                 SystemLogging.getLogger().fine("Initial Meter Reading Already Taken. Loading Home Screen.");
                 return true;
+            } else {
+                SystemLogging.getLogger().fine("No Initial Meter Reading Found. Loading Splash Screen.");
             }
         } catch (Exception e) {
             e.printStackTrace();

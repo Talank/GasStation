@@ -10,14 +10,21 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 import javafx.beans.value.ObservableValue;
+import sample.model.InstantBill;
+import sample.model.SystemStatus;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 
 public class InstantBillingController {
+
+    private static boolean calcNowV =false,calcNowP=false;
+    private DecimalFormat decimalFormat;
 
     @FXML
     private JFXButton back,print;
@@ -33,6 +40,11 @@ public class InstantBillingController {
 
     @FXML
     public void initialize() {
+
+        diesel.setSelected(true);
+
+        decimalFormat=new DecimalFormat("#.####");
+
         RequiredFieldValidator customerNameValidator=new RequiredFieldValidator();
         customerNameValidator.setMessage("Customer Name Cannot Be Empty");
         customerName.getValidators().add(customerNameValidator);
@@ -50,14 +62,15 @@ public class InstantBillingController {
         vehicleNumber.getValidators().add(vehicleNumberValidator);
 
         customerName.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)->{
-            if(!newValue.matches("[a-zA-Z]{3,15}[ ]{0,1}[a-zA-Z]{0,15}[ ]{0,1}[a-zA-Z]{0,15}"))
-                if(oldValue!=null)
+                if(!newValue.matches("[a-zA-Z ]*")) {//Recursion May Exists,Just a Work Around.
                     customerName.setText(oldValue);
-            else
-                if(newValue.isEmpty())
-                    customerName.validate();
-                else
-                    customerName.resetValidation();
+                } else {
+                    if(newValue.isEmpty()) {
+                        customerName.validate();
+                    } else {
+                        customerName.resetValidation();
+                    }
+                }
         });
 
         vehicleNumber.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)->{
@@ -68,25 +81,43 @@ public class InstantBillingController {
         });
 
         volume.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)->{
-            if(!newValue.matches("[0-9]{0,10}([\\.][0-9]{0,2})?"))
+            if(!newValue.matches("[0-9]{0,10}([\\.][0-9]{0,4})?"))
                 volume.setText(oldValue);
             else
                 if(newValue.isEmpty())
                     volume.validate();
-                else
+                else {
                     volume.resetValidation();
+                    if(calcNowV) {
+                        price.setText(decimalFormat.format(Float.parseFloat(volume.getText())*SystemStatus.getdRate()));
+                    }
+                }
+
         });
 
+        volume.focusedProperty().addListener((ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue)->{
+            calcNowV=newPropertyValue;
+        });
+
+
         price.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)->{
-            if(!newValue.matches("[0-9]{0,10}([\\.][0-9]{0,2})?"))
+            if(!newValue.matches("[0-9]{0,10}([\\.][0-9]{0,4})?"))
                 price.setText(oldValue);
             else
                 if(newValue.isEmpty())
                     price.validate();
-                else
+                else {
                     price.resetValidation();
+                    if(calcNowP) {
+                        volume.setText(decimalFormat.format(Float.parseFloat(price.getText())/SystemStatus.getdRate()));
+                    }
+                }
+
         });
 
+        price.focusedProperty().addListener((ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue)->{
+            calcNowP=newPropertyValue;
+        });
 
     }
 
@@ -103,14 +134,31 @@ public class InstantBillingController {
 
     @FXML
     public void printBill(MouseEvent e)throws IOException {
-        if(customerName.getText().trim().isEmpty())
+        int status=0;
+        if(customerName.getText().trim().isEmpty()) {
             customerName.validate();
-        if(price.getText().trim().isEmpty())
+            status++;
+        }
+
+        if(price.getText().trim().isEmpty()) {
             price.validate();
-        if(volume.getText().trim().isEmpty())
+            status++;
+        }
+
+        if(volume.getText().trim().isEmpty()) {
             volume.validate();
-        if(vehicleNumber.getText().trim().isEmpty())
+            status++;
+        }
+
+        if(vehicleNumber.getText().trim().isEmpty()) {
             vehicleNumber.validate();
+            status++;
+        }
+
+        if(status==0) {
+            InstantBill instantBill=new InstantBill(customerName.getText().trim(),price.getText(),volume.getText(),vehicleNumber.getText().trim(),diesel.isSelected());
+
+        }
 
     }
 }

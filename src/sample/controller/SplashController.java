@@ -26,7 +26,7 @@ public class SplashController {
 
     @FXML
     public void initialize() {
-        SystemLogging.initializeLogger();
+
         RequiredFieldValidator dieselValidator=new RequiredFieldValidator();
         dieselValidator.setMessage("Diesel Meter Reading Cannot Be Empty");
         dieselMeter.getValidators().add(dieselValidator);
@@ -70,7 +70,7 @@ public class SplashController {
             if(DatabaseHandler.addInitialMeterReading(iDiesel,iPetrol)) {
                 SystemStatus.setiDiesel(iDiesel);
                 SystemStatus.setiPetrol(iPetrol);
-                Parent homeParent=FXMLLoader.load(getClass().getResource("../view/home.fxml"));
+                Parent homeParent=FXMLLoader.load(getClass().getResource("../view/mainHome.fxml"));
                 Scene homeScene=new Scene(homeParent);
                 Stage window=(Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
                 window.setScene(homeScene);

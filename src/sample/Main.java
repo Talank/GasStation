@@ -8,6 +8,7 @@ import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 
 import org.apache.derby.jdbc.EmbeddedDriver;
+import sample.controller.SystemLogging;
 import sample.model.DatabaseHandler;
 import sample.model.SetupDatabase;
 
@@ -20,23 +21,24 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
+        SystemLogging.initializeLogger();
         if(!DatabaseHandler.setupConnection()) {
             Alert alert=new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Database Error");
             alert.setContentText("Database Connection cannot be established. Please Contact SpirroTech Officials.");
             alert.showAndWait();
             System.exit(-1);
-        } else if(DatabaseHandler.resumeSystem()) {
+        } else if(!DatabaseHandler.resumeSystem()) {
             Parent root = FXMLLoader.load(getClass().getResource("view/splashScreen.fxml"));
             primaryStage.setTitle("Ohm Gas Station");
             primaryStage.setScene(new Scene(root));
             primaryStage.show();
+        } else {
+            Parent root = FXMLLoader.load(getClass().getResource("view/mainHome.fxml"));
+            primaryStage.setTitle("Ohm Gas Station");
+            primaryStage.setScene(new Scene(root));
+            primaryStage.show();
         }
-        Parent root = FXMLLoader.load(getClass().getResource("view/mainHome.fxml"));
-        primaryStage.setTitle("Ohm Gas Station");
-        primaryStage.setScene(new Scene(root));
-        primaryStage.show();
-
     }
 
     @Override
