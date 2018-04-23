@@ -9,6 +9,7 @@ import javafx.stage.Stage;
 
 import org.apache.derby.jdbc.EmbeddedDriver;
 import sample.controller.SystemLogging;
+import sample.model.CreditCompanyList;
 import sample.model.DatabaseHandler;
 import sample.model.SetupDatabase;
 
@@ -29,11 +30,13 @@ public class Main extends Application {
             alert.showAndWait();
             System.exit(-1);
         } else if(!DatabaseHandler.resumeSystem()) {
+            CreditCompanyList.loadData();
             Parent root = FXMLLoader.load(getClass().getResource("view/splashScreen.fxml"));
             primaryStage.setTitle("Ohm Gas Station");
             primaryStage.setScene(new Scene(root));
             primaryStage.show();
         } else {
+            CreditCompanyList.loadData();
             Parent root = FXMLLoader.load(getClass().getResource("view/mainHome.fxml"));
             primaryStage.setTitle("Ohm Gas Station");
             primaryStage.setScene(new Scene(root));

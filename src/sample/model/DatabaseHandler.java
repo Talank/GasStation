@@ -188,11 +188,79 @@ public class DatabaseHandler {
                     type="Petrol";
                 arrayList.add(new CreditDetailsModel(resultSet.getString(1),type,resultSet.getDate(5).toString(),String.valueOf(resultSet.getFloat(3)),String.valueOf(resultSet.getFloat(4))));
             }
+            resultSet.close();
         } catch(Exception e) {
             e.printStackTrace();
         }
         return arrayList;
     }
+
+
+    public static int saveCompany(String companyName,String creditCycle) {
+        int i=0,j=-1;
+        boolean status;
+        try {
+            Statement getIDs=connection.createStatement();
+            ResultSet resultSet=getIDs.executeQuery("SELECT COUNT(*) FROM CreditCompany");
+            resultSet.next();
+            int idArray[]=new int[resultSet.getInt(1)];
+            resultSet.close();
+
+            resultSet=getIDs.executeQuery("SELECT ID FROM CreditCompany");
+
+            while(resultSet.next())
+                idArray[i++]=resultSet.getInt(1);
+            j=1;
+            while(true) {
+                status=false;
+                for(i=0;i<idArray.length;i++) {
+                    if(j==idArray[i]) {
+                        status=true;
+                        j++;
+                        break;
+                    }
+                }
+                if(!status)
+                    break;
+            }
+
+            PreparedStatement addCompany=connection.prepareStatement("INSERT INTO CreditCompany VALUES(?,?,?,?)");
+            addCompany.setString(1,companyName);
+            addCompany.setInt(2,j);
+            addCompany.setString(3,creditCycle);
+            addCompany.setDate(4,new Date((new java.util.Date()).getTime()));
+            addCompany.execute();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return j;
+    }
+
+    public static boolean deleteCompany(String query) {
+        try {
+            PreparedStatement delete=connection.prepareStatement("DELETE FROM CreditCompany WHERE ID IN ("+query+")");
+            delete.execute();
+            return true;
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static boolean updateCompany(DebtListModel model) {
+        try {
+            PreparedStatement update=connection.prepareStatement("UPDATE CreditCompany SET COMPANY_NAME='"+model.getCompanyName()+"',DAY='"+model.getDays()+"' WHERE ID="+model.getId());
+            update.execute();
+            return true;
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+
 
 
 

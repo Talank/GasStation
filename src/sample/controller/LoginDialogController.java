@@ -4,7 +4,6 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.validation.RequiredFieldValidator;
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 
@@ -78,7 +77,7 @@ public class LoginDialogController {
                 Stage loginWindow=(Stage)((Node)e.getSource()).getScene().getWindow();
                 loginWindow.close();
 
-                Parent root =FXMLLoader.load(getClass().getResource("../view/changeRateDialog.fxml"));
+                Parent root =FXMLLoader.load(getClass().getResource("../view/dialogs/changeRateDialog.fxml"));
                 Stage stage=new Stage();
                 Scene scene=new Scene(root);
                 stage.initModality(Modality.APPLICATION_MODAL);

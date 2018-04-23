@@ -1,6 +1,5 @@
 package sample.controller;
 
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -16,7 +15,6 @@ import javafx.scene.input.MouseEvent;
 import sample.model.SystemStatus;
 
 import java.io.IOException;
-import java.sql.Statement;
 
 
 public class MainHomeController {
@@ -42,7 +40,7 @@ public class MainHomeController {
 
     @FXML
     public void changeRate(MouseEvent e) throws IOException {
-        Parent root=FXMLLoader.load(getClass().getResource("../view/loginDialog.fxml"));
+        Parent root=FXMLLoader.load(getClass().getResource("../view/dialogs/loginDialog.fxml"));
         Scene scene=new Scene(root);
         Stage stage=new Stage();
         stage.initModality(Modality.APPLICATION_MODAL);
@@ -62,6 +60,11 @@ public class MainHomeController {
     @FXML
     public void loadDebt(MouseEvent e) throws IOException {
         loadStage((Node)e.getSource(),"../view/credit_company_list/debt.fxml");
+    }
+
+    @FXML
+    public void loadSettings(MouseEvent e) throws IOException {
+        loadStage((Node)e.getSource(),"../view/settings.fxml");
     }
 
 

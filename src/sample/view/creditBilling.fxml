@@ -1,20 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXRadioButton?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <?import sample.library.ToolBar?>
+
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controller.CreditBillingController">
     <center>
         <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: linear-gradient(from 0% 0% to 100% 100%,#ffffff,#aaaaaa);" BorderPane.alignment="CENTER">
@@ -40,16 +38,13 @@
                     </padding>
                 </HBox>
                 <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-                    <children>
-                        <JFXTextField fx:id="companyName" labelFloat="true" promptText="Company Name" unFocusColor="#2af12a">
-                            <font>
-                                <Font size="25.0" />
-                            </font>
-                        </JFXTextField>
-                    </children>
                     <VBox.margin>
                         <Insets top="15.0" />
                     </VBox.margin>
+               <children>
+                  <JFXComboBox fx:id="companyName" labelFloat="true" promptText="Select Company Name" unFocusColor="#28e11e">
+                  </JFXComboBox>
+               </children>
                 </HBox>
                 <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                     <children>
@@ -103,6 +98,6 @@
         </VBox>
     </center>
     <top>
-        <ToolBar fx:id="toolBar"/>
+        <ToolBar fx:id="toolBar" />
     </top>
 </BorderPane>

@@ -11,6 +11,7 @@ import javafx.scene.control.SelectionMode;
 
 import javafx.stage.Stage;
 import sample.library.ToolBar;
+import sample.model.CreditCompanyList;
 import sample.model.DatabaseHandler;
 import sample.model.DebtListModel;
 
@@ -33,7 +34,7 @@ public class DebtController {
 
         debtList.setCellFactory(lv->new DebtListCell());
         debtList.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-        debtList.getItems().addAll(DatabaseHandler.getDebtCompany());
+        debtList.getItems().addAll(CreditCompanyList.getDetailCompanyList());
 
         debtList.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends DebtListModel> observable, DebtListModel oldValue, DebtListModel newValue)->{
             FXMLLoader loader=new FXMLLoader(getClass().getResource("../view/credit_company_details/CreditCompanyDetails.fxml"));

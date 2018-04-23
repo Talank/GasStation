@@ -1,10 +1,12 @@
 package sample.controller;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXRadioButton;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.validation.RequiredFieldValidator;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 
 import javafx.scene.control.Toggle;
@@ -14,6 +16,7 @@ import javafx.scene.input.MouseEvent;
 import sample.library.ToolBar;
 import sample.model.CreditBill;
 
+import sample.model.CreditCompanyList;
 import sample.model.SystemStatus;
 
 import java.io.IOException;
@@ -35,7 +38,10 @@ public class CreditBillingController {
     public ToolBar toolBar;
 
     @FXML
-    private JFXTextField companyName,volume,price,vehicleNumber;
+    private JFXTextField volume,price,vehicleNumber;
+
+    @FXML
+    private JFXComboBox<String> companyName;
 
     @FXML
     private ToggleGroup selection;
@@ -59,9 +65,9 @@ public class CreditBillingController {
 
         decimalFormat=new DecimalFormat("#.####");
 
-        RequiredFieldValidator customerNameValidator=new RequiredFieldValidator();
-        customerNameValidator.setMessage("Customer Name Cannot Be Empty");
-        companyName.getValidators().add(customerNameValidator);
+
+        companyName.setItems(FXCollections.observableList(CreditCompanyList.getCompanyList()));
+        companyName.setValue(CreditCompanyList.getCompanyList().get(0));
 
         RequiredFieldValidator volumeValidator=new RequiredFieldValidator();
         volumeValidator.setMessage("Volume Cannot Be Empty");
@@ -75,17 +81,6 @@ public class CreditBillingController {
         vehicleNumberValidator.setMessage("Vehicle Number Cannot Be Empty");
         vehicleNumber.getValidators().add(vehicleNumberValidator);
 
-        companyName.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)->{
-            if(!newValue.matches("[a-zA-Z ]*")) {//Recursion May Exists,Just a Work Around.
-                companyName.setText(oldValue);
-            } else {
-                if(newValue.isEmpty()) {
-                    companyName.validate();
-                } else {
-                    companyName.resetValidation();
-                }
-            }
-        });
 
         vehicleNumber.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)->{
             if(newValue.isEmpty())
@@ -140,10 +135,8 @@ public class CreditBillingController {
     @FXML
     public void printBill(MouseEvent e)throws IOException {
         int status=0;
-        if(companyName.getText().trim().isEmpty()) {
-            companyName.validate();
+        if(companyName.getValue()==null)
             status++;
-        }
 
         if(price.getText().trim().isEmpty()) {
             price.validate();
@@ -161,7 +154,7 @@ public class CreditBillingController {
         }
 
         if(status==0) {
-            CreditBill creditBill=new CreditBill(companyName.getText().trim(),price.getText(),volume.getText(),vehicleNumber.getText().trim(),diesel.isSelected());
+            CreditBill creditBill=new CreditBill(companyName.getValue().toString(),price.getText(),volume.getText(),vehicleNumber.getText().trim(),diesel.isSelected());
             creditBill.printBill();
         }
 
