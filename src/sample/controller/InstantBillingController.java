@@ -11,6 +11,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
+
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
@@ -18,9 +19,12 @@ import javafx.stage.Stage;
 import javafx.beans.value.ObservableValue;
 import sample.model.InstantBill;
 import sample.model.SystemStatus;
+import sample.library.ToolBar;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
+
+
 
 public class InstantBillingController {
 
@@ -35,6 +39,9 @@ public class InstantBillingController {
     private JFXRadioButton diesel,petrol;
 
     @FXML
+    public ToolBar toolBar;
+
+    @FXML
     private JFXTextField customerName,volume,price,vehicleNumber;
 
     @FXML
@@ -42,6 +49,10 @@ public class InstantBillingController {
 
     @FXML
     public void initialize() {
+
+        toolBar.setBackPath("../view/mainHome.fxml");
+        toolBar.setTitle("Instant Billing");
+
 
         diesel.setSelected(true);
         rate=SystemStatus.getdRate();
@@ -130,17 +141,6 @@ public class InstantBillingController {
             calcNowP=newPropertyValue;
         });
 
-    }
-
-
-
-    @FXML
-    public void backToHome(MouseEvent e) throws IOException {
-        Parent root=FXMLLoader.load(getClass().getResource("../view/mainHome.fxml"));
-        Stage stage=(Stage)((Node)e.getSource()).getScene().getWindow();
-        Scene scene=new Scene(root);
-        stage.setScene(scene);
-        stage.show();
     }
 
     @FXML

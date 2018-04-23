@@ -1,5 +1,6 @@
 package sample.model;
 
+import javafx.stage.Stage;
 import sample.controller.SystemLogging;
 
 import javax.swing.plaf.nimbus.State;
@@ -166,6 +167,26 @@ public class DatabaseHandler {
             ResultSet resultSet=getDebitList.executeQuery("SELECT * FROM CreditCompany");
             while(resultSet.next()) {
                 arrayList.add(new DebtListModel(resultSet.getString(1),resultSet.getDate(4).toString(),resultSet.getString(3),resultSet.getInt(2)));
+            }
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return arrayList;
+    }
+
+
+    public static ArrayList<CreditDetailsModel> getDebtCompanyDetails(int id) {
+        ArrayList<CreditDetailsModel> arrayList=new ArrayList<>();
+        try {
+            String type;
+            Statement getDetails=connection.createStatement();
+            ResultSet resultSet=getDetails.executeQuery("SELECT VEHICLE_NO,TYPE,VOLUME,PRICE,DATE FROM CreditTransaction WHERE ID="+id);
+            while(resultSet.next()) {
+                if(resultSet.getString(2).equals("1"))
+                    type="Diesel";
+                else
+                    type="Petrol";
+                arrayList.add(new CreditDetailsModel(resultSet.getString(1),type,resultSet.getDate(5).toString(),String.valueOf(resultSet.getFloat(3)),String.valueOf(resultSet.getFloat(4))));
             }
         } catch(Exception e) {
             e.printStackTrace();

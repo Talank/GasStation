@@ -4,7 +4,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import sample.model.DebtListModel;
 
@@ -17,7 +16,7 @@ public class CustomListCellController {
 
     public CustomListCellController() {
         try {
-            FXMLLoader loader=new FXMLLoader(getClass().getResource("../view/customListCell.fxml"));
+            FXMLLoader loader=new FXMLLoader(getClass().getResource("../view/credit_company_list/customListCell.fxml"));
             loader.setController(this);
             vbox=loader.load();
         } catch (Exception e) {

@@ -16,6 +16,7 @@ import javafx.scene.input.MouseEvent;
 import sample.model.SystemStatus;
 
 import java.io.IOException;
+import java.sql.Statement;
 
 
 public class MainHomeController {
@@ -60,7 +61,7 @@ public class MainHomeController {
 
     @FXML
     public void loadDebt(MouseEvent e) throws IOException {
-        loadStage((Node)e.getSource(),"../view/debt.fxml");
+        loadStage((Node)e.getSource(),"../view/credit_company_list/debt.fxml");
     }
 
 
@@ -73,12 +74,13 @@ public class MainHomeController {
         return instance;
     }
 
+
     private void loadStage(Node node,String path) throws IOException {
         Parent root=FXMLLoader.load(getClass().getResource(path));
         Stage stage=(Stage)node.getScene().getWindow();
-        Scene scene=new Scene(root);
-        stage.setScene(scene);
+        stage.setScene(new Scene(root));
         stage.show();
     }
+
 
 }

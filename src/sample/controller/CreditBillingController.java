@@ -6,16 +6,14 @@ import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.validation.RequiredFieldValidator;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
-import javafx.stage.Stage;
+
+import sample.library.ToolBar;
 import sample.model.CreditBill;
-import sample.model.InstantBill;
+
 import sample.model.SystemStatus;
 
 import java.io.IOException;
@@ -34,6 +32,9 @@ public class CreditBillingController {
     private JFXRadioButton diesel,petrol;
 
     @FXML
+    public ToolBar toolBar;
+
+    @FXML
     private JFXTextField companyName,volume,price,vehicleNumber;
 
     @FXML
@@ -41,6 +42,9 @@ public class CreditBillingController {
 
     @FXML
     public void initialize() {
+
+        toolBar.setBackPath("../view/mainHome.fxml");
+        toolBar.setTitle("Credit Billing");
 
         diesel.setSelected(true);
         rate=SystemStatus.getdRate();
@@ -131,14 +135,6 @@ public class CreditBillingController {
 
     }
 
-    @FXML
-    public void backToHome(MouseEvent e) throws IOException {
-        Parent root=FXMLLoader.load(getClass().getResource("../view/mainHome.fxml"));
-        Stage stage=(Stage)((Node)e.getSource()).getScene().getWindow();
-        Scene scene=new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-    }
 
 
     @FXML

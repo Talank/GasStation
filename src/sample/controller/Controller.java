@@ -1,17 +1,10 @@
 package sample.controller;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXTextField;
-import com.jfoenix.validation.RequiredFieldValidator;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.scene.Node;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.TextField;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
@@ -53,7 +46,7 @@ public class Controller {
 
     @FXML
     public void debtHandler(MouseEvent mouseEvent) throws IOException {
-        Parent debtParent = FXMLLoader.load(getClass().getResource("../view/debt.fxml"));
+        Parent debtParent = FXMLLoader.load(getClass().getResource("../view/credit_company_list/debt.fxml"));
         Scene debtScene = new Scene(debtParent);
         Stage window = (Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
 

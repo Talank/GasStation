@@ -1,13 +1,16 @@
 package sample.controller;
 
 import com.jfoenix.controls.JFXListView;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
+
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.control.SelectionMode;
+
 import javafx.stage.Stage;
+import sample.library.ToolBar;
 import sample.model.DatabaseHandler;
 import sample.model.DebtListModel;
 
@@ -20,17 +23,35 @@ public class DebtController {
     private JFXListView<DebtListModel> debtList;
 
     @FXML
-    public void initialize() {
-        debtList.setCellFactory(lv->new DebtListCell());
-        debtList.getItems().addAll(DatabaseHandler.getDebtCompany());
-    }
+    private ToolBar toolBar;
 
     @FXML
-    public void backToHome(MouseEvent e) throws IOException {
-        Parent root=FXMLLoader.load(getClass().getResource("../view/mainHome.fxml"));
-        Scene scene=new Scene(root);
-        Stage stage=(Stage)((Node)e.getSource()).getScene().getWindow();
-        stage.setScene(scene);
-        stage.show();
+    public void initialize() {
+
+        toolBar.setTitle("Credit Company Lists");
+        toolBar.setBackPath("../view/mainHome.fxml");
+
+        debtList.setCellFactory(lv->new DebtListCell());
+        debtList.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        debtList.getItems().addAll(DatabaseHandler.getDebtCompany());
+
+        debtList.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends DebtListModel> observable, DebtListModel oldValue, DebtListModel newValue)->{
+            FXMLLoader loader=new FXMLLoader(getClass().getResource("../view/credit_company_details/CreditCompanyDetails.fxml"));
+            try {
+                Parent root=loader.load();
+                CreditCompanyDetailsController controller=loader.getController();
+                controller.toolBar.setTitle(newValue.getCompanyName());
+                controller.toolBar.setBackPath("../view/credit_company_list/debt.fxml");
+                controller.loadDetailsData(newValue.getId());
+                Stage stage= ((Stage)debtList.getScene().getWindow());
+                stage.setScene(new Scene(root));
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
+        });
     }
+
 }
