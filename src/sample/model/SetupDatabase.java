@@ -36,8 +36,11 @@ public class SetupDatabase {
         try {
             Statement createTable=connection.createStatement();
             createTable.execute("CREATE TABLE MeterReading (ID INT NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1,INCREMENT BY 1),IDiesel FLOAT NOT NULL,IPetrol FLOAT NOT NULL,FDiesel FLOAT NOT NULL,FPetrol FLOAT NOT NULL,Date DATE NOT NULL)");
-
             createTable.execute("CREATE TABLE SystemStatus (ID INT NOT NULL,VALUE VARCHAR(30) NOT NULL,Date DATE NOT NULL)");
+            createTable.execute("CREATE TABLE CreditCompany (COMPANY_NAME VARCHAR(30) NOT NULL,ID INT NOT NULL,DAY VARCHAR(2) NOT NULL,DATE DATE NOT NULL)");
+            createTable.execute("CREATE TABLE CreditTransaction (ID INT NOT NULL,VEHICLE_NO VARCHAR(15) NOT NULL,TYPE VARCHAR(1) NOT NULL,VOLUME FLOAT NOT NULL,PRICE FLOAT NOT NULL,DATE DATE NOT NULL");
+
+
             return true;
         } catch (Exception e) {
             e.printStackTrace();

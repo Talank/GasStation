@@ -1,5 +1,6 @@
 package sample.controller;
 
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -55,6 +56,11 @@ public class MainHomeController {
     @FXML
     public void loadCreditBilling(MouseEvent e) throws IOException {
         loadStage((Node)e.getSource(),"../view/creditBilling.fxml");
+    }
+
+    @FXML
+    public void loadDebt(MouseEvent e) throws IOException {
+        loadStage((Node)e.getSource(),"../view/debt.fxml");
     }
 
 

@@ -44,7 +44,7 @@
             </VBox>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="1">
                <children>
-                  <JFXButton buttonType="RAISED" prefHeight="180.0" prefWidth="180.0" style="-fx-background-color: #5AAD9E; -fx-background-radius: 90px;" text="Debt">
+                  <JFXButton onMouseClicked="#loadDebt" buttonType="RAISED" prefHeight="180.0" prefWidth="180.0" style="-fx-background-color: #5AAD9E; -fx-background-radius: 90px;" text="Debt">
                      <font>
                         <Font size="20.0" />
                      </font>
