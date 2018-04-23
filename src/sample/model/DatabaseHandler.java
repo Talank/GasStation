@@ -4,6 +4,7 @@ import sample.controller.SystemLogging;
 
 import javax.swing.plaf.nimbus.State;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 
@@ -155,6 +156,21 @@ public class DatabaseHandler {
             e.printStackTrace();
             SystemLogging.getLogger().warning("Error Storing Transaction in Database");
         }
+    }
+
+
+    public static ArrayList<DebtListModel> getDebtCompany() {
+        ArrayList<DebtListModel> arrayList=new ArrayList<>();
+        try {
+            Statement getDebitList=connection.createStatement();
+            ResultSet resultSet=getDebitList.executeQuery("SELECT * FROM CreditCompany");
+            while(resultSet.next()) {
+                arrayList.add(new DebtListModel(resultSet.getString(1),resultSet.getDate(4).toString(),resultSet.getString(3),resultSet.getInt(2)));
+            }
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return arrayList;
     }
 
 

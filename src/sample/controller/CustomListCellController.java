@@ -5,20 +5,21 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import sample.model.DebtListModel;
 
 public class CustomListCellController {
 
     @FXML
-    private Label companyLabel;
+    private Label companyLabel,date,days;
 
-    private AnchorPane anchorPane;
+    private VBox vbox;
 
     public CustomListCellController() {
         try {
             FXMLLoader loader=new FXMLLoader(getClass().getResource("../view/customListCell.fxml"));
             loader.setController(this);
-            anchorPane=loader.load();
+            vbox=loader.load();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -27,10 +28,12 @@ public class CustomListCellController {
 
     public void setData(DebtListModel model) {
         companyLabel.setText(model.getCompanyName());
+        date.setText("Credit Time:"+model.getDate());
+        days.setText("Credit Cycle:"+model.getDays()+" Days");
     }
 
     public Node getView() {
-        return anchorPane;
+        return vbox;
     }
 
 }
