@@ -66,9 +66,10 @@ public class SettingsController {
     public void deleteCompany(MouseEvent e) {
         ObservableList<DebtListModel> selected=debtList.getSelectionModel().getSelectedItems();
         String query="";
-        if(selected.size()==1)
+        if(selected.size()==1) {
             query=selected.get(0).getId()+"";
-        else if(selected.size()!=0)
+            listModels.removeAll(selected);
+        } else if(selected.size()!=0)
             query=selected.get(0).getId()+",";
 
         for(int i=1;i<selected.size();i++) {
@@ -97,6 +98,18 @@ public class SettingsController {
         stage.setScene(new Scene(root));
         stage.show();
 
+    }
+
+    @FXML
+    public void changeUserNameAndPassword(MouseEvent e) throws IOException {
+        FXMLLoader loader=new FXMLLoader(getClass().getResource("../view/dialogs/loginDialog.fxml"));
+        Parent root=loader.load();
+        LoginDialogController controller=loader.getController();
+        controller.setStatus(1);
+        Stage stage=new Stage();
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setScene(new Scene(root));
+        stage.show();
     }
 
     public void editModel(DebtListModel model) {

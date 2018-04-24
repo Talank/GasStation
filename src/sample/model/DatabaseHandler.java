@@ -136,6 +136,25 @@ public class DatabaseHandler {
         return user;
     }
 
+    public static boolean setAdminParameters(String userName,String password) {
+        Date today=new Date(new java.util.Date().getTime());
+        try {
+            PreparedStatement updateParameters=connection.prepareStatement("UPDATE SystemStatus SET VALUE=?,DATE=? WHERE ID=3");
+            updateParameters.setString(1,userName);
+            updateParameters.setDate(2,today);
+            updateParameters.execute();
+
+            updateParameters=connection.prepareStatement("UPDATE SystemStatus SET VALUE=?,DATE=? WHERE ID=4");
+            updateParameters.setString(1,password);
+            updateParameters.setDate(2,today);
+            updateParameters.execute();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 
     public static void storeCreditTransaction(CreditTransaction creditTransaction) {
         try {

@@ -33,6 +33,8 @@ public class LoginDialogController {
     @FXML
     private Label label;
 
+    private int status=0;
+
     @FXML
     public void initialize() {
         RequiredFieldValidator usernameValidator=new RequiredFieldValidator();
@@ -76,8 +78,19 @@ public class LoginDialogController {
             if(user.validate()) {
                 Stage loginWindow=(Stage)((Node)e.getSource()).getScene().getWindow();
                 loginWindow.close();
+                Parent root;
+                switch (status) {
+                    case 0:
+                        root =FXMLLoader.load(getClass().getResource("../view/dialogs/changeRateDialog.fxml"));
+                        break;
+                    case 1:
+                        root =FXMLLoader.load(getClass().getResource("../view/dialogs/changeUserParameters.fxml"));
+                        break;
+                        default:
+                            root =FXMLLoader.load(getClass().getResource("../view/dialogs/changeRateDialog.fxml"));
+                            break;
+                }
 
-                Parent root =FXMLLoader.load(getClass().getResource("../view/dialogs/changeRateDialog.fxml"));
                 Stage stage=new Stage();
                 Scene scene=new Scene(root);
                 stage.initModality(Modality.APPLICATION_MODAL);
@@ -93,6 +106,10 @@ public class LoginDialogController {
     public void cancelLogin(MouseEvent e) throws IOException {
         Stage loginWindow=(Stage)((Node)e.getSource()).getScene().getWindow();
         loginWindow.close();
+    }
+
+    public void setStatus(int status) {
+        this.status=status;
     }
 
 }
