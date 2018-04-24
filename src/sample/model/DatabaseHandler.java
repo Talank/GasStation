@@ -329,6 +329,41 @@ public class DatabaseHandler {
         return model;
     }
 
+    public static boolean updateFinalReadings(float fDiesel,float fPetrol,float fCounter) {
+        try {
+            Statement getID=connection.createStatement();
+            ResultSet resultSet=getID.executeQuery("SELECT ID,Date FROM MeterReading ORDER BY ID DESC FETCH NEXT 1 ROWS ONLY");
+            resultSet.next();
+            int id=resultSet.getInt(1);
+            if(checkCurrentDate(resultSet.getDate(2))) {
+                PreparedStatement updateReading=connection.prepareStatement("UPDATE MeterReading SET FDiesel="+fDiesel+",FPetrol="+fPetrol+",FCounter"+fCounter+" WHERE ID="+id);
+                updateReading.execute();
+                return true;
+            }
+            resultSet.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static ArrayList<RefillModel> getRefillModel() {
+        ArrayList<RefillModel> arrayList=new ArrayList<>();
+
+        try {
+            Statement getRefill=connection.createStatement();
+            ResultSet resultSet=getRefill.executeQuery("SELECT * FROM Refill");
+            while(resultSet.next()) {
+                arrayList.add(new RefillModel(String.valueOf(resultSet.getFloat(1)),String.valueOf(resultSet.getFloat(3)),String.valueOf(resultSet.getFloat(2)),resultSet.getDate(4)));
+            }
+            resultSet.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return arrayList;
+    }
+
 
     public static boolean checkCurrentDate(Date date) {
         Calendar todayCalendar=Calendar.getInstance();
@@ -340,20 +375,19 @@ public class DatabaseHandler {
         return (todayCalendar.get(Calendar.YEAR)==dbCalendar.get(Calendar.YEAR))&&(todayCalendar.get(Calendar.MONTH)==dbCalendar.get(Calendar.MONTH))&&(todayCalendar.get(Calendar.DAY_OF_MONTH)==dbCalendar.get(Calendar.DAY_OF_MONTH));
     }
 
-
-
-
-
-    public static boolean addFinalMeterReading(float finDiesel,float finPetrol) {
+    public static boolean storeRefill(RefillModel model) {
         try {
-            PreparedStatement insertStat=connection.prepareStatement("UPDATE MeterReading SET FDiesel=?,FPetrol=?");
-            insertStat.setFloat(1,finDiesel);
-            insertStat.setFloat(2,finPetrol);
-            insertStat.executeUpdate();
+            PreparedStatement insertRefill=connection.prepareStatement("INSERT INTO Refill VALUES (?,?,?,?)");
+            insertRefill.setFloat(1,Float.parseFloat(model.getExpected()));
+            insertRefill.setFloat(2,Float.parseFloat(model.getActual()));
+            insertRefill.setFloat(3,Float.parseFloat(model.getLoss()));
+            insertRefill.setDate(4,model.getDate());
+            insertRefill.execute();
             return true;
         } catch(Exception e) {
             e.printStackTrace();
         }
+
         return false;
     }
 

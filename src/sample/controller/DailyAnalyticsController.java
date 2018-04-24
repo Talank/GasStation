@@ -40,6 +40,12 @@ public class DailyAnalyticsController {
             cFinal.setText("Rs."+String.valueOf(price)+"/-");
             cNet.setText("Rs."+String.valueOf(price)+"/-");
         }
+        if(DatabaseHandler.updateFinalReadings(SystemStatus.getfDiesel(),SystemStatus.getfPetrol(),price)) {
+            SystemLogging.getLogger().fine("SuccessFully Updated Final Readings.");
+        } else {
+            SystemLogging.getLogger().severe("Error Updating Final Readings!");
+        }
+
     }
 
 

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controller.RefillDialogController">
+   <top>
+      <HBox alignment="CENTER" style="-fx-background-color: #cccccc;" BorderPane.alignment="CENTER">
+         <children>
+            <Label text="ReFill">
+               <font>
+                  <Font name="System Bold" size="40.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
+   </top>
+   <bottom>
+      <HBox alignment="CENTER_RIGHT" spacing="20.0" style="-fx-background-color: #eeeeee;" BorderPane.alignment="CENTER">
+         <children>
+            <JFXButton onMouseClicked="#cancel" buttonType="RAISED" style="-fx-background-color: #2aff23;" text="CANCEL">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </JFXButton>
+            <JFXButton onMouseClicked="#saveReFill" buttonType="RAISED" style="-fx-background-color: #2aff23;" text="SAVE">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </JFXButton>
+         </children>
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
+         <padding>
+            <Insets bottom="10.0" right="10.0" top="10.0" />
+         </padding>
+      </HBox>
+   </bottom>
+   <center>
+      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+         <children>
+            <HBox alignment="CENTER">
+               <children>
+                  <JFXTextField fx:id="expected" labelFloat="true" promptText="Expected Value" unFocusColor="#2aff23">
+                     <font>
+                        <Font size="25.0" />
+                     </font>
+                  </JFXTextField>
+               </children>
+               <padding>
+                  <Insets bottom="20.0" top="20.0" />
+               </padding>
+            </HBox>
+            <HBox alignment="CENTER">
+               <children>
+                  <JFXTextField fx:id="actual" labelFloat="true" promptText="Actual Value" unFocusColor="#2aff23">
+                     <font>
+                        <Font size="25.0" />
+                     </font>
+                  </JFXTextField>
+               </children>
+               <padding>
+                  <Insets bottom="20.0" top="20.0" />
+               </padding>
+            </HBox>
+         </children>
+      </VBox>
+   </center>
+</BorderPane>

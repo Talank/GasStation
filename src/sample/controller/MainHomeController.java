@@ -80,6 +80,14 @@ public class MainHomeController {
         stage.show();
     }
 
+    @FXML
+    public void loadProfitLoss(MouseEvent e) throws IOException {
+        Parent root=FXMLLoader.load(getClass().getResource("../view/profitLoss.fxml"));
+        Stage stage=(Stage)((Node)e.getSource()).getScene().getWindow();
+        stage.setScene(new Scene(root));
+        stage.show();
+    }
+
 
     public void setRates(String rDiesel,String rPetrol) {
         this.rDiesel.setText(rDiesel);
