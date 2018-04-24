@@ -4,17 +4,15 @@
 <?import com.jfoenix.controls.JFXRadioButton?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
+
 <?import sample.library.ToolBar?>
+
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controller.InstantBillingController">
    <center>
       <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: linear-gradient(from 0% 0% to 100% 100%,#ffffff,#aaaaaa);" BorderPane.alignment="CENTER">
@@ -90,9 +88,14 @@
                   <Insets bottom="100.0" top="15.0" />
                </VBox.margin>
             </HBox>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
                <children>
-                  <JFXButton fx:id="print" onMouseClicked="#printBill" buttonType="RAISED" style="-fx-background-color: #2af12a;" text="PRINT">
+                  <JFXButton fx:id="insert" buttonType="RAISED" onMouseClicked="#insertTransaction" style="-fx-background-color: #2af12a;" text="INSERT">
+                     <font>
+                        <Font size="25.0" />
+                     </font>
+                  </JFXButton>
+                  <JFXButton fx:id="print" buttonType="RAISED" layoutX="359.0" layoutY="33.0" onMouseClicked="#printBill" style="-fx-background-color: #2af12a;" text="PRINT">
                      <font>
                         <Font size="25.0" />
                      </font>
@@ -102,6 +105,7 @@
          </children>
       </VBox>
    </center>
+
    <top>
       <ToolBar fx:id="toolBar"/>
    </top>

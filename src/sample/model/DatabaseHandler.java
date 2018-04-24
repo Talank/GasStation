@@ -43,17 +43,12 @@ public class DatabaseHandler {
 
 
     public static boolean resumeSystem() {
-        Calendar todayCalendar=Calendar.getInstance();
-        todayCalendar.setTime(new java.util.Date());
         try {
             Statement checkValue=connection.createStatement();
             ResultSet resultSet=checkValue.executeQuery("SELECT * FROM MeterReading ORDER BY ID DESC FETCH NEXT 1 ROWS ONLY");
             resultSet.next();
 
-            Calendar dbCalendar=Calendar.getInstance();
-            dbCalendar.setTime(resultSet.getDate(6));
-
-            if((todayCalendar.get(Calendar.YEAR)==dbCalendar.get(Calendar.YEAR))&&(todayCalendar.get(Calendar.MONTH)==dbCalendar.get(Calendar.MONTH))&&(todayCalendar.get(Calendar.DAY_OF_MONTH)==dbCalendar.get(Calendar.DAY_OF_MONTH))) {
+            if(checkCurrentDate(resultSet.getDate(8))) {
                 SystemLogging.getLogger().fine("Initial Meter Reading Already Taken. Loading Home Screen.");
                 return true;
             } else {
@@ -66,15 +61,17 @@ public class DatabaseHandler {
     }
 
 
-    public static boolean addInitialMeterReading(float intDiesel,float intPetrol) {
+    public static boolean addInitialMeterReading(float intDiesel,float intPetrol,float intCounter) {
         Date today=new Date((new java.util.Date()).getTime());
         try {
-            PreparedStatement insertStat=connection.prepareStatement("INSERT INTO MeterReading(IDiesel,IPetrol,FDiesel,FPetrol,Date) VALUES (?,?,?,?,?)");
+            PreparedStatement insertStat=connection.prepareStatement("INSERT INTO MeterReading(IDiesel,IPetrol,ICounter,FDiesel,FPetrol,FCounter,Date) VALUES (?,?,?,?,?,?,?)");
             insertStat.setFloat(1,intDiesel);
             insertStat.setFloat(2,intPetrol);
-            insertStat.setInt(3,-1);
-            insertStat.setInt(4,-1);
-            insertStat.setDate(5,today);
+            insertStat.setFloat(3,intCounter);
+            insertStat.setFloat(4,-1f);
+            insertStat.setFloat(5,-1f);
+            insertStat.setFloat(6,-1f);
+            insertStat.setDate(7,today);
             insertStat.execute();
             return true;
         } catch(Exception e) {
@@ -178,6 +175,37 @@ public class DatabaseHandler {
         }
     }
 
+    public static boolean storeInstantTransaction(float price,float volume) {
+
+        try {
+            PreparedStatement insertInstantTransaction=connection.prepareStatement("INSERT INTO InstantTransaction VALUES (?,?)");
+            insertInstantTransaction.setFloat(1,price);
+            insertInstantTransaction.setFloat(2,volume);
+            insertInstantTransaction.execute();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    public static float getTotalInstantPrice() {
+        float price=-1;
+        try {
+            Statement getPrice=connection.createStatement();
+            ResultSet resultSet=getPrice.executeQuery("Select PRICE FROM InstantTransaction");
+            price=0;
+            while(resultSet.next()) {
+                price+=resultSet.getFloat(1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return price;
+    }
+
 
     public static ArrayList<DebtListModel> getDebtCompany() {
         ArrayList<DebtListModel> arrayList=new ArrayList<>();
@@ -277,6 +305,39 @@ public class DatabaseHandler {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public static DailyAnalyticsModel getInitialValues() {
+        DailyAnalyticsModel model=new DailyAnalyticsModel(-1f,-1f,-1f);
+        try {
+            Statement getValues=connection.createStatement();
+            ResultSet resultSet=getValues.executeQuery("SELECT IPetrol,IDiesel,ICounter,Date FROM MeterReading ORDER BY ID DESC FETCH NEXT 1 ROWS ONLY");
+
+            resultSet.next();
+
+            if(checkCurrentDate(resultSet.getDate(4))) {
+                model.setcInitial(resultSet.getFloat(3));
+                model.setdInitial(resultSet.getFloat(2));
+                model.setpInitial(resultSet.getFloat(1));
+            } else {
+                SystemLogging.getLogger().severe("Date Doesn't Match,May be Wrong Start Up Of System!");
+            }
+
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return model;
+    }
+
+
+    public static boolean checkCurrentDate(Date date) {
+        Calendar todayCalendar=Calendar.getInstance();
+        todayCalendar.setTime(new java.util.Date());
+
+        Calendar dbCalendar=Calendar.getInstance();
+        dbCalendar.setTime(date);
+
+        return (todayCalendar.get(Calendar.YEAR)==dbCalendar.get(Calendar.YEAR))&&(todayCalendar.get(Calendar.MONTH)==dbCalendar.get(Calendar.MONTH))&&(todayCalendar.get(Calendar.DAY_OF_MONTH)==dbCalendar.get(Calendar.DAY_OF_MONTH));
     }
 
 

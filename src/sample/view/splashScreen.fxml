@@ -41,6 +41,17 @@
                   <Insets bottom="10.0" left="50.0" right="50.0" top="10.0" />
                </VBox.margin>
             </JFXTextField>
+            <JFXTextField fx:id="counterMeter" focusColor="#ff9933" focusTraversable="false" labelFloat="true" prefColumnCount="20" promptText="Counter Reading" unFocusColor="#3721ff">
+               <font>
+                  <Font size="25.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="10.0" left="50.0" right="50.0" top="10.0" />
+               </VBox.margin>
+               <padding>
+                  <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+               </padding>
+            </JFXTextField>
             <JFXButton fx:id="startButton" buttonType="RAISED" onMouseClicked="#startButtonClicked" ripplerFill="#43ee0e" style="-fx-background-color: ff9933;" text="START" textFill="WHITE">
                <VBox.margin>
                   <Insets top="20.0" />

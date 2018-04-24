@@ -12,6 +12,7 @@ import sample.controller.SystemLogging;
 import sample.model.CreditCompanyList;
 import sample.model.DatabaseHandler;
 import sample.model.SetupDatabase;
+import sample.model.SystemStatus;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -37,6 +38,7 @@ public class Main extends Application {
             primaryStage.show();
         } else {
             CreditCompanyList.loadData();
+            SystemStatus.initializeInitial(DatabaseHandler.getInitialValues());
             Parent root = FXMLLoader.load(getClass().getResource("view/mainHome.fxml"));
             primaryStage.setTitle("Ohm Gas Station");
             primaryStage.setScene(new Scene(root));

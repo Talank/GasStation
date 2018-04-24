@@ -15,6 +15,7 @@ import javafx.scene.input.MouseEvent;
 import sample.model.SystemStatus;
 
 import java.io.IOException;
+import java.sql.Statement;
 
 
 public class MainHomeController {
@@ -65,6 +66,18 @@ public class MainHomeController {
     @FXML
     public void loadSettings(MouseEvent e) throws IOException {
         loadStage((Node)e.getSource(),"../view/settings.fxml");
+    }
+
+    @FXML
+    public void loadDailyAnalytics(MouseEvent e) throws IOException {
+        FXMLLoader loader=new FXMLLoader(getClass().getResource("../view/dialogs/finalReadings.fxml"));
+        Parent root=loader.load();
+        FinalReadingsController controller=loader.getController();
+        controller.setStage((Stage)((Node)e.getSource()).getScene().getWindow());
+        Stage stage=new Stage();
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setScene(new Scene(root));
+        stage.show();
     }
 
 

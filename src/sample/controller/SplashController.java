@@ -21,7 +21,7 @@ import java.io.IOException;
 
 public class SplashController {
     @FXML
-    private JFXTextField dieselMeter,petrolMeter;
+    private JFXTextField dieselMeter,petrolMeter,counterMeter;
 
 
     @FXML
@@ -35,6 +35,10 @@ public class SplashController {
         petrolValidator.setMessage("Petrol Meter Reading Cannot Be Empty");
         petrolMeter.getValidators().add(petrolValidator);
 
+        RequiredFieldValidator counterValidator=new RequiredFieldValidator();
+        counterValidator.setAccessibleText("Counter Reading Cannot Be Empty");
+        counterMeter.getValidators().add(counterValidator);
+
         dieselMeter.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)->{
             if(!newValue.matches("[0-9]{0,10}([\\.][0-9]{0,2})?"))
                 dieselMeter.setText(oldValue);
@@ -44,6 +48,7 @@ public class SplashController {
                 else
                     dieselMeter.resetValidation();
         });
+
         petrolMeter.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)->{
             if(!newValue.matches("[0-9]{0,10}([\\.][0-9]{0,2})?"))
                 petrolMeter.setText(oldValue);
@@ -54,22 +59,45 @@ public class SplashController {
                     petrolMeter.resetValidation();
         });
 
+        counterMeter.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)->{
+            if(!newValue.matches("[0-9]{0,10}([\\.][0-9]{0,2})?"))
+                counterMeter.setText(oldValue);
+            else
+            if(newValue.isEmpty())
+                counterMeter.validate();
+            else
+                counterMeter.resetValidation();
+        });
+
     }
 
     @FXML
     public void startButtonClicked(MouseEvent mouseEvent) throws IOException {
-        if(dieselMeter.getText().equals(""))
+        int status=0;
+
+        if(dieselMeter.getText().isEmpty()) {
             dieselMeter.validate();
-        if(petrolMeter.getText().equals("")) {
-            petrolMeter.validate();
+            status++;
         }
-        if(!dieselMeter.getText().isEmpty()&&!petrolMeter.getText().isEmpty()) {
-            petrolMeter.resetValidation();
+
+        if(petrolMeter.getText().isEmpty()) {
+            petrolMeter.validate();
+            status++;
+        }
+
+        if(counterMeter.getText().isEmpty()) {
+            counterMeter.validate();
+            status++;
+        }
+
+        if(status==0) {
             float iDiesel=Float.parseFloat(dieselMeter.getText());
             float iPetrol=Float.parseFloat(petrolMeter.getText());
-            if(DatabaseHandler.addInitialMeterReading(iDiesel,iPetrol)) {
+            float iCounter=Float.parseFloat(counterMeter.getText());
+            if(DatabaseHandler.addInitialMeterReading(iDiesel,iPetrol,iCounter)) {
                 SystemStatus.setiDiesel(iDiesel);
                 SystemStatus.setiPetrol(iPetrol);
+                SystemStatus.setiCounter(iCounter);
                 Parent homeParent=FXMLLoader.load(getClass().getResource("../view/mainHome.fxml"));
                 Scene homeScene=new Scene(homeParent);
                 Stage window=(Stage)((Node)mouseEvent.getSource()).getScene().getWindow();
@@ -79,5 +107,6 @@ public class SplashController {
                 SystemLogging.getLogger().severe("Error Storing Initial Values,System might misbehave!");
             }
         }
+
     }
 }

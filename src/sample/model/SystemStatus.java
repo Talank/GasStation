@@ -1,7 +1,13 @@
 package sample.model;
 
 public class SystemStatus {
-    private static float iDiesel,iPetrol,fDiesel,fPetrol,dRate,pRate;
+    private static float iDiesel,iPetrol,iCounter,fDiesel,fPetrol,dRate,pRate;
+
+    public static void initializeInitial(DailyAnalyticsModel model) {
+        iDiesel=model.getdInitial();
+        iPetrol=model.getpInitial();
+        iCounter=model.getcInitial();
+    }
 
     public static float getiDiesel() {
         return iDiesel;
@@ -49,5 +55,13 @@ public class SystemStatus {
 
     public static void setpRate(float pRate) {
         SystemStatus.pRate = pRate;
+    }
+
+    public static float getiCounter() {
+        return iCounter;
+    }
+
+    public static void setiCounter(float iCounter) {
+        SystemStatus.iCounter = iCounter;
     }
 }

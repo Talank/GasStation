@@ -17,6 +17,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 import javafx.beans.value.ObservableValue;
+import sample.model.DatabaseHandler;
 import sample.model.InstantBill;
 import sample.model.SystemStatus;
 import sample.library.ToolBar;
@@ -171,5 +172,28 @@ public class InstantBillingController {
             instantBill.printBill();
         }
 
+    }
+
+    @FXML
+    public void insertTransaction(MouseEvent e) {
+        int status=0;
+
+        if(price.getText().trim().isEmpty()) {
+            price.validate();
+            status++;
+        }
+
+        if(volume.getText().trim().isEmpty()) {
+            volume.validate();
+            status++;
+        }
+
+        if(status==0) {
+            if(DatabaseHandler.storeInstantTransaction(Float.parseFloat(price.getText()),Float.parseFloat(volume.getText()))) {
+               SystemLogging.getLogger().fine("Instant Transaction Stored SuccessFully.");
+            } else {
+                SystemLogging.getLogger().severe("Error Storing Instant Transaction!");
+            }
+        }
     }
 }
