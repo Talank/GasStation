@@ -1,5 +1,7 @@
 package sample.model;
 
+import sample.model.databases.DatabaseHandler;
+
 public class RateModel {
     private float rDiesel,rPetrol;
 

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.BorderPane?>
+
+
+<?import sample.library.toolbar.ToolBar?>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controller.main_home_controller.lists_controllers.CreditCompanyDetailsController">
+   <center>
+      <TableView fx:id="tableView" BorderPane.alignment="CENTER">
+        <columns>
+          <TableColumn fx:id="vehicleNo" prefWidth="75.0" text="Vehicle No" />
+          <TableColumn fx:id="type" prefWidth="75.0" text="Oil Type" />
+            <TableColumn fx:id="date" prefWidth="75.0" text="Purchase Date" />
+            <TableColumn fx:id="volume" prefWidth="75.0" text="Volume" />
+            <TableColumn fx:id="price" prefWidth="75.0" text="Price" />
+        </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
+      </TableView>
+   </center>
+    <top>
+        <ToolBar fx:id="toolBar"/>
+    </top>
+</BorderPane>

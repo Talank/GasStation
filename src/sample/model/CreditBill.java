@@ -2,8 +2,8 @@ package sample.model;
 
 import javafx.scene.control.Label;
 import sample.controller.SystemLogging;
+import sample.model.databases.DatabaseHandler;
 
-import java.awt.*;
 import java.sql.Date;
 
 public class CreditBill extends Bill {

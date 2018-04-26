@@ -1,5 +1,7 @@
 package sample.model;
 
+import sample.model.databases.DatabaseHandler;
+
 import java.util.ArrayList;
 
 public class CreditCompanyList {

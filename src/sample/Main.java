@@ -1,45 +1,64 @@
 package sample;
 
 import javafx.application.Application;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 
-import org.apache.derby.jdbc.EmbeddedDriver;
+
+
 import sample.controller.SystemLogging;
+import sample.controller.dialog_controller.ErrorDialogController;
 import sample.model.CreditCompanyList;
-import sample.model.DatabaseHandler;
-import sample.model.SetupDatabase;
+import sample.model.databases.DatabaseHandler;
+
+
 import sample.model.SystemStatus;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 
 public class Main extends Application {
 
-
     @Override
     public void start(Stage primaryStage) throws Exception{
-        SystemLogging.initializeLogger();
+        SystemLogging.initializeLogger();//Initialize The Logger
+        SystemStatus.setMainHomePath("../../view/main_home_views/mainHome.fxml");
         if(!DatabaseHandler.setupConnection()) {
-            Alert alert=new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Database Error");
-            alert.setContentText("Database Connection cannot be established. Please Contact SpirroTech Officials.");
-            alert.showAndWait();
-            System.exit(-1);
+            /*
+            * The Connection on database couldn't be established
+            * Show the Error dialog
+            * Exit the program
+            * */
+            FXMLLoader loader=new FXMLLoader(getClass().getResource("view/dialogs/errorDialog.fxml"));
+            Parent root=loader.load();
+            ErrorDialogController controller=loader.getController();
+            controller.setTitle("Database Error");
+            controller.setErrorMessage("Database Connection cannot be established. Please Contact SpirroTech Officials.");
+            Stage stage=new Stage();
+            stage.setScene(new Scene(root));
+            stage.show();
         } else if(!DatabaseHandler.resumeSystem()) {
+            /*
+            * System has detected That Initial Value for current day is not set
+            * Display The Splash Screen to take initial readings
+            * Initialize the Credit Company List
+            * */
             CreditCompanyList.loadData();
             Parent root = FXMLLoader.load(getClass().getResource("view/splashScreen.fxml"));
             primaryStage.setTitle("Ohm Gas Station");
             primaryStage.setScene(new Scene(root));
             primaryStage.show();
         } else {
+            /*
+            * The System Has detected That initial value already exists for the current day
+            * Display the home page
+            * Initialize the system status and credit company list
+            * */
             CreditCompanyList.loadData();
             SystemStatus.initializeInitial(DatabaseHandler.getInitialValues());
-            Parent root = FXMLLoader.load(getClass().getResource("view/mainHome.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("view/main_home_views/mainHome.fxml"));
             primaryStage.setTitle("Ohm Gas Station");
             primaryStage.setScene(new Scene(root));
             primaryStage.show();
@@ -47,7 +66,12 @@ public class Main extends Application {
     }
 
     @Override
-    public void stop() throws Exception {
+    public void stop() {
+        /*
+        * Close The Connection
+        * Derby Database caches the primary key,so close if before using it
+        * otherwise the primary key increments with 100 in every insertion
+        * */
         DatabaseHandler.closeConnection();
     }
 

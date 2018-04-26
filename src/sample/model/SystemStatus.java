@@ -3,6 +3,8 @@ package sample.model;
 public class SystemStatus {
     private static float iDiesel,iPetrol,iCounter,fDiesel,fPetrol,dRate,pRate;
 
+    private static String mainHomePath;
+
     public static void initializeInitial(DailyAnalyticsModel model) {
         iDiesel=model.getdInitial();
         iPetrol=model.getpInitial();
@@ -63,5 +65,13 @@ public class SystemStatus {
 
     public static void setiCounter(float iCounter) {
         SystemStatus.iCounter = iCounter;
+    }
+
+    public static String getMainHomePath() {
+        return mainHomePath;
+    }
+
+    public static void setMainHomePath(String mainHomePath) {
+        SystemStatus.mainHomePath = mainHomePath;
     }
 }
