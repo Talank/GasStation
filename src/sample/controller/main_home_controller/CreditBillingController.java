@@ -1,9 +1,6 @@
 package sample.controller.main_home_controller;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.controls.JFXRadioButton;
-import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.controls.*;
 import com.jfoenix.validation.RequiredFieldValidator;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -13,6 +10,7 @@ import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
 
+import javafx.scene.layout.BorderPane;
 import sample.library.toolbar.ToolBar;
 import sample.model.CreditBill;
 
@@ -47,10 +45,17 @@ public class CreditBillingController {
     private ToggleGroup selection;
 
     @FXML
+    private BorderPane root;
+
+    private JFXSnackbar snackbar;
+
+    @FXML
     public void initialize() {
 
         toolBar.setBackPath(SystemStatus.getMainHomePath());
         toolBar.setTitle("Credit Billing");
+
+        snackbar=new JFXSnackbar(root);
 
         diesel.setSelected(true);
         rate=SystemStatus.getdRate();
@@ -154,7 +159,8 @@ public class CreditBillingController {
         }
 
         if(status==0) {
-            CreditBill creditBill=new CreditBill(companyName.getValue().toString(),price.getText(),volume.getText(),vehicleNumber.getText().trim(),diesel.isSelected());
+            snackbar.show("Printing And Storing Bill.",2000);
+            CreditBill creditBill=new CreditBill(companyName.getValue(),price.getText(),volume.getText(),vehicleNumber.getText().trim(),diesel.isSelected());
             creditBill.printBill();
         }
 

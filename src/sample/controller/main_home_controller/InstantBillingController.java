@@ -2,6 +2,7 @@ package sample.controller.main_home_controller;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXRadioButton;
+import com.jfoenix.controls.JFXSnackbar;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.validation.RequiredFieldValidator;
 import javafx.fxml.FXML;
@@ -11,6 +12,7 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
 
 import javafx.beans.value.ObservableValue;
+import javafx.scene.layout.BorderPane;
 import sample.controller.SystemLogging;
 import sample.model.databases.DatabaseHandler;
 import sample.model.InstantBill;
@@ -44,6 +46,11 @@ public class InstantBillingController {
     private ToggleGroup selection;
 
     @FXML
+    private BorderPane root;
+
+    private JFXSnackbar snackbar;
+
+    @FXML
     public void initialize() {
 
         toolBar.setBackPath(SystemStatus.getMainHomePath());
@@ -52,6 +59,8 @@ public class InstantBillingController {
 
         diesel.setSelected(true);
         rate=SystemStatus.getdRate();
+
+        snackbar=new JFXSnackbar(root);
 
         selection.selectedToggleProperty().addListener((ObservableValue<? extends Toggle> ov,Toggle old_toggle, Toggle new_toggle)->{
             if(((JFXRadioButton)new_toggle).getText().equals("Diesel")) {
@@ -173,6 +182,7 @@ public class InstantBillingController {
         }
 
         if(status==0) {
+            snackbar.show("Printing Bill",2000);
             InstantBill instantBill=new InstantBill(customerName.getText().trim(),price.getText(),volume.getText(),vehicleNumber.getText().trim(),diesel.isSelected());
             instantBill.printBill();
         }
@@ -195,8 +205,10 @@ public class InstantBillingController {
 
         if(status==0) {
             if(DatabaseHandler.storeInstantTransaction(Float.parseFloat(price.getText()),Float.parseFloat(volume.getText()))) {
+                snackbar.show("Transaction Inserted Into Database",2000);
                SystemLogging.getLogger().fine("Instant Transaction Stored SuccessFully.");
             } else {
+                snackbar.show("Error Inserting Transaction",2000);
                 SystemLogging.getLogger().severe("Error Storing Instant Transaction!");
             }
         }

@@ -110,7 +110,9 @@ public class MainHomeController {
     private void loadStage(Node node,String path) throws IOException {
         Parent root=FXMLLoader.load(getClass().getResource(path));
         Stage stage=(Stage)node.getScene().getWindow();
-        stage.setScene(new Scene(root));
+        Scene scene=new Scene(root);
+        scene.getStylesheets().add(getClass().getResource("../../css/mainStyle.css").toExternalForm());
+        stage.setScene(scene);
         stage.show();
     }
 
