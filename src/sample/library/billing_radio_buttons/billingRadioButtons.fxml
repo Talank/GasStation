@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXRadioButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+
+
+<fx:root type="javafx.scene.layout.HBox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="25.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <JFXRadioButton fx:id="diesel" text="Diesel">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+         <toggleGroup>
+            <ToggleGroup fx:id="selection" />
+         </toggleGroup>
+      </JFXRadioButton>
+      <JFXRadioButton fx:id="petrol" text="Petrol" toggleGroup="$selection">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </JFXRadioButton>
+      <JFXRadioButton fx:id="extra" text="Extra" toggleGroup="$selection">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </JFXRadioButton>
+   </children>
+   <padding>
+      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+   </padding>
+</fx:root>

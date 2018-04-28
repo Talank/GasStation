@@ -78,8 +78,8 @@ public class SettingsController {
 
         for(int i=1;i<selected.size();i++) {
             query=query+selected.get(i).getId();
-            listModels.removeAll(selected);
         }
+        listModels.removeAll(selected);
         System.out.println("Query:"+query);
         if(DatabaseHandler.deleteCompany(query)) {
             SystemLogging.getLogger().fine("Company Deleted SuccessFully.");

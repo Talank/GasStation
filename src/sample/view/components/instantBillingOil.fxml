@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="CENTER" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+        <children>
+            <JFXTextField fx:id="customerName" labelFloat="true" promptText="Customer Name" unFocusColor="#2af12a">
+                <font>
+                    <Font size="25.0" />
+                </font>
+            </JFXTextField>
+        </children>
+        <VBox.margin>
+            <Insets top="15.0" />
+        </VBox.margin>
+    </HBox>
+    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+        <children>
+            <JFXTextField fx:id="vehicleNumber" labelFloat="true" promptText="Vehicle Number" unFocusColor="#2af12a">
+                <font>
+                    <Font size="25.0" />
+                </font>
+                <HBox.margin>
+                    <Insets />
+                </HBox.margin>
+            </JFXTextField>
+        </children>
+        <VBox.margin>
+            <Insets top="15.0" />
+        </VBox.margin>
+    </HBox>
+    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+        <children>
+            <JFXTextField fx:id="volume" labelFloat="true" promptText="Volume" unFocusColor="#2af12a">
+                <font>
+                    <Font size="25.0" />
+                </font>
+            </JFXTextField>
+
+        </children>
+        <VBox.margin>
+            <Insets top="15.0" />
+        </VBox.margin>
+    </HBox>
+    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+        <children>
+            <JFXTextField fx:id="price" labelFloat="true" promptText="Price" unFocusColor="#2af12a">
+                <font>
+                    <Font size="25.0" />
+                </font>
+            </JFXTextField>
+        </children>
+        <VBox.margin>
+            <Insets bottom="100.0" top="15.0" />
+        </VBox.margin>
+    </HBox>
+</VBox>
