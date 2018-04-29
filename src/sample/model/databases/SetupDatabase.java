@@ -2,6 +2,7 @@ package sample.model.databases;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.sql.Statement;
 
 public class SetupDatabase {
@@ -29,16 +30,29 @@ public class SetupDatabase {
         return false;
     }
 
+    public static boolean createCompanyTable(String name) {
+        try {
+            Statement createTable=connection.createStatement();
+            createTable.execute("CREATE TABLE "+name+" (TRANSACTION_ID INT NOT NULL,TYPE VARCHAR(10) NOT NULL,VEHICLE_NO VARCHAR(10) NOT NULL,RATE FLOAT NOT NULL,VOLUME FLOAT NOT NULL,PRICE FLOAT NOT NULL,DATE DATE NOT NULL)");
+            return true;
+        } catch(SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return false;
+    }
+
 
     private static boolean createTable() {
         try {
             Statement createTable=connection.createStatement();
             createTable.execute("CREATE TABLE MeterReading (ID INT NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1,INCREMENT BY 1),IDiesel FLOAT NOT NULL,IPetrol FLOAT NOT NULL,ICounter FLOAT NOT NULL,FDiesel FLOAT NOT NULL,FPetrol FLOAT NOT NULL,FCounter FLOAT NOT NULL,Date DATE NOT NULL)");
             createTable.execute("CREATE TABLE SystemStatus (ID INT NOT NULL,VALUE VARCHAR(30) NOT NULL,Date DATE NOT NULL)");
-            createTable.execute("CREATE TABLE CreditCompany (COMPANY_NAME VARCHAR(30) NOT NULL,ID INT NOT NULL,DAY VARCHAR(2) NOT NULL,DATE DATE NOT NULL)");
+            createTable.execute("CREATE TABLE CreditCompany (ID INT NOT NULL,COMPANY_NAME VARCHAR(30) NOT NULL,TRANSACTION_ID INT NOT NULL,DAY VARCHAR(2) NOT NULL,DATE DATE NOT NULL)");
             createTable.execute("CREATE TABLE CreditTransaction (ID INT NOT NULL,VEHICLE_NO VARCHAR(15) NOT NULL,TYPE VARCHAR(1) NOT NULL,VOLUME FLOAT NOT NULL,PRICE FLOAT NOT NULL,DATE DATE NOT NULL");
             createTable.execute("CREATE TABLE Refill(EXPECTED FLOAT NOT NULL,ACTUAL FLOAT NOT NULL,LOSS FLOAT NOT NULL,DATE DATE NOT NULL)");
-            createTable.execute("CREATE TABLE InstantTransaction (PRICE FLOAT NOT NULL,VOLUME FLOAT NOT NULL)");
+            createTable.execute("CREATE TABLE InstantTransaction (MODE VARCHAR(1) NOT NULL,VOLUME FLOAT NOT NULL,PRICE FLOAT NOT NULL)");
+            createTable.execute("CREATE TABLE DailyAnalytics (DVOLUME FLOAT NOT NULL,DRATE FLOAT NOT NULL,DPRICE FLOAT NOT NULL,PVOLUME FLOAT NOT NULL,PRATE FLOAT NOT NULL,PPRICE FLOAT NOT NULL,EPRICE FLOAT NOT NULL,DATE DATE NOT NULL)");
 
 
             return true;

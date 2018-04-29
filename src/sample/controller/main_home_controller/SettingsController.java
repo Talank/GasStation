@@ -49,7 +49,7 @@ public class SettingsController {
         toolBar.setBackPath(SystemStatus.getMainHomePath());
 
         debtList.setCellFactory(lv->new DebtListCell());
-        debtList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        debtList.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         listModels=FXCollections.observableList(CreditCompanyList.getDetailCompanyList());
         debtList.setItems(listModels);
         debtList.getSelectionModel().select(0);
@@ -69,23 +69,16 @@ public class SettingsController {
     @FXML
     public void deleteCompany(MouseEvent e) {
         ObservableList<DebtListModel> selected=debtList.getSelectionModel().getSelectedItems();
-        String query="";
-        if(selected.size()==1) {
-            query=selected.get(0).getId()+"";
-            listModels.removeAll(selected);
-        } else if(selected.size()!=0)
-            query=selected.get(0).getId()+",";
+        DebtListModel model=debtList.getSelectionModel().getSelectedItem();
+        if(model!=null) {
+            listModels.remove(model);
+            if(DatabaseHandler.deleteCompany(model)) {
+                SystemLogging.getLogger().fine("Company Deleted SuccessFully.");
+            } else {
+                SystemLogging.getLogger().severe("Error Deleting Companies!");
+            }
+        }
 
-        for(int i=1;i<selected.size();i++) {
-            query=query+selected.get(i).getId();
-        }
-        listModels.removeAll(selected);
-        System.out.println("Query:"+query);
-        if(DatabaseHandler.deleteCompany(query)) {
-            SystemLogging.getLogger().fine("Company Deleted SuccessFully.");
-        } else {
-            SystemLogging.getLogger().severe("Error Deleting Companies!");
-        }
 
     }
 

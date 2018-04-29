@@ -46,25 +46,25 @@
                   <Insets bottom="15.0" top="15.0" />
                </padding>
             </HBox>
-            <StackPane prefHeight="150.0" prefWidth="200.0">
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <VBox fx:id="dieselPetrol" alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0">
+                  <JFXTextField fx:id="customerName" labelFloat="true" promptText="Customer Name" unFocusColor="#2af12a">
+                     <font>
+                        <Font size="25.0" />
+                     </font>
+                  </JFXTextField>
+               </children>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+               <padding>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </padding>
+            </HBox>
+            <StackPane>
+               <children>
+                  <VBox fx:id="dieselPetrol" alignment="CENTER" spacing="20.0">
                      <children>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-                           <children>
-                              <JFXTextField fx:id="customerName" labelFloat="true" promptText="Customer Name" unFocusColor="#2af12a">
-                                 <font>
-                                    <Font size="25.0" />
-                                 </font>
-                              </JFXTextField>
-                           </children>
-                           <VBox.margin>
-                              <Insets top="15.0" />
-                           </VBox.margin>
-                           <padding>
-                              <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-                           </padding>
-                        </HBox>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                            <children>
                               <JFXTextField fx:id="vehicleNumber" labelFloat="true" promptText="Vehicle Number" unFocusColor="#2af12a">
@@ -77,7 +77,7 @@
                               </JFXTextField>
                            </children>
                            <VBox.margin>
-                              <Insets top="15.0" />
+                              <Insets />
                            </VBox.margin>
                            <padding>
                               <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
@@ -116,23 +116,8 @@
                         </HBox>
                      </children>
                   </VBox>
-                  <VBox fx:id="extraBill" alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="100.0" spacing="20.0" visible="false">
+                  <VBox fx:id="extraBill" alignment="CENTER"  spacing="20.0" visible="false">
                      <children>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-                           <children>
-                              <JFXTextField fx:id="eCustomerName" labelFloat="true" promptText="Customer Name" unFocusColor="#2af12a">
-                                 <font>
-                                    <Font size="25.0" />
-                                 </font>
-                              </JFXTextField>
-                           </children>
-                           <VBox.margin>
-                              <Insets top="15.0" />
-                           </VBox.margin>
-                           <padding>
-                              <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-                           </padding>
-                        </HBox>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                            <children>
                               <JFXTextField fx:id="itemName" labelFloat="true" promptText="Item Name" unFocusColor="#2af12a">
@@ -145,7 +130,7 @@
                               </JFXTextField>
                            </children>
                            <VBox.margin>
-                              <Insets top="15.0" />
+                              <Insets />
                            </VBox.margin>
                            <padding>
                               <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
@@ -184,6 +169,9 @@
                      </children>
                   </VBox>
                </children>
+               <VBox.margin>
+                  <Insets top="15.0" />
+               </VBox.margin>
             </StackPane>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                <padding>
@@ -228,17 +216,17 @@
                   <Font size="25.0" />
                </font>
             </JFXButton>
-            <JFXButton fx:id="addItems" onMouseClicked="#addNewItem" buttonType="RAISED" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #29ea43; -fx-background-radius: 40px;" text="+">
+            <JFXButton fx:id="addItems" buttonType="RAISED" onMouseClicked="#addNewItem" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #29ea43; -fx-background-radius: 40px;" text="+">
                <font>
                   <Font size="35.0" />
                </font>
             </JFXButton>
-            <JFXButton  onMouseClicked="#deleteItem" buttonType="RAISED" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #29ea43; -fx-background-radius: 40px;" text="-">
+            <JFXButton buttonType="RAISED" onMouseClicked="#deleteItem" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #29ea43; -fx-background-radius: 40px;" text="-">
                <font>
                   <Font size="35.0" />
                </font>
             </JFXButton>
-             <JFXButton  onMouseClicked="#clearSelection" buttonType="RAISED" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #29ea43; -fx-background-radius: 40px;" text="X">
+             <JFXButton buttonType="RAISED" onMouseClicked="#clearSelection" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #29ea43; -fx-background-radius: 40px;" text="X">
                  <font>
                      <Font size="35.0" />
                  </font>

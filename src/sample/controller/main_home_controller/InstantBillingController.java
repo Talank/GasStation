@@ -21,16 +21,18 @@ import sample.model.databases.DatabaseHandler;
 import sample.model.InstantBill;
 import sample.model.SystemStatus;
 import sample.library.toolbar.ToolBar;
+import sample.model.transaction_model.InstantTransactionBill;
 import sample.model.transaction_model.Transaction;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class InstantBillingController {
 
-    private static boolean calcNowV =false,calcNowP=false,calcOldV=false,calcOldP=false,calcNowQ,calcNowR, listSelected =false,force=false;
+    private boolean calcNowV =false,calcNowP=false,calcOldV=false,calcOldP=false,calcNowQ,calcNowR, listSelected =false,force=false;
     private DecimalFormat decimalFormat;
     private float rate;
 
@@ -44,7 +46,7 @@ public class InstantBillingController {
     public ToolBar toolBar;
 
     @FXML
-    private JFXTextField customerName,volume,price,vehicleNumber,eCustomerName,itemName,quantity,rates;
+    private JFXTextField customerName,volume,price,vehicleNumber,itemName,quantity,rates;
 
     @FXML
     private TextField total;
@@ -126,24 +128,15 @@ public class InstantBillingController {
 
 
         selection.selectedToggleProperty().addListener((ObservableValue<? extends Toggle> ov,Toggle old_toggle, Toggle new_toggle)->{
-            if(!listSelected) {
-                transactionListView.getSelectionModel().clearSelection();
-                clearOil();
-                clearExtra();
-            }
-            listSelected =false;
+
             if(((JFXRadioButton)new_toggle).getText().equals("Extra")) {
-                if(!customerName.getText().isEmpty())
-                    eCustomerName.setText(customerName.getText());
+
                 dieselPetrol.setVisible(false);
                 extraBill.setVisible(true);
                 mode=2;
             } else {
                 extraBill.setVisible(false);
                 dieselPetrol.setVisible(true);
-
-                if(!eCustomerName.getText().isEmpty())
-                    customerName.setText(eCustomerName.getText());
 
                 if(((JFXRadioButton)new_toggle).getText().equals("Diesel")) {
                     rate=SystemStatus.getdRate();
@@ -152,15 +145,27 @@ public class InstantBillingController {
                     rate=SystemStatus.getpRate();
                     mode=1;
                 }
-            /*    if(calcOldV) {
+
+            }
+
+            if(isListSelected()) {
+                if(!listSelected) {
+                    transactionListView.getSelectionModel().clearSelection();
+                    clearOil();
+                    clearExtra();
+                }
+                listSelected=false;
+            } else {
+                if(calcOldV) {
                     if(!volume.getText().isEmpty())
                         price.setText(decimalFormat.format(Float.parseFloat(volume.getText())*rate));
                 } else if(calcOldP) {
                     if(!price.getText().isEmpty())
                         volume.setText(decimalFormat.format(Float.parseFloat(price.getText())/rate));
-                }*/
-
+                }
             }
+
+
 
         });
 
@@ -175,9 +180,6 @@ public class InstantBillingController {
 
     private void initializeExtra() {
 
-        RequiredFieldValidator eCustomerValidator=new RequiredFieldValidator();
-        eCustomerValidator.setMessage("Customer Name Cannot Be Empty");
-        eCustomerName.getValidators().add(eCustomerValidator);
 
         RequiredFieldValidator itemNameValidator=new RequiredFieldValidator();
         itemNameValidator.setMessage("Item Name Cannot Be Empty");
@@ -190,18 +192,6 @@ public class InstantBillingController {
         RequiredFieldValidator ratesValidator=new RequiredFieldValidator();
         ratesValidator.setMessage("Rate Cannot Be Empty");
         rates.getValidators().add(ratesValidator);
-
-        eCustomerName.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)->{
-            if(!newValue.matches("[a-zA-Z ]*")) {
-                eCustomerName.setText(oldValue);
-            } else {
-                if(newValue.isEmpty()&&!force) {
-                    eCustomerName.validate();
-                } else {
-                    eCustomerName.resetValidation();
-                }
-            }
-        });
 
         itemName.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)->{
             if(!newValue.matches("[a-zA-Z ]*")) {
@@ -259,6 +249,7 @@ public class InstantBillingController {
 
 
     }
+
 
     private void initializeOil() {
         RequiredFieldValidator customerNameValidator=new RequiredFieldValidator();
@@ -340,14 +331,26 @@ public class InstantBillingController {
         });
     }
 
+    private boolean isListSelected() {
+        return !transactionListView.getSelectionModel().isEmpty();
+    }
+
+    private boolean isListEmpty() {
+        return transactionListView.getItems().isEmpty();
+    }
+
 
     @FXML
     public void printBill(MouseEvent e)throws IOException {
-        if(checkOilInput()==0) {
+
+        if(!isListEmpty()) {
+            InstantTransactionBill instantTransactionBill=new InstantTransactionBill(transactionListView.getItems());
+            instantTransactionBill.print();
             snackbar.show("Printing Bill",2000);
-            InstantBill instantBill=new InstantBill(customerName.getText().trim(),price.getText(),volume.getText(),vehicleNumber.getText().trim(),diesel.isSelected());
-            instantBill.printBill();
+        } else {
+            snackbar.show("No Transaction Detected.",2000);
         }
+
 
     }
 
@@ -378,8 +381,8 @@ public class InstantBillingController {
     private int checkExtraInput() {
         int status=0;
 
-        if(eCustomerName.getText().trim().isEmpty()) {
-            eCustomerName.validate();
+        if(customerName.getText().trim().isEmpty()) {
+            customerName.validate();
             status++;
         }
 
@@ -403,23 +406,11 @@ public class InstantBillingController {
 
     @FXML
     public void insertTransaction(MouseEvent e) {
-        int status=0;
+        if(!isListEmpty()) {
 
-        if(price.getText().trim().isEmpty()) {
-            price.validate();
-            status++;
-        }
-
-        if(volume.getText().trim().isEmpty()) {
-            volume.validate();
-            status++;
-        }
-
-        if(status==0) {
-
-            if(DatabaseHandler.storeInstantTransaction(Float.parseFloat(price.getText()),Float.parseFloat(volume.getText()))) {
+            if(DatabaseHandler.storeInstantTransaction(transactionListView.getItems())) {
                 snackbar.show("Transaction Inserted Into Database",2000);
-               SystemLogging.getLogger().fine("Instant Transaction Stored SuccessFully.");
+                SystemLogging.getLogger().fine("Instant Transaction Stored SuccessFully.");
             } else {
                 snackbar.show("Error Inserting Transaction",2000);
                 SystemLogging.getLogger().severe("Error Storing Instant Transaction!");
@@ -488,8 +479,9 @@ public class InstantBillingController {
                 else
                     transaction=transactionListView.getSelectionModel().getSelectedItem();
                 transaction.extraTransaction(itemName.getText(),Float.parseFloat(rates.getText()),Integer.parseInt(quantity.getText()));
-                Transaction.setName(eCustomerName.getText());
-                Transaction.setTotal(Transaction.getTotal()+transaction.getRate()*transaction.getQuantity());
+                Transaction.setName(customerName.getText());
+                transaction.calcExtraPrice();
+                Transaction.setTotal(Transaction.getTotal()+transaction.getPrice());
 
                 total.setText(String.valueOf(Transaction.getTotal()));
                 if(transactionListView.getSelectionModel().getSelectedItems().size()==0) {
@@ -503,16 +495,23 @@ public class InstantBillingController {
         } else {
             if(checkOilInput()==0) {
                 String type;
-                if(mode==1)
+                float rate;
+                if(mode==1) {
                     type="Petrol";
-                else
+                    rate=SystemStatus.getpRate();
+                } else {
                     type="Diesel";
+                    rate=SystemStatus.getdRate();
+                }
+
                 Transaction transaction;
                 if(transactionListView.getSelectionModel().getSelectedItems().size()==0)
                     transaction=new Transaction();
                 else
                     transaction=transactionListView.getSelectionModel().getSelectedItem();
-                transaction.oilTransaction(type,vehicleNumber.getText(),Float.parseFloat(volume.getText()),Float.parseFloat(price.getText()));
+                transaction.oilTransaction(type,vehicleNumber.getText(),Float.parseFloat(volume.getText()),Float.parseFloat(price.getText()),mode);
+                transaction.setRate(rate);
+
                 Transaction.setName(customerName.getText());
                 Transaction.setTotal(Transaction.getTotal()+transaction.getPrice());
                 total.setText(String.valueOf(Transaction.getTotal()));

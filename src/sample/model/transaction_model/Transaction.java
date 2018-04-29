@@ -9,19 +9,26 @@ public class Transaction {
 
         private float rate,volume,price;
 
-        private int quantity;
 
-        public void oilTransaction(String type,String vehicleNo,float volume,float price) {
+        private int quantity,mode;
+
+        public void oilTransaction(String type,String vehicleNo,float volume,float price,int mode) {
             this.type=type;
             this.vehicleNo=vehicleNo;
             this.volume=volume;
             this.price=price;
+            this.mode=mode;
         }
 
         public void extraTransaction(String itemName,float rate,int quantity) {
             this.type=itemName;
             this.rate=rate;
             this.quantity=quantity;
+            this.mode=2;
+        }
+
+        public void calcExtraPrice() {
+            price=rate*quantity;
         }
 
         public static String getName() {
@@ -89,4 +96,11 @@ public class Transaction {
             this.price = price;
         }
 
+    public int getMode() {
+        return mode;
+    }
+
+    public void setMode(int mode) {
+        this.mode = mode;
+    }
 }

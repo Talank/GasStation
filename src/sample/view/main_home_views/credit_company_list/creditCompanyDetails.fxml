@@ -11,7 +11,7 @@
       <TableView fx:id="tableView" BorderPane.alignment="CENTER">
         <columns>
           <TableColumn fx:id="vehicleNo" prefWidth="75.0" text="Vehicle No" />
-          <TableColumn fx:id="type" prefWidth="75.0" text="Oil Type" />
+          <TableColumn fx:id="itemName" prefWidth="75.0" text="Oil Type" />
             <TableColumn fx:id="date" prefWidth="75.0" text="Purchase Date" />
             <TableColumn fx:id="volume" prefWidth="75.0" text="Volume" />
             <TableColumn fx:id="price" prefWidth="75.0" text="Price" />

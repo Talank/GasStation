@@ -14,6 +14,7 @@ import sample.library.dialog_bottombar.DialogBottomBar;
 import sample.library.dialog_toolbar.DialogToolBar;
 import sample.model.databases.DatabaseHandler;
 import sample.model.DebtListModel;
+import sample.model.databases.SetupDatabase;
 
 import java.io.IOException;
 import java.sql.Date;
@@ -51,7 +52,7 @@ public class ChangeCompanyController implements BottomBarInterface {
         creditCycle.getValidators().add(cycleValidator);
 
         companyName.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)->{
-            if(!newValue.matches("[a-zA-Z]*")) {
+            if(!newValue.matches("[a-zA-Z ]*")) {
                 companyName.setText(oldValue);
             } else {
                 if(newValue.isEmpty()) {
@@ -95,11 +96,13 @@ public class ChangeCompanyController implements BottomBarInterface {
                 int id=DatabaseHandler.saveCompany(companyName.getText().trim(),creditCycle.getText());
                 if(id!=-1) {
                     SystemLogging.getLogger().fine("Company Has Been Added.");
-                    SettingsController.getInstance().listModels.add(new DebtListModel(companyName.getText().trim(),(new Date((new java.util.Date()).getTime())).toString(),creditCycle.getText(),id));
+                    SettingsController.getInstance().listModels.add(new DebtListModel(companyName.getText().trim(),(new Date((new java.util.Date()).getTime())).toString(),creditCycle.getText(),id,1));
                     ((Node)e.getSource()).getScene().getWindow().hide();
                 } else {
                     SystemLogging.getLogger().severe("Error Adding Company!");
                 }
+
+
             } else {
                 model.setCompanyName(companyName.getText().trim());
                 model.setDays(creditCycle.getText());

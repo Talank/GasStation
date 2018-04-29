@@ -41,8 +41,8 @@ public class CreditBill extends Bill {
             type='1';
         else
             type='0';
-        CreditTransaction creditTransaction=new CreditTransaction(companyName,vehicleNo,Float.parseFloat(price),Float.parseFloat(volume),new Date((new java.util.Date()).getTime()),type);
-        DatabaseHandler.storeCreditTransaction(creditTransaction);
+      /*  CreditTransaction creditTransaction=new CreditTransaction(companyName,vehicleNo,Float.parseFloat(price),Float.parseFloat(volume),new Date((new java.util.Date()).getTime()),type);
+        DatabaseHandler.storeCreditTransaction(creditTransaction);*/
     }
 
 }

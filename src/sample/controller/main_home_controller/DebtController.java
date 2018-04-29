@@ -16,6 +16,7 @@ import sample.library.toolbar.ToolBar;
 import sample.model.CreditCompanyList;
 import sample.model.DebtListModel;
 import sample.model.SystemStatus;
+import sample.model.databases.DatabaseHandler;
 
 import java.io.IOException;
 
@@ -39,13 +40,11 @@ public class DebtController {
         debtList.getItems().addAll(CreditCompanyList.getDetailCompanyList());
 
         debtList.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends DebtListModel> observable, DebtListModel oldValue, DebtListModel newValue)->{
-            FXMLLoader loader=new FXMLLoader(getClass().getResource("../../view/main_home_views/credit_company_list/CreditCompanyDetails.fxml"));
+            FXMLLoader loader=new FXMLLoader(getClass().getResource("../../view/main_home_views/credit_company_details/creditCompanyDetails.fxml"));
             try {
                 Parent root=loader.load();
-                CreditCompanyDetailsController controller=loader.getController();
-                controller.toolBar.setTitle(newValue.getCompanyName());
-                controller.toolBar.setBackPath("../../view/main_home_views/credit_company_list/debt.fxml");
-                controller.loadDetailsData(newValue.getId());
+                sample.controller.main_home_controller.credit_company_details_controller.CreditCompanyDetailsController controller=loader.getController();
+                controller.setParameters(DatabaseHandler.generateTableName(newValue.getCompanyName(),newValue.getId()));
                 Stage stage= ((Stage)debtList.getScene().getWindow());
                 stage.setScene(new Scene(root));
                 stage.show();

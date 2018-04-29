@@ -1,14 +1,15 @@
 package sample.model;
 
 public class CreditDetailsModel {
-    private String vehicleNo,type,date,volume,price;
+    private String vehicleNo, itemName,date,volume,price,rate;
 
-    public CreditDetailsModel(String vehicleNo, String type, String date, String volume, String price) {
+    public CreditDetailsModel(String vehicleNo, String itemName, String date, String volume, String price, String rate) {
         this.vehicleNo = vehicleNo;
-        this.type = type;
+        this.itemName = itemName;
         this.date = date;
         this.volume = volume;
         this.price = price;
+        this.rate=rate;
     }
 
     public String getVehicleNo() {
@@ -19,12 +20,12 @@ public class CreditDetailsModel {
         this.vehicleNo = vehicleNo;
     }
 
-    public String getType() {
-        return type;
+    public String getItemName() {
+        return itemName;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setItemName(String itemName) {
+        this.itemName = itemName;
     }
 
     public String getDate() {
@@ -49,5 +50,13 @@ public class CreditDetailsModel {
 
     public void setPrice(String price) {
         this.price = price;
+    }
+
+    public String getRate() {
+        return rate;
+    }
+
+    public void setRate(String rate) {
+        this.rate = rate;
     }
 }

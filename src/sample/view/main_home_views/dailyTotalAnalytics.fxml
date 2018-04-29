@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+   <center>
+      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+         <children>
+            <HBox prefHeight="100.0" prefWidth="200.0" />
+            <TableView>
+              <columns>
+                <TableColumn maxWidth="1.7976931348623157E308" minWidth="75.0" prefWidth="75.0" text="Diesel Vol" />
+                <TableColumn maxWidth="1.7976931348623157E308" minWidth="75.0" prefWidth="75.0" text="Diesel Rate" />
+                  <TableColumn maxWidth="1.7976931348623157E308" prefWidth="75.0" text="Diesel Price" />
+                  <TableColumn maxWidth="1.7976931348623157E308" prefWidth="75.0" text="Petrol Vol" />
+                  <TableColumn prefWidth="75.0" text="Petrol Rate" />
+                  <TableColumn prefWidth="75.0" text="Petrol Price" />
+                  <TableColumn prefWidth="75.0" text="Extra Price" />
+                  <TableColumn prefWidth="75.0" text="Date" />
+              </columns>
+            </TableView>
+         </children>
+      </VBox>
+   </center>
+</BorderPane>

@@ -9,6 +9,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import sample.controller.dialog_controller.FinalReadingsController;
+import sample.model.CreditCompanyList;
 import sample.model.databases.DatabaseHandler;
 import sample.model.RateModel;
 
@@ -60,7 +61,11 @@ public class MainHomeController {
 
     @FXML
     public void loadCreditBilling(MouseEvent e) throws IOException {
-        loadStage((Node)e.getSource(),"../../view/main_home_views/creditBilling.fxml");
+        if (CreditCompanyList.getCompanyList().size() != 0) {
+            loadStage((Node)e.getSource(),"../../view/main_home_views/creditBilling.fxml");
+        } else {
+            System.out.println("No Company Detected.");
+        }
     }
 
     @FXML

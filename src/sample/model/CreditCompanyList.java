@@ -27,4 +27,17 @@ public class CreditCompanyList {
         }
         return nameList;
     }
+
+    public static int[] getID(String companyName) {
+        int[] arr={-1,-1};
+        for(DebtListModel model:companyList) {
+            if(model.getCompanyName().equals(companyName)) {
+                arr[0]=model.getId();
+                arr[1]=model.getTransactionID();
+                return arr;
+            }
+        }
+        return arr;
+    }
+
 }

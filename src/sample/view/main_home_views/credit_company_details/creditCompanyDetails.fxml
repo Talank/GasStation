@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXListView?>
+<?import javafx.scene.layout.BorderPane?>
+
+
+<?import sample.library.toolbar.ToolBar?>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controller.main_home_controller.credit_company_details_controller.CreditCompanyDetailsController">
+   <top>
+       <ToolBar fx:id="toolBar"/>
+   </top>
+
+    <center>
+      <JFXListView fx:id="detailsListView" BorderPane.alignment="CENTER" />
+   </center>
+</BorderPane>
