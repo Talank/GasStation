@@ -10,10 +10,13 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import sample.controller.main_home_controller.DailyAnalyticsController;
 import sample.library.dialog_bottombar.BottomBarInterface;
 import sample.library.dialog_bottombar.DialogBottomBar;
 import sample.library.dialog_toolbar.DialogToolBar;
+import sample.model.DailyAnalyticsModel;
 import sample.model.SystemStatus;
+import sample.model.databases.DatabaseHandler;
 import sun.misc.FpUtils;
 
 import java.io.IOException;
@@ -91,11 +94,15 @@ public class FinalReadingsController implements BottomBarInterface {
             status++;
         }
         if(status==0) {
+
             SystemStatus.setfDiesel(Float.parseFloat(fDiesel.getText()));
             SystemStatus.setfPetrol(Float.parseFloat(fPetrol.getText()));
             ((Node)e.getSource()).getScene().getWindow().hide();
             FXMLLoader loader=new FXMLLoader(getClass().getResource("../../view/main_home_views/dailyAnalytics.fxml"));
             Parent root=loader.load();
+            DailyAnalyticsController controller=loader.getController();
+            controller.setModel(DatabaseHandler.closing());
+
             stage.setScene(new Scene(root));
             stage.show();
         }

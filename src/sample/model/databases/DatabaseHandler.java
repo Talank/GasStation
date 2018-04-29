@@ -4,9 +4,11 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import sample.controller.SystemLogging;
 import sample.model.*;
+import sample.model.transaction_model.DailyTotalAnalyticModel;
 import sample.model.transaction_model.Transaction;
 
 import javax.swing.plaf.nimbus.State;
+import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -159,6 +161,8 @@ public class DatabaseHandler {
 
     public static void storeCreditTransaction(List<Transaction> transactions,int transactionID,int id) {
 
+        float pVolume=0,dVolume=0,ePrice=0;
+
         try {
             connection.setAutoCommit(false);
            /* Statement getCompanyID=connection.createStatement();
@@ -183,7 +187,15 @@ public class DatabaseHandler {
                 if(transaction.getMode()==2) {
                     insertCredit.setString(3,transaction.getType());
                     insertCredit.setFloat(5,transaction.getQuantity());
+                    ePrice+=transaction.getPrice();
                 } else {
+
+                    if(transaction.getMode()==0) {
+                        dVolume+=transaction.getVolume();
+                    } else {
+                        pVolume+=transaction.getVolume();
+                    }
+
                     insertCredit.setString(3,transaction.getVehicleNo());
                     insertCredit.setFloat(5,transaction.getVolume());
                 }
@@ -201,6 +213,8 @@ public class DatabaseHandler {
             insertCredit=connection.prepareStatement("UPDATE CreditCompany SET TRANSACTION_ID="+transactionID+" WHERE ID="+id);
             insertCredit.execute();
 
+            storeTotalTransaction(pVolume,dVolume,ePrice,8);
+
             SystemLogging.getLogger().fine("Credit Transaction Stored in Database");
 
         }  catch(SQLException e) {
@@ -208,6 +222,7 @@ public class DatabaseHandler {
             SystemLogging.getLogger().warning("Error Storing Transaction in Database");
         }
     }
+
 
     public static String generateTableName(String name,int id) {
         String tableName=name.replace(' ','_').toLowerCase()+id;
@@ -218,26 +233,34 @@ public class DatabaseHandler {
 
     public static boolean storeInstantTransaction(List<Transaction> transactions) {
 
+        float pVolume=0,dVolume=0,ePrice=0;
+
         try {
-            connection.setAutoCommit(false);
-            PreparedStatement insertInstant=connection.prepareStatement("INSERT INTO InstantTransaction VALUES (?,?,?)");
+        /*    connection.setAutoCommit(false);
+            PreparedStatement insertInstant=connection.prepareStatement("INSERT INTO InstantTransaction VALUES (?,?,?)");*/
 
             for(Transaction transaction:transactions) {
                 if(transaction.getMode()==2) {
-                    insertInstant.setString(1,"2");
-                    insertInstant.setFloat(2,transaction.getQuantity());
-
+                  /*  insertInstant.setString(1,"2");
+                    insertInstant.setFloat(2,transaction.getQuantity());*/
+                    ePrice+=transaction.getPrice();
                 } else {
-                    insertInstant.setString(1,String.valueOf(transaction.getMode()));
-                    insertInstant.setFloat(2,transaction.getVolume());
+                    if(transaction.getMode()==0) {
+                        dVolume+=transaction.getVolume();
+                    } else {
+                        pVolume+=transaction.getVolume();
+                    }
+                /*    insertInstant.setString(1,String.valueOf(transaction.getMode()));
+                    insertInstant.setFloat(2,transaction.getVolume());*/
                 }
-                insertInstant.setFloat(3,transaction.getPrice());
-
-                insertInstant.addBatch();
+            /*    insertInstant.setFloat(3,transaction.getPrice());
+                insertInstant.addBatch();*/
             }
-            insertInstant.executeBatch();
+        /*    insertInstant.executeBatch();
             connection.commit();
-            connection.setAutoCommit(true);
+            connection.setAutoCommit(true);*/
+
+            storeTotalTransaction(pVolume,dVolume,ePrice,5);
 
             return true;
         } catch (Exception e) {
@@ -245,6 +268,45 @@ public class DatabaseHandler {
         }
 
         return false;
+    }
+
+
+    public static void storeTotalTransaction(float pVolume,float dVolume,float ePrice,int arr) {
+
+        try {
+
+            connection.setAutoCommit(false);
+
+            Statement getInstant=connection.createStatement();
+            ResultSet resultSet;
+            if(arr==5) {
+                resultSet=getInstant.executeQuery("SELECT VALUE FROM SystemStatus WHERE ID>4 AND ID<8");
+            } else {
+                resultSet=getInstant.executeQuery("SELECT VALUE FROM SystemStatus WHERE ID>7 AND ID<11");
+            }
+
+            resultSet.next();
+            pVolume+=Float.parseFloat(resultSet.getString(1));
+            resultSet.next();
+            dVolume+=Float.parseFloat(resultSet.getString(1));
+            resultSet.next();
+            ePrice+=Float.parseFloat(resultSet.getString(1));
+
+            resultSet.close();
+
+            Statement updateInstant=connection.createStatement();
+            updateInstant.addBatch("UPDATE SystemStatus SET VALUE="+dVolume+" WHERE ID="+(arr++));
+            updateInstant.addBatch("UPDATE SystemStatus SET VALUE="+pVolume+" WHERE ID"+(arr++));
+            updateInstant.addBatch("UPDATE SystemStatus SET VALUE="+ePrice+" WHERE ID"+(arr));
+
+            updateInstant.executeBatch();
+            connection.commit();
+            connection.setAutoCommit(true);
+
+        } catch(SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
     }
 
     public static float getTotalInstantPrice() {
@@ -472,6 +534,88 @@ public class DatabaseHandler {
         }
 
         return arrayList;
+    }
+
+
+    public static ArrayList<DailyTotalAnalyticModel> getDailyTotalAnalyticModel() {
+        ArrayList<DailyTotalAnalyticModel> arrayList=new ArrayList<>();
+
+        try {
+
+            Statement getAnalyticModel=connection.createStatement();
+            ResultSet resultSet=getAnalyticModel.executeQuery("SELECT * FROM DailyAnalytics");
+
+            while(resultSet.next()) {
+                arrayList.add(new DailyTotalAnalyticModel(resultSet.getString(1),resultSet.getString(2),resultSet.getString(3),resultSet.getString(4),String.valueOf(resultSet.getFloat(5)+resultSet.getFloat(6)),resultSet.getString(7),String.valueOf(resultSet.getFloat(7)+resultSet.getFloat(5)+resultSet.getFloat(6)),resultSet.getDate(10).toString()));
+            }
+            resultSet.close();
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        System.out.println(arrayList.get(0).getIDieselVol());
+
+        return arrayList;
+    }
+
+    public static DailyTotalAnalyticModel closing() {
+        DailyTotalAnalyticModel model=new DailyTotalAnalyticModel();
+        try {
+
+
+            Statement getAnalytics=connection.createStatement();
+            ResultSet resultSet=getAnalytics.executeQuery("SELECT VALUE FROM SystemStatus WHERE ID>4 AND ID<11");
+            resultSet.next();
+
+            model.setIDieselVol(resultSet.getString(1));
+            resultSet.next();
+            model.setIPetrolVol(resultSet.getString(1));
+            resultSet.next();
+            model.setIExtra(resultSet.getString(1));
+            resultSet.next();
+            model.setCDieselVol(resultSet.getString(1));
+            resultSet.next();
+            model.setCPetrolVol(resultSet.getString(1));
+            resultSet.next();
+            model.setCExtra(resultSet.getString(1));
+            resultSet.close();
+
+            model.setOilIncome(String.valueOf(((Float.parseFloat(model.getIDieselVol())+Float.parseFloat(model.getCDieselVol()))*SystemStatus.getdRate()+(Float.parseFloat(model.getIPetrolVol())+ Float.parseFloat(model.getCPetrolVol())*SystemStatus.getpRate()))));
+
+            setDailyTotalAnalyticModel(model);
+
+
+        } catch(SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return model;
+    }
+
+    public static void setDailyTotalAnalyticModel(DailyTotalAnalyticModel model) {
+
+        try {
+            Date date=getCurrentDate();
+
+            PreparedStatement insertTotal=connection.prepareStatement("INSERT INTO DailyAnalytics VALUES (?,?,?,?,?,?,?,?,?,?)");
+
+            insertTotal.setFloat(1,Float.parseFloat(model.getIDieselVol()));
+            insertTotal.setFloat(2,Float.parseFloat(model.getIPetrolVol()));
+            insertTotal.setFloat(3,Float.parseFloat(model.getCDieselVol()));
+            insertTotal.setFloat(4,Float.parseFloat(model.getCPetrolVol()));
+            insertTotal.setFloat(5,Float.parseFloat(model.getIExtra()));
+            insertTotal.setFloat(6,Float.parseFloat(model.getCExtra()));
+            insertTotal.setFloat(7,Float.parseFloat(model.getOilIncome()));
+            insertTotal.setFloat(8,SystemStatus.getdRate());
+            insertTotal.setFloat(9,SystemStatus.getpRate());
+            insertTotal.setDate(10,date);
+
+            insertTotal.execute();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
     }
 
 

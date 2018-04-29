@@ -6,6 +6,7 @@ import sample.controller.SystemLogging;
 import sample.library.toolbar.ToolBar;
 import sample.model.databases.DatabaseHandler;
 import sample.model.SystemStatus;
+import sample.model.transaction_model.DailyTotalAnalyticModel;
 
 
 public class DailyAnalyticsController {
@@ -16,13 +17,13 @@ public class DailyAnalyticsController {
     @FXML
     private ToolBar toolBar;
 
-
+    private DailyTotalAnalyticModel model;
 
     @FXML
     public void initialize() {
 
         toolBar.setTitle("Daily Analytics");
-        toolBar.setBackPath(SystemStatus.getMainHomePath());
+        toolBar.setBackPath("../../view/main_home_views/dailyTotalAnalytics.fxml");
 
         pInitial.setText(String.valueOf(SystemStatus.getiPetrol())+" L");
         pFinal.setText(String.valueOf(SystemStatus.getfPetrol())+" L");
@@ -44,6 +45,11 @@ public class DailyAnalyticsController {
         } else {
             SystemLogging.getLogger().severe("Error Updating Final Readings!");
         }
+
+    }
+
+    public void setModel(DailyTotalAnalyticModel model) {
+        this.model=model;
 
     }
 
