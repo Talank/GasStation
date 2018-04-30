@@ -21,6 +21,13 @@ import sample.model.databases.DatabaseHandler;
 import java.io.IOException;
 
 
+/*
+* This Class provides the Credit Info of all the associated companies
+*
+* A list of all the companies is displayed and when user clicks the items in the list
+* its detailed view is presented
+* */
+
 public class DebtController {
 
     @FXML

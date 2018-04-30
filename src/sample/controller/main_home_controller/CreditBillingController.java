@@ -25,14 +25,23 @@ import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
+
+/*
+* This Class is similar to Instant Billing Controller
+*
+* Refer Instant Billing Controller for comments
+*
+*
+* */
+
 public class CreditBillingController {
 
-    private boolean calcNowV =false,calcNowP=false,calcOldV=false,calcOldP=false,calcNowQ,calcNowR, listSelected =false,force=false;
+    private boolean calcNowV =false,calcNowP=false,calcOldV=false,calcOldP=false, listSelected =false,force=false;
     private DecimalFormat decimalFormat;
     private float rate;
 
     @FXML
-    private JFXButton back,print,itemsCount;
+    private JFXButton itemsCount;
 
     @FXML
     private JFXRadioButton diesel,petrol,extra;
@@ -190,6 +199,9 @@ public class CreditBillingController {
                     itemName.validate();
                 } else {
                     itemName.resetValidation();
+                    if(force) {
+                        force=false;
+                    }
                 }
             }
         });
@@ -202,11 +214,9 @@ public class CreditBillingController {
                     quantity.validate();
                 } else {
                     quantity.resetValidation();
-                  /*  if(calcNowQ) {
-                        if(!rates.getText().isEmpty()) {
-                            total.setText(decimalFormat.format(Integer.parseInt(quantity.getText())*Float.parseFloat(rates.getText())));
-                        }
-                    }*/
+                    if(force) {
+                        force=false;
+                    }
                 }
             }
         });
@@ -219,23 +229,12 @@ public class CreditBillingController {
                     rates.validate();
                 } else {
                     rates.resetValidation();
-                  /*  if(calcNowR) {
-                        if(!quantity.getText().isEmpty()) {
-                            total.setText(decimalFormat.format(Integer.parseInt(quantity.getText())*Float.parseFloat(rates.getText())));
-                        }
-                    }*/
+                    if(force) {
+                        force=false;
+                    }
                 }
             }
         });
-
-        rates.focusedProperty().addListener((ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue)->{
-            calcNowR=newPropertyValue;
-        });
-
-        quantity.focusedProperty().addListener((ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue)->{
-            calcNowQ=newPropertyValue;
-        });
-
 
     }
 
@@ -258,8 +257,13 @@ public class CreditBillingController {
         vehicleNumber.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)->{
             if(newValue.isEmpty()&&!force)
                 vehicleNumber.validate();
-            else
+            else {
                 vehicleNumber.resetValidation();
+            }
+
+            if(force) {
+                force=false;
+            }
         });
 
         volume.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)->{
@@ -272,6 +276,10 @@ public class CreditBillingController {
                 volume.resetValidation();
                 if(calcNowV) {
                     price.setText(decimalFormat.format(Float.parseFloat(volume.getText())*rate));
+                }
+
+                if(force) {
+                    force=false;
                 }
             }
 
@@ -294,6 +302,10 @@ public class CreditBillingController {
                 price.resetValidation();
                 if(calcNowP) {
                     volume.setText(decimalFormat.format(Float.parseFloat(price.getText())/rate));
+                }
+
+                if(force) {
+                    force=false;
                 }
             }
 

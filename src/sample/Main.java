@@ -69,7 +69,7 @@ public class Main extends Application {
     public void stop() {
         /*
         * Close The Connection
-        * Derby Database caches the primary key,so close if before using it
+        * Derby Database caches the primary key,so close it before using it
         * otherwise the primary key increments with 100 in every insertion
         * */
         DatabaseHandler.closeConnection();

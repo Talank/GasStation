@@ -24,16 +24,27 @@ import sample.model.DebtListModel;
 import java.io.IOException;
 
 
+/*
+*
+* This Is the Setting Class
+* Current Feature provides options to add,remove company
+* change username and password
+*
+* */
+
 public class SettingsController {
 
+//  List to hold all the associated companies
     @FXML
     private JFXListView<DebtListModel> debtList;
 
     @FXML
     private ToolBar toolBar;
 
+//  singleton reference for referring from dialogs
     private static SettingsController instance;
 
+//  Int to store weather user wants to edit or add the company
     private int modelIndex;
 
     public ObservableList<DebtListModel> listModels;
@@ -52,9 +63,18 @@ public class SettingsController {
         debtList.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         listModels=FXCollections.observableList(CreditCompanyList.getDetailCompanyList());
         debtList.setItems(listModels);
+
+//      Select First item by default so that we do not have to check for list selection
         debtList.getSelectionModel().select(0);
 
     }
+
+    /*
+    * This is function is called when user clicks "ADD" button
+    *
+    * A dialog is loaded where he fills the form and the company is added
+    *
+    * */
 
     @FXML
     public void addCompany(MouseEvent e) throws IOException {
@@ -66,9 +86,15 @@ public class SettingsController {
         stage.show();
     }
 
+    /*
+    * This function is called when user clicks 'DELETE' Button
+    *
+    * Get the currently selected company and remove from database as well as from list
+    *
+    * */
+
     @FXML
     public void deleteCompany(MouseEvent e) {
-        ObservableList<DebtListModel> selected=debtList.getSelectionModel().getSelectedItems();
         DebtListModel model=debtList.getSelectionModel().getSelectedItem();
         if(model!=null) {
             listModels.remove(model);
@@ -81,6 +107,12 @@ public class SettingsController {
 
 
     }
+
+    /*
+    * This function is called when use clicks 'EDIT'
+    *
+    * Get the current company info and pass into ChangeCompany class for editing
+    * */
 
     @FXML
     public void editCompany(MouseEvent e) throws IOException {
@@ -96,6 +128,13 @@ public class SettingsController {
         stage.show();
 
     }
+
+    /*
+    * This function is called when user clicks 'Change password'
+    *
+    * Just load the login and handle future details
+    *
+    * */
 
     @FXML
     public void changeUserNameAndPassword(MouseEvent e) throws IOException {

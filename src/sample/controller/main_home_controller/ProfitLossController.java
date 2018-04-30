@@ -20,6 +20,12 @@ import sample.model.RefillModel;
 import java.io.IOException;
 
 
+/*
+* This Class Provides and stores the info for the tanker refill
+*
+*
+* */
+
 public class ProfitLossController {
 
     @FXML

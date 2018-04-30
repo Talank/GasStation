@@ -18,7 +18,6 @@ import javafx.scene.layout.VBox;
 import sample.controller.SystemLogging;
 import sample.controller.main_home_controller.lists_controllers.TransactionListCell;
 import sample.model.databases.DatabaseHandler;
-import sample.model.InstantBill;
 import sample.model.SystemStatus;
 import sample.library.toolbar.ToolBar;
 import sample.model.transaction_model.InstantTransactionBill;
@@ -27,67 +26,86 @@ import sample.model.transaction_model.Transaction;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.List;
 
+
+/*
+* This class is responsible for controlling the instant view
+* It contains all the logic for input validation
+*
+* The class has two views,one for oil and other for extra placed in a StackPane Layout
+* These two views are swapped as per the selection radio buttons
+*
+* */
 
 public class InstantBillingController {
 
-    private boolean calcNowV =false,calcNowP=false,calcOldV=false,calcOldP=false,calcNowQ,calcNowR, listSelected =false,force=false;
+    private boolean calcNowV =false,calcNowP=false,calcOldV=false,calcOldP=false, listSelected =false,force=false;
     private DecimalFormat decimalFormat;
     private float rate;
 
-    @FXML
-    private JFXButton back,print,itemsCount;
 
     @FXML
-    private JFXRadioButton diesel,petrol,extra;
+    private JFXButton itemsCount;//Reference for the no of items added to the list
 
     @FXML
-    public ToolBar toolBar;
+    private JFXRadioButton diesel,petrol,extra;//Reference for the radio buttons to select the type of items
 
     @FXML
-    private JFXTextField customerName,volume,price,vehicleNumber,itemName,quantity,rates;
+    public ToolBar toolBar;//Generalized Toolbar reference
 
     @FXML
-    private TextField total;
+    private JFXTextField customerName,volume,price,vehicleNumber,itemName,quantity,rates;//References for all the textFields
 
     @FXML
-    private VBox extraBill,dieselPetrol;
+    private TextField total;//TextField to store the total amounts
 
     @FXML
-    private ToggleGroup selection;
+    private VBox extraBill,dieselPetrol;//Two views for oil and extra items
 
     @FXML
-    private BorderPane root;
+    private ToggleGroup selection;//Group for the radio buttons
 
     @FXML
-    private ListView<Transaction> transactionListView;
+    private BorderPane root;//Root the view,needed for the snackBar
 
-    private ObservableList<Transaction> listModels;
+    @FXML
+    private ListView<Transaction> transactionListView;//List to store all the items in the transaction
+
+    private ObservableList<Transaction> listModels;//Model for the list
 
     private ArrayList<Transaction> arrayList;
 
-    private JFXSnackbar snackbar;
+    private JFXSnackbar snackBar;
 
     private int mode=0;
 
+    /*
+    * Transaction class uses a static variables name and total ,to represent the name and total
+    * As name and total for a entire transaction is same
+    * */
 
     @FXML
     public void initialize() throws IOException {
 
+
+//      Initialize the transaction class
         Transaction.setName("");
         Transaction.setTotal(0f);
 
-
+//      General Toolbar setting title and path for the back button
         toolBar.setBackPath(SystemStatus.getMainHomePath());
         toolBar.setTitle("Instant Billing");
 
-
+//      Set the Diesel as default selection
         diesel.setSelected(true);
+
+//      Get the current rate
         rate=SystemStatus.getdRate();
 
-        snackbar=new JFXSnackbar(root);
+//      Initialize the snackBar
+        snackBar =new JFXSnackbar(root);
 
+//      Just Typical Initialization of the listView in javafx
         transactionListView.setCellFactory(lv->new TransactionListCell());
         transactionListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         arrayList=new ArrayList<>();
@@ -95,13 +113,31 @@ public class InstantBillingController {
 
         transactionListView.setItems(listModels);
 
+//      Called when selection changes in the list
         transactionListView.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends Transaction> observable, Transaction oldValue, Transaction newValue)->{
+            /*
+            * Check the new value
+            * because it is null when the list is deselected
+            * leads to null pointer exception
+            * */
             if(newValue!=null) {
+
+//              Get type of transaction to swap the views if it doesn't the view selected by the radio buttons
                 if(newValue.getType().equals("Diesel")||newValue.getType().equals("Petrol")) {
 
+//                  Set the Values contained in the transaction
                     vehicleNumber.setText(newValue.getVehicleNo());
                     price.setText(String.valueOf(newValue.getPrice()));
                     volume.setText(String.valueOf(newValue.getVolume()));
+
+                    /*
+                    * The main problem here is that,when we change the radio buttons selection
+                    * It triggers the selection change listener in the below code
+                    *
+                    * listSelected is used to check,if the radio button is clicked by user or it is changed due to selecting the list
+                    *
+                    *
+                    * */
                     if(newValue.getType().equals("Diesel")) {
                         if(selection.getSelectedToggle()!=diesel) {
                             listSelected =true;
@@ -126,9 +162,15 @@ public class InstantBillingController {
 
         });
 
+        /*
+        * Listener to listen radio buttons change
+        * The problem is it is fired,when we change the selection in the above  list listener
+        *
+        * */
 
         selection.selectedToggleProperty().addListener((ObservableValue<? extends Toggle> ov,Toggle old_toggle, Toggle new_toggle)->{
 
+//          Simple statement to handle the radio buttons selection
             if(((JFXRadioButton)new_toggle).getText().equals("Extra")) {
 
                 dieselPetrol.setVisible(false);
@@ -138,6 +180,7 @@ public class InstantBillingController {
                 extraBill.setVisible(false);
                 dieselPetrol.setVisible(true);
 
+//              Keep track of the current rate
                 if(((JFXRadioButton)new_toggle).getText().equals("Diesel")) {
                     rate=SystemStatus.getdRate();
                     mode=0;
@@ -147,6 +190,15 @@ public class InstantBillingController {
                 }
 
             }
+
+            /*
+            * Check if the radio buttons is changed by user or by selecting the list
+            *
+            * if it is changed by user and ,if a list item is selected ,then clear the selection and provide new fresh transaction to enter
+            *
+            * Otherwise user changed the radio buttons ,so if user changed between diesel and petrol calculate the respective values
+            *
+            * */
 
             if(isListSelected()) {
                 if(!listSelected) {
@@ -169,6 +221,7 @@ public class InstantBillingController {
 
         });
 
+//      Format to display number with 4 precision label
         decimalFormat=new DecimalFormat("#.####");
 
         initializeOil();
@@ -177,6 +230,18 @@ public class InstantBillingController {
 
     }
 
+
+    /*
+    * Initialize All the textFields used in the extra transaction
+    *
+    * Bind the RequiredFieldValidators to validate the user input
+    *
+    * For real time validation,listener is added to each textField
+    *
+    * Boolean Force is used to check if user clicked the 'X' Button to clear the list,so in this case do not validate
+    *
+    *
+    * */
 
     private void initializeExtra() {
 
@@ -194,13 +259,16 @@ public class InstantBillingController {
         rates.getValidators().add(ratesValidator);
 
         itemName.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)->{
-            if(!newValue.matches("[a-zA-Z ]*")) {
+            if(!newValue.matches("[a-zA-Z ]*")) {//We must accept "" text,otherwise system goes in recursive loop and results in stack overflow
                 itemName.setText(oldValue);
             } else {
                 if(newValue.isEmpty()&&!force) {
                     itemName.validate();
                 } else {
                     itemName.resetValidation();
+                    if(force) {
+                        force=false;
+                    }
                 }
             }
         });
@@ -213,11 +281,9 @@ public class InstantBillingController {
                     quantity.validate();
                 } else {
                     quantity.resetValidation();
-                  /*  if(calcNowQ) {
-                        if(!rates.getText().isEmpty()) {
-                            total.setText(decimalFormat.format(Integer.parseInt(quantity.getText())*Float.parseFloat(rates.getText())));
-                        }
-                    }*/
+                    if(force) {
+                        force=false;
+                    }
                 }
             }
         });
@@ -230,26 +296,24 @@ public class InstantBillingController {
                     rates.validate();
                 } else {
                     rates.resetValidation();
-                  /*  if(calcNowR) {
-                        if(!quantity.getText().isEmpty()) {
-                            total.setText(decimalFormat.format(Integer.parseInt(quantity.getText())*Float.parseFloat(rates.getText())));
-                        }
-                    }*/
+                    if(force) {
+                        force=false;
+                    }
                 }
             }
         });
 
-        rates.focusedProperty().addListener((ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue)->{
-            calcNowR=newPropertyValue;
-        });
-
-        quantity.focusedProperty().addListener((ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue)->{
-            calcNowQ=newPropertyValue;
-        });
 
 
     }
 
+    /*
+    * Initialize all the textFields associated with Oil Transaction
+    *
+    * Same as initializeExtra()
+    *
+    * We calculate the price when user inputs volume and vice versa
+    * */
 
     private void initializeOil() {
         RequiredFieldValidator customerNameValidator=new RequiredFieldValidator();
@@ -283,8 +347,13 @@ public class InstantBillingController {
         vehicleNumber.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)->{
             if(newValue.isEmpty()&&!force)
                 vehicleNumber.validate();
-            else
+            else {
                 vehicleNumber.resetValidation();
+                if(force) {
+                    force=false;
+                }
+            }
+
         });
 
         volume.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)->{
@@ -295,12 +364,27 @@ public class InstantBillingController {
                 volume.validate();
             else {
                 volume.resetValidation();
+
+                if(force) {
+                    force=false;
+                }
+
                 if(calcNowV) {
                     price.setText(decimalFormat.format(Float.parseFloat(volume.getText())*rate));
                 }
             }
 
         });
+
+        /*
+         * Get who received focus first
+         *
+         * Used when user switches between diesel and petrol
+         *
+         * if user last edit was in volume then,we keep the volume constant and change the price when he changes the selection between petrol and diesel
+         * and vice versa
+         *
+         * */
 
         volume.focusedProperty().addListener((ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue)->{
             calcOldV=true;
@@ -317,6 +401,11 @@ public class InstantBillingController {
                 price.validate();
             else {
                 price.resetValidation();
+
+                if(force) {
+                    force=false;
+                }
+
                 if(calcNowP) {
                     volume.setText(decimalFormat.format(Float.parseFloat(price.getText())/rate));
                 }
@@ -331,14 +420,25 @@ public class InstantBillingController {
         });
     }
 
+
+//  Function to check if the list is selected or not
     private boolean isListSelected() {
         return !transactionListView.getSelectionModel().isEmpty();
     }
 
+//  Function to check if the list is emtpy
     private boolean isListEmpty() {
         return transactionListView.getItems().isEmpty();
     }
 
+
+    /*
+    *
+    * This Function is called when Print button is clicked
+    * We check if the list is empty
+    * Then we pass all the items in the list to InstantTransactionBill class that computes and formats the bill
+    *
+    * */
 
     @FXML
     public void printBill(MouseEvent e)throws IOException {
@@ -346,13 +446,15 @@ public class InstantBillingController {
         if(!isListEmpty()) {
             InstantTransactionBill instantTransactionBill=new InstantTransactionBill(transactionListView.getItems());
             instantTransactionBill.print();
-            snackbar.show("Printing Bill",2000);
+            snackBar.show("Printing Bill",2000);
         } else {
-            snackbar.show("No Transaction Detected.",2000);
+            snackBar.show("No Transaction Detected.",2000);
         }
 
 
     }
+
+//  Function to validate the Oil Input Fields
 
     private int checkOilInput() {
         int status=0;
@@ -378,6 +480,8 @@ public class InstantBillingController {
         return status;
     }
 
+
+//  Function to validate extra Input fields
     private int checkExtraInput() {
         int status=0;
 
@@ -404,44 +508,81 @@ public class InstantBillingController {
         return status;
     }
 
+    /*
+    * This Function is called when insert is clicked
+    *
+    * Check if the list is empty
+    * Store the transactions in the databases
+    *
+    * */
+
     @FXML
     public void insertTransaction(MouseEvent e) {
         if(!isListEmpty()) {
 
             if(DatabaseHandler.storeInstantTransaction(transactionListView.getItems())) {
-                snackbar.show("Transaction Inserted Into Database",2000);
+                snackBar.show("Transaction Inserted Into Database",2000);
                 SystemLogging.getLogger().fine("Instant Transaction Stored SuccessFully.");
             } else {
-                snackbar.show("Error Inserting Transaction",2000);
+                snackBar.show("Error Inserting Transaction",2000);
                 SystemLogging.getLogger().severe("Error Storing Instant Transaction!");
             }
         }
     }
 
+    /*
+    * This is function is called when '-' button is clicked
+    *
+    * Get the selected Items (Items may be multiples)
+    *
+    * Get the item type and remove them from list and also decrease the total price
+    *
+    * */
+
     @FXML
     public void deleteItem(MouseEvent e) {
-        ObservableList<Transaction> deleteList=transactionListView.getSelectionModel().getSelectedItems();
-        if(deleteList.size()!=0) {
-            Transaction transaction;
-            for(int i=0;i<deleteList.size();i++) {
-                transaction=deleteList.get(i);
-                if(transaction.getType().equals("Diesel")||transaction.getType().equals("Petrol")) {
-                    Transaction.setTotal(Transaction.getTotal()-transaction.getPrice());
-                } else {
-                    Transaction.setTotal(Transaction.getTotal()-transaction.getRate()*transaction.getQuantity());
-                }
+
+        if(!isListEmpty()&&isListSelected()) {
+
+            Transaction transaction=transactionListView.getSelectionModel().getSelectedItem();
+            if(transaction.getType().equals("Diesel")||transaction.getType().equals("Petrol")) {
+                Transaction.setTotal(Transaction.getTotal()-transaction.getPrice());
+            } else {
+                Transaction.setTotal(Transaction.getTotal() - transaction.getRate() * transaction.getQuantity());
             }
-            if(deleteList.size()==listModels.size()) {
+
+
+//          Remove the items from list,change the total value and also the itemsCount
+            listModels.remove(transaction);
+            total.setText(String.valueOf(Transaction.getTotal()));
+            itemsCount.setText(String.valueOf(listModels.size()));
+
+            /*
+             * If all the items in the list is selected
+             *
+             * Then there will be no value in the textFields to put and they will invalidate
+             *
+             * To prevent that we set Forced=true
+             *
+             * otherwise if at least one item will be present after deletion that item will be selected and textFields will contain that transaction values
+             * */
+
+            if(isListEmpty()) {
                 clearOil();
                 clearExtra();
             }
 
-            listModels.removeAll(deleteList);
-            total.setText(String.valueOf(Transaction.getTotal()));
-            itemsCount.setText(String.valueOf(listModels.size()));
         }
 
     }
+
+    /*
+    * This Function is called when 'X' is clicked
+    *
+    * Check which view the user currently is and clear that view
+    *
+    *
+    * */
 
     @FXML
     public void clearSelection(MouseEvent e) {
@@ -453,21 +594,34 @@ public class InstantBillingController {
         }
     }
 
+//  Simple Function to clear the fields using force=true otherwise the fields will invalidate
+
     private void clearOil() {
         force=true;
         vehicleNumber.setText("");
         volume.setText("");
         price.setText("");
-        force=false;
     }
+
 
     private void clearExtra() {
         force=true;
         itemName.setText("");
         rates.setText("");
         quantity.setText("");
-        force=false;
     }
+
+    /*
+    * This Function is called when '+' is clicked
+    *
+    * Check the mode and validate all the fields
+    *
+    * After validation add the transaction to the list
+    *
+    * To prevent duplicate items insertion,When a item in list is selected and '+' is clicked
+    * then the same item is edited rather than adding the same items to the list
+    *
+    * */
 
     @FXML
     public void addNewItem(MouseEvent e) {
