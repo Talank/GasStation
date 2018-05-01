@@ -39,30 +39,43 @@ public class Main extends Application {
             Stage stage=new Stage();
             stage.setScene(new Scene(root));
             stage.show();
-        } else if(!DatabaseHandler.resumeSystem()) {
-            /*
+        } else {
+            CreditCompanyList.loadData();
+            SystemStatus.initializeInitial(DatabaseHandler.getInitialValues());
+            DatabaseHandler.initializeSystem();
+            Parent root = FXMLLoader.load(getClass().getResource("view/main_home_views/mainHome.fxml"));
+            primaryStage.setTitle("Ohm Gas Station");
+            primaryStage.setScene(new Scene(root));
+            primaryStage.show();
+        }
+
+
+        //Old Requirements
+
+        /*else if(!DatabaseHandler.resumeSystem()) {
+            *//*
             * System has detected That Initial Value for current day is not set
             * Display The Splash Screen to take initial readings
             * Initialize the Credit Company List
-            * */
+            * *//*
             CreditCompanyList.loadData();
             Parent root = FXMLLoader.load(getClass().getResource("view/splashScreen.fxml"));
             primaryStage.setTitle("Ohm Gas Station");
             primaryStage.setScene(new Scene(root));
             primaryStage.show();
         } else {
-            /*
+            *//*
             * The System Has detected That initial value already exists for the current day
             * Display the home page
             * Initialize the system status and credit company list
-            * */
+            * *//*
             CreditCompanyList.loadData();
             SystemStatus.initializeInitial(DatabaseHandler.getInitialValues());
             Parent root = FXMLLoader.load(getClass().getResource("view/main_home_views/mainHome.fxml"));
             primaryStage.setTitle("Ohm Gas Station");
             primaryStage.setScene(new Scene(root));
             primaryStage.show();
-        }
+        }*/
     }
 
     @Override

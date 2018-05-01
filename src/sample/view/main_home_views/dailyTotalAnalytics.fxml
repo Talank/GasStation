@@ -15,7 +15,7 @@
          <children>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <JFXButton onMouseClicked="#close" buttonType="RAISED" style="-fx-background-color: #20e475;" text="CLOSING">
+                  <JFXButton onMouseClicked="#showTodayAnalytics" buttonType="RAISED" style="-fx-background-color: #20e475;" text="TODAY ANALYTICS">
                      <font>
                         <Font size="25.0" />
                      </font>

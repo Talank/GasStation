@@ -8,15 +8,15 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
+<!--<?import sample.library.toolbar.ToolBar?>-->
 
-<?import sample.library.toolbar.ToolBar?>
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controller.main_home_controller.ProfitLossController">
    <center>
       <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <JFXButton onMouseClicked="#loadRefillChange" fx:id="reFill" buttonType="RAISED" style="-fx-background-color: #3af450;" text="ReFill">
+                  <JFXButton fx:id="reFill" buttonType="RAISED" onMouseClicked="#loadRefillChange" style="-fx-background-color: #3af450;" text="ReFill">
                      <font>
                         <Font size="25.0" />
                      </font>
@@ -25,9 +25,12 @@
             </HBox>
             <TableView fx:id="tableView" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
               <columns>
-                <TableColumn fx:id="expected" prefWidth="75.0" text="Expected Value" />
-                  <TableColumn fx:id="actual" prefWidth="75.0" text="Actual Value" />
-                  <TableColumn fx:id="loss" prefWidth="75.0" text="Loss" />
+                <TableColumn fx:id="expectedDiesel" prefWidth="75.0" text="E.Diesel Vol" />
+                  <TableColumn fx:id="actualDiesel" prefWidth="75.0" text="A.Diesel Vol" />
+                  <TableColumn fx:id="dieselLoss" prefWidth="75.0" text="Diesel Loss" />
+                  <TableColumn fx:id="expectedPetrol" prefWidth="75.0" text="E.Petrol Vol" />
+                  <TableColumn fx:id="actualPetrol" prefWidth="75.0" text="A.Petrol Vol" />
+                  <TableColumn fx:id="petrolLoss" prefWidth="75.0" text="Petrol Loss" />
                   <TableColumn fx:id="date" prefWidth="75.0" text="Date" />
               </columns>
                <columnResizePolicy>
@@ -38,7 +41,7 @@
       </VBox>
    </center>
 
-    <top>
-        <ToolBar fx:id="toolBar" />
-    </top>
+    <!--<top>-->
+        <!--<ToolBar fx:id="toolBar" />-->
+    <!--</top>-->
 </BorderPane>

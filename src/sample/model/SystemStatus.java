@@ -2,7 +2,7 @@ package sample.model;
 
 public class SystemStatus {
     private static float iDiesel,iPetrol,iCounter,fDiesel,fPetrol,dRate,pRate;
-
+    private static float dieselStock,petrolStock;
     private static String mainHomePath;
 
     public static void initializeInitial(DailyAnalyticsModel model) {
@@ -73,5 +73,21 @@ public class SystemStatus {
 
     public static void setMainHomePath(String mainHomePath) {
         SystemStatus.mainHomePath = mainHomePath;
+    }
+
+    public static float getDieselStock() {
+        return dieselStock;
+    }
+
+    public static void setDieselStock(float dieselStock) {
+        SystemStatus.dieselStock = dieselStock;
+    }
+
+    public static float getPetrolStock() {
+        return petrolStock;
+    }
+
+    public static void setPetrolStock(float petrolStock) {
+        SystemStatus.petrolStock = petrolStock;
     }
 }

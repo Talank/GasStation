@@ -9,7 +9,16 @@ public class DailyTotalAnalyticModel {
 
 
     public DailyTotalAnalyticModel() {
-
+        iDieselVol=new SimpleStringProperty();
+        iPetrolVol=new SimpleStringProperty();
+        cDieselVol=new SimpleStringProperty();
+        cPetrolVol=new SimpleStringProperty();
+        extraIncome=new SimpleStringProperty();
+        oilIncome=new SimpleStringProperty();
+        total=new SimpleStringProperty();
+        date=new SimpleStringProperty();
+        iExtra=new SimpleStringProperty();
+        cExtra=new SimpleStringProperty();
     }
 
     public DailyTotalAnalyticModel(String iDieselVol, String iPetrolVol, String cDieselVol, String cPetrolVol, String extraIncome, String oilIncome, String total, String date) {

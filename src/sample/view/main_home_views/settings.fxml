@@ -2,21 +2,22 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXListView?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-
 
 <?import sample.library.toolbar.ToolBar?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controller.main_home_controller.SettingsController">
    <center>
-      <ScrollPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <ScrollPane hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <content>
-            <VBox>
+            <VBox spacing="10.0">
                 <AnchorPane maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="415.0" prefWidth="790.0">
                     <children>
                         <JFXListView fx:id="debtList" layoutY="6.0" prefHeight="400.0" prefWidth="550.0" AnchorPane.topAnchor="0.0" />
@@ -41,19 +42,359 @@
                         </VBox>
                     </children>
                 </AnchorPane>
-               <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #eeeeee;">
+               <VBox alignment="CENTER" layoutX="10.0" layoutY="564.0" spacing="5.0" style="-fx-background-color: #eeeeee;">
+                  <children>
+                     <Label text="Setup Oil Stock">
+                        <font>
+                           <Font name="System Bold" size="30.0" />
+                        </font>
+                     </Label>
+                     <HBox alignment="CENTER">
+                        <children>
+                           <Label text="Current Diesel Stock:">
+                              <font>
+                                 <Font size="17.0" />
+                              </font>
+                           </Label>
+                           <Label fx:id="dieselStockValue" text="100000">
+                              <font>
+                                 <Font name="System Bold" size="18.0" />
+                              </font>
+                              <padding>
+                                 <Insets right="2.0" />
+                              </padding>
+                           </Label>
+                           <Label text="Litres">
+                              <font>
+                                 <Font name="System Bold" size="15.0" />
+                              </font>
+                              <padding>
+                                 <Insets right="10.0" />
+                              </padding>
+                           </Label>
+                           <Label text="Last Updated On:">
+                              <font>
+                                 <Font size="17.0" />
+                              </font>
+                           </Label>
+                           <Label fx:id="dieselStockDate" text="2018-04-27">
+                              <font>
+                                 <Font name="System Bold Italic" size="18.0" />
+                              </font>
+                           </Label>
+                        </children>
+                     </HBox>
+                     <HBox alignment="CENTER" layoutX="30.0" layoutY="80.0">
+                        <children>
+                           <Label text="Current Petrol Stock:">
+                              <font>
+                                 <Font size="17.0" />
+                              </font>
+                           </Label>
+                           <Label fx:id="petrolStockValue" text="100000">
+                              <font>
+                                 <Font name="System Bold" size="18.0" />
+                              </font>
+                              <padding>
+                                 <Insets right="2.0" />
+                              </padding>
+                           </Label>
+                           <Label text="Litres">
+                              <font>
+                                 <Font name="System Bold" size="15.0" />
+                              </font>
+                              <padding>
+                                 <Insets right="10.0" />
+                              </padding>
+                           </Label>
+                           <Label text="Last Updated On:">
+                              <font>
+                                 <Font size="17.0" />
+                              </font>
+                           </Label>
+                           <Label fx:id="petrolStockDate" text="2018-04-27">
+                              <font>
+                                 <Font name="System Bold Italic" size="18.0" />
+                              </font>
+                           </Label>
+                        </children>
+                     </HBox>
+                     <JFXButton buttonType="RAISED" onMouseClicked="#setupOilStock" style="-fx-background-color: #2cea2f;" text="SETUP">
+                        <font>
+                           <Font size="25.0" />
+                        </font>
+                     </JFXButton>
+                  </children>
+                  <padding>
+                     <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                  </padding>
+               </VBox>
+               <VBox alignment="CENTER" layoutX="10.0" layoutY="564.0" spacing="10.0" style="-fx-background-color: #eeeeee;">
+                  <children>
+                     <Label text="Setup Counter Stock">
+                        <font>
+                           <Font name="System Bold" size="30.0" />
+                        </font>
+                     </Label>
+                     <HBox alignment="CENTER">
+                        <children>
+                           <Label text="Current Counter Stock:">
+                              <font>
+                                 <Font size="17.0" />
+                              </font>
+                           </Label>
+                           <Label text="Rs.">
+                              <font>
+                                 <Font name="System Bold" size="15.0" />
+                              </font>
+                              <padding>
+                                 <Insets right="2.0" />
+                              </padding>
+                           </Label>
+                           <Label fx:id="counterStockValue" text="10000">
+                              <font>
+                                 <Font name="System Bold" size="18.0" />
+                              </font>
+                              <padding>
+                                 <Insets right="10.0" />
+                              </padding>
+                           </Label>
+                           <Label text="Last Updated On:">
+                              <font>
+                                 <Font size="17.0" />
+                              </font>
+                           </Label>
+                           <Label fx:id="counterStockDate" text="2018-04-27">
+                              <font>
+                                 <Font name="System Bold Italic" size="18.0" />
+                              </font>
+                           </Label>
+                        </children>
+                     </HBox>
+                     <JFXButton buttonType="RAISED" onMouseClicked="#setupCounterStock" style="-fx-background-color: #2cea2f;" text="SETUP">
+                        <font>
+                           <Font size="25.0" />
+                        </font>
+                     </JFXButton>
+                  </children>
+                  <padding>
+                     <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                  </padding>
+               </VBox>
+               <VBox alignment="CENTER" layoutX="10.0" layoutY="425.0" style="-fx-background-color: #eeeeee;">
+                  <children>
+                     <Label text="Setup Meter Readings">
+                        <font>
+                           <Font name="System Bold" size="30.0" />
+                        </font>
+                     </Label>
+                     <HBox alignment="CENTER">
+                        <children>
+                           <Label text="Initial Diesel Meter Readings:">
+                              <font>
+                                 <Font size="17.0" />
+                              </font>
+                           </Label>
+                           <Label fx:id="dMeterValue" text="100000">
+                              <font>
+                                 <Font name="System Bold" size="18.0" />
+                              </font>
+                              <padding>
+                                 <Insets right="2.0" />
+                              </padding>
+                           </Label>
+                           <Label text="Litres">
+                              <padding>
+                                 <Insets right="10.0" />
+                              </padding>
+                              <font>
+                                 <Font name="System Bold" size="15.0" />
+                              </font>
+                           </Label>
+                           <Label text="Last Updated On:">
+                              <font>
+                                 <Font size="17.0" />
+                              </font>
+                           </Label>
+                           <Label fx:id="dMeterDate" text="2018-04-27">
+                              <font>
+                                 <Font name="System Bold Italic" size="18.0" />
+                              </font>
+                           </Label>
+                        </children>
+                     </HBox>
+                     <HBox alignment="CENTER" layoutX="30.0" layoutY="75.0">
+                        <children>
+                           <Label text="Initial Petrol Meter Readings:">
+                              <font>
+                                 <Font size="17.0" />
+                              </font>
+                           </Label>
+                           <Label fx:id="pMeterValue" text="100000">
+                              <font>
+                                 <Font name="System Bold" size="18.0" />
+                              </font>
+                              <padding>
+                                 <Insets right="2.0" />
+                              </padding>
+                           </Label>
+                           <Label text="Litres">
+                              <font>
+                                 <Font name="System Bold" size="15.0" />
+                              </font>
+                              <padding>
+                                 <Insets right="10.0" />
+                              </padding>
+                           </Label>
+                           <Label text="Last Updated On:">
+                              <font>
+                                 <Font size="17.0" />
+                              </font>
+                           </Label>
+                           <Label fx:id="pMeterDate" text="2018-04-27">
+                              <font>
+                                 <Font name="System Bold Italic" size="18.0" />
+                              </font>
+                           </Label>
+                        </children>
+                     </HBox>
+                     <JFXButton buttonType="RAISED" onMouseClicked="#setupMeterReadings" style="-fx-background-color: #2cea2f;" text="SETUP">
+                        <font>
+                           <Font size="25.0" />
+                        </font>
+                     </JFXButton>
+                  </children>
+                  <padding>
+                     <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                  </padding>
+               </VBox>
+               <VBox alignment="CENTER" style="-fx-background-color: #eeeeee;">
                   <children>
                      <Label text="Change UserName And Password">
                         <font>
                            <Font name="System Bold" size="30.0" />
                         </font>
                      </Label>
-                     <JFXButton onMouseClicked="#changeUserNameAndPassword" buttonType="RAISED" style="-fx-background-color: #2cea2f;" text="CHANGE">
+                     <HBox alignment="CENTER" spacing="10.0">
+                        <children>
+                           <Label text="Current User Name:">
+                              <font>
+                                 <Font size="17.0" />
+                              </font>
+                           </Label>
+                           <Label fx:id="usernameValue" text="Susan Thapa">
+                              <font>
+                                 <Font name="System Bold" size="18.0" />
+                              </font>
+                           </Label>
+                           <Label text="Last Updated On:">
+                              <font>
+                                 <Font size="17.0" />
+                              </font>
+                           </Label>
+                           <Label fx:id="usernameDate" text="2018-04-27">
+                              <font>
+                                 <Font name="System Bold Italic" size="18.0" />
+                              </font>
+                           </Label>
+                        </children>
+                     </HBox>
+                     <JFXButton buttonType="RAISED" onMouseClicked="#changeUserNameAndPassword" style="-fx-background-color: #2cea2f;" text="CHANGE">
                         <font>
                            <Font size="25.0" />
                         </font>
                      </JFXButton>
                   </children>
+                  <padding>
+                     <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                  </padding>
+               </VBox>
+               <VBox alignment="CENTER" layoutX="10.0" layoutY="425.0" style="-fx-background-color: #eeeeee;">
+                  <children>
+                     <Label text="Change Oil Rates">
+                        <font>
+                           <Font name="System Bold" size="30.0" />
+                        </font>
+                     </Label>
+                     <HBox alignment="CENTER">
+                        <children>
+                           <Label text="Diesel Rate:">
+                              <font>
+                                 <Font size="17.0" />
+                              </font>
+                           </Label>
+                           <Label text="Rs.">
+                              <padding>
+                                 <Insets right="2.0" />
+                              </padding>
+                              <font>
+                                 <Font name="System Bold" size="15.0" />
+                              </font>
+                           </Label>
+                           <Label fx:id="dRateValue" text="200">
+                              <font>
+                                 <Font name="System Bold" size="18.0" />
+                              </font>
+                              <HBox.margin>
+                                 <Insets right="10.0" />
+                              </HBox.margin>
+                           </Label>
+                           <Label text="Last Updated On:">
+                              <font>
+                                 <Font size="17.0" />
+                              </font>
+                           </Label>
+                           <Label fx:id="dRateDate" text="2018-04-27">
+                              <font>
+                                 <Font name="System Bold Italic" size="18.0" />
+                              </font>
+                           </Label>
+                        </children>
+                     </HBox>
+                     <HBox alignment="CENTER" layoutX="30.0" layoutY="75.0">
+                        <children>
+                           <Label text="Petrol Rate:">
+                              <font>
+                                 <Font size="17.0" />
+                              </font>
+                           </Label>
+                           <Label text="Rs.">
+                              <padding>
+                                 <Insets right="2.0" />
+                              </padding>
+                              <font>
+                                 <Font name="System Bold" size="15.0" />
+                              </font>
+                           </Label>
+                           <Label fx:id="pRateValue" text="200">
+                              <font>
+                                 <Font name="System Bold" size="18.0" />
+                              </font>
+                              <padding>
+                                 <Insets right="10.0" />
+                              </padding>
+                           </Label>
+                           <Label text="Last Updated On:">
+                              <font>
+                                 <Font size="17.0" />
+                              </font>
+                           </Label>
+                           <Label fx:id="pRateDate" text="2018-04-27">
+                              <font>
+                                 <Font name="System Bold Italic" size="18.0" />
+                              </font>
+                           </Label>
+                        </children>
+                     </HBox>
+                     <JFXButton buttonType="RAISED" onMouseClicked="#changeOilRates" style="-fx-background-color: #2cea2f;" text="CHANGE">
+                        <font>
+                           <Font size="25.0" />
+                        </font>
+                     </JFXButton>
+                  </children>
+                  <padding>
+                     <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                  </padding>
                </VBox>
 
             </VBox>

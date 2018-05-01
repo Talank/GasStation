@@ -94,17 +94,10 @@ public class FinalReadingsController implements BottomBarInterface {
             status++;
         }
         if(status==0) {
-
             SystemStatus.setfDiesel(Float.parseFloat(fDiesel.getText()));
             SystemStatus.setfPetrol(Float.parseFloat(fPetrol.getText()));
             ((Node)e.getSource()).getScene().getWindow().hide();
-            FXMLLoader loader=new FXMLLoader(getClass().getResource("../../view/main_home_views/dailyAnalytics.fxml"));
-            Parent root=loader.load();
-            DailyAnalyticsController controller=loader.getController();
-            controller.setModel(DatabaseHandler.closing());
-
-            stage.setScene(new Scene(root));
-            stage.show();
+            DailyAnalyticsController.getInstance().showResults();
         }
     }
 

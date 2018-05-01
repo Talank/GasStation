@@ -266,9 +266,6 @@ public class InstantBillingController {
                     itemName.validate();
                 } else {
                     itemName.resetValidation();
-                    if(force) {
-                        force=false;
-                    }
                 }
             }
         });
@@ -296,9 +293,7 @@ public class InstantBillingController {
                     rates.validate();
                 } else {
                     rates.resetValidation();
-                    if(force) {
-                        force=false;
-                    }
+
                 }
             }
         });
@@ -349,9 +344,6 @@ public class InstantBillingController {
                 vehicleNumber.validate();
             else {
                 vehicleNumber.resetValidation();
-                if(force) {
-                    force=false;
-                }
             }
 
         });
@@ -364,10 +356,6 @@ public class InstantBillingController {
                 volume.validate();
             else {
                 volume.resetValidation();
-
-                if(force) {
-                    force=false;
-                }
 
                 if(calcNowV) {
                     price.setText(decimalFormat.format(Float.parseFloat(volume.getText())*rate));
@@ -391,6 +379,13 @@ public class InstantBillingController {
             calcNowP=false;
             calcNowV=newPropertyValue;
         });
+
+
+        /*
+        * In this listener only force is set to false,
+        * because the clearOil() calls the price in last
+        *
+        * */
 
 
         price.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)->{

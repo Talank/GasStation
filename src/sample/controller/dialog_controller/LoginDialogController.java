@@ -16,6 +16,7 @@ import javafx.scene.control.ToolBar;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import sample.controller.main_home_controller.MainHomeController;
 import sample.library.dialog_bottombar.BottomBarInterface;
 import sample.library.dialog_bottombar.DialogBottomBar;
 import sample.library.dialog_toolbar.DialogToolBar;
@@ -39,6 +40,8 @@ public class LoginDialogController implements BottomBarInterface {
     private DialogBottomBar bottomBar;
 
     private int status=0;
+
+    private Stage stage;
 
     @FXML
     public void initialize() {
@@ -75,36 +78,31 @@ public class LoginDialogController implements BottomBarInterface {
 
     @Override
     public void performAction(MouseEvent e) throws IOException {
-        if(username.getText().isEmpty())
+        int status=0;
+
+        if(username.getText().trim().isEmpty()) {
             username.validate();
+            status++;
+        }
 
-        if(password.getText().isEmpty())
+        if(password.getText().isEmpty()) {
             password.validate();
+            status++;
+        }
 
-        if(!password.getText().isEmpty()&&!username.getText().isEmpty()) {
+
+        if(status==0) {
             AdminUser user=new AdminUser();
             user.initializeAdmin(username.getText().trim(),password.getText().trim());
             if(user.validate()) {
-                Stage loginWindow=(Stage)((Node)e.getSource()).getScene().getWindow();
-                loginWindow.close();
-                Parent root;
-                switch (status) {
-                    case 0:
-                        root =FXMLLoader.load(getClass().getResource("../../view/dialogs/changeRateDialog.fxml"));
-                        break;
+                switch (this.status) {
                     case 1:
-                        root =FXMLLoader.load(getClass().getResource("../../view/dialogs/changeUserParameters.fxml"));
-                        break;
-                    default:
-                        root =FXMLLoader.load(getClass().getResource("../../view/dialogs/changeRateDialog.fxml"));
+                        MainHomeController.getInstance().showSettings(stage);
                         break;
                 }
+                Stage loginWindow=(Stage)((Node)e.getSource()).getScene().getWindow();
+                loginWindow.close();
 
-                Stage stage=new Stage();
-                Scene scene=new Scene(root);
-                stage.initModality(Modality.APPLICATION_MODAL);
-                stage.setScene(scene);
-                stage.show();
             } else {
                 FXMLLoader loader=new FXMLLoader(getClass().getResource("../../view/dialogs/errorDialog.fxml"));
                 Parent root=loader.load();
@@ -117,6 +115,10 @@ public class LoginDialogController implements BottomBarInterface {
                 stage.show();
             }
         }
+    }
+
+    public void setStage(Stage stage) {
+        this.stage=stage;
     }
 
     public void setStatus(int status) {

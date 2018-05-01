@@ -116,7 +116,7 @@
                   </HBox>
                   <HBox alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="100.0" GridPane.columnIndex="1">
                      <children>
-                        <JFXButton fx:id="changeButton" buttonType="RAISED" onMouseClicked="#changeRate" style="-fx-background-radius: 50px; -fx-background-color: #61b3a4;" text="CHANGE">
+                        <JFXButton fx:id="settings" buttonType="RAISED" onMouseClicked="#loadSettings" prefHeight="80.0" prefWidth="80.0" style="-fx-background-radius: 40px; -fx-background-color: #61b3a4;" text="S">
                            <font>
                               <Font name="System Bold" size="20.0" />
                            </font>

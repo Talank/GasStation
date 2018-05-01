@@ -21,6 +21,17 @@ import sample.model.transaction_model.DailyTotalAnalyticModel;
 import java.io.IOException;
 
 
+/*
+* This class provides the info on daily transaction and also the transaction from past 30 days
+*
+* A simple table view is provided
+*
+* The table is populated using DailyTotalAnalyticModel using beans Reflection
+*
+*
+* */
+
+
 public class DailyTotalAnalyticsController {
 
     @FXML
@@ -74,16 +85,32 @@ public class DailyTotalAnalyticsController {
 
     }
 
+    /*
+    * This Function is called when 'Close' Button is clicked
+    *
+    * Just load the final Reading dialog
+    *
+    *
+    * */
+
     @FXML
-    public void close(MouseEvent e) throws IOException {
-        FXMLLoader loader=new FXMLLoader(getClass().getResource("../../view/dialogs/finalReadings.fxml"));
+    public void showTodayAnalytics(MouseEvent e) throws IOException {
+        FXMLLoader loader=new FXMLLoader(getClass().getResource("../../view/main_home_views/dailyAnalytics.fxml"));
         Parent root=loader.load();
-        FinalReadingsController controller=loader.getController();
+
+        DailyAnalyticsController controller=loader.getController();
+        controller.setModel(DatabaseHandler.getTodayAnalytics());
+
+        Stage stage=(Stage)((Node)e.getSource()).getScene().getWindow();
+        stage.setScene(new Scene(root));
+        stage.show();
+
+        /*FinalReadingsController controller=loader.getController();
         controller.setStage((Stage)((Node)e.getSource()).getScene().getWindow());
         Stage stage=new Stage();
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(new Scene(root));
-        stage.show();
+        stage.show();*/
     }
 
 }

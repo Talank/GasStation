@@ -199,9 +199,6 @@ public class CreditBillingController {
                     itemName.validate();
                 } else {
                     itemName.resetValidation();
-                    if(force) {
-                        force=false;
-                    }
                 }
             }
         });
@@ -229,9 +226,6 @@ public class CreditBillingController {
                     rates.validate();
                 } else {
                     rates.resetValidation();
-                    if(force) {
-                        force=false;
-                    }
                 }
             }
         });
@@ -261,9 +255,6 @@ public class CreditBillingController {
                 vehicleNumber.resetValidation();
             }
 
-            if(force) {
-                force=false;
-            }
         });
 
         volume.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)->{
@@ -278,9 +269,6 @@ public class CreditBillingController {
                     price.setText(decimalFormat.format(Float.parseFloat(volume.getText())*rate));
                 }
 
-                if(force) {
-                    force=false;
-                }
             }
 
         });
@@ -328,7 +316,6 @@ public class CreditBillingController {
         vehicleNumber.setText("");
         volume.setText("");
         price.setText("");
-        force=false;
     }
 
     private void clearExtra() {
@@ -336,7 +323,6 @@ public class CreditBillingController {
         itemName.setText("");
         rates.setText("");
         quantity.setText("");
-        force=false;
     }
 
     private int checkOilInput() {
@@ -494,9 +480,14 @@ public class CreditBillingController {
 
             int[] ids=CreditCompanyList.getID(companyName.getValue());
             if(ids[0]!=-1&&ids[1]!=-1) {
-                DatabaseHandler.storeCreditTransaction(transactionListView.getItems(),ids[1],ids[0]);
-                CreditTransactionBill transactionBill=new CreditTransactionBill(transactionListView.getItems());
-                transactionBill.print();
+                if(DatabaseHandler.storeCreditTransaction(transactionListView.getItems(),ids[1],ids[0])) {
+                    CreditTransactionBill transactionBill=new CreditTransactionBill(transactionListView.getItems());
+                    transactionBill.print();
+                } else {
+                    snackBar.show("Error Printing The Bill",2000);
+                }
+
+
             }
 
         } else {

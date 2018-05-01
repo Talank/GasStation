@@ -7,14 +7,14 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import sample.controller.dialog_controller.*;
 import sample.controller.main_home_controller.lists_controllers.DebtListCell;
 import sample.controller.SystemLogging;
-import sample.controller.dialog_controller.ChangeCompanyController;
-import sample.controller.dialog_controller.LoginDialogController;
 import sample.library.toolbar.ToolBar;
 import sample.model.CreditCompanyList;
 import sample.model.SystemStatus;
@@ -37,6 +37,9 @@ public class SettingsController {
 //  List to hold all the associated companies
     @FXML
     private JFXListView<DebtListModel> debtList;
+
+    @FXML
+    private Label petrolStockValue,dieselStockValue,petrolStockDate,dieselStockDate,counterStockDate,counterStockValue,dMeterValue,dMeterDate,pMeterValue,pMeterDate,usernameValue,usernameDate,dRateValue,dRateDate,pRateValue,pRateDate;
 
     @FXML
     private ToolBar toolBar;
@@ -66,6 +69,34 @@ public class SettingsController {
 
 //      Select First item by default so that we do not have to check for list selection
         debtList.getSelectionModel().select(0);
+
+        String model[][]=DatabaseHandler.getSettingsModel();
+
+
+        usernameValue.setText(model[0][0]);
+        usernameDate.setText(model[0][1]);
+
+        dRateValue.setText(model[1][0]);
+        dRateDate.setText(model[1][1]);
+
+        pRateValue.setText(model[2][0]);
+        pRateDate.setText(model[2][1]);
+
+        dMeterValue.setText(model[3][0]);
+        dMeterDate.setText(model[3][1]);
+
+        pMeterValue.setText(model[4][0]);
+        pMeterDate.setText(model[4][1]);
+
+        counterStockValue.setText(model[5][0]);
+        counterStockDate.setText(model[5][1]);
+
+        dieselStockValue.setText(model[6][0]);
+        dieselStockDate.setText(model[6][1]);
+
+        petrolStockValue.setText(model[7][0]);
+        petrolStockDate.setText(model[7][1]);
+
 
     }
 
@@ -130,6 +161,62 @@ public class SettingsController {
     }
 
     /*
+     * Load the dialog to get the new change rate
+     *
+     * */
+
+    @FXML
+    public void changeOilRates(MouseEvent e) throws IOException {
+        FXMLLoader loader=new FXMLLoader(getClass().getResource("../../view/dialogs/changeRateDialog.fxml"));
+
+        Parent root=loader.load();
+        ChangeRateController controller=loader.getController();
+        controller.setInitialRate(dRateValue.getText(),pRateValue.getText());
+
+        Stage stage=new Stage();
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setScene(new Scene(root));
+        stage.show();
+    }
+
+    @FXML
+    public void setupCounterStock(MouseEvent e) throws IOException {
+        FXMLLoader loader=new FXMLLoader(getClass().getResource("../../view/dialogs/counterStockDialog.fxml"));
+
+        Parent root=loader.load();
+        CounterStockDialogController controller=loader.getController();
+        controller.setInitialStock(counterStockValue.getText());
+        Stage stage=new Stage();
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setScene(new Scene(root));
+        stage.show();
+    }
+
+    @FXML
+    public void setupMeterReadings(MouseEvent e) throws IOException {
+        Parent root=FXMLLoader.load(getClass().getResource("../../view/dialogs/loginDialog.fxml"));
+        Scene scene=new Scene(root);
+        Stage stage=new Stage();
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+
+    @FXML
+    public void setupOilStock(MouseEvent e) throws IOException {
+        FXMLLoader loader=new FXMLLoader(getClass().getResource("../../view/dialogs/oilStockDialog.fxml"));
+
+        Parent root=loader.load();
+        OilStockDialogController controller=loader.getController();
+        controller.setInitialStock(dieselStockValue.getText(),petrolStockValue.getText());
+        Stage stage=new Stage();
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setScene(new Scene(root));
+        stage.show();
+    }
+
+    /*
     * This function is called when user clicks 'Change password'
     *
     * Just load the login and handle future details
@@ -138,7 +225,7 @@ public class SettingsController {
 
     @FXML
     public void changeUserNameAndPassword(MouseEvent e) throws IOException {
-        FXMLLoader loader=new FXMLLoader(getClass().getResource("../../view/dialogs/loginDialog.fxml"));
+        FXMLLoader loader=new FXMLLoader(getClass().getResource("../../view/dialogs/changeUserParameters.fxml"));
         Parent root=loader.load();
         LoginDialogController controller=loader.getController();
         controller.setStatus(1);
@@ -152,6 +239,8 @@ public class SettingsController {
         listModels.remove(modelIndex);
         listModels.add(modelIndex,model);
     }
+
+
 
 
     public static SettingsController getInstance() {

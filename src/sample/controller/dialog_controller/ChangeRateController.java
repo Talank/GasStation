@@ -86,4 +86,9 @@ public class ChangeRateController implements BottomBarInterface {
         }
     }
 
+    public void setInitialRate(String dRate,String pRate) {
+        rDiesel.setText(dRate);
+        rPetrol.setText(pRate);
+    }
+
 }

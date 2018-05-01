@@ -66,35 +66,104 @@ public class DatabaseHandler {
         return false;
     }
 
+    public static String[][] getSettingsModel() {
+        String model[][];
+        model=new String[8][2];
+
+        try {
+
+            Statement getSettings=connection.createStatement();
+            ResultSet resultSet=getSettings.executeQuery("SELECT VALUE,DATE FROM SystemStatus WHERE ID<16 AND ID>6");
+            int i=0;
+            while(resultSet.next()) {
+                if(i==1) {
+                    resultSet.next();
+                }
+                model[i][0]=resultSet.getString(1);
+                model[i][1]=resultSet.getString(2);
+                i++;
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+
+        return model;
+    }
+
+
 
     public static boolean addInitialMeterReading(float intDiesel,float intPetrol,float intCounter) {
-        Date today=new Date((new java.util.Date()).getTime());
         try {
-            PreparedStatement insertStat=connection.prepareStatement("INSERT INTO MeterReading(IDiesel,IPetrol,ICounter,FDiesel,FPetrol,FCounter,Date) VALUES (?,?,?,?,?,?,?)");
-            insertStat.setFloat(1,intDiesel);
-            insertStat.setFloat(2,intPetrol);
-            insertStat.setFloat(3,intCounter);
-            insertStat.setFloat(4,-1f);
-            insertStat.setFloat(5,-1f);
-            insertStat.setFloat(6,-1f);
-            insertStat.setDate(7,today);
-            insertStat.execute();
+
+            connection.setAutoCommit(false);
+
+            Statement insertInitial=connection.createStatement();
+
+            insertInitial.addBatch("UPDATE SystemStatus SET VALUE="+String.valueOf(intDiesel)+",DATE="+getCurrentDate().toString()+" WHERE ID=11");
+            insertInitial.addBatch("UPDATE SystemStatus SET VALUE="+String.valueOf(intPetrol)+",DATE="+getCurrentDate().toString()+" WHERE ID=12");
+            insertInitial.addBatch("UPDATE SystemStatus SET VALUE="+String.valueOf(intCounter)+",DATE="+getCurrentDate().toString()+" WHERE ID=13");
+
+            insertInitial.executeBatch();
+            connection.commit();
+            connection.setAutoCommit(true);
             return true;
-        } catch(Exception e) {
+        } catch(SQLException e) {
+            System.out.println(e.getMessage());
+            System.out.println(e.getNextException().getMessage());
             e.printStackTrace();
         }
         return false;
     }
 
+    public static boolean setupOilStock(String dieselStock,String petrolStock) {
+
+        try {
+            connection.setAutoCommit(false);
+
+            Statement updateStock=connection.createStatement();
+            updateStock.addBatch("UPDATE SystemStatus SET VALUE="+dieselStock+", DATE="+getCurrentDate()+" WHERE ID=14");
+            updateStock.addBatch("UPDATE SystemStatus SET VALUE="+petrolStock+", DATE="+getCurrentDate()+" WHERE ID=15");
+            updateStock.executeBatch();
+
+            connection.commit();
+            connection.setAutoCommit(true);
+
+            return true;
+        } catch(SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return false;
+    }
+
+    public static boolean setupCounterStock(String counterStock) {
+
+        try {
+            PreparedStatement insertStock=connection.prepareStatement("UPDATE SystemStatus SET VALUE="+counterStock+", DATE="+getCurrentDate()+" WHERE ID=13");
+            insertStock.execute();
+            return true;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return false;
+    }
+
+
+
+
+
     public static RateModel getCurrentRate() {
         RateModel rateModel=new RateModel(0,0);
         try {
             Statement getRate=connection.createStatement();
-            ResultSet resultSet=getRate.executeQuery("SELECT * FROM SystemStatus WHERE ID<3");
+            ResultSet resultSet=getRate.executeQuery("SELECT VALUE FROM SystemStatus WHERE ID>8 AND ID<11");
             resultSet.next();
-            rateModel.setrDiesel(resultSet.getFloat(2));
+            rateModel.setrDiesel(resultSet.getFloat(1));
             resultSet.next();
-            rateModel.setrPetrol(resultSet.getFloat(2));
+            rateModel.setrPetrol(resultSet.getFloat(1));
             resultSet.close();
         } catch (Exception e) {
             e.printStackTrace();
@@ -102,18 +171,20 @@ public class DatabaseHandler {
         return rateModel;
     }
 
-    public static boolean setCurrentRate(float rDiesel,float rPetrol) {
-        Date today=new Date(new java.util.Date().getTime());
-        try {
-            PreparedStatement setRate=connection.prepareStatement("UPDATE SystemStatus SET VALUE=?,DATE=? WHERE ID=1");
-            setRate.setString(1,String.valueOf(rDiesel));
-            setRate.setDate(2,today);
-            setRate.execute();
 
-            setRate=connection.prepareStatement("UPDATE SystemStatus SET VALUE=?,DATE=? WHERE ID=2");
-            setRate.setString(1,String.valueOf(rPetrol));
-            setRate.setDate(2,today);
-            setRate.execute();
+
+    public static boolean setCurrentRate(float rDiesel,float rPetrol) {
+        try {
+
+            connection.setAutoCommit(false);
+
+            Statement setRate=connection.createStatement();
+            setRate.addBatch("UPDATE SystemStatus SET VALUE="+String.valueOf(rDiesel)+",DATE="+getCurrentDate().toString()+" WHERE ID=9");
+            setRate.addBatch("UPDATE SystemStatus SET VALUE="+String.valueOf(rPetrol)+",DATE="+getCurrentDate().toString()+" WHERE ID=10");
+            setRate.executeBatch();
+
+            connection.commit();
+            connection.setAutoCommit(true);
 
             return true;
 
@@ -127,11 +198,11 @@ public class DatabaseHandler {
         AdminUser user=new AdminUser();
         try {
             Statement getUserData=connection.createStatement();
-            ResultSet resultSet=getUserData.executeQuery("SELECT * FROM SystemStatus WHERE ID<5 AND ID>2");
+            ResultSet resultSet=getUserData.executeQuery("SELECT VALUE FROM SystemStatus WHERE ID<9 AND ID>6");
             resultSet.next();
-            String username=resultSet.getString(2);
+            String username=resultSet.getString(1);
             resultSet.next();
-            user.initializeAdmin(username,resultSet.getString(2));
+            user.initializeAdmin(username,resultSet.getString(1));
             resultSet.close();
         } catch(Exception e) {
             e.printStackTrace();
@@ -140,17 +211,18 @@ public class DatabaseHandler {
     }
 
     public static boolean setAdminParameters(String userName,String password) {
-        Date today=new Date(new java.util.Date().getTime());
         try {
-            PreparedStatement updateParameters=connection.prepareStatement("UPDATE SystemStatus SET VALUE=?,DATE=? WHERE ID=3");
-            updateParameters.setString(1,userName);
-            updateParameters.setDate(2,today);
-            updateParameters.execute();
 
-            updateParameters=connection.prepareStatement("UPDATE SystemStatus SET VALUE=?,DATE=? WHERE ID=4");
-            updateParameters.setString(1,password);
-            updateParameters.setDate(2,today);
-            updateParameters.execute();
+            connection.setAutoCommit(false);
+
+            Statement updateUser=connection.createStatement();
+            updateUser.addBatch("UPDATE SystemStatus SET VALUE="+userName+",DATE="+getCurrentDate()+" WHERE ID=7");
+            updateUser.addBatch("UPDATE SystemStatus SET VALUE="+password+",DATE="+getCurrentDate()+" WHERE ID=8");
+
+            updateUser.executeBatch();
+            connection.commit();
+            connection.setAutoCommit(true);
+
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -159,7 +231,7 @@ public class DatabaseHandler {
     }
 
 
-    public static void storeCreditTransaction(List<Transaction> transactions,int transactionID,int id) {
+    public static boolean storeCreditTransaction(List<Transaction> transactions,int transactionID,int id) {
 
         float pVolume=0,dVolume=0,ePrice=0;
 
@@ -196,6 +268,12 @@ public class DatabaseHandler {
                         pVolume+=transaction.getVolume();
                     }
 
+                    if((SystemStatus.getDieselStock()-dVolume)<0||(SystemStatus.getPetrolStock()-pVolume)<0) {
+                        System.out.println("The Stock was Negative");
+                        insertCredit.cancel();
+                        return false;
+                    }
+
                     insertCredit.setString(3,transaction.getVehicleNo());
                     insertCredit.setFloat(5,transaction.getVolume());
                 }
@@ -217,10 +295,12 @@ public class DatabaseHandler {
 
             SystemLogging.getLogger().fine("Credit Transaction Stored in Database");
 
+            return true;
         }  catch(SQLException e) {
             System.out.println(e.getMessage());
             SystemLogging.getLogger().warning("Error Storing Transaction in Database");
         }
+        return false;
     }
 
 
@@ -260,6 +340,9 @@ public class DatabaseHandler {
             connection.commit();
             connection.setAutoCommit(true);*/
 
+            if((SystemStatus.getDieselStock()-dVolume)<0||(SystemStatus.getPetrolStock()-pVolume)<0) {
+                return false;
+            }
             storeTotalTransaction(pVolume,dVolume,ePrice,5);
 
             return true;
@@ -275,14 +358,15 @@ public class DatabaseHandler {
 
         try {
 
-            connection.setAutoCommit(false);
+            float petrolStock=pVolume;
+            float dieselStock=dVolume;
 
             Statement getInstant=connection.createStatement();
             ResultSet resultSet;
             if(arr==5) {
-                resultSet=getInstant.executeQuery("SELECT VALUE FROM SystemStatus WHERE ID>4 AND ID<8");
+                resultSet=getInstant.executeQuery("SELECT VALUE FROM SystemStatus WHERE ID>4 AND ID<8 OR ID=14 OR ID=15");
             } else {
-                resultSet=getInstant.executeQuery("SELECT VALUE FROM SystemStatus WHERE ID>7 AND ID<11");
+                resultSet=getInstant.executeQuery("SELECT VALUE FROM SystemStatus WHERE ID>7 AND ID<11 OR ID=14 OR ID=15");
             }
 
             resultSet.next();
@@ -291,13 +375,22 @@ public class DatabaseHandler {
             dVolume+=Float.parseFloat(resultSet.getString(1));
             resultSet.next();
             ePrice+=Float.parseFloat(resultSet.getString(1));
+            resultSet.next();
+            dieselStock=Float.parseFloat(resultSet.getString(1))-dieselStock;
+            resultSet.next();
+            petrolStock=Float.parseFloat(resultSet.getString(1))-petrolStock;
+
+            SystemStatus.setfDiesel(dieselStock);
+            SystemStatus.setPetrolStock(petrolStock);
 
             resultSet.close();
-
+            connection.setAutoCommit(false);
             Statement updateInstant=connection.createStatement();
-            updateInstant.addBatch("UPDATE SystemStatus SET VALUE="+dVolume+" WHERE ID="+(arr++));
-            updateInstant.addBatch("UPDATE SystemStatus SET VALUE="+pVolume+" WHERE ID"+(arr++));
-            updateInstant.addBatch("UPDATE SystemStatus SET VALUE="+ePrice+" WHERE ID"+(arr));
+            updateInstant.addBatch("UPDATE SystemStatus SET VALUE="+String.valueOf(dVolume)+" WHERE ID="+(arr++));
+            updateInstant.addBatch("UPDATE SystemStatus SET VALUE="+String.valueOf(pVolume)+" WHERE ID"+(arr++));
+            updateInstant.addBatch("UPDATE SystemStatus SET VALUE="+String.valueOf(ePrice)+" WHERE ID"+(arr));
+            updateInstant.addBatch("UPDATE SystemStatus SET VALUE="+String.valueOf(dieselStock)+" WHERE ID=14");
+            updateInstant.addBatch("UPDATE SystemStatus SET VALUE="+String.valueOf(petrolStock)+" WHERE ID=15");
 
             updateInstant.executeBatch();
             connection.commit();
@@ -483,17 +576,15 @@ public class DatabaseHandler {
         DailyAnalyticsModel model=new DailyAnalyticsModel(-1f,-1f,-1f);
         try {
             Statement getValues=connection.createStatement();
-            ResultSet resultSet=getValues.executeQuery("SELECT IPetrol,IDiesel,ICounter,Date FROM MeterReading ORDER BY ID DESC FETCH NEXT 1 ROWS ONLY");
+            ResultSet resultSet=getValues.executeQuery("SELECT VALUE FROM SystemStatus WHERE ID>10 AND ID<14");
 
             resultSet.next();
-
-            if(checkCurrentDate(resultSet.getDate(4))) {
-                model.setcInitial(resultSet.getFloat(3));
-                model.setdInitial(resultSet.getFloat(2));
-                model.setpInitial(resultSet.getFloat(1));
-            } else {
-                SystemLogging.getLogger().severe("Date Doesn't Match,May be Wrong Start Up Of System!");
-            }
+            model.setdInitial(Float.parseFloat(resultSet.getString(1)));
+            resultSet.next();
+            model.setpInitial(Float.parseFloat(resultSet.getString(1)));
+            resultSet.next();
+            model.setcInitial(Float.parseFloat(resultSet.getString(1)));
+            resultSet.close();
 
         } catch(Exception e) {
             e.printStackTrace();
@@ -526,7 +617,7 @@ public class DatabaseHandler {
             Statement getRefill=connection.createStatement();
             ResultSet resultSet=getRefill.executeQuery("SELECT * FROM Refill");
             while(resultSet.next()) {
-                arrayList.add(new RefillModel(String.valueOf(resultSet.getFloat(1)),String.valueOf(resultSet.getFloat(3)),String.valueOf(resultSet.getFloat(2)),resultSet.getDate(4)));
+                arrayList.add(new RefillModel(resultSet.getFloat(1),resultSet.getFloat(2),resultSet.getFloat(3),resultSet.getFloat(4),resultSet.getFloat(5),resultSet.getFloat(6),resultSet.getDate(7)));
             }
             resultSet.close();
         } catch (Exception e) {
@@ -559,13 +650,12 @@ public class DatabaseHandler {
         return arrayList;
     }
 
-    public static DailyTotalAnalyticModel closing() {
+    public static DailyTotalAnalyticModel getTodayAnalytics() {
         DailyTotalAnalyticModel model=new DailyTotalAnalyticModel();
         try {
 
-
             Statement getAnalytics=connection.createStatement();
-            ResultSet resultSet=getAnalytics.executeQuery("SELECT VALUE FROM SystemStatus WHERE ID>4 AND ID<11");
+            ResultSet resultSet=getAnalytics.executeQuery("SELECT VALUE FROM SystemStatus WHERE ID<7");
             resultSet.next();
 
             model.setIDieselVol(resultSet.getString(1));
@@ -583,9 +673,6 @@ public class DatabaseHandler {
 
             model.setOilIncome(String.valueOf(((Float.parseFloat(model.getIDieselVol())+Float.parseFloat(model.getCDieselVol()))*SystemStatus.getdRate()+(Float.parseFloat(model.getIPetrolVol())+ Float.parseFloat(model.getCPetrolVol())*SystemStatus.getpRate()))));
 
-            setDailyTotalAnalyticModel(model);
-
-
         } catch(SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -593,10 +680,36 @@ public class DatabaseHandler {
         return model;
     }
 
+    public static void initializeSystem() {
+        try {
+
+            connection.setAutoCommit(false);
+            Statement resetSystem=connection.createStatement();
+            resetSystem.addBatch("UPDATE SystemStatus SET VALUE='0' WHERE ID=1");
+            resetSystem.addBatch("UPDATE SystemStatus SET VALUE='0' WHERE ID=2");
+            resetSystem.addBatch("UPDATE SystemStatus SET VALUE='0' WHERE ID=3");
+            resetSystem.addBatch("UPDATE SystemStatus SET VALUE='0' WHERE ID=4");
+            resetSystem.addBatch("UPDATE SystemStatus SET VALUE='0' WHERE ID=5");
+            resetSystem.addBatch("UPDATE SystemStatus SET VALUE='0' WHERE ID=6");
+
+            resetSystem.executeBatch();
+            connection.commit();
+            connection.setAutoCommit(true);
+
+        } catch(SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+
+    }
+
     public static void setDailyTotalAnalyticModel(DailyTotalAnalyticModel model) {
 
         try {
             Date date=getCurrentDate();
+
+
+            Statement checkDate=connection.createStatement();
 
             PreparedStatement insertTotal=connection.prepareStatement("INSERT INTO DailyAnalytics VALUES (?,?,?,?,?,?,?,?,?,?)");
 
@@ -635,11 +748,14 @@ public class DatabaseHandler {
 
     public static boolean storeRefill(RefillModel model) {
         try {
-            PreparedStatement insertRefill=connection.prepareStatement("INSERT INTO Refill VALUES (?,?,?,?)");
-            insertRefill.setFloat(1,Float.parseFloat(model.getExpected()));
-            insertRefill.setFloat(2,Float.parseFloat(model.getActual()));
-            insertRefill.setFloat(3,Float.parseFloat(model.getLoss()));
-            insertRefill.setDate(4,model.getDate());
+            PreparedStatement insertRefill=connection.prepareStatement("INSERT INTO Refill VALUES (?,?,?,?,?,?,?)");
+            insertRefill.setFloat(1,model.getExpectedDiesel());
+            insertRefill.setFloat(2,model.getActualDiesel());
+            insertRefill.setFloat(3,model.getExpectedPetrol());
+            insertRefill.setFloat(4,model.getActualPetrol());
+            insertRefill.setFloat(5,model.getDieselLoss());
+            insertRefill.setFloat(6,model.getPetrolLoss());
+            insertRefill.setDate(7,model.getDate());
             insertRefill.execute();
             return true;
         } catch(Exception e) {

@@ -38,16 +38,27 @@ public class ProfitLossController {
     private TableView<RefillModel> tableView;
 
     @FXML
-    private TableColumn<RefillModel,String> expected;
+    private TableColumn<RefillModel,String> expectedDiesel;
 
     @FXML
-    private TableColumn<RefillModel,String> actual;
+    private TableColumn<RefillModel,String> actualDiesel;
+
+    @FXML
+    private TableColumn<RefillModel,String> expectedPetrol;
+
+    @FXML
+    private TableColumn<RefillModel,String> actualPetrol;
+
+    @FXML
+    private TableColumn<RefillModel,String> petrolLoss;
+
+    @FXML
+    private TableColumn<RefillModel,String> dieselLoss;
+
 
     @FXML
     private TableColumn<RefillModel,String> date;
 
-    @FXML
-    private TableColumn<RefillModel,String> loss;
 
     private ObservableList<RefillModel> tableData;
 
@@ -63,10 +74,14 @@ public class ProfitLossController {
         toolBar.setTitle("ReFill Management");
         toolBar.setBackPath(SystemStatus.getMainHomePath());
 
-        expected.setCellValueFactory(new PropertyValueFactory<>("expected"));
-        actual.setCellValueFactory(new PropertyValueFactory<>("actual"));
+        expectedDiesel.setCellValueFactory(new PropertyValueFactory<>("expectedDiesel"));
+        actualDiesel.setCellValueFactory(new PropertyValueFactory<>("actualDiesel"));
         date.setCellValueFactory(new PropertyValueFactory<>("date"));
-        loss.setCellValueFactory(new PropertyValueFactory<>("loss"));
+        expectedPetrol.setCellValueFactory(new PropertyValueFactory<>("expectedPetrol"));
+        actualPetrol.setCellValueFactory(new PropertyValueFactory<>("actualPetrol"));
+        petrolLoss.setCellValueFactory(new PropertyValueFactory<>("petrolLoss"));
+        dieselLoss.setCellValueFactory(new PropertyValueFactory<>("dieselLoss"));
+
         tableData=FXCollections.observableList(DatabaseHandler.getRefillModel());
         tableView.setItems(tableData);
     }
