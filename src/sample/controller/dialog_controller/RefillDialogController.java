@@ -14,6 +14,8 @@ import sample.library.dialog_toolbar.DialogToolBar;
 import sample.model.SystemStatus;
 import sample.model.databases.DatabaseHandler;
 import sample.model.RefillModel;
+import sample.tasks.TaskManager;
+import sample.tasks.database_tasks.RefillTask;
 
 import java.io.IOException;
 import java.sql.Date;
@@ -132,12 +134,17 @@ public class RefillDialogController implements BottomBarInterface {
             float petrolLoss=Float.parseFloat(expectedPetrol.getText())-(SystemStatus.getPetrolStock()-Float.parseFloat(actualPetrol.getText()));
             RefillModel model=new RefillModel(Float.parseFloat(expectedDiesel.getText()),Float.parseFloat(actualDiesel.getText()),Float.parseFloat(expectedPetrol.getText()),Float.parseFloat(actualPetrol.getText()),dieselLoss,petrolLoss,new Date((new java.util.Date().getTime())));
             ProfitLossController.getInstance().addModel(model);
-            if(DatabaseHandler.storeRefill(model)) {
+
+            RefillTask task=new RefillTask(model);
+            TaskManager.executeTask(task);
+            ((Node)e.getSource()).getScene().getWindow().hide();
+
+            /*if(DatabaseHandler.storeRefill(model)) {
                 ((Node)e.getSource()).getScene().getWindow().hide();
                 SystemLogging.getLogger().fine("SuccessFully Refilled Data.");
             } else {
                 SystemLogging.getLogger().severe("Error Storing Refill Data");
-            }
+            }*/
         }
     }
 

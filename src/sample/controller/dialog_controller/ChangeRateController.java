@@ -13,6 +13,8 @@ import sample.library.dialog_bottombar.DialogBottomBar;
 import sample.library.dialog_toolbar.DialogToolBar;
 import sample.model.RateModel;
 import javafx.scene.Node;
+import sample.tasks.TaskManager;
+import sample.tasks.database_tasks.ChangeOilRateTask;
 
 import java.io.IOException;
 
@@ -74,10 +76,14 @@ public class ChangeRateController implements BottomBarInterface {
             rPetrol.validate();
         if(!rPetrol.getText().isEmpty()&&!rDiesel.getText().isEmpty()) {
             RateModel rateModel=new RateModel(Float.parseFloat(rDiesel.getText()),Float.parseFloat(rPetrol.getText()));
-            if(rateModel.storeRate())
+
+            ChangeOilRateTask task=new ChangeOilRateTask(rateModel);
+            TaskManager.executeTask(task);
+
+            /*if(rateModel.storeRate())
                 SystemLogging.getLogger().fine("Diesel And Petrol Rate Successfully Changed");
             else
-                SystemLogging.getLogger().warning("Failed to Store Rate,Using Current Rate Temporarily!");
+                SystemLogging.getLogger().warning("Failed to Store Rate,Using Current Rate Temporarily!");*/
 
             MainHomeController.getInstance().setRates(rDiesel.getText(),rPetrol.getText());
 

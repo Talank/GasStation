@@ -3,6 +3,7 @@ package sample.controller.main_home_controller;
 import com.jfoenix.controls.JFXListView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.WorkerStateEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -12,6 +13,7 @@ import javafx.scene.control.SelectionMode;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import sample.OutputTasks.GetSettingsTask;
 import sample.controller.dialog_controller.*;
 import sample.controller.main_home_controller.lists_controllers.DebtListCell;
 import sample.controller.SystemLogging;
@@ -44,6 +46,8 @@ public class SettingsController {
     @FXML
     private ToolBar toolBar;
 
+    private GetSettingsTask task;
+
 //  singleton reference for referring from dialogs
     private static SettingsController instance;
 
@@ -70,32 +74,39 @@ public class SettingsController {
 //      Select First item by default so that we do not have to check for list selection
         debtList.getSelectionModel().select(0);
 
-        String model[][]=DatabaseHandler.getSettingsModel();
 
+        task=new GetSettingsTask();
+        task.setOnSucceeded((WorkerStateEvent e)->{
+            String model[][]=task.getValue();
 
-        usernameValue.setText(model[0][0]);
-        usernameDate.setText(model[0][1]);
+            usernameValue.setText(model[0][0]);
+            usernameDate.setText(model[0][1]);
 
-        dRateValue.setText(model[1][0]);
-        dRateDate.setText(model[1][1]);
+            dRateValue.setText(model[1][0]);
+            dRateDate.setText(model[1][1]);
 
-        pRateValue.setText(model[2][0]);
-        pRateDate.setText(model[2][1]);
+            pRateValue.setText(model[2][0]);
+            pRateDate.setText(model[2][1]);
 
-        dMeterValue.setText(model[3][0]);
-        dMeterDate.setText(model[3][1]);
+            dMeterValue.setText(model[3][0]);
+            dMeterDate.setText(model[3][1]);
 
-        pMeterValue.setText(model[4][0]);
-        pMeterDate.setText(model[4][1]);
+            pMeterValue.setText(model[4][0]);
+            pMeterDate.setText(model[4][1]);
 
-        counterStockValue.setText(model[5][0]);
-        counterStockDate.setText(model[5][1]);
+            counterStockValue.setText(model[5][0]);
+            counterStockDate.setText(model[5][1]);
 
-        dieselStockValue.setText(model[6][0]);
-        dieselStockDate.setText(model[6][1]);
+            dieselStockValue.setText(model[6][0]);
+            dieselStockDate.setText(model[6][1]);
 
-        petrolStockValue.setText(model[7][0]);
-        petrolStockDate.setText(model[7][1]);
+            petrolStockValue.setText(model[7][0]);
+            petrolStockDate.setText(model[7][1]);
+        });
+
+        Thread mainThread=new Thread(task);
+        mainThread.setDaemon(true);
+        mainThread.start();
 
 
     }

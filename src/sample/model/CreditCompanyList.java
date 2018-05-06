@@ -1,6 +1,10 @@
 package sample.model;
 
+import sample.controller.SystemLogging;
 import sample.model.databases.DatabaseHandler;
+import sample.tasks.TaskInterface;
+import sample.tasks.TaskManager;
+import sample.tasks.database_tasks.GetCompanyList;
 
 import java.util.ArrayList;
 
@@ -8,7 +12,12 @@ public class CreditCompanyList {
     private static ArrayList<DebtListModel> companyList=new ArrayList<>();
 
     public static void loadData() {
-        companyList=DatabaseHandler.getDebtCompany();
+//        companyList=DatabaseHandler.getDebtCompany();
+
+    }
+
+    public static void setCompanyList(ArrayList<DebtListModel> companyList) {
+        CreditCompanyList.companyList=companyList;
     }
 
     public static void invalidate() {

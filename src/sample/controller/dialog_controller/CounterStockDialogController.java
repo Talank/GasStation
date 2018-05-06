@@ -10,6 +10,8 @@ import sample.library.dialog_bottombar.BottomBarInterface;
 import sample.library.dialog_bottombar.DialogBottomBar;
 import sample.library.dialog_toolbar.DialogToolBar;
 import sample.model.databases.DatabaseHandler;
+import sample.tasks.TaskManager;
+import sample.tasks.database_tasks.SetupCounterStockTask;
 
 import java.io.IOException;
 
@@ -54,11 +56,15 @@ public class CounterStockDialogController implements BottomBarInterface {
         if(counterStock.getText().isEmpty()) {
             counterStock.validate();
         } else {
-            if(DatabaseHandler.setupCounterStock(counterStock.getText())) {
+
+            SetupCounterStockTask task=new SetupCounterStockTask(counterStock.getText());
+            TaskManager.executeTask(task);
+            ((Node)e.getSource()).getScene().getWindow().hide();
+            /*if(DatabaseHandler.setupCounterStock(counterStock.getText())) {
                 ((Node)e.getSource()).getScene().getWindow().hide();
             } else {
                 System.out.println("Error Updating Counter Stock");
-            }
+            }*/
         }
     }
 

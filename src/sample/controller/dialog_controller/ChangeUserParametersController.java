@@ -12,6 +12,8 @@ import sample.library.dialog_bottombar.BottomBarInterface;
 import sample.library.dialog_bottombar.DialogBottomBar;
 import sample.library.dialog_toolbar.DialogToolBar;
 import sample.model.databases.DatabaseHandler;
+import sample.tasks.TaskManager;
+import sample.tasks.database_tasks.ChangeUserParameterTask;
 
 import java.io.IOException;
 
@@ -96,12 +98,16 @@ public class ChangeUserParametersController implements BottomBarInterface {
         }
 
         if(status==0) {
-            if(DatabaseHandler.setAdminParameters(userName.getText().trim(),password.getText().trim())) {
+
+            ChangeUserParameterTask task=new ChangeUserParameterTask(userName.getText().trim(),password.getText().trim());
+            TaskManager.executeTask(task);
+            ((Node)e.getSource()).getScene().getWindow().hide();
+            /*if(DatabaseHandler.setAdminParameters(userName.getText().trim(),password.getText().trim())) {
                 SystemLogging.getLogger().fine("Admin Parameter Has Been Changed Successfully.");
                 ((Node)e.getSource()).getScene().getWindow().hide();
             } else {
                 SystemLogging.getLogger().severe("Error Changing Admin Parameters!");
-            }
+            }*/
         }
     }
 

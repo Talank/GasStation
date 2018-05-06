@@ -10,6 +10,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.BackgroundImage;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import sample.controller.SystemLogging;
 import sample.controller.dialog_controller.FinalReadingsController;
 import sample.controller.dialog_controller.LoginDialogController;
 import sample.model.CreditCompanyList;
@@ -52,11 +53,15 @@ public class MainHomeController {
     * */
     @FXML
     public void initialize() {
-        RateModel rateModel=DatabaseHandler.getCurrentRate();
+        /*RateModel rateModel=DatabaseHandler.getCurrentRate();
         rDiesel.setText(String.valueOf(rateModel.getrDiesel()));
         rPetrol.setText(String.valueOf(rateModel.getrPetrol()));
         SystemStatus.setdRate(rateModel.getrDiesel());
-        SystemStatus.setpRate(rateModel.getrPetrol());
+        SystemStatus.setpRate(rateModel.getrPetrol());*/
+
+        rDiesel.setText(String.valueOf(SystemStatus.getdRate()));
+        rPetrol.setText(String.valueOf(SystemStatus.getpRate()));
+
     }
 
 

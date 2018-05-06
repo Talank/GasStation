@@ -19,9 +19,12 @@ public class ToolBar extends GridPane {
     @FXML
     private Label toolbarTitle;
 
+    private BackButtonInterface backButtonInterface;
+
     private String backPath;
 
     public ToolBar() {
+        backButtonInterface=null;
         FXMLLoader loader=new FXMLLoader(getClass().getResource("toolbar.fxml"));
         loader.setRoot(this);
         loader.setController(this);
@@ -33,6 +36,10 @@ public class ToolBar extends GridPane {
     }
 
 
+    public void addBackButtonInterface(BackButtonInterface backButtonInterface) {
+        this.backButtonInterface=backButtonInterface;
+    }
+
     public void setTitle(String title) {
         toolbarTitle.setText(title);
     }
@@ -43,6 +50,9 @@ public class ToolBar extends GridPane {
 
     @FXML
     public void backToPath(MouseEvent e) throws IOException {
+        if(backButtonInterface!=null)
+            backButtonInterface.cleanUp();
+
         Parent root=FXMLLoader.load(getClass().getResource(backPath));
         Stage stage=(Stage)((Node)e.getSource()).getScene().getWindow();
         stage.setScene(new Scene(root));

@@ -5,6 +5,7 @@ import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.validation.RequiredFieldValidator;
 import javafx.beans.value.ObservableValue;
+import javafx.concurrent.WorkerStateEvent;
 import javafx.fxml.FXML;
 
 import javafx.fxml.FXMLLoader;
@@ -16,6 +17,7 @@ import javafx.scene.control.ToolBar;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import sample.OutputTasks.GetAdminUser;
 import sample.controller.main_home_controller.MainHomeController;
 import sample.library.dialog_bottombar.BottomBarInterface;
 import sample.library.dialog_bottombar.DialogBottomBar;
@@ -94,26 +96,38 @@ public class LoginDialogController implements BottomBarInterface {
         if(status==0) {
             AdminUser user=new AdminUser();
             user.initializeAdmin(username.getText().trim(),password.getText().trim());
-            if(user.validate()) {
-                switch (this.status) {
-                    case 1:
-                        MainHomeController.getInstance().showSettings(stage);
-                        break;
-                }
-                Stage loginWindow=(Stage)((Node)e.getSource()).getScene().getWindow();
-                loginWindow.close();
+            GetAdminUser task=new GetAdminUser();
+            task.setOnSucceeded((WorkerStateEvent e1)->{
+                try {
+                    if(user.validate(task.getValue())) {
+                        switch (this.status) {
+                            case 1:
+                                MainHomeController.getInstance().showSettings(stage);
+                                break;
+                        }
+                        Stage loginWindow=(Stage)((Node)e.getSource()).getScene().getWindow();
+                        loginWindow.close();
 
-            } else {
-                FXMLLoader loader=new FXMLLoader(getClass().getResource("../../view/dialogs/errorDialog.fxml"));
-                Parent root=loader.load();
-                ErrorDialogController controller=loader.getController();
-                controller.setTitle("Login Error");
-                controller.setErrorMessage("Invalid Username and Password Provided.Please Try Again Later.");
-                Stage stage=new Stage();
-                stage.setScene(new Scene(root));
-                stage.initModality(Modality.APPLICATION_MODAL);
-                stage.show();
-            }
+                    } else {
+                        FXMLLoader loader=new FXMLLoader(getClass().getResource("../../view/dialogs/errorDialog.fxml"));
+                        Parent root=loader.load();
+                        ErrorDialogController controller=loader.getController();
+                        controller.setTitle("Login Error");
+                        controller.setErrorMessage("Invalid Username and Password Provided.Please Try Again Later.");
+                        Stage stage=new Stage();
+                        stage.setScene(new Scene(root));
+                        stage.initModality(Modality.APPLICATION_MODAL);
+                        stage.show();
+                    }
+                } catch(IOException e2) {
+                    e2.printStackTrace();
+                }
+
+            });
+            Thread mainThread=new Thread(task);
+            mainThread.setDaemon(true);
+            mainThread.start();
+
         }
     }
 

@@ -1,36 +1,77 @@
 package sample;
 
 import javafx.application.Application;
-import javafx.fxml.FXML;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.stage.Stage;
-
 
 
 import sample.controller.SystemLogging;
 import sample.controller.dialog_controller.ErrorDialogController;
 import sample.model.CreditCompanyList;
+import sample.model.RateModel;
 import sample.model.databases.DatabaseHandler;
 
 
 import sample.model.SystemStatus;
+import sample.tasks.TaskManager;
+import sample.tasks.Tasks;
+import sample.tasks.database_tasks.InitializeSystem;
 
 
 public class Main extends Application {
 
+    private FXMLLoader loader;
+    private Parent root;
+    private boolean startup=false;
+
+    @Override
+    public void init() throws Exception {
+        if(Tasks.setupConnection()) {
+            TaskManager.init(1);
+            InitializeSystem initializeSystem=new InitializeSystem();
+            initializeSystem.execute();
+            startup=true;
+            loader=new FXMLLoader(getClass().getResource("view/main_home_views/mainHome.fxml"));
+        } else {
+            startup=false;
+            loader=new FXMLLoader(getClass().getResource("view/dialogs/errorDialog.fxml"));
+        }
+        root = loader.load();
+
+    }
+
     @Override
     public void start(Stage primaryStage) throws Exception{
-        SystemLogging.initializeLogger();//Initialize The Logger
-        SystemStatus.setMainHomePath("../../view/main_home_views/mainHome.fxml");
-        if(!DatabaseHandler.setupConnection()) {
-            /*
-            * The Connection on database couldn't be established
+
+        if(startup) {
+            primaryStage.setTitle("Ohm Gas Station");
+            primaryStage.setScene(new Scene(root));
+            primaryStage.show();
+        } else {
+            ErrorDialogController controller=loader.getController();
+            controller.setTitle("Database Error");
+            controller.setErrorMessage("Database Connection cannot be established. Please Contact SpirroTech Officials.");
+            Stage stage=new Stage();
+            stage.setScene(new Scene(root));
+            stage.show();
+        }
+
+
+
+
+
+       /* SystemLogging.initializeLogger();
+        SystemStatus.setMainHomePath("../../view/main_home_views/mainHome.fxml");*/
+
+        /*if(!DatabaseHandler.setupConnection()) {
+
+            *//** The Connection on database couldn't be established
             * Show the Error dialog
             * Exit the program
-            * */
+            * *//*
             FXMLLoader loader=new FXMLLoader(getClass().getResource("view/dialogs/errorDialog.fxml"));
             Parent root=loader.load();
             ErrorDialogController controller=loader.getController();
@@ -47,7 +88,7 @@ public class Main extends Application {
             primaryStage.setTitle("Ohm Gas Station");
             primaryStage.setScene(new Scene(root));
             primaryStage.show();
-        }
+        }*/
 
 
         //Old Requirements
@@ -88,7 +129,8 @@ public class Main extends Application {
         DatabaseHandler.closeConnection();
     }
 
-    public static void main(String[] args) {
+
+/*    public static void main(String[] args) {
         launch(args);
-    }
+    }*/
 }

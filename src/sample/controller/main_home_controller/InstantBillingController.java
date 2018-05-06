@@ -22,10 +22,14 @@ import sample.model.SystemStatus;
 import sample.library.toolbar.ToolBar;
 import sample.model.transaction_model.InstantTransactionBill;
 import sample.model.transaction_model.Transaction;
+import sample.tasks.TaskManager;
+import sample.tasks.database_tasks.StoreInstantTransactionTask;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 
 /*
@@ -331,7 +335,7 @@ public class InstantBillingController {
             if(!newValue.matches("[a-zA-Z ]*")) {//Recursion May Exists,Just a Work Around.
                 customerName.setText(oldValue);
             } else {
-                if(newValue.isEmpty()) {
+                if(newValue.isEmpty()&&!force) {
                     customerName.validate();
                 } else {
                     customerName.resetValidation();
@@ -439,6 +443,7 @@ public class InstantBillingController {
     public void printBill(MouseEvent e)throws IOException {
 
         if(!isListEmpty()) {
+            executeTransaction();
             InstantTransactionBill instantTransactionBill=new InstantTransactionBill(transactionListView.getItems());
             instantTransactionBill.print();
             snackBar.show("Printing Bill",2000);
@@ -514,15 +519,26 @@ public class InstantBillingController {
     @FXML
     public void insertTransaction(MouseEvent e) {
         if(!isListEmpty()) {
-
-            if(DatabaseHandler.storeInstantTransaction(transactionListView.getItems())) {
+            executeTransaction();
+            /*if(DatabaseHandler.storeInstantTransaction(transactionListView.getItems())) {
                 snackBar.show("Transaction Inserted Into Database",2000);
+
+
                 SystemLogging.getLogger().fine("Instant Transaction Stored SuccessFully.");
             } else {
                 snackBar.show("Error Inserting Transaction",2000);
                 SystemLogging.getLogger().severe("Error Storing Instant Transaction!");
-            }
+            }*/
         }
+    }
+
+    private void executeTransaction() {
+        List<Transaction> newList=new ArrayList<>(transactionListView.getItems());//Create A shallow copy
+        StoreInstantTransactionTask task=new StoreInstantTransactionTask();
+        task.setInstantTransaction(newList);
+        TaskManager.executeTask(task);
+        transactionListView.getItems().clear();
+        masterClear();
     }
 
     /*
@@ -604,6 +620,20 @@ public class InstantBillingController {
         itemName.setText("");
         rates.setText("");
         quantity.setText("");
+    }
+
+    private void masterClear() {
+        force=true;
+        customerName.setText("");
+        total.setText("0.0");
+        vehicleNumber.setText("");
+        volume.setText("");
+        itemName.setText("");
+        rates.setText("");
+        quantity.setText("");
+        price.setText("");
+        itemsCount.setText("0");
+
     }
 
     /*

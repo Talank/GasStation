@@ -10,6 +10,8 @@ import sample.library.dialog_bottombar.BottomBarInterface;
 import sample.library.dialog_bottombar.DialogBottomBar;
 import sample.library.dialog_toolbar.DialogToolBar;
 import sample.model.databases.DatabaseHandler;
+import sample.tasks.TaskManager;
+import sample.tasks.database_tasks.SetupOilStockTask;
 
 import java.io.IOException;
 
@@ -80,11 +82,16 @@ public class OilStockDialogController implements BottomBarInterface {
         }
 
         if(status==0) {
-            if(DatabaseHandler.setupOilStock(dieselStockValue.getText(),petrolStockValue.getText())) {
+            SetupOilStockTask task=new SetupOilStockTask(dieselStockValue.getText(),petrolStockValue.getText());
+            TaskManager.executeTask(task);
+            ((Node)e.getSource()).getScene().getWindow().hide();
+
+
+            /*if(DatabaseHandler.setupOilStock(dieselStockValue.getText(),petrolStockValue.getText())) {
                 ((Node)e.getSource()).getScene().getWindow().hide();
             } else {
                 System.out.println("Error Updating Oil Stock");
-            }
+            }*/
         }
 
 

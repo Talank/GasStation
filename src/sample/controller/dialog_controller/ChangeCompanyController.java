@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
+import sample.OutputTasks.GetSettingsTask;
 import sample.controller.main_home_controller.SettingsController;
 import sample.controller.SystemLogging;
 import sample.library.dialog_bottombar.BottomBarInterface;
@@ -15,6 +16,9 @@ import sample.library.dialog_toolbar.DialogToolBar;
 import sample.model.databases.DatabaseHandler;
 import sample.model.DebtListModel;
 import sample.model.databases.SetupDatabase;
+import sample.tasks.TaskInterface;
+import sample.tasks.TaskManager;
+import sample.tasks.database_tasks.SaveCompanyTask;
 
 import java.io.IOException;
 import java.sql.Date;
@@ -93,15 +97,34 @@ public class ChangeCompanyController implements BottomBarInterface {
 
         if(status==0) {
             if(!isEditable) {
-                int id=DatabaseHandler.saveCompany(companyName.getText().trim(),creditCycle.getText());
+
+                SaveCompanyTask task=new SaveCompanyTask(companyName.getText().trim(),creditCycle.getText());
+                task.addTaskInterfaceListener(new TaskInterface<Integer>() {
+                    @Override
+                    public void onComplete(Integer id) {
+                        if(id!=-1) {
+                            SystemLogging.getLogger().fine("Company Has Been Added.");
+                            SettingsController.getInstance().listModels.add(new DebtListModel(companyName.getText().trim(),(new Date((new java.util.Date()).getTime())).toString(),creditCycle.getText(),id,1));
+                            ((Node)e.getSource()).getScene().getWindow().hide();
+                        }
+                    }
+
+                    @Override
+                    public void onError() {
+
+                    }
+                });
+                TaskManager.executeTask(task);
+
+
+                /*int id=DatabaseHandler.saveCompany(companyName.getText().trim(),creditCycle.getText());
                 if(id!=-1) {
                     SystemLogging.getLogger().fine("Company Has Been Added.");
                     SettingsController.getInstance().listModels.add(new DebtListModel(companyName.getText().trim(),(new Date((new java.util.Date()).getTime())).toString(),creditCycle.getText(),id,1));
                     ((Node)e.getSource()).getScene().getWindow().hide();
                 } else {
                     SystemLogging.getLogger().severe("Error Adding Company!");
-                }
-
+                }*/
 
             } else {
                 model.setCompanyName(companyName.getText().trim());
@@ -116,6 +139,8 @@ public class ChangeCompanyController implements BottomBarInterface {
             }
         }
     }
+
+
 
     public void setEditData(DebtListModel model) {
         toolBar.setDialogTitle("Edit Company");

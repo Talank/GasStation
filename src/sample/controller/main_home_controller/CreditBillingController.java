@@ -20,10 +20,13 @@ import sample.model.SystemStatus;
 import sample.model.databases.DatabaseHandler;
 import sample.model.transaction_model.CreditTransactionBill;
 import sample.model.transaction_model.Transaction;
+import sample.tasks.TaskManager;
+import sample.tasks.database_tasks.StoreCreditTransactionTask;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.List;
 
 
 /*
@@ -325,6 +328,19 @@ public class CreditBillingController {
         quantity.setText("");
     }
 
+    private void masterClear() {
+        force=true;
+        total.setText("0.0");
+        vehicleNumber.setText("");
+        volume.setText("");
+        itemName.setText("");
+        rates.setText("");
+        quantity.setText("");
+        price.setText("");
+        itemsCount.setText("0");
+
+    }
+
     private int checkOilInput() {
         int status=0;
 
@@ -480,12 +496,21 @@ public class CreditBillingController {
 
             int[] ids=CreditCompanyList.getID(companyName.getValue());
             if(ids[0]!=-1&&ids[1]!=-1) {
-                if(DatabaseHandler.storeCreditTransaction(transactionListView.getItems(),ids[1],ids[0])) {
+
+                List<Transaction> newList=new ArrayList<>(transactionListView.getItems());//Create A shallow copy
+                StoreCreditTransactionTask task=new StoreCreditTransactionTask();
+                task.setParameters(newList,ids);
+                TaskManager.executeTask(task);
+                transactionListView.getItems().clear();
+                masterClear();
+
+
+                /*if(DatabaseHandler.storeCreditTransaction(transactionListView.getItems(),ids[1],ids[0])) {
                     CreditTransactionBill transactionBill=new CreditTransactionBill(transactionListView.getItems());
                     transactionBill.print();
                 } else {
                     snackBar.show("Error Printing The Bill",2000);
-                }
+                }*/
 
 
             }

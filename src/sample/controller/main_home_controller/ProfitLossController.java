@@ -3,6 +3,7 @@ package sample.controller.main_home_controller;
 import com.jfoenix.controls.JFXButton;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.WorkerStateEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -11,7 +12,11 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import sample.OutputTasks.GetRefillTask;
+import sample.library.output_task_loading.OutputTaskLoading;
+import sample.library.toolbar.BackButtonInterface;
 import sample.library.toolbar.ToolBar;
 import sample.model.SystemStatus;
 import sample.model.databases.DatabaseHandler;
@@ -26,7 +31,7 @@ import java.io.IOException;
 *
 * */
 
-public class ProfitLossController {
+public class ProfitLossController implements BackButtonInterface {
 
     @FXML
     private JFXButton reFill;
@@ -59,10 +64,19 @@ public class ProfitLossController {
     @FXML
     private TableColumn<RefillModel,String> date;
 
+    @FXML
+    private VBox profitLossLayout;
+
+    @FXML
+    private OutputTaskLoading progressLayout;
+
 
     private ObservableList<RefillModel> tableData;
 
     private static ProfitLossController instance;
+
+    private GetRefillTask task=null;
+
 
     public ProfitLossController() {
         instance=this;
@@ -73,6 +87,13 @@ public class ProfitLossController {
 
         toolBar.setTitle("ReFill Management");
         toolBar.setBackPath(SystemStatus.getMainHomePath());
+        toolBar.addBackButtonInterface(this);
+
+        profitLossLayout.setVisible(false);
+        progressLayout.setVisible(true);
+
+        task=new GetRefillTask();
+        progressLayout.setProgressProperty(task.progressProperty());
 
         expectedDiesel.setCellValueFactory(new PropertyValueFactory<>("expectedDiesel"));
         actualDiesel.setCellValueFactory(new PropertyValueFactory<>("actualDiesel"));
@@ -82,8 +103,24 @@ public class ProfitLossController {
         petrolLoss.setCellValueFactory(new PropertyValueFactory<>("petrolLoss"));
         dieselLoss.setCellValueFactory(new PropertyValueFactory<>("dieselLoss"));
 
-        tableData=FXCollections.observableList(DatabaseHandler.getRefillModel());
-        tableView.setItems(tableData);
+        task.setOnSucceeded((WorkerStateEvent e)->{
+            tableData=FXCollections.observableList(task.getValue());
+            tableView.setItems(tableData);
+            progressLayout.setVisible(false);
+            profitLossLayout.setVisible(true);
+        });
+
+        Thread mainThread=new Thread(task);
+        mainThread.setDaemon(true);
+        mainThread.start();
+
+
+    }
+
+    @Override
+    public void cleanUp() {
+        if(task!=null)
+            task.cancel();
     }
 
     public void addModel(RefillModel model) {
