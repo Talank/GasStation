@@ -19,6 +19,7 @@ import sample.model.databases.SetupDatabase;
 import sample.tasks.TaskInterface;
 import sample.tasks.TaskManager;
 import sample.tasks.database_tasks.SaveCompanyTask;
+import sample.tasks.database_tasks.UpdateCompanyTask;
 
 import java.io.IOException;
 import java.sql.Date;
@@ -129,13 +130,19 @@ public class ChangeCompanyController implements BottomBarInterface {
             } else {
                 model.setCompanyName(companyName.getText().trim());
                 model.setDays(creditCycle.getText());
-                if(DatabaseHandler.updateCompany(model)) {
+                UpdateCompanyTask task=new UpdateCompanyTask(model);
+                TaskManager.executeTask(task);
+
+                SettingsController.getInstance().editModel(model);
+                ((Node)e.getSource()).getScene().getWindow().hide();
+
+                /*if(DatabaseHandler.updateCompany(model)) {
                     SystemLogging.getLogger().fine("Company Details Has Been Changed");
                     SettingsController.getInstance().editModel(model);
                     ((Node)e.getSource()).getScene().getWindow().hide();
                 } else {
                     SystemLogging.getLogger().fine("Error Changing Company Details!");
-                }
+                }*/
             }
         }
     }
