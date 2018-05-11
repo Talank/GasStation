@@ -12,13 +12,18 @@ public class PrintBill {
         Stage stage=new Stage();
         if(printerJob==null)
             return false;
-        if(printerJob.showPrintDialog(stage)) {
+
+        if(printerJob.printPage(node)) {
+            printerJob.endJob();
+            return true;
+        }
+        /*if(printerJob.showPrintDialog(stage)) {
             if(printerJob.printPage(node)) {
                 printerJob.endJob();
                 return true;
             }
 
-        }
+        }*/
         return false;
     }
 

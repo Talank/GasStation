@@ -465,14 +465,22 @@ public class CreditBillingController {
                     rate=SystemStatus.getdRate();
                 }
                 Transaction transaction;
-                if(transactionListView.getSelectionModel().getSelectedItems().size()==0)
+
+                if(transactionListView.getSelectionModel().getSelectedItems().size()==0) {
                     transaction=new Transaction();
-                else
+                    transaction.oilTransaction(type,vehicleNumber.getText(),Float.parseFloat(volume.getText()),Float.parseFloat(price.getText()),mode);
+                    transaction.setRate(rate);
+                    Transaction.setTotal(Transaction.getTotal()+transaction.getPrice());
+                } else {
                     transaction=transactionListView.getSelectionModel().getSelectedItem();
-                transaction.oilTransaction(type,vehicleNumber.getText(),Float.parseFloat(volume.getText()),Float.parseFloat(price.getText()),mode);
-                transaction.setRate(rate);
+                    Transaction.setTotal(Transaction.getTotal()-transaction.getPrice()+Float.parseFloat(price.getText()));
+                    transaction.oilTransaction(type,vehicleNumber.getText(),Float.parseFloat(volume.getText()),Float.parseFloat(price.getText()),mode);
+                    transaction.setRate(rate);
+
+                }
+
                 Transaction.setName(companyName.getValue());
-                Transaction.setTotal(Transaction.getTotal()+transaction.getPrice());
+
                 total.setText(String.valueOf(Transaction.getTotal()));
 
                 if(transactionListView.getSelectionModel().getSelectedItems().size()==0) {
