@@ -14,6 +14,8 @@ import sample.model.databases.DatabaseHandler;
 import sample.model.SystemStatus;
 import javafx.stage.Modality;
 import sample.model.transaction_model.DailyTotalAnalyticModel;
+import sample.tasks.TaskInterface;
+import sample.tasks.database_tasks.GetDailyTotalAnalyticsModelTask;
 
 import java.io.IOException;
 
@@ -45,6 +47,20 @@ public class DailyAnalyticsController {
 
         toolBar.setTitle("Today Analytics");
         toolBar.setBackPath("../../view/main_home_views/dailyTotalAnalytics.fxml");
+
+        GetDailyTotalAnalyticsModelTask task=new GetDailyTotalAnalyticsModelTask();
+        task.addTaskInterfaceListener(new TaskInterface() {
+            @Override
+            public void onComplete(Object data) {
+                setModel((DailyTotalAnalyticModel)data);
+            }
+
+            @Override
+            public void onError() {
+
+            }
+        });
+
 
         /*pInitial.setText(String.valueOf(SystemStatus.getiPetrol())+" L");
         pFinal.setText(String.valueOf(SystemStatus.getfPetrol())+" L");
