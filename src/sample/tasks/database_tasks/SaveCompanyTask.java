@@ -1,5 +1,6 @@
 package sample.tasks.database_tasks;
 
+import javafx.application.Platform;
 import sample.model.databases.DatabaseHandler;
 import sample.tasks.TaskManager;
 import sample.tasks.Tasks;
@@ -70,7 +71,13 @@ public class SaveCompanyTask extends Tasks {
             }
 
             System.out.println("Company Saved SuccessFully.");
-            taskInterface.onComplete(j);
+
+            final int data=j;
+
+            Platform.runLater(()->{
+                taskInterface.onComplete(data);
+            });
+
 
         } catch (Exception e) {
             System.out.println("Error Saving Company.ReScheduling Task Again.");

@@ -22,6 +22,8 @@ import sample.model.CreditCompanyList;
 import sample.model.SystemStatus;
 import sample.model.databases.DatabaseHandler;
 import sample.model.DebtListModel;
+import sample.tasks.TaskManager;
+import sample.tasks.database_tasks.RemoveCompanyTask;
 
 import java.io.IOException;
 
@@ -140,11 +142,14 @@ public class SettingsController {
         DebtListModel model=debtList.getSelectionModel().getSelectedItem();
         if(model!=null) {
             listModels.remove(model);
-            if(DatabaseHandler.deleteCompany(model)) {
+            RemoveCompanyTask task=new RemoveCompanyTask(model);
+            TaskManager.executeTask(task);
+
+            /*if(DatabaseHandler.deleteCompany(model)) {
                 SystemLogging.getLogger().fine("Company Deleted SuccessFully.");
             } else {
                 SystemLogging.getLogger().severe("Error Deleting Companies!");
-            }
+            }*/
         }
 
 
