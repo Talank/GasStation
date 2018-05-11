@@ -32,9 +32,12 @@ public class GetDailyTotalAnalyticsModelTask extends Tasks {
             model.setCExtra(resultSet.getString(1));
             resultSet.close();
 
-            model.setOilIncome(String.valueOf(((Float.parseFloat(model.getIDieselVol())+Float.parseFloat(model.getCDieselVol()))*SystemStatus.getdRate()+(Float.parseFloat(model.getIPetrolVol())+ Float.parseFloat(model.getCPetrolVol())*SystemStatus.getpRate()))));
+            model.setOilIncome(String.valueOf(((Float.parseFloat(model.getIDieselVol())+Float.parseFloat(model.getCDieselVol()))*SystemStatus.getdRate()+(Float.parseFloat(model.getIPetrolVol())+ Float.parseFloat(model.getCPetrolVol()))*SystemStatus.getpRate())));
 
-            taskInterface.onComplete(model);
+            if(taskInterface!=null) {
+                taskInterface.onComplete(model);
+            }
+
 
         } catch(SQLException e) {
             System.out.println(e.getMessage());

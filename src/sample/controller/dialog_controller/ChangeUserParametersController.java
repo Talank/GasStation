@@ -70,6 +70,7 @@ public class ChangeUserParametersController implements BottomBarInterface {
 
 
         conformPassword.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)->{
+
             if(!password.getText().equals(newValue)) {
                 conformPassword.validate();
             } else {
@@ -111,6 +112,10 @@ public class ChangeUserParametersController implements BottomBarInterface {
                 SystemLogging.getLogger().severe("Error Changing Admin Parameters!");
             }*/
         }
+    }
+
+    public void setUserName(String name) {
+        userName.setText(name);
     }
 
 

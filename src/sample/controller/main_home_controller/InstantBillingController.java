@@ -534,8 +534,7 @@ public class InstantBillingController {
 
     private void executeTransaction() {
         List<Transaction> newList=new ArrayList<>(transactionListView.getItems());//Create A shallow copy
-        StoreInstantTransactionTask task=new StoreInstantTransactionTask();
-        task.setInstantTransaction(newList);
+        StoreInstantTransactionTask task=new StoreInstantTransactionTask(newList);
         TaskManager.executeTask(task);
         transactionListView.getItems().clear();
         masterClear();

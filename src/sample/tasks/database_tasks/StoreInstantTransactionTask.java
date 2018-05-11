@@ -16,6 +16,11 @@ public class StoreInstantTransactionTask extends Tasks {
 
     private List<Transaction> instantTransaction;
 
+
+    public StoreInstantTransactionTask(List<Transaction> instantTransaction) {
+        this.instantTransaction=instantTransaction;
+    }
+
     @Override
     public void execute() {
         float pVolume=0,dVolume=0,ePrice=0;
@@ -49,9 +54,9 @@ public class StoreInstantTransactionTask extends Tasks {
             resultSet=getInstant.executeQuery("SELECT VALUE FROM SystemStatus WHERE ID>0 AND ID<4 OR ID=14 OR ID=15");
 
             resultSet.next();
-            pVolume+=Float.parseFloat(resultSet.getString(1));
-            resultSet.next();
             dVolume+=Float.parseFloat(resultSet.getString(1));
+            resultSet.next();
+            pVolume+=Float.parseFloat(resultSet.getString(1));
             resultSet.next();
             ePrice+=Float.parseFloat(resultSet.getString(1));
             resultSet.next();
@@ -91,7 +96,4 @@ public class StoreInstantTransactionTask extends Tasks {
 
     }
 
-    public void setInstantTransaction(List<Transaction> instantTransaction) {
-        this.instantTransaction=instantTransaction;
-    }
 }

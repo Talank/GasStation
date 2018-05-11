@@ -249,8 +249,10 @@ public class SettingsController {
     public void changeUserNameAndPassword(MouseEvent e) throws IOException {
         FXMLLoader loader=new FXMLLoader(getClass().getResource("../../view/dialogs/changeUserParameters.fxml"));
         Parent root=loader.load();
-        LoginDialogController controller=loader.getController();
-        controller.setStatus(1);
+
+        ChangeUserParametersController controller=loader.getController();
+        controller.setUserName(usernameValue.getText());
+
         Stage stage=new Stage();
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(new Scene(root));
