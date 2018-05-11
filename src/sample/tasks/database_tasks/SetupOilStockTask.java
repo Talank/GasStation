@@ -22,12 +22,14 @@ public class SetupOilStockTask extends Tasks {
             connection.setAutoCommit(false);
 
             Statement updateStock=connection.createStatement();
-            updateStock.addBatch("UPDATE SystemStatus SET VALUE="+dieselStock+", DATE="+DatabaseHandler.getCurrentDate()+" WHERE ID=14");
-            updateStock.addBatch("UPDATE SystemStatus SET VALUE="+petrolStock+", DATE="+DatabaseHandler.getCurrentDate()+" WHERE ID=15");
+            updateStock.addBatch("UPDATE SystemStatus SET VALUE='"+dieselStock+"', DATE='"+DatabaseHandler.getCurrentDate()+"' WHERE ID=14");
+            updateStock.addBatch("UPDATE SystemStatus SET VALUE='"+petrolStock+"', DATE='"+DatabaseHandler.getCurrentDate()+"' WHERE ID=15");
             updateStock.executeBatch();
 
             connection.commit();
+
             connection.setAutoCommit(true);
+
 
 
         } catch(SQLException e) {

@@ -6,6 +6,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
+import sample.controller.main_home_controller.SettingsController;
 import sample.library.dialog_bottombar.BottomBarInterface;
 import sample.library.dialog_bottombar.DialogBottomBar;
 import sample.library.dialog_toolbar.DialogToolBar;
@@ -84,6 +85,7 @@ public class OilStockDialogController implements BottomBarInterface {
         if(status==0) {
             SetupOilStockTask task=new SetupOilStockTask(dieselStockValue.getText(),petrolStockValue.getText());
             TaskManager.executeTask(task);
+            SettingsController.getInstance().loadSettings();
             ((Node)e.getSource()).getScene().getWindow().hide();
 
 

@@ -6,6 +6,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
+import sample.controller.main_home_controller.SettingsController;
 import sample.library.dialog_bottombar.BottomBarInterface;
 import sample.library.dialog_bottombar.DialogBottomBar;
 import sample.library.dialog_toolbar.DialogToolBar;
@@ -60,6 +61,7 @@ public class CounterStockDialogController implements BottomBarInterface {
             SetupCounterStockTask task=new SetupCounterStockTask(counterStock.getText());
             TaskManager.executeTask(task);
             ((Node)e.getSource()).getScene().getWindow().hide();
+            SettingsController.getInstance().loadSettings();
             /*if(DatabaseHandler.setupCounterStock(counterStock.getText())) {
                 ((Node)e.getSource()).getScene().getWindow().hide();
             } else {

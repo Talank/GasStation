@@ -108,6 +108,7 @@ public class DailyAnalyticsController {
 
     }
 
+
     @FXML
     public void loadClosing(MouseEvent e) throws IOException {
         Parent root=FXMLLoader.load(getClass().getResource("../../view/dialogs/finalReadings.fxml"));

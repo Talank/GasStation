@@ -17,6 +17,8 @@ public class UpdateCompanyTask extends Tasks {
     @Override
     public void execute() {
         try {
+
+
             PreparedStatement update=connection.prepareStatement("UPDATE CreditCompany SET COMPANY_NAME='"+model.getCompanyName()+"',DAY='"+model.getDays()+"' WHERE ID="+model.getId());
             update.execute();
 

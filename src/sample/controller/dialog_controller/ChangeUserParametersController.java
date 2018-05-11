@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import sample.controller.SystemLogging;
+import sample.controller.main_home_controller.SettingsController;
 import sample.library.dialog_bottombar.BottomBarInterface;
 import sample.library.dialog_bottombar.DialogBottomBar;
 import sample.library.dialog_toolbar.DialogToolBar;
@@ -101,6 +102,7 @@ public class ChangeUserParametersController implements BottomBarInterface {
 
             ChangeUserParameterTask task=new ChangeUserParameterTask(userName.getText().trim(),password.getText().trim());
             TaskManager.executeTask(task);
+            SettingsController.getInstance().loadSettings();
             ((Node)e.getSource()).getScene().getWindow().hide();
             /*if(DatabaseHandler.setAdminParameters(userName.getText().trim(),password.getText().trim())) {
                 SystemLogging.getLogger().fine("Admin Parameter Has Been Changed Successfully.");

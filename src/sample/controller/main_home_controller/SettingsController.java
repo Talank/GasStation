@@ -77,6 +77,20 @@ public class SettingsController {
         debtList.getSelectionModel().select(0);
 
 
+        loadSettings();
+
+
+    }
+
+    /*
+    * This is function is called when user clicks "ADD" button
+    *
+    * A dialog is loaded where he fills the form and the company is added
+    *
+    * */
+
+
+    public void loadSettings() {
         task=new GetSettingsTask();
         task.setOnSucceeded((WorkerStateEvent e)->{
             String model[][]=task.getValue();
@@ -109,16 +123,8 @@ public class SettingsController {
         Thread mainThread=new Thread(task);
         mainThread.setDaemon(true);
         mainThread.start();
-
-
     }
 
-    /*
-    * This is function is called when user clicks "ADD" button
-    *
-    * A dialog is loaded where he fills the form and the company is added
-    *
-    * */
 
     @FXML
     public void addCompany(MouseEvent e) throws IOException {

@@ -1,9 +1,11 @@
 package sample.tasks.database_tasks;
 
 import sample.model.RateModel;
+import sample.model.SystemStatus;
 import sample.model.databases.DatabaseHandler;
 import sample.tasks.Tasks;
 
+import java.sql.SQLException;
 import java.sql.Statement;
 
 public class ChangeOilRateTask extends Tasks {
@@ -23,16 +25,18 @@ public class ChangeOilRateTask extends Tasks {
             connection.setAutoCommit(false);
 
             Statement setRate=connection.createStatement();
-            setRate.addBatch("UPDATE SystemStatus SET VALUE="+String.valueOf(model.getrDiesel())+",DATE="+DatabaseHandler.getCurrentDate().toString()+" WHERE ID=9");
-            setRate.addBatch("UPDATE SystemStatus SET VALUE="+String.valueOf(model.getrPetrol())+",DATE="+DatabaseHandler.getCurrentDate().toString()+" WHERE ID=10");
+            setRate.addBatch("UPDATE SystemStatus SET VALUE='"+String.valueOf(model.getrDiesel())+"',DATE='"+DatabaseHandler.getCurrentDate().toString()+"' WHERE ID=9");
+            setRate.addBatch("UPDATE SystemStatus SET VALUE='"+String.valueOf(model.getrPetrol())+"',DATE='"+DatabaseHandler.getCurrentDate().toString()+"' WHERE ID=10");
             setRate.executeBatch();
 
             connection.commit();
             connection.setAutoCommit(true);
 
+            SystemStatus.setpRate(model.getrPetrol());
+            SystemStatus.setdRate(model.getrDiesel());
 
-        } catch(Exception e) {
-            e.printStackTrace();
+        } catch(SQLException e) {
+            System.out.println(e.getNextException().getMessage());
         }
     }
 }
