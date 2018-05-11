@@ -443,14 +443,14 @@ public class InstantBillingController {
     public void printBill(MouseEvent e)throws IOException {
 
         if(!isListEmpty()) {
+            List<Transaction> newList=new ArrayList<>(transactionListView.getItems());
             executeTransaction();
-            InstantTransactionBill instantTransactionBill=new InstantTransactionBill(transactionListView.getItems());
+            InstantTransactionBill instantTransactionBill=new InstantTransactionBill(newList);
             instantTransactionBill.print();
             snackBar.show("Printing Bill",2000);
         } else {
             snackBar.show("No Transaction Detected.",2000);
         }
-
 
     }
 

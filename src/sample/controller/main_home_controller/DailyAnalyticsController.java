@@ -15,6 +15,7 @@ import sample.model.SystemStatus;
 import javafx.stage.Modality;
 import sample.model.transaction_model.DailyTotalAnalyticModel;
 import sample.tasks.TaskInterface;
+import sample.tasks.TaskManager;
 import sample.tasks.database_tasks.GetDailyTotalAnalyticsModelTask;
 
 import java.io.IOException;
@@ -53,13 +54,16 @@ public class DailyAnalyticsController {
             @Override
             public void onComplete(Object data) {
                 setModel((DailyTotalAnalyticModel)data);
+                System.out.println("Model is set.");
             }
 
             @Override
             public void onError() {
-
+                System.out.println("Error");
             }
         });
+
+        TaskManager.executeTask(task);
 
 
         /*pInitial.setText(String.valueOf(SystemStatus.getiPetrol())+" L");

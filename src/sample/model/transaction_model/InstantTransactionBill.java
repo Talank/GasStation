@@ -31,6 +31,7 @@ public class InstantTransactionBill {
 
         Label label=new Label(builder.toString());
         PrintBill.print(label);
+        Transaction.setTotal(0);
 
     }
 
