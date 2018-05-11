@@ -68,10 +68,10 @@ public class GetCompanyDetailsTask extends Task<List<List<CreditDetailsModel>>> 
 
                     currentSize++;
                     updateProgress(currentSize,totalSize);
-                    mainList.add(smallList);
                 }
 
             }
+            mainList.add(smallList);
             resultSet.close();
             getDetails.close();
 
