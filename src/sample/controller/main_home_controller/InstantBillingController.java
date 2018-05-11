@@ -49,10 +49,10 @@ public class InstantBillingController {
 
 
     @FXML
-    private JFXButton itemsCount;//Reference for the no of items added to the list
+    private JFXButton itemsCount;//sample.ApplicationPreLoader.Reference for the no of items added to the list
 
     @FXML
-    private JFXRadioButton diesel,petrol,extra;//Reference for the radio buttons to select the type of items
+    private JFXRadioButton diesel,petrol,extra;//sample.ApplicationPreLoader.Reference for the radio buttons to select the type of items
 
     @FXML
     public ToolBar toolBar;//Generalized Toolbar reference

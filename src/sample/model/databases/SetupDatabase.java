@@ -1,5 +1,7 @@
 package sample.model.databases;
 
+import sample.Reference;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -7,14 +9,13 @@ import java.sql.Statement;
 
 public class SetupDatabase {
     private static final String DRIVER="org.apache.derby.jdbc.EmbeddedDriver";
-    private static final String JDBC_URL="jdbc:derby:ohmoilpump;create=true";
     private static Connection connection;
 
 
     public static boolean setupDatabase() {
         try {
             Class.forName(DRIVER);
-            connection=DriverManager.getConnection(JDBC_URL);
+            connection=DriverManager.getConnection(Reference.SETUP_URL);
             if(connection!=null) {
                 System.out.println("Connection Established");
                 if(createTable())

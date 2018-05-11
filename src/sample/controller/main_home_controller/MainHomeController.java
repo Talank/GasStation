@@ -32,7 +32,7 @@ public class MainHomeController {
     * Acts as a routing Class to route to different paths
     *
     * */
-    private static MainHomeController instance;//Make Singleton Static Reference
+    private static MainHomeController instance;//Make Singleton Static sample.ApplicationPreLoader.Reference
 
 
 

@@ -2,6 +2,7 @@ package sample.model.databases;
 
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import sample.Reference;
 import sample.controller.SystemLogging;
 import sample.model.*;
 import sample.model.transaction_model.DailyTotalAnalyticModel;
@@ -17,14 +18,13 @@ import java.util.List;
 
 public class DatabaseHandler {
     private static final String DRIVER="org.apache.derby.jdbc.ClientDriver";
-    private static final String JDBC_URL="jdbc:derby://localhost:1527/D:/InelliJIDEA/GasStation/ohmoilpump;create=false";
     private static final String JDBC_SHUTDOWN="jdbc:derby:;shutdown=true";
     private static Connection connection;
 
     public static boolean setupConnection() {
         try {
             Class.forName(DRIVER);
-            connection=DriverManager.getConnection(JDBC_URL);
+            connection=DriverManager.getConnection(Reference.JDBC_URL);
             if(connection!=null) {
                 System.out.println("Connection Established");
                 return true;
