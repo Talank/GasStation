@@ -1,6 +1,8 @@
 package sample.controller.main_home_controller;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXRadioButton;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.WorkerStateEvent;
@@ -10,16 +12,18 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.Toggle;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import sample.OutputTasks.GetRefillTask;
+import sample.controller.dialog_controller.RefillDialogController;
 import sample.library.output_task_loading.OutputTaskLoading;
 import sample.library.toolbar.BackButtonInterface;
 import sample.library.toolbar.ToolBar;
 import sample.model.SystemStatus;
-import sample.model.databases.DatabaseHandler;
 import sample.model.RefillModel;
 
 import java.io.IOException;
@@ -37,32 +41,49 @@ public class ProfitLossController implements BackButtonInterface {
     private JFXButton reFill;
 
     @FXML
+    private JFXRadioButton dieselButton,petrolButton;
+
+    @FXML
+    private ToggleGroup selection;
+
+
+    @FXML
     private ToolBar toolBar;
 
     @FXML
-    private TableView<RefillModel> tableView;
+    private TableView<RefillModel> dieselTable;
+
+
 
     @FXML
-    private TableColumn<RefillModel,String> expectedDiesel;
+    private TableColumn<RefillModel,String> dieselExpected;
 
     @FXML
-    private TableColumn<RefillModel,String> actualDiesel;
-
-    @FXML
-    private TableColumn<RefillModel,String> expectedPetrol;
-
-    @FXML
-    private TableColumn<RefillModel,String> actualPetrol;
+    private TableColumn<RefillModel,String> dieselActual;
 
     @FXML
     private TableColumn<RefillModel,String> petrolLoss;
+
+    @FXML
+    private TableColumn<RefillModel,String> dieselDate;
+
+    @FXML
+    private TableView<RefillModel> petrolTable;
+
+    @FXML
+    private TableColumn<RefillModel,String> petrolExpected;
+
+    @FXML
+    private TableColumn<RefillModel,String> petrolActual;
 
     @FXML
     private TableColumn<RefillModel,String> dieselLoss;
 
 
     @FXML
-    private TableColumn<RefillModel,String> date;
+    private TableColumn<RefillModel,String> petrolDate;
+
+
 
     @FXML
     private VBox profitLossLayout;
@@ -71,7 +92,10 @@ public class ProfitLossController implements BackButtonInterface {
     private OutputTaskLoading progressLayout;
 
 
-    private ObservableList<RefillModel> tableData;
+    private ObservableList<RefillModel> dieselTableData,petrolTableData;
+
+    private int mode=0;
+
 
     private static ProfitLossController instance;
 
@@ -95,17 +119,30 @@ public class ProfitLossController implements BackButtonInterface {
         task=new GetRefillTask();
         progressLayout.setProgressProperty(task.progressProperty());
 
-        expectedDiesel.setCellValueFactory(new PropertyValueFactory<>("expectedDiesel"));
-        actualDiesel.setCellValueFactory(new PropertyValueFactory<>("actualDiesel"));
-        date.setCellValueFactory(new PropertyValueFactory<>("date"));
-        expectedPetrol.setCellValueFactory(new PropertyValueFactory<>("expectedPetrol"));
-        actualPetrol.setCellValueFactory(new PropertyValueFactory<>("actualPetrol"));
-        petrolLoss.setCellValueFactory(new PropertyValueFactory<>("petrolLoss"));
-        dieselLoss.setCellValueFactory(new PropertyValueFactory<>("dieselLoss"));
+
+
+        dieselExpected.setCellValueFactory(new PropertyValueFactory<>("expected"));
+        dieselActual.setCellValueFactory(new PropertyValueFactory<>("actual"));
+        dieselLoss.setCellValueFactory(new PropertyValueFactory<>("loss"));
+        dieselDate.setCellValueFactory(new PropertyValueFactory<>("date"));
+
+
+
+        petrolExpected.setCellValueFactory(new PropertyValueFactory<>("expected"));
+        petrolActual.setCellValueFactory(new PropertyValueFactory<>("actual"));
+        petrolLoss.setCellValueFactory(new PropertyValueFactory<>("loss"));
+        petrolDate.setCellValueFactory(new PropertyValueFactory<>("date"));
+
 
         task.setOnSucceeded((WorkerStateEvent e)->{
-            tableData=FXCollections.observableList(task.getValue());
-            tableView.setItems(tableData);
+
+            dieselTableData=FXCollections.observableList(task.getValue().get(0));
+            petrolTableData=FXCollections.observableList(task.getValue().get(1));
+
+            dieselTable.setItems(dieselTableData);
+            petrolTable.setItems(petrolTableData);
+
+
             progressLayout.setVisible(false);
             profitLossLayout.setVisible(true);
         });
@@ -113,6 +150,22 @@ public class ProfitLossController implements BackButtonInterface {
         Thread mainThread=new Thread(task);
         mainThread.setDaemon(true);
         mainThread.start();
+
+        selection.selectedToggleProperty().addListener((ObservableValue<? extends Toggle > ov, Toggle old_toggle, Toggle new_toggle)->{
+            if(((JFXRadioButton)new_toggle).getText().equals("Diesel")) {
+                dieselButton.setSelected(true);
+                petrolButton.setSelected(false);
+                petrolTable.setVisible(false);
+                dieselTable.setVisible(true);
+                mode=0;
+            } else {
+                petrolButton.setSelected(true);
+                dieselButton.setSelected(false);
+                dieselTable.setVisible(false);
+                petrolTable.setVisible(true);
+                mode=1;
+            }
+        });
 
 
     }
@@ -123,9 +176,14 @@ public class ProfitLossController implements BackButtonInterface {
             task.cancel();
     }
 
-    public void addModel(RefillModel model) {
-        tableData.add(model);
+    public void addDieselModel(RefillModel model) {
+        dieselTableData.add(model);
     }
+
+    public void addPetrolModel(RefillModel model) {
+        petrolTableData.add(model);
+    }
+
 
     public static ProfitLossController getInstance() {
         return instance;
@@ -133,7 +191,19 @@ public class ProfitLossController implements BackButtonInterface {
 
     @FXML
     public void loadRefillChange(MouseEvent e) throws IOException {
-        Parent root=FXMLLoader.load(getClass().getResource("../../view/dialogs/refillDialog.fxml"));
+
+        FXMLLoader loader=new FXMLLoader(getClass().getResource("../../view/dialogs/refillDialog.fxml"));
+
+        Parent root=loader.load();
+        RefillDialogController controller=loader.getController();
+
+        controller.setMode(mode);
+        if(mode==0) {
+            controller.setToolBarTitle("Diesel Refill");
+        } else {
+            controller.setToolBarTitle("Petrol Refill");
+        }
+
         Stage stage=new Stage();
         stage.setScene(new Scene(root));
         stage.show();

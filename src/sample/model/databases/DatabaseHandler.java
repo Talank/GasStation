@@ -610,7 +610,7 @@ public class DatabaseHandler {
         return false;
     }
 
-    public static ArrayList<RefillModel> getRefillModel() {
+    /*public static ArrayList<RefillModel> getRefillModel() {
         ArrayList<RefillModel> arrayList=new ArrayList<>();
 
         try {
@@ -625,7 +625,7 @@ public class DatabaseHandler {
         }
 
         return arrayList;
-    }
+    }*/
 
 
     public static ArrayList<DailyTotalAnalyticModel> getDailyTotalAnalyticModel() {
@@ -746,7 +746,7 @@ public class DatabaseHandler {
         return new Date((new java.util.Date()).getTime());
     }
 
-    public static boolean storeRefill(RefillModel model) {
+   /* public static boolean storeRefill(RefillModel model) {
         try {
             PreparedStatement insertRefill=connection.prepareStatement("INSERT INTO Refill VALUES (?,?,?,?,?,?,?)");
             insertRefill.setFloat(1,model.getExpectedDiesel());
@@ -763,6 +763,6 @@ public class DatabaseHandler {
         }
 
         return false;
-    }
+    }*/
 
 }

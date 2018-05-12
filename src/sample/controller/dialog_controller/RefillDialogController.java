@@ -7,15 +7,15 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import sample.controller.main_home_controller.ProfitLossController;
-import sample.controller.SystemLogging;
 import sample.library.dialog_bottombar.BottomBarInterface;
 import sample.library.dialog_bottombar.DialogBottomBar;
 import sample.library.dialog_toolbar.DialogToolBar;
 import sample.model.SystemStatus;
-import sample.model.databases.DatabaseHandler;
 import sample.model.RefillModel;
+import sample.model.databases.DatabaseHandler;
 import sample.tasks.TaskManager;
 import sample.tasks.database_tasks.RefillTask;
+import sample.tasks.database_tasks.SetupOilStockTask;
 
 import java.io.IOException;
 import java.sql.Date;
@@ -23,7 +23,7 @@ import java.sql.Date;
 public class RefillDialogController implements BottomBarInterface {
 
     @FXML
-    private JFXTextField expectedDiesel,actualDiesel,expectedPetrol,actualPetrol;
+    private JFXTextField expected, actual;
 
     @FXML
     private DialogToolBar toolBar;
@@ -31,111 +31,98 @@ public class RefillDialogController implements BottomBarInterface {
     @FXML
     private DialogBottomBar bottomBar;
 
+    private int mode=0;
+
     @FXML
     public void initialize() {
 
-        toolBar.setDialogTitle("ReFill");
+        toolBar.setDialogTitle("Diesel ReFill");
 
         bottomBar.setButtonText("SAVE");
         bottomBar.setBottomBarInterface(this);
 
         RequiredFieldValidator expectedDieselValidator=new RequiredFieldValidator();
         expectedDieselValidator.setMessage("Expected Value Cannot Be Empty");
-        expectedDiesel.getValidators().add(expectedDieselValidator);
+        expected.getValidators().add(expectedDieselValidator);
 
         RequiredFieldValidator actualDieselValidator=new RequiredFieldValidator();
         actualDieselValidator.setMessage("Actual Value Cannot Be Empty");
-        actualDiesel.getValidators().add(actualDieselValidator);
+        actual.getValidators().add(actualDieselValidator);
 
-        expectedDiesel.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)->{
+        expected.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)->{
             if(!newValue.matches("[0-9]{0,10}([\\.][0-9]{0,4})?")) {
-                expectedDiesel.setText(oldValue);
+                expected.setText(oldValue);
             } else {
                 if(newValue.isEmpty()) {
-                    expectedDiesel.validate();
+                    expected.validate();
                 } else {
-                    expectedDiesel.resetValidation();
+                    expected.resetValidation();
                 }
             }
         });
 
-        actualDiesel.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)->{
+        actual.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)->{
             if(!newValue.matches("[0-9]{0,10}([\\.][0-9]{0,4})?")) {
-                actualDiesel.setText(oldValue);
+                actual.setText(oldValue);
             } else {
                 if(newValue.isEmpty()) {
-                    actualDiesel.validate();
+                    actual.validate();
                 } else {
-                    actualDiesel.resetValidation();
+                    actual.resetValidation();
                 }
             }
         });
 
-        RequiredFieldValidator expectedPetrolValidator=new RequiredFieldValidator();
-        expectedPetrolValidator.setMessage("Expected Value Cannot Be Empty");
-        expectedPetrol.getValidators().add(expectedPetrolValidator);
 
-        RequiredFieldValidator actualPetrolValidator=new RequiredFieldValidator();
-        actualPetrolValidator.setMessage("Actual Value Cannot Be Empty");
-        actualPetrol.getValidators().add(actualPetrolValidator);
+    }
 
-        expectedPetrol.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)->{
-            if(!newValue.matches("[0-9]{0,10}([\\.][0-9]{0,4})?")) {
-                expectedPetrol.setText(oldValue);
-            } else {
-                if(newValue.isEmpty()) {
-                    expectedPetrol.validate();
-                } else {
-                    expectedPetrol.resetValidation();
-                }
-            }
-        });
 
-        actualPetrol.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)->{
-            if(!newValue.matches("[0-9]{0,10}([\\.][0-9]{0,4})?")) {
-                actualPetrol.setText(oldValue);
-            } else {
-                if(newValue.isEmpty()) {
-                    actualPetrol.validate();
-                } else {
-                    actualPetrol.resetValidation();
-                }
-            }
-        });
+    public void setToolBarTitle(String title) {
+        toolBar.setDialogTitle(title);
+    }
 
+    public void setMode(int mode) {
+        this.mode=mode;
     }
 
     @Override
     public void performAction(MouseEvent e) throws IOException {
         int status=0;
 
-        if(expectedDiesel.getText().isEmpty()) {
-            expectedDiesel.validate();
+        if(expected.getText().isEmpty()) {
+            expected.validate();
             status++;
         }
 
-        if(actualDiesel.getText().isEmpty()) {
-            actualDiesel.validate();
+        if(actual.getText().isEmpty()) {
+            actual.validate();
             status++;
         }
 
-        if(expectedPetrol.getText().isEmpty()) {
-            expectedPetrol.validate();
-            status++;
-        }
-
-        if(actualPetrol.getText().isEmpty()) {
-            actualPetrol.validate();
-            status++;
-        }
 
         if(status==0) {
-            float dieselLoss=Float.parseFloat(expectedDiesel.getText())-(SystemStatus.getDieselStock()-Float.parseFloat(actualDiesel.getText()));
-            float petrolLoss=Float.parseFloat(expectedPetrol.getText())-(SystemStatus.getPetrolStock()-Float.parseFloat(actualPetrol.getText()));
-            RefillModel model=new RefillModel(Float.parseFloat(expectedDiesel.getText()),Float.parseFloat(actualDiesel.getText()),Float.parseFloat(expectedPetrol.getText()),Float.parseFloat(actualPetrol.getText()),dieselLoss,petrolLoss,new Date((new java.util.Date().getTime())));
-            ProfitLossController.getInstance().addModel(model);
+            float actualValue=Float.parseFloat(actual.getText())-SystemStatus.getDieselStock();
+            float loss=Float.parseFloat(expected.getText())-actualValue;
 
-            RefillTask task=new RefillTask(model);
+            RefillModel model=new RefillModel(Float.parseFloat(expected.getText()),actualValue,loss,DatabaseHandler.getCurrentDate());
+
+            if(mode==0) {
+                ProfitLossController.getInstance().addDieselModel(model);
+
+                SystemStatus.setDieselStock(Float.parseFloat(actual.getText()));
+
+                SetupOilStockTask task=new SetupOilStockTask(actual.getText(),String.valueOf(SystemStatus.getPetrolStock()));
+                TaskManager.executeTask(task);
+
+            } else {
+                ProfitLossController.getInstance().addPetrolModel(model);
+
+                SystemStatus.setPetrolStock(Float.parseFloat(actual.getText()));
+
+                SetupOilStockTask task=new SetupOilStockTask(String.valueOf(SystemStatus.getDieselStock()),actual.getText());
+                TaskManager.executeTask(task);
+            }
+            RefillTask task=new RefillTask(model,mode);
             TaskManager.executeTask(task);
             ((Node)e.getSource()).getScene().getWindow().hide();
 

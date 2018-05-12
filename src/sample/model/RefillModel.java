@@ -4,66 +4,39 @@ import java.sql.Date;
 
 public class RefillModel {
 
-    private Float expectedDiesel,actualDiesel,expectedPetrol,actualPetrol;
-    private Float dieselLoss,petrolLoss;
+    private Float expected,actual,loss;
+
     private Date date;
 
-    public RefillModel(Float expectedDiesel, Float actualDiesel, Float expectedPetrol, Float actualPetrol, Float dieselLoss, Float petrolLoss, Date date) {
-        this.expectedDiesel = expectedDiesel;
-        this.actualDiesel = actualDiesel;
-        this.expectedPetrol = expectedPetrol;
-        this.actualPetrol = actualPetrol;
-        this.dieselLoss = dieselLoss;
-        this.petrolLoss = petrolLoss;
+    public RefillModel(Float expected, Float actual, Float loss, Date date) {
+        this.expected = expected;
+        this.actual = actual;
+        this.loss = loss;
         this.date = date;
     }
 
-    public Float getExpectedDiesel() {
-        return expectedDiesel;
+    public Float getExpected() {
+        return expected;
     }
 
-    public void setExpectedDiesel(Float expectedDiesel) {
-        this.expectedDiesel = expectedDiesel;
+    public void setExpected(Float expected) {
+        this.expected = expected;
     }
 
-    public Float getActualDiesel() {
-        return actualDiesel;
+    public Float getActual() {
+        return actual;
     }
 
-    public void setActualDiesel(Float actualDiesel) {
-        this.actualDiesel = actualDiesel;
+    public void setActual(Float actual) {
+        this.actual = actual;
     }
 
-    public Float getExpectedPetrol() {
-        return expectedPetrol;
+    public Float getLoss() {
+        return loss;
     }
 
-    public void setExpectedPetrol(Float expectedPetrol) {
-        this.expectedPetrol = expectedPetrol;
-    }
-
-    public Float getActualPetrol() {
-        return actualPetrol;
-    }
-
-    public void setActualPetrol(Float actualPetrol) {
-        this.actualPetrol = actualPetrol;
-    }
-
-    public Float getDieselLoss() {
-        return dieselLoss;
-    }
-
-    public void setDieselLoss(Float dieselLoss) {
-        this.dieselLoss = dieselLoss;
-    }
-
-    public Float getPetrolLoss() {
-        return petrolLoss;
-    }
-
-    public void setPetrolLoss(Float petrolLoss) {
-        this.petrolLoss = petrolLoss;
+    public void setLoss(Float loss) {
+        this.loss = loss;
     }
 
     public Date getDate() {

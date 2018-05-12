@@ -9,21 +9,28 @@ public class RefillTask extends Tasks {
 
     private RefillModel model;
 
-    public RefillTask(RefillModel model) {
+    private int mode;
+
+    public RefillTask(RefillModel model,int mode) {
         this.model=model;
+        this.mode=mode;
     }
 
     @Override
     public void execute() {
         try {
-            PreparedStatement insertRefill=connection.prepareStatement("INSERT INTO Refill VALUES (?,?,?,?,?,?,?)");
-            insertRefill.setFloat(1,model.getExpectedDiesel());
-            insertRefill.setFloat(2,model.getActualDiesel());
-            insertRefill.setFloat(3,model.getExpectedPetrol());
-            insertRefill.setFloat(4,model.getActualPetrol());
-            insertRefill.setFloat(5,model.getDieselLoss());
-            insertRefill.setFloat(6,model.getPetrolLoss());
-            insertRefill.setDate(7,model.getDate());
+
+            PreparedStatement insertRefill;
+
+            if(mode==0) {
+                insertRefill=connection.prepareStatement("INSERT INTO DIESEL_REFILL VALUES (?,?,?,?)");
+            } else {
+                insertRefill=connection.prepareStatement("INSERT INTO PETROL_REFILL VALUES (?,?,?,?)");
+            }
+            insertRefill.setFloat(1,model.getExpected());
+            insertRefill.setFloat(2,model.getActual());
+            insertRefill.setFloat(3,model.getLoss());
+            insertRefill.setDate(4,model.getDate());
             insertRefill.execute();
         } catch(Exception e) {
             e.printStackTrace();
