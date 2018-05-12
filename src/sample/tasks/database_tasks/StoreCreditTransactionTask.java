@@ -141,6 +141,10 @@ public class StoreCreditTransactionTask extends Tasks {
 
         }  catch(SQLException e) {
             System.out.println(e.getMessage());
+
+            retryStatus++;
+            System.out.println("Error Inserting Credit Transaction.ReScheduling Task Again. Retry:"+retryStatus);
+
             TaskManager.scheduleTask(this,5000);
             System.out.println("Scheduling Task Again.");
             SystemLogging.getLogger().warning("Error Storing Transaction in Database");

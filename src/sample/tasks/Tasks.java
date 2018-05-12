@@ -10,6 +10,8 @@ public class Tasks {
 
     protected static Connection connection;
 
+    protected int retryStatus=0;
+
     protected TaskInterface taskInterface;
 
     public static boolean setupConnection() {
@@ -33,6 +35,10 @@ public class Tasks {
 
     public void addTaskInterfaceListener(TaskInterface taskInterface) {
         this.taskInterface=taskInterface;
+    }
+
+    public int getRetryStatus() {
+        return retryStatus;
     }
 
     public void execute() {

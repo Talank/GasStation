@@ -9,6 +9,8 @@ public class TaskManager {
     private static int maxThread=0;
     private static Thread mainThread;
 
+    private static final int MAX_RETRY=5;
+
     public static void init(int threadSize) {
         maxThread=threadSize;
         taskQueue=new TaskQueue(10);
@@ -25,8 +27,12 @@ public class TaskManager {
                     }
                 } else {
                     System.out.println("Task Detected, Executing Task.");
-
-                    taskQueue.deQueue().execute();
+                    Tasks task=taskQueue.deQueue();
+                    if(task.getRetryStatus()<=MAX_RETRY) {
+                        task.execute();
+                    } else {
+                        System.out.println("Task Failed Many Times. Stopping Task.");
+                    }
                 }
             }
 

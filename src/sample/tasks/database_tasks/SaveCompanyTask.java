@@ -80,7 +80,8 @@ public class SaveCompanyTask extends Tasks {
 
 
         } catch (Exception e) {
-            System.out.println("Error Saving Company.ReScheduling Task Again.");
+            retryStatus++;
+            System.out.println("Error Saving Company.ReScheduling Task Again. Retry:"+retryStatus);
 
             TaskManager.scheduleTask(this,5000);
             e.printStackTrace();
