@@ -2,9 +2,11 @@ package sample.tasks.database_tasks;
 
 import javafx.application.Platform;
 import sample.model.databases.DatabaseHandler;
+import sample.nepali_date.NepaliDateGenerator;
 import sample.tasks.TaskManager;
 import sample.tasks.Tasks;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -59,7 +61,7 @@ public class SaveCompanyTask extends Tasks {
                 addCompany.setInt(1,j);
                 addCompany.setString(4,creditCycle);
                 addCompany.setInt(3,1);
-                addCompany.setDate(5,DatabaseHandler.getCurrentDate());
+                addCompany.setDate(5,Date.valueOf((new NepaliDateGenerator()).getConvertedNepaliDate()));
                 addCompany.execute();
                 taskStatus++;
             }

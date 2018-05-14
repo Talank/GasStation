@@ -1,8 +1,10 @@
 package sample.tasks.database_tasks;
 
 import sample.model.databases.DatabaseHandler;
+import sample.nepali_date.NepaliDateGenerator;
 import sample.tasks.Tasks;
 
+import java.sql.Date;
 import java.sql.Statement;
 
 public class ChangeUserParameterTask extends Tasks {
@@ -19,11 +21,12 @@ public class ChangeUserParameterTask extends Tasks {
     public void execute() {
         try {
 
-            connection.setAutoCommit(false);
+            Date currentDate=Date.valueOf((new NepaliDateGenerator()).getConvertedNepaliDate());
 
+            connection.setAutoCommit(false);
             Statement updateUser=connection.createStatement();
-            updateUser.addBatch("UPDATE SystemStatus SET VALUE='"+userName+"',DATE='"+DatabaseHandler.getCurrentDate()+"' WHERE ID=7");
-            updateUser.addBatch("UPDATE SystemStatus SET VALUE='"+password+"',DATE='"+DatabaseHandler.getCurrentDate()+"' WHERE ID=8");
+            updateUser.addBatch("UPDATE SystemStatus SET VALUE='"+userName+"',DATE='"+currentDate+"' WHERE ID=7");
+            updateUser.addBatch("UPDATE SystemStatus SET VALUE='"+password+"',DATE='"+currentDate+"' WHERE ID=8");
 
             updateUser.executeBatch();
             connection.commit();

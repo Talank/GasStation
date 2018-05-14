@@ -4,6 +4,7 @@ import sample.controller.SystemLogging;
 import sample.model.SystemStatus;
 import sample.model.databases.DatabaseHandler;
 import sample.model.transaction_model.Transaction;
+import sample.nepali_date.NepaliDateGenerator;
 import sample.tasks.TaskManager;
 import sample.tasks.Tasks;
 
@@ -49,7 +50,7 @@ public class StoreCreditTransactionTask extends Tasks {
 
                 System.out.println("Query:"+query);
 
-                Date date=DatabaseHandler.getCurrentDate();
+                Date currentDate=Date.valueOf((new NepaliDateGenerator()).getConvertedNepaliDate());
                 for(Transaction transaction:instantTransaction) {
 
                     insertCredit.setInt(1,ids[1]);
@@ -77,7 +78,7 @@ public class StoreCreditTransactionTask extends Tasks {
                         insertCredit.setFloat(5,transaction.getVolume());
                     }
                     insertCredit.setFloat(6,transaction.getPrice());
-                    insertCredit.setDate(7,date);
+                    insertCredit.setDate(7,currentDate);
 
                     insertCredit.addBatch();
 

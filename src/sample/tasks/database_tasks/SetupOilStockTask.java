@@ -1,8 +1,12 @@
 package sample.tasks.database_tasks;
 
+import sample.model.SystemStatus;
 import sample.model.databases.DatabaseHandler;
+import sample.nepali_date.NepaliDateGenerator;
 import sample.tasks.Tasks;
 
+import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -19,17 +23,39 @@ public class SetupOilStockTask extends Tasks {
     @Override
     public void execute() {
         try {
-            connection.setAutoCommit(false);
 
-            Statement updateStock=connection.createStatement();
-            updateStock.addBatch("UPDATE SystemStatus SET VALUE='"+dieselStock+"', DATE='"+DatabaseHandler.getCurrentDate()+"' WHERE ID=14");
-            updateStock.addBatch("UPDATE SystemStatus SET VALUE='"+petrolStock+"', DATE='"+DatabaseHandler.getCurrentDate()+"' WHERE ID=15");
-            updateStock.executeBatch();
+            Date currentDate=Date.valueOf((new NepaliDateGenerator()).getConvertedNepaliDate());
 
-            connection.commit();
+            if(SystemStatus.getDieselStock()!=Float.parseFloat(dieselStock)&&SystemStatus.getPetrolStock()!=Float.parseFloat(petrolStock)) {
+                connection.setAutoCommit(false);
 
-            connection.setAutoCommit(true);
+                Statement updateStock=connection.createStatement();
+                updateStock.addBatch("UPDATE SystemStatus SET VALUE='"+dieselStock+"', DATE='"+currentDate+"' WHERE ID=14");
+                updateStock.addBatch("UPDATE SystemStatus SET VALUE='"+petrolStock+"', DATE='"+currentDate+"' WHERE ID=15");
+                updateStock.executeBatch();
 
+                connection.commit();
+
+                connection.setAutoCommit(true);
+                SystemStatus.setDieselStock(Float.parseFloat(dieselStock));
+                SystemStatus.setPetrolStock(Float.parseFloat(petrolStock));
+
+
+            } else {
+
+                if(SystemStatus.getDieselStock()!=Float.parseFloat(dieselStock)) {
+                    PreparedStatement updateStock=connection.prepareStatement("UPDATE SystemStatus SET VALUE='"+dieselStock+"', DATE='"+currentDate+"' WHERE ID=14");
+                    updateStock.execute();
+                    SystemStatus.setDieselStock(Float.parseFloat(dieselStock));
+                }
+
+                if(SystemStatus.getPetrolStock()!=Float.parseFloat(petrolStock)) {
+                    PreparedStatement updateStock=connection.prepareStatement("UPDATE SystemStatus SET VALUE='"+petrolStock+"', DATE='"+currentDate+"' WHERE ID=15");
+                    updateStock.execute();
+                    SystemStatus.setPetrolStock(Float.parseFloat(petrolStock));
+                }
+
+            }
 
 
         } catch(SQLException e) {

@@ -20,6 +20,15 @@ import sample.tasks.TaskManager;
 import sample.tasks.Tasks;
 import sample.tasks.database_tasks.InitializeSystem;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
+import java.util.Date;
+import java.util.Locale;
+
 
 public class Main extends Application {
 
@@ -45,6 +54,10 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
+
+        System.out.println(LocalDateTime.now().getDayOfYear());
+
+
 
         if(startup) {
             primaryStage.setTitle("Ohm Gas Station");
