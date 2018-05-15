@@ -1,5 +1,6 @@
 package sample.tasks.database_tasks;
 
+import sample.Reference;
 import sample.tasks.TaskInterface;
 import sample.tasks.Tasks;
 
@@ -12,7 +13,7 @@ public class SetupDatabaseConnection extends Tasks {
     public void execute() {
         try {
             Class.forName(DRIVER);
-            connection=DriverManager.getConnection(JDBC_URL);
+            connection=DriverManager.getConnection(Reference.JDBC_URL);
             if(connection!=null) {
                 System.out.println("Connection Established");
             } else {

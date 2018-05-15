@@ -1,14 +1,29 @@
 package sample.tasks.database_tasks;
 
+import javafx.application.Platform;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import org.omg.PortableInterceptor.LOCATION_FORWARD;
 import sample.controller.SystemLogging;
 import sample.model.*;
 import sample.model.databases.DatabaseHandler;
+import sample.nepali_date.NepaliDateGenerator;
 import sample.tasks.Tasks;
 
+import java.io.IOException;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class InitializeSystem extends Tasks {
 
@@ -17,6 +32,60 @@ public class InitializeSystem extends Tasks {
 
         SystemLogging.initializeLogger();//Initialize The Logger
         SystemStatus.setMainHomePath("../../view/main_home_views/mainHome.fxml");
+
+        SystemStatus.setCurrentDate(Date.valueOf((new NepaliDateGenerator()).getConvertedNepaliDate()));
+        SystemStatus.setTransactionDate(Date.valueOf((new NepaliDateGenerator()).getConvertedNepaliDate()));
+
+
+
+        LocalTime time=LocalTime.now();
+        int hourDiff=17-time.getHour();
+
+        if(hourDiff<0) {
+            System.out.println("System Restart After 5 PM. Not Scheduling Task.");
+        } else {
+            final long delay=(hourDiff*3600)+time.getMinute()*60+time.getSecond();
+
+            System.out.println("Hour Delay:"+hourDiff);
+
+
+            Thread scheduleThread= new Thread(()->{
+                try {
+
+                    System.out.println("Total Delay:"+delay*1000);
+
+                    Thread.sleep(delay*1000);
+
+                    Platform.runLater(()->{
+
+                        try {
+                            Parent root=FXMLLoader.load(getClass().getResource("../../view/dialogs/finalReadings.fxml"));
+                            Stage stage=new Stage();
+                            stage.setScene(new Scene(root));
+                            stage.initModality(Modality.APPLICATION_MODAL);
+                            stage.show();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+                    });
+
+                } catch(InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+            });
+            scheduleThread.setDaemon(true);
+            scheduleThread.start();
+
+        }
+
+
+        System.out.println(time);
+
+
+
+
 
         ArrayList<DebtListModel> arrayList=new ArrayList<>();
         try {
@@ -51,7 +120,9 @@ public class InitializeSystem extends Tasks {
             e.printStackTrace();
         }
 
-        try {
+        //This code is moved to Today Closing task as it is more Feasible to reset system when Closing is done rather than at start up
+
+        /*try {
 
             connection.setAutoCommit(false);
             Statement resetSystem=connection.createStatement();
@@ -68,7 +139,7 @@ public class InitializeSystem extends Tasks {
 
         } catch(SQLException e) {
             System.out.println(e.getMessage());
-        }
+        }*/
 
         try {
             Statement getRate=connection.createStatement();

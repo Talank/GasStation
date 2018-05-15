@@ -50,7 +50,6 @@ public class StoreCreditTransactionTask extends Tasks {
 
                 System.out.println("Query:"+query);
 
-                Date currentDate=Date.valueOf((new NepaliDateGenerator()).getConvertedNepaliDate());
                 for(Transaction transaction:instantTransaction) {
 
                     insertCredit.setInt(1,ids[1]);
@@ -78,7 +77,7 @@ public class StoreCreditTransactionTask extends Tasks {
                         insertCredit.setFloat(5,transaction.getVolume());
                     }
                     insertCredit.setFloat(6,transaction.getPrice());
-                    insertCredit.setDate(7,currentDate);
+                    insertCredit.setDate(7,SystemStatus.getTransactionDate());
 
                     insertCredit.addBatch();
 

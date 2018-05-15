@@ -1,6 +1,7 @@
 package sample.tasks.database_tasks;
 
 import sample.model.RefillModel;
+import sample.model.SystemStatus;
 import sample.tasks.Tasks;
 
 import java.sql.PreparedStatement;
@@ -30,7 +31,7 @@ public class RefillTask extends Tasks {
             insertRefill.setFloat(1,model.getExpected());
             insertRefill.setFloat(2,model.getActual());
             insertRefill.setFloat(3,model.getLoss());
-            insertRefill.setDate(4,model.getDate());
+            insertRefill.setDate(4,SystemStatus.getCurrentDate());
             insertRefill.execute();
         } catch(Exception e) {
             e.printStackTrace();

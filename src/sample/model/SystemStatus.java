@@ -1,9 +1,12 @@
 package sample.model;
 
+import java.sql.Date;
+
 public class SystemStatus {
     private static float iDiesel,iPetrol,iCounter,fDiesel,fPetrol,dRate,pRate;
     private static float dieselStock,petrolStock;
     private static String mainHomePath;
+    private static Date currentDate,transactionDate;
 
     public static void initializeInitial(DailyAnalyticsModel model) {
         iDiesel=model.getdInitial();
@@ -89,5 +92,21 @@ public class SystemStatus {
 
     public static void setPetrolStock(float petrolStock) {
         SystemStatus.petrolStock = petrolStock;
+    }
+
+    public static Date getCurrentDate() {
+        return currentDate;
+    }
+
+    public static void setCurrentDate(Date currentDate) {
+        SystemStatus.currentDate = currentDate;
+    }
+
+    public static Date getTransactionDate() {
+        return transactionDate;
+    }
+
+    public static void setTransactionDate(Date transactionDate) {
+        SystemStatus.transactionDate = transactionDate;
     }
 }

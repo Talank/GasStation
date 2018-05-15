@@ -7,16 +7,15 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import sample.controller.SystemLogging;
 import sample.controller.dialog_controller.ClosingCalculationController;
 import sample.library.toolbar.ToolBar;
-import sample.model.databases.DatabaseHandler;
 import sample.model.SystemStatus;
 import javafx.stage.Modality;
 import sample.model.transaction_model.DailyTotalAnalyticModel;
 import sample.tasks.TaskInterface;
 import sample.tasks.TaskManager;
 import sample.tasks.database_tasks.GetDailyTotalAnalyticsModelTask;
+import sample.tasks.database_tasks.TodayClosingTask;
 
 import java.io.IOException;
 
@@ -119,6 +118,11 @@ public class DailyAnalyticsController {
     }
 
     public void showResults() throws IOException {
+
+        TodayClosingTask task=new TodayClosingTask();
+        TaskManager.executeTask(task);
+
+
         float[] data={(Float.parseFloat(model.getIDieselVol())+Float.parseFloat(model.getCDieselVol())),(SystemStatus.getfDiesel()-SystemStatus.getiDiesel()),((Float.parseFloat(model.getIPetrolVol())+Float.parseFloat(model.getCPetrolVol()))),(SystemStatus.getfPetrol()-SystemStatus.getiPetrol())};
         FXMLLoader loader=new FXMLLoader(getClass().getResource("../../view/dialogs/closingCalculation.fxml"));
         Parent root=loader.load();

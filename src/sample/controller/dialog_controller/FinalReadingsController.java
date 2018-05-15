@@ -17,6 +17,8 @@ import sample.library.dialog_toolbar.DialogToolBar;
 import sample.model.DailyAnalyticsModel;
 import sample.model.SystemStatus;
 import sample.model.databases.DatabaseHandler;
+import sample.tasks.TaskManager;
+import sample.tasks.database_tasks.TodayClosingTask;
 import sun.misc.FpUtils;
 
 import java.io.IOException;
@@ -96,8 +98,16 @@ public class FinalReadingsController implements BottomBarInterface {
         if(status==0) {
             SystemStatus.setfDiesel(Float.parseFloat(fDiesel.getText()));
             SystemStatus.setfPetrol(Float.parseFloat(fPetrol.getText()));
+
+            if(DailyAnalyticsController.getInstance()!=null) {
+                DailyAnalyticsController.getInstance().showResults();
+            } else {
+                TodayClosingTask task=new TodayClosingTask();
+                TaskManager.executeTask(task);
+            }
+
             ((Node)e.getSource()).getScene().getWindow().hide();
-            DailyAnalyticsController.getInstance().showResults();
+
         }
     }
 

@@ -1,12 +1,13 @@
 package sample.tasks;
 
+import sample.Reference;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 
 public class Tasks {
 
     protected static final String DRIVER="org.apache.derby.jdbc.ClientDriver";
-    protected static final String JDBC_URL="jdbc:derby://localhost:1527/D:/InelliJIDEA/GasStation/ohmoilpump;create=false";
 
     protected static Connection connection;
 
@@ -17,7 +18,7 @@ public class Tasks {
     public static boolean setupConnection() {
         try {
             Class.forName(DRIVER);
-            connection=DriverManager.getConnection(JDBC_URL);
+            connection=DriverManager.getConnection(Reference.JDBC_URL);
             if(connection!=null) {
                 System.out.println("Connection Established");
                 return true;
