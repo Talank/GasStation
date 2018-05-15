@@ -10,7 +10,7 @@ public class NepaliDateGeneratorTest {
 
     @Test
     public void test() {
-        NepaliDateGenerator generator=new NepaliDateGenerator(LocalDate.of(2018,8,26));
+        NepaliDateGenerator generator=new NepaliDateGenerator(LocalDate.of(2018,7,16));
         //generator.convertDate();
     }
 

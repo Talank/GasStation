@@ -1,6 +1,7 @@
 package sample.nepali_date;
 
 
+import sample.controller.SystemLogging;
 import sun.rmi.server.LoaderHandler;
 
 import java.sql.Date;
@@ -22,8 +23,7 @@ public class NepaliDateGenerator {
 
     private LocalDate startEnglishDate,currentEnglishDate,convertedNepaliDate;
 
-
-    private String nepaliDate;
+    private NepaliDateFormat dateFormat;
 
 
     public NepaliDateGenerator() {
@@ -73,23 +73,29 @@ public class NepaliDateGenerator {
             }
         }
 
-        convertedNepaliDate=LocalDate.of(nYear,nMonth,nDay);
+        /*convertedNepaliDate=LocalDate.of(nYear,nMonth,nDay);*/
+
+        dateFormat=new NepaliDateFormat(nYear,nMonth,nDay,currentEnglishDate.getDayOfWeek().name());
+
+        SystemLogging.log("Converted Nepali Date:"+dateFormat.toString());
 
 
-        System.out.println(nYear+"-"+nMonth+"-"+nDay);
 
+    }
 
+    public NepaliDateFormat getDateFormat() {
+        return dateFormat;
     }
 
     @Override
     public String toString() {
-        return nepaliDate;
+        return dateFormat.toString();
     }
 
 
-    public LocalDate getConvertedNepaliDate() {
+    /*public LocalDate getConvertedNepaliDate() {
         return convertedNepaliDate;
-    }
+    }*/
 
     public void test() {
 

@@ -6,6 +6,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
+import sample.controller.SystemLogging;
 import sample.controller.main_home_controller.ProfitLossController;
 import sample.library.dialog_bottombar.BottomBarInterface;
 import sample.library.dialog_bottombar.DialogBottomBar;
@@ -104,7 +105,7 @@ public class RefillDialogController implements BottomBarInterface {
             float actualValue=Float.parseFloat(actual.getText())-SystemStatus.getDieselStock();
             float loss=Float.parseFloat(expected.getText())-actualValue;
 
-            RefillModel model=new RefillModel(Float.parseFloat(expected.getText()),actualValue,loss,DatabaseHandler.getCurrentDate());
+            RefillModel model=new RefillModel(Float.parseFloat(expected.getText()),actualValue,loss,SystemStatus.getCurrentDate());
 
             if(mode==0) {
                 ProfitLossController.getInstance().addDieselModel(model);

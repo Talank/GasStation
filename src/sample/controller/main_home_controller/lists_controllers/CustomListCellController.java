@@ -4,13 +4,21 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import sample.model.DebtListModel;
+import sample.model.SystemStatus;
+
+import java.io.IOException;
 
 public class CustomListCellController {
 
     @FXML
     private Label companyLabel,date,days;
+
+
+    private DebtListModel model;
 
     private VBox vbox;
 
@@ -26,9 +34,28 @@ public class CustomListCellController {
     }
 
     public void setData(DebtListModel model) {
+        this.model=model;
         companyLabel.setText(model.getCompanyName());
         date.setText("Credit Time:"+model.getDate());
         days.setText("Credit Cycle:"+model.getDays()+" Days");
+        if(model.isExpired()) {
+            companyLabel.setTextFill(Color.RED);
+            date.setTextFill(Color.RED);
+            days.setTextFill(Color.RED);
+        }
+
+
+    }
+
+    @FXML
+    public void closing(MouseEvent e) throws IOException {
+
+        model.setExpired(false);
+        companyLabel.setTextFill(Color.BLACK);
+        date.setTextFill(Color.BLACK);
+        days.setTextFill(Color.BLACK);
+        date.setText("Credit Time:"+SystemStatus.getCurrentDate());
+
     }
 
     public Node getView() {

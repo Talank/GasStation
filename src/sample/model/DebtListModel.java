@@ -4,6 +4,8 @@ public class DebtListModel {
     private String companyName,date,days;
     private int id,transactionID;
 
+    private boolean isExpired=false;
+
     public DebtListModel(String companyName,String date,String days,int id,int transactionID) {
         this.companyName = companyName;
         this.date=date;
@@ -50,5 +52,13 @@ public class DebtListModel {
 
     public void setTransactionID(int transactionID) {
         this.transactionID = transactionID;
+    }
+
+    public boolean isExpired() {
+        return isExpired;
+    }
+
+    public void setExpired(boolean expired) {
+        isExpired = expired;
     }
 }

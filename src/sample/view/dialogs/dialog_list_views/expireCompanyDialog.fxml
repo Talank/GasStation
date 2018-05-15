@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.BorderPane?>
+
+
+
+<?import sample.library.dialog_toolbar.DialogToolBar?>
+<?import sample.library.dialog_bottombar.DialogBottomBar?>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controller.dialog_controller.dialog_list_view_controller.ExpireCompanyDialogController">
+   <center>
+      <ListView fx:id="expireListView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+   </center>
+
+   <top>
+      <DialogToolBar fx:id="toolBar"/>
+   </top>
+
+   <bottom>
+      <DialogBottomBar fx:id="bottomBar"/>
+   </bottom>
+</BorderPane>

@@ -6,9 +6,9 @@ public class RefillModel {
 
     private Float expected,actual,loss;
 
-    private Date date;
+    private String date;
 
-    public RefillModel(Float expected, Float actual, Float loss, Date date) {
+    public RefillModel(Float expected, Float actual, Float loss, String date) {
         this.expected = expected;
         this.actual = actual;
         this.loss = loss;
@@ -39,11 +39,11 @@ public class RefillModel {
         this.loss = loss;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 }

@@ -39,7 +39,7 @@ public class TodayClosingTask extends Tasks {
             SystemStatus.setfPetrol(0f);
 
             LocalDate tomorrow=LocalDate.now().plusDays(1);
-            SystemStatus.setTransactionDate(Date.valueOf((new NepaliDateGenerator(tomorrow)).getConvertedNepaliDate()));
+            SystemStatus.setTransactionDate((new NepaliDateGenerator(tomorrow)).toString());
 
             SystemLogging.getLogger().fine("Closing Successfully Done. Next Transaction Stored on Date:"+SystemStatus.getTransactionDate());
             System.out.println("Closing Successfully Done. Next Transaction Stored on Date:"+SystemStatus.getTransactionDate());

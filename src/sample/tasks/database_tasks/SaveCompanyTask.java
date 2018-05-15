@@ -62,14 +62,14 @@ public class SaveCompanyTask extends Tasks {
                 addCompany.setInt(1,j);
                 addCompany.setString(4,creditCycle);
                 addCompany.setInt(3,1);
-                addCompany.setDate(5,SystemStatus.getCurrentDate());
+                addCompany.setString(5,SystemStatus.getCurrentDate());
                 addCompany.execute();
                 taskStatus++;
             }
 
             if(taskStatus==1) {
                 Statement createTable=connection.createStatement();
-                createTable.execute("CREATE TABLE "+DatabaseHandler.generateTableName(companyName,j)+" (TRANSACTION_ID INT NOT NULL,TYPE VARCHAR(10) NOT NULL,VEHICLE_NO VARCHAR(10) NOT NULL,RATE FLOAT NOT NULL,VOLUME FLOAT NOT NULL,PRICE FLOAT NOT NULL,DATE DATE NOT NULL)");
+                createTable.execute("CREATE TABLE "+DatabaseHandler.generateTableName(companyName,j)+" (TRANSACTION_ID INT NOT NULL,TYPE VARCHAR(10) NOT NULL,VEHICLE_NO VARCHAR(10) NOT NULL,RATE FLOAT NOT NULL,VOLUME FLOAT NOT NULL,PRICE FLOAT NOT NULL,DATE VARCHAR(30) NOT NULL)");
                 taskStatus++;
             }
 

@@ -10,6 +10,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import sample.controller.SystemLogging;
 import sample.controller.main_home_controller.DailyAnalyticsController;
 import sample.library.dialog_bottombar.BottomBarInterface;
 import sample.library.dialog_bottombar.DialogBottomBar;
@@ -102,8 +103,8 @@ public class FinalReadingsController implements BottomBarInterface {
             if(DailyAnalyticsController.getInstance()!=null) {
                 DailyAnalyticsController.getInstance().showResults();
             } else {
-                TodayClosingTask task=new TodayClosingTask();
-                TaskManager.executeTask(task);
+                SystemLogging.getLogger().severe("DailyAnalyticsController was Null!");
+                SystemLogging.log("DailyAnalyticsController was Null!");
             }
 
             ((Node)e.getSource()).getScene().getWindow().hide();

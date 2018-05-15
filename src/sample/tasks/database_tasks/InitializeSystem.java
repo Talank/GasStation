@@ -10,7 +10,10 @@ import org.omg.PortableInterceptor.LOCATION_FORWARD;
 import sample.controller.SystemLogging;
 import sample.model.*;
 import sample.model.databases.DatabaseHandler;
+import sample.nepali_date.NepaliDate;
+import sample.nepali_date.NepaliDateFormat;
 import sample.nepali_date.NepaliDateGenerator;
+import sample.nepali_date.ParseNepaliDate;
 import sample.tasks.Tasks;
 
 import java.io.IOException;
@@ -18,8 +21,10 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -33,12 +38,21 @@ public class InitializeSystem extends Tasks {
         SystemLogging.initializeLogger();//Initialize The Logger
         SystemStatus.setMainHomePath("../../view/main_home_views/mainHome.fxml");
 
-        SystemStatus.setCurrentDate(Date.valueOf((new NepaliDateGenerator()).getConvertedNepaliDate()));
-        SystemStatus.setTransactionDate(Date.valueOf((new NepaliDateGenerator()).getConvertedNepaliDate()));
+        Calendar calendar=Calendar.getInstance();
+        calendar.set(2000,Calendar.JANUARY,32);
+
+        SystemLogging.log("Day of Month:"+calendar.get(Calendar.DAY_OF_MONTH));
+
+        NepaliDateGenerator generator=new NepaliDateGenerator();
+
+        SystemStatus.setCurrentDate(generator.toString());
+        SystemStatus.setTransactionDate(generator.toString());
 
 
+        //To Be Removed
 
-        LocalTime time=LocalTime.now();
+
+        /*LocalTime time=LocalTime.now();
         int hourDiff=17-time.getHour();
 
         if(hourDiff<0) {
@@ -78,27 +92,45 @@ public class InitializeSystem extends Tasks {
             scheduleThread.setDaemon(true);
             scheduleThread.start();
 
-        }
+        }*/
 
 
-        System.out.println(time);
+        int nDay=generator.getDateFormat().getnDay();
 
+        int nMonth=generator.getDateFormat().getnMonth();
 
-
-
+        ParseNepaliDate initialDate=new ParseNepaliDate();
 
         ArrayList<DebtListModel> arrayList=new ArrayList<>();
+
+        ArrayList<DebtListModel> expiredList=new ArrayList<>();
+
+        DebtListModel model;
+
         try {
             Statement getDebitList=connection.createStatement();
             ResultSet resultSet=getDebitList.executeQuery("SELECT * FROM CreditCompany");
             while(resultSet.next()) {
-                arrayList.add(new DebtListModel(resultSet.getString(2),resultSet.getDate(5).toString(),resultSet.getString(4),resultSet.getInt(1),resultSet.getInt(3)));
+
+                model=new DebtListModel(resultSet.getString(2),resultSet.getString(5),resultSet.getString(4),resultSet.getInt(1),resultSet.getInt(3));
+
+                initialDate.setNepaliDate(resultSet.getString(5));
+
+                if(initialDate.getnMonth()<nMonth) {
+                    expiredList.add(model);
+                    model.setExpired(true);
+                } else if(initialDate.getnMonth()==nMonth&&initialDate.getnDay()<nDay) {
+                    expiredList.add(model);
+                    model.setExpired(true);
+                }
+                arrayList.add(model);
             }
         } catch(Exception e) {
             e.printStackTrace();
         }
 
         CreditCompanyList.setCompanyList(arrayList);
+        CreditCompanyList.setExpiredCompanyList(expiredList);
 
         try {
             Statement getValues=connection.createStatement();

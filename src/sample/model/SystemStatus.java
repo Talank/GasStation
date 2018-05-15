@@ -1,12 +1,15 @@
 package sample.model;
 
+import javafx.stage.Stage;
+
 import java.sql.Date;
 
 public class SystemStatus {
     private static float iDiesel,iPetrol,iCounter,fDiesel,fPetrol,dRate,pRate;
     private static float dieselStock,petrolStock;
     private static String mainHomePath;
-    private static Date currentDate,transactionDate;
+    private static String currentDate,transactionDate;
+    private static Stage stage;
 
     public static void initializeInitial(DailyAnalyticsModel model) {
         iDiesel=model.getdInitial();
@@ -94,19 +97,27 @@ public class SystemStatus {
         SystemStatus.petrolStock = petrolStock;
     }
 
-    public static Date getCurrentDate() {
+    public static String getCurrentDate() {
         return currentDate;
     }
 
-    public static void setCurrentDate(Date currentDate) {
+    public static void setCurrentDate(String currentDate) {
         SystemStatus.currentDate = currentDate;
     }
 
-    public static Date getTransactionDate() {
+    public static String getTransactionDate() {
         return transactionDate;
     }
 
-    public static void setTransactionDate(Date transactionDate) {
+    public static void setTransactionDate(String transactionDate) {
         SystemStatus.transactionDate = transactionDate;
+    }
+
+    public static Stage getStage() {
+        return stage;
+    }
+
+    public static void setStage(Stage stage) {
+        SystemStatus.stage = stage;
     }
 }

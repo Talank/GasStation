@@ -77,7 +77,7 @@ public class StoreCreditTransactionTask extends Tasks {
                         insertCredit.setFloat(5,transaction.getVolume());
                     }
                     insertCredit.setFloat(6,transaction.getPrice());
-                    insertCredit.setDate(7,SystemStatus.getTransactionDate());
+                    insertCredit.setString(7,SystemStatus.getTransactionDate());
 
                     insertCredit.addBatch();
 

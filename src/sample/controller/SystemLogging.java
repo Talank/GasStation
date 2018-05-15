@@ -33,4 +33,9 @@ public class SystemLogging {
     public static Logger getLogger() {
         return logger;
     }
+
+
+    public static void log(String message) {
+        System.out.println(message);
+    }
 }

@@ -55,12 +55,14 @@ public class CustomCreditListCellController {
 
     public void setData(List<CreditDetailsModel> modelLists) {
         tableView.setItems(FXCollections.observableList(modelLists));
-        transactionDate.setText("Transaction Date:"+modelLists.get(0).getDate());
-        float total=0;
-        for(int i=0;i<modelLists.size();i++) {
-            total+=Float.parseFloat(modelLists.get(i).getPrice());
+        if(modelLists.size()!=0) {
+            transactionDate.setText("Transaction Date:"+modelLists.get(0).getDate());
+            float total=0;
+            for(int i=0;i<modelLists.size();i++) {
+                total+=Float.parseFloat(modelLists.get(i).getPrice());
+            }
+            this.total.setText("Total:Rs."+String.valueOf(total)+"/-");
         }
-        this.total.setText("Total:Rs."+String.valueOf(total)+"/-");
 
     }
 

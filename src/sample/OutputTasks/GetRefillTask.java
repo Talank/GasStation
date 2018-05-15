@@ -42,7 +42,7 @@ public class GetRefillTask extends Task<ArrayList<ArrayList<RefillModel>>> {
                     break;
                 }
 
-                smallList.add(new RefillModel(resultSet.getFloat(1),resultSet.getFloat(2),resultSet.getFloat(3),resultSet.getDate(4)));
+                smallList.add(new RefillModel(resultSet.getFloat(1),resultSet.getFloat(2),resultSet.getFloat(3),resultSet.getString(4)));
 
                 Thread.sleep(300);//To be removed
                 currentSize++;
@@ -63,7 +63,7 @@ public class GetRefillTask extends Task<ArrayList<ArrayList<RefillModel>>> {
                     break;
                 }
 
-                smallList.add(new RefillModel(resultSet.getFloat(1),resultSet.getFloat(2),resultSet.getFloat(3),resultSet.getDate(4)));
+                smallList.add(new RefillModel(resultSet.getFloat(1),resultSet.getFloat(2),resultSet.getFloat(3),resultSet.getString(4)));
 
                 Thread.sleep(300);//To be removed
                 currentSize++;

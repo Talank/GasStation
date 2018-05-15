@@ -31,6 +31,8 @@ public class GetCompanyDetailsTask extends Task<List<List<CreditDetailsModel>>> 
 
             totalSize=resultSet.getInt(1);
 
+            System.out.println("Total Size:"+totalSize);
+
             resultSet=getDetails.executeQuery("SELECT * FROM "+tableName);
 
             List<CreditDetailsModel> smallList=new ArrayList<>();
@@ -44,9 +46,9 @@ public class GetCompanyDetailsTask extends Task<List<List<CreditDetailsModel>>> 
                 } else {
                     if(i==resultSet.getInt(1)) {
                         if(resultSet.getString(2).startsWith("D")||resultSet.getString(2).startsWith("P")) {
-                            smallList.add(new CreditDetailsModel(resultSet.getString(3),resultSet.getString(2),resultSet.getDate(7).toString(),resultSet.getString(5),resultSet.getString(6),resultSet.getString(4)));
+                            smallList.add(new CreditDetailsModel(resultSet.getString(3),resultSet.getString(2),resultSet.getString(7),resultSet.getString(5),resultSet.getString(6),resultSet.getString(4)));
                         } else {
-                            smallList.add(new CreditDetailsModel("XXXX",resultSet.getString(2),resultSet.getDate(7).toString(),String.valueOf(resultSet.getInt(5)),resultSet.getString(6),resultSet.getString(4)));
+                            smallList.add(new CreditDetailsModel("XXXX",resultSet.getString(2),resultSet.getString(7),String.valueOf(resultSet.getInt(5)),resultSet.getString(6),resultSet.getString(4)));
                         }
 
                     } else {
@@ -57,9 +59,9 @@ public class GetCompanyDetailsTask extends Task<List<List<CreditDetailsModel>>> 
                     if(create) {
                         smallList=new ArrayList<>();
                         if(resultSet.getString(2).startsWith("D")||resultSet.getString(2).startsWith("P")) {
-                            smallList.add(new CreditDetailsModel(resultSet.getString(3),resultSet.getString(2),resultSet.getDate(7).toString(),resultSet.getString(5),resultSet.getString(6),resultSet.getString(4)));
+                            smallList.add(new CreditDetailsModel(resultSet.getString(3),resultSet.getString(2),resultSet.getString(7),resultSet.getString(5),resultSet.getString(6),resultSet.getString(4)));
                         } else {
-                            smallList.add(new CreditDetailsModel("XXXX",resultSet.getString(2),resultSet.getDate(7).toString(),String.valueOf(resultSet.getInt(5)),resultSet.getString(6),resultSet.getString(4)));
+                            smallList.add(new CreditDetailsModel("XXXX",resultSet.getString(2),resultSet.getString(7),String.valueOf(resultSet.getInt(5)),resultSet.getString(6),resultSet.getString(4)));
                         }
                         create=false;
                     }
@@ -76,6 +78,7 @@ public class GetCompanyDetailsTask extends Task<List<List<CreditDetailsModel>>> 
             getDetails.close();
 
         } catch (SQLException e) {
+            e.printStackTrace();
             System.out.println(e.getMessage());
         }
 

@@ -3,13 +3,16 @@ package sample;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 
 import sample.controller.SystemLogging;
 import sample.controller.dialog_controller.ErrorDialogController;
+import sample.controller.dialog_controller.LoginDialogController;
 import sample.model.CreditCompanyList;
 import sample.model.RateModel;
 import sample.model.databases.DatabaseHandler;
@@ -56,13 +59,23 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
 
         System.out.println(LocalDateTime.now().getDayOfYear());
-
-
+        SystemStatus.setStage(primaryStage);
 
         if(startup) {
             primaryStage.setTitle("Ohm Gas Station");
             primaryStage.setScene(new Scene(root));
             primaryStage.show();
+
+            if(CreditCompanyList.getExpiredCompanyList().size()!=0) {
+                FXMLLoader loader=new FXMLLoader(getClass().getResource("view/dialogs/dialog_list_views/expireCompanyDialog.fxml"));
+                Parent root=loader.load();
+                Stage stage=new Stage();
+                stage.initModality(Modality.APPLICATION_MODAL);
+                stage.setScene(new Scene(root));
+                stage.show();
+            }
+
+
         } else {
             ErrorDialogController controller=loader.getController();
             controller.setTitle("Database Error");
@@ -71,8 +84,6 @@ public class Main extends Application {
             stage.setScene(new Scene(root));
             stage.show();
         }
-
-
 
 
 

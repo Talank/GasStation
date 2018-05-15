@@ -36,6 +36,12 @@ public class DebtController {
     @FXML
     private ToolBar toolBar;
 
+    private static DebtController instance;
+
+    public DebtController() {
+        instance=this;
+    }
+
     @FXML
     public void initialize() {
 
@@ -61,6 +67,11 @@ public class DebtController {
 
 
         });
+    }
+
+
+    public static DebtController getInstance() {
+        return instance;
     }
 
 }

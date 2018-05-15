@@ -31,7 +31,7 @@ public class RefillTask extends Tasks {
             insertRefill.setFloat(1,model.getExpected());
             insertRefill.setFloat(2,model.getActual());
             insertRefill.setFloat(3,model.getLoss());
-            insertRefill.setDate(4,SystemStatus.getCurrentDate());
+            insertRefill.setString(4,SystemStatus.getCurrentDate());
             insertRefill.execute();
         } catch(Exception e) {
             e.printStackTrace();
