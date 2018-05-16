@@ -8,7 +8,7 @@ public class SystemStatus {
     private static float iDiesel,iPetrol,iCounter,fDiesel,fPetrol,dRate,pRate;
     private static float dieselStock,petrolStock;
     private static String mainHomePath;
-    private static String currentDate,transactionDate;
+    private static String currentDate,transactionDate,billPrinter,analyticsPrinter;
     private static Stage stage;
 
     public static void initializeInitial(DailyAnalyticsModel model) {
@@ -119,5 +119,21 @@ public class SystemStatus {
 
     public static void setStage(Stage stage) {
         SystemStatus.stage = stage;
+    }
+
+    public static String getBillPrinter() {
+        return billPrinter;
+    }
+
+    public static void setBillPrinter(String billPrinter) {
+        SystemStatus.billPrinter = billPrinter;
+    }
+
+    public static String getAnalyticsPrinter() {
+        return analyticsPrinter;
+    }
+
+    public static void setAnalyticsPrinter(String analyticsPrinter) {
+        SystemStatus.analyticsPrinter = analyticsPrinter;
     }
 }

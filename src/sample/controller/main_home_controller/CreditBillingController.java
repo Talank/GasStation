@@ -512,6 +512,9 @@ public class CreditBillingController {
                 transactionListView.getItems().clear();
                 masterClear();
 
+                CreditTransactionBill transactionBill=new CreditTransactionBill(newList);
+                transactionBill.print();
+
 
                 /*if(DatabaseHandler.storeCreditTransaction(transactionListView.getItems(),ids[1],ids[0])) {
                     CreditTransactionBill transactionBill=new CreditTransactionBill(transactionListView.getItems());

@@ -12,10 +12,10 @@ public class GetSettingsTask extends Task<String[][]> {
     @Override
     protected String[][] call() throws Exception {
         String model[][];
-        model=new String[8][2];
+        model=new String[10][2];
         try {
             Statement getSettings= Tasks.getConnection().createStatement();
-            ResultSet resultSet=getSettings.executeQuery("SELECT VALUE,DATE FROM SystemStatus WHERE ID<16 AND ID>6");
+            ResultSet resultSet=getSettings.executeQuery("SELECT VALUE,DATE FROM SystemStatus WHERE ID<18 AND ID>6");
             int i=0;
             while(resultSet.next()) {
                 if(i==1) {

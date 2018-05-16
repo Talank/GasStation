@@ -43,7 +43,9 @@ public class SettingsController {
     private JFXListView<DebtListModel> debtList;
 
     @FXML
-    private Label petrolStockValue,dieselStockValue,petrolStockDate,dieselStockDate,counterStockDate,counterStockValue,dMeterValue,dMeterDate,pMeterValue,pMeterDate,usernameValue,usernameDate,dRateValue,dRateDate,pRateValue,pRateDate;
+    private Label petrolStockValue,dieselStockValue,petrolStockDate,dieselStockDate,counterStockDate,
+            counterStockValue,dMeterValue,dMeterDate,pMeterValue,pMeterDate,usernameValue,usernameDate,
+            dRateValue,dRateDate,pRateValue,pRateDate,billPrinter,analyticsPrinter,billPrinterDate,analyticsPrinterDate;
 
     @FXML
     private ToolBar toolBar;
@@ -118,6 +120,13 @@ public class SettingsController {
 
             petrolStockValue.setText(model[7][0]);
             petrolStockDate.setText(model[7][1]);
+
+            billPrinter.setText(model[8][0]);
+            billPrinterDate.setText(model[8][1]);
+
+            analyticsPrinter.setText(model[9][0]);
+            analyticsPrinterDate.setText(model[9][1]);
+
         });
 
         Thread mainThread=new Thread(task);
@@ -217,6 +226,16 @@ public class SettingsController {
     @FXML
     public void setupMeterReadings(MouseEvent e) throws IOException {
         Parent root=FXMLLoader.load(getClass().getResource("../../view/dialogs/loginDialog.fxml"));
+        Scene scene=new Scene(root);
+        Stage stage=new Stage();
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    @FXML
+    public void setupPrinters(MouseEvent e) throws IOException  {
+        Parent root=FXMLLoader.load(getClass().getResource("../../view/dialogs/printerDialog.fxml"));
         Scene scene=new Scene(root);
         Stage stage=new Stage();
         stage.initModality(Modality.APPLICATION_MODAL);

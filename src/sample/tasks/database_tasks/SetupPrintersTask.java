@@ -1,0 +1,60 @@
+package sample.tasks.database_tasks;
+
+import sample.model.SystemStatus;
+import sample.tasks.Tasks;
+
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+public class SetupPrintersTask extends Tasks {
+
+    private String billPrinterName,analyticsPrinterName;
+
+    public SetupPrintersTask(String billPrinterName, String analyticsPrinterName) {
+        this.billPrinterName = billPrinterName;
+        this.analyticsPrinterName = analyticsPrinterName;
+    }
+
+    @Override
+    public void execute() {
+        try {
+
+            if(!SystemStatus.getBillPrinter().equals(billPrinterName)&&!SystemStatus.getAnalyticsPrinter().equals(analyticsPrinterName)) {
+                connection.setAutoCommit(false);
+
+                Statement updateStock=connection.createStatement();
+                updateStock.addBatch("UPDATE SystemStatus SET VALUE='"+billPrinterName+"', DATE='"+SystemStatus.getCurrentDate()+"' WHERE ID=16");
+                updateStock.addBatch("UPDATE SystemStatus SET VALUE='"+analyticsPrinterName+"', DATE='"+SystemStatus.getCurrentDate()+"' WHERE ID=17");
+                updateStock.executeBatch();
+
+                connection.commit();
+
+                SystemStatus.setBillPrinter(billPrinterName);
+                SystemStatus.setAnalyticsPrinter(analyticsPrinterName);
+
+                connection.setAutoCommit(true);
+            } else {
+
+                if(!SystemStatus.getBillPrinter().equals(billPrinterName)) {
+                    PreparedStatement setupBill=connection.prepareStatement("UPDATE SystemStatus SET VALUE='"+billPrinterName+"', DATE='"+SystemStatus.getCurrentDate()+"' WHERE ID=16");
+                    setupBill.execute();
+                    SystemStatus.setBillPrinter(billPrinterName);
+                }
+
+                if(!SystemStatus.getAnalyticsPrinter().equals(analyticsPrinterName)) {
+                    PreparedStatement setupBill=connection.prepareStatement("UPDATE SystemStatus SET VALUE='"+analyticsPrinterName+"', DATE='"+SystemStatus.getCurrentDate()+"' WHERE ID=16");
+                    setupBill.execute();
+                    SystemStatus.setAnalyticsPrinter(analyticsPrinterName);
+                }
+
+
+            }
+
+
+
+        } catch(SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+}

@@ -134,7 +134,7 @@ public class InitializeSystem extends Tasks {
 
         try {
             Statement getValues=connection.createStatement();
-            ResultSet resultSet=getValues.executeQuery("SELECT VALUE FROM SystemStatus WHERE ID>10 AND ID<16");
+            ResultSet resultSet=getValues.executeQuery("SELECT VALUE FROM SystemStatus WHERE ID>10 AND ID<18");
 
             resultSet.next();
             SystemStatus.setiDiesel(Float.parseFloat(resultSet.getString(1)));
@@ -146,6 +146,10 @@ public class InitializeSystem extends Tasks {
             SystemStatus.setDieselStock(Float.parseFloat(resultSet.getString(1)));
             resultSet.next();
             SystemStatus.setPetrolStock(Float.parseFloat(resultSet.getString(1)));
+            resultSet.next();
+            SystemStatus.setBillPrinter(resultSet.getString(1));
+            resultSet.next();
+            SystemStatus.setAnalyticsPrinter(resultSet.getString(1));
             resultSet.close();
 
         } catch(Exception e) {
