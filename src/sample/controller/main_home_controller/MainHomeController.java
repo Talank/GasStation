@@ -1,15 +1,21 @@
 package sample.controller.main_home_controller;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXRippler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import org.omg.CORBA.NO_IMPLEMENT;
 import sample.controller.SystemLogging;
 import sample.controller.dialog_controller.FinalReadingsController;
 import sample.controller.dialog_controller.LoginDialogController;
@@ -35,6 +41,27 @@ public class MainHomeController {
     private static MainHomeController instance;//Make Singleton Static sample.ApplicationPreLoader.Reference
 
 
+    @FXML
+    private GridPane rootGrid;
+
+    @FXML
+    private VBox instantBillingLayout;
+
+    @FXML
+    private VBox creditBillingLayout;
+
+    @FXML
+    private VBox creditLayout;
+
+    @FXML
+    private VBox profitLossLayout;
+
+    @FXML
+    private VBox dailyAnalyticsLayout;
+
+    @FXML
+    private VBox settingsLayout;
+
 
 
 
@@ -58,6 +85,36 @@ public class MainHomeController {
         rPetrol.setText(String.valueOf(rateModel.getrPetrol()));
         SystemStatus.setdRate(rateModel.getrDiesel());
         SystemStatus.setpRate(rateModel.getrPetrol());*/
+
+        JFXRippler instantRippler=new JFXRippler(instantBillingLayout);
+        rootGrid.add(instantRippler,0,0);
+        GridPane.setMargin(instantRippler,new Insets(5,5,5,5));
+
+        JFXRippler creditRippler=new JFXRippler(creditBillingLayout);
+        rootGrid.add(creditRippler,1,0);
+        GridPane.setMargin(creditRippler,new Insets(5,5,5,0));
+
+        JFXRippler debtRippler=new JFXRippler(creditLayout);
+        rootGrid.add(debtRippler,0,1);
+        GridPane.setMargin(debtRippler,new Insets(0,5,5,5));
+
+        JFXRippler profitRippler=new JFXRippler(profitLossLayout);
+        rootGrid.add(profitRippler,1,1);
+        GridPane.setMargin(profitRippler,new Insets(0,5,5,0));
+
+        JFXRippler dailyRippler=new JFXRippler(dailyAnalyticsLayout);
+        rootGrid.add(dailyRippler,0,2);
+        GridPane.setMargin(dailyRippler,new Insets(0,5,5,5));
+
+        JFXRippler settingsRippler=new JFXRippler(settingsLayout);
+        rootGrid.add(settingsRippler,1,2);
+        GridPane.setMargin(settingsRippler,new Insets(0,5,5,0));
+
+
+
+
+
+
 
         rDiesel.setText(String.valueOf(SystemStatus.getdRate()));
         rPetrol.setText(String.valueOf(SystemStatus.getpRate()));
@@ -96,6 +153,7 @@ public class MainHomeController {
 
     @FXML
     public void loadDebt(MouseEvent e) throws IOException {
+
         loadStage((Node)e.getSource(),"../../view/main_home_views/credit_company_list/debt.fxml");
     }
 

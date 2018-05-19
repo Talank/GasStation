@@ -11,9 +11,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controller.main_home_controller.MainHomeController">
+<BorderPane fx:id="rootLayout" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controller.main_home_controller.MainHomeController">
    <center>
-      <GridPane style="-fx-background-color: linear-gradient(from 0% 0% to 100% 100%,#ffffff,#aaaaaa);" BorderPane.alignment="CENTER">
+      <GridPane fx:id="rootGrid" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -24,58 +24,82 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+            <VBox fx:id="instantBillingLayout" alignment="CENTER" onMouseClicked="#loadInstantBilling" prefHeight="200.0" prefWidth="100.0" styleClass="instantButton" stylesheets="@../../css/mainHomeStyle.css">
                <children>
-                  <JFXButton buttonType="RAISED" onMouseClicked="#loadInstantBilling" prefHeight="180.0" prefWidth="180.0" style="-fx-background-color: #61b3a4; -fx-background-radius: 90px;" text="Instant &#10;Billing">
-                     <font>
-                        <Font size="20.0" />
-                     </font>
-                  </JFXButton>
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: rgba(0,0,0,0.7);" VBox.vgrow="ALWAYS">
+                     <children>
+                        <Label text="Instant&#10;Billing" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="40.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
                </children>
             </VBox>
-            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
+            <VBox fx:id="creditBillingLayout" alignment="CENTER" onMouseClicked="#loadCreditBilling" prefHeight="200.0" prefWidth="100.0" styleClass="creditButton" stylesheets="@../../css/mainHomeStyle.css" GridPane.columnIndex="1">
                <children>
-                  <JFXButton buttonType="RAISED" onMouseClicked="#loadCreditBilling" prefHeight="180.0" prefWidth="180.0" style="-fx-background-color: #66BDAD; -fx-background-radius: 90px;" text="Credit&#10;Billing">
-                     <font>
-                        <Font size="20.0" />
-                     </font>
-                  </JFXButton>
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: rgba(0,0,0,0.7);" VBox.vgrow="ALWAYS">
+                     <children>
+                        <Label text="Credit&#10;Billing" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="40.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
                </children>
             </VBox>
-            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="1">
+            <VBox fx:id="creditLayout" alignment="CENTER" onMouseClicked="#loadDebt" prefHeight="200.0" prefWidth="100.0" styleClass="debtButton" stylesheets="@../../css/mainHomeStyle.css" GridPane.rowIndex="1">
                <children>
-                  <JFXButton buttonType="RAISED" onMouseClicked="#loadDebt" prefHeight="180.0" prefWidth="180.0" style="-fx-background-color: #5AAD9E; -fx-background-radius: 90px;" text="Debt">
-                     <font>
-                        <Font size="20.0" />
-                     </font>
-                  </JFXButton>
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: rgb(0,0,0,0.7);" VBox.vgrow="ALWAYS">
+                     <children>
+                        <Label text="Credit" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="40.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
                </children>
             </VBox>
-            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <VBox fx:id="profitLossLayout" alignment="CENTER" onMouseClicked="#loadProfitLoss" prefHeight="200.0" prefWidth="100.0" styleClass="profitButton" stylesheets="@../../css/mainHomeStyle.css" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <children>
-                  <JFXButton buttonType="RAISED" onMouseClicked="#loadProfitLoss" prefHeight="180.0" prefWidth="180.0" style="-fx-background-color: #61b3a4; -fx-background-radius: 90px;" text="Profit Loss">
-                     <font>
-                        <Font size="20.0" />
-                     </font>
-                  </JFXButton>
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: rgb(0,0,0,0.7);" VBox.vgrow="ALWAYS">
+                     <children>
+                        <Label text="Profit Loss" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="40.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
                </children>
             </VBox>
-            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="2">
+            <VBox fx:id="dailyAnalyticsLayout" alignment="CENTER" onMouseClicked="#loadDailyAnalytics" prefHeight="200.0" prefWidth="100.0" styleClass="dailyButton" stylesheets="@../../css/mainHomeStyle.css" GridPane.rowIndex="2">
                <children>
-                  <JFXButton buttonType="RAISED" onMouseClicked="#loadDailyAnalytics" prefHeight="180.0" prefWidth="180.0" style="-fx-background-color: #61b3a4; -fx-background-radius: 90px;" text="Daily &#10;Analytics">
-                     <font>
-                        <Font size="20.0" />
-                     </font>
-                  </JFXButton>
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: rgb(0,0,0,0.7);" VBox.vgrow="ALWAYS">
+                     <children>
+                        <Label text="Daily Analytics" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="40.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
                </children>
             </VBox>
-            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <VBox fx:id="settingsLayout" alignment="CENTER" onMouseClicked="#loadSettings" prefHeight="200.0" prefWidth="100.0" styleClass="settingsButton" stylesheets="@../../css/mainHomeStyle.css" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <children>
-                  <JFXButton buttonType="RAISED" onMouseClicked="#loadSettings" prefHeight="180.0" prefWidth="180.0" style="-fx-background-color: #61b3a4; -fx-background-radius: 90px;" text="Settings">
-                     <font>
-                        <Font size="20.0" />
-                     </font>
-                  </JFXButton>
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: rgb(0,0,0,0.7);" VBox.vgrow="ALWAYS">
+                     <children>
+                        <Label text="Settings" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="40.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
                </children>
             </VBox>
          </children>
