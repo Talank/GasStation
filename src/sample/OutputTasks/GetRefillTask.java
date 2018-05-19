@@ -20,18 +20,18 @@ public class GetRefillTask extends Task<ArrayList<ArrayList<RefillModel>>> {
         try {
             Statement getRefill= Tasks.getConnection().createStatement();
 
-            ResultSet resultSet=getRefill.executeQuery("SElECT count(*) FROM DIESEL_REFILL");
+            ResultSet resultSet=getRefill.executeQuery("SElECT count(*) FROM DieselRefill");
             resultSet.next();
 
             totalSize=resultSet.getInt(1);
             resultSet.close();
 
-            resultSet=getRefill.executeQuery("SElECT count(*) FROM PETROL_REFILL");
+            resultSet=getRefill.executeQuery("SElECT count(*) FROM PetrolRefill");
             resultSet.next();
 
             totalSize+=resultSet.getInt(1);
 
-            resultSet=getRefill.executeQuery("SELECT * FROM DIESEL_REFILL");
+            resultSet=getRefill.executeQuery("SELECT * FROM DieselRefill");
 
             ArrayList<RefillModel> smallList=new ArrayList<>();
 
@@ -53,7 +53,7 @@ public class GetRefillTask extends Task<ArrayList<ArrayList<RefillModel>>> {
 
 
 
-            resultSet=getRefill.executeQuery("SELECT * FROM PETROL_REFILL");
+            resultSet=getRefill.executeQuery("SELECT * FROM PetrolRefill");
 
             smallList=new ArrayList<>();
             while(resultSet.next()) {

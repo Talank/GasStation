@@ -24,9 +24,9 @@ public class RefillTask extends Tasks {
             PreparedStatement insertRefill;
 
             if(mode==0) {
-                insertRefill=connection.prepareStatement("INSERT INTO DIESEL_REFILL VALUES (?,?,?,?)");
+                insertRefill=connection.prepareStatement("INSERT INTO DieselRefill VALUES (?,?,?,?)");
             } else {
-                insertRefill=connection.prepareStatement("INSERT INTO PETROL_REFILL VALUES (?,?,?,?)");
+                insertRefill=connection.prepareStatement("INSERT INTO PetrolRefill VALUES (?,?,?,?)");
             }
             insertRefill.setFloat(1,model.getExpected());
             insertRefill.setFloat(2,model.getActual());

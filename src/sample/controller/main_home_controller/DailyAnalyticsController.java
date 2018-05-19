@@ -1,5 +1,6 @@
 package sample.controller.main_home_controller;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -52,8 +53,12 @@ public class DailyAnalyticsController {
         task.addTaskInterfaceListener(new TaskInterface() {
             @Override
             public void onComplete(Object data) {
-                setModel((DailyTotalAnalyticModel)data);
-                System.out.println("Model is set.");
+
+                Platform.runLater(()->{
+                    setModel((DailyTotalAnalyticModel)data);
+                    System.out.println("Model is set.");
+                });
+
             }
 
             @Override
