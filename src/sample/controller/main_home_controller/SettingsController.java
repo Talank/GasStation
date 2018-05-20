@@ -225,7 +225,7 @@ public class SettingsController {
 
     @FXML
     public void setupMeterReadings(MouseEvent e) throws IOException {
-        Parent root=FXMLLoader.load(getClass().getResource("../../view/dialogs/loginDialog.fxml"));
+        Parent root=FXMLLoader.load(getClass().getResource("../../view/dialogs/finalReadings.fxml"));
         Scene scene=new Scene(root);
         Stage stage=new Stage();
         stage.initModality(Modality.APPLICATION_MODAL);

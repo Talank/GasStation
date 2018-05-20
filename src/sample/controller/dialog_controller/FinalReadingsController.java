@@ -12,6 +12,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import sample.controller.SystemLogging;
 import sample.controller.main_home_controller.DailyAnalyticsController;
+import sample.controller.main_home_controller.SettingsController;
 import sample.library.dialog_bottombar.BottomBarInterface;
 import sample.library.dialog_bottombar.DialogBottomBar;
 import sample.library.dialog_toolbar.DialogToolBar;
@@ -19,6 +20,8 @@ import sample.model.DailyAnalyticsModel;
 import sample.model.SystemStatus;
 import sample.model.databases.DatabaseHandler;
 import sample.tasks.TaskManager;
+import sample.tasks.database_tasks.SetupMeterReadingsTask;
+import sample.tasks.database_tasks.SetupOilStockTask;
 import sample.tasks.database_tasks.TodayClosingTask;
 import sun.misc.FpUtils;
 
@@ -97,16 +100,21 @@ public class FinalReadingsController implements BottomBarInterface {
             status++;
         }
         if(status==0) {
-            SystemStatus.setfDiesel(Float.parseFloat(fDiesel.getText()));
-            SystemStatus.setfPetrol(Float.parseFloat(fPetrol.getText()));
+//            SystemStatus.setfDiesel(Float.parseFloat(fDiesel.getText()));
+//            SystemStatus.setfPetrol(Float.parseFloat(fPetrol.getText()));
+//
+//            if(DailyAnalyticsController.getInstance()!=null) {
+//                DailyAnalyticsController.getInstance().showResults();
+//            } else {
+//                SystemLogging.getLogger().severe("DailyAnalyticsController was Null!");
+//                SystemLogging.log("DailyAnalyticsController was Null!");
+//            }
+//
+//            ((Node)e.getSource()).getScene().getWindow().hide();
 
-            if(DailyAnalyticsController.getInstance()!=null) {
-                DailyAnalyticsController.getInstance().showResults();
-            } else {
-                SystemLogging.getLogger().severe("DailyAnalyticsController was Null!");
-                SystemLogging.log("DailyAnalyticsController was Null!");
-            }
-
+            SetupMeterReadingsTask task=new SetupMeterReadingsTask(fDiesel.getText(),fPetrol.getText());
+            TaskManager.executeTask(task);
+            SettingsController.getInstance().loadSettings();
             ((Node)e.getSource()).getScene().getWindow().hide();
 
         }
