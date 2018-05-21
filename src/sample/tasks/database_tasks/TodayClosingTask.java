@@ -7,8 +7,6 @@ import sample.nepali_date.NepaliDateGenerator;
 import sample.tasks.TaskManager;
 import sample.tasks.Tasks;
 
-import java.io.IOException;
-import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
@@ -38,9 +36,12 @@ public class TodayClosingTask extends Tasks {
             closing.addBatch("UPDATE SystemStatus SET VALUE='0' WHERE ID=4");
             closing.addBatch("UPDATE SystemStatus SET VALUE='0' WHERE ID=5");
             closing.addBatch("UPDATE SystemStatus SET VALUE='0' WHERE ID=6");
+            closing.addBatch("UPDATE SystemStatus SET VALUE='"+String.valueOf(SystemStatus.getfDiesel())+"' WHERE ID=11");
+            closing.addBatch("UPDATE SystemStatus SET VALUE='"+String.valueOf(SystemStatus.getfPetrol())+"' WHERE ID=12");
+
             closing.addBatch("INSERT INTO DailyAnalytics VALUES ("+Float.parseFloat(model.getIDieselVol())
                     +","+Float.parseFloat(model.getIPetrolVol())+","+Float.parseFloat(model.getCDieselVol())+","
-                    +Float.parseFloat(model.getCPetrolVol())+","+Float.parseFloat(model.getIExtra())+","+
+                    +Float.parseFloat(model.getCPetrolVol())+","+0f+","+
                     Float.parseFloat(model.getCExtra())+","+Float.parseFloat(model.getOilIncome())+","+
                     SystemStatus.getdRate()+","+SystemStatus.getpRate()+",'"+SystemStatus.getCurrentDate()+"')");
 

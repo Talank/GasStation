@@ -39,7 +39,6 @@ public class SetupMeterReadingsTask extends Tasks {
                 SystemStatus.setiDiesel(Float.parseFloat(dieselReading));
                 SystemStatus.setiPetrol(Float.parseFloat(petrolReading));
 
-
             } else {
 
                 if(SystemStatus.getiDiesel()!=Float.parseFloat(dieselReading)) {
@@ -55,6 +54,8 @@ public class SetupMeterReadingsTask extends Tasks {
                 }
 
             }
+
+
 
 
         } catch(SQLException e) {

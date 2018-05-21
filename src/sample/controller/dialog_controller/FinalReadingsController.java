@@ -39,8 +39,9 @@ public class FinalReadingsController implements BottomBarInterface {
     @FXML
     private DialogBottomBar bottomBar;
 
-    private Stage stage;
 
+
+    private Stage stage;
 
 
 
@@ -100,30 +101,23 @@ public class FinalReadingsController implements BottomBarInterface {
             status++;
         }
         if(status==0) {
-//            SystemStatus.setfDiesel(Float.parseFloat(fDiesel.getText()));
-//            SystemStatus.setfPetrol(Float.parseFloat(fPetrol.getText()));
-//
-//            if(DailyAnalyticsController.getInstance()!=null) {
-//                DailyAnalyticsController.getInstance().showResults();
-//            } else {
-//                SystemLogging.getLogger().severe("DailyAnalyticsController was Null!");
-//                SystemLogging.log("DailyAnalyticsController was Null!");
-//            }
-//
-//            ((Node)e.getSource()).getScene().getWindow().hide();
 
-            SetupMeterReadingsTask task=new SetupMeterReadingsTask(fDiesel.getText(),fPetrol.getText());
-            TaskManager.executeTask(task);
-            SettingsController.getInstance().loadSettings();
+            SystemStatus.setfDiesel(Float.parseFloat(fDiesel.getText()));
+            SystemStatus.setfPetrol(Float.parseFloat(fPetrol.getText()));
+
+            Parent root=FXMLLoader.load(getClass().getResource("../../view/main_home_views/dailyAnalytics.fxml"));
+            stage.setScene(new Scene(root));
+            stage.show();
+
             ((Node)e.getSource()).getScene().getWindow().hide();
 
         }
     }
 
+
     public void setStage(Stage stage) {
         this.stage=stage;
     }
-
 
 
 }

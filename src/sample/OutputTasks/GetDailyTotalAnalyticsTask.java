@@ -36,8 +36,6 @@ public class GetDailyTotalAnalyticsTask extends Task<ArrayList<DailyTotalAnalyti
 
                 arrayList.add(new DailyTotalAnalyticModel(resultSet.getString(1),resultSet.getString(2),resultSet.getString(3),resultSet.getString(4),String.valueOf(resultSet.getFloat(5)+resultSet.getFloat(6)),resultSet.getString(7),String.valueOf(resultSet.getFloat(7)+resultSet.getFloat(5)+resultSet.getFloat(6)),resultSet.getString(10)));
 
-                Thread.sleep(300);//Just For Demo, To be removed.
-
                 currentSize++;
                 updateProgress(currentSize,totalSize);
             }

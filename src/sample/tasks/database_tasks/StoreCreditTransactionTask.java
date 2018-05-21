@@ -39,10 +39,6 @@ public class StoreCreditTransactionTask extends Tasks {
             PreparedStatement insertCredit=connection.prepareStatement(query.toString());
             if(taskStatus==0) {
                 connection.setAutoCommit(false);
-           /* Statement getCompanyID=connection.createStatement();
-            ResultSet resultSet=getCompanyID.executeQuery("SELECT ID FROM CreditCompany WHERE COMPANY_NAME='"+Transaction.getName()+"'");
-            resultSet.next();
-            int id=resultSet.getInt(1);*/
 
                 System.out.println("ID:"+ids[1]);
 
@@ -111,9 +107,9 @@ public class StoreCreditTransactionTask extends Tasks {
 
 
                 resultSet.next();
-                pVolume+=Float.parseFloat(resultSet.getString(1));
-                resultSet.next();
                 dVolume+=Float.parseFloat(resultSet.getString(1));
+                resultSet.next();
+                pVolume+=Float.parseFloat(resultSet.getString(1));
                 resultSet.next();
                 ePrice+=Float.parseFloat(resultSet.getString(1));
                 resultSet.next();
@@ -121,7 +117,7 @@ public class StoreCreditTransactionTask extends Tasks {
                 resultSet.next();
                 petrolStock=Float.parseFloat(resultSet.getString(1))-petrolStock;
 
-                SystemStatus.setfDiesel(dieselStock);
+                SystemStatus.setDieselStock(dieselStock);
                 SystemStatus.setPetrolStock(petrolStock);
 
                 resultSet.close();

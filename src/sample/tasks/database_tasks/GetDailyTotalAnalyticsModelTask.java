@@ -10,20 +10,15 @@ import java.sql.Statement;
 
 public class GetDailyTotalAnalyticsModelTask extends Tasks {
 
+
+
     @Override
     public void execute() {
         DailyTotalAnalyticModel model=new DailyTotalAnalyticModel();
         try {
 
             Statement getAnalytics=connection.createStatement();
-            ResultSet resultSet=getAnalytics.executeQuery("SELECT VALUE FROM SystemStatus WHERE ID<7");
-            resultSet.next();
-
-            model.setIDieselVol(resultSet.getString(1));
-            resultSet.next();
-            model.setIPetrolVol(resultSet.getString(1));
-            resultSet.next();
-            model.setIExtra(resultSet.getString(1));
+            ResultSet resultSet=getAnalytics.executeQuery("SELECT VALUE FROM SystemStatus WHERE ID>3 AND ID<7");
             resultSet.next();
             model.setCDieselVol(resultSet.getString(1));
             resultSet.next();
@@ -32,7 +27,13 @@ public class GetDailyTotalAnalyticsModelTask extends Tasks {
             model.setCExtra(resultSet.getString(1));
             resultSet.close();
 
-            model.setOilIncome(String.valueOf(((Float.parseFloat(model.getIDieselVol())+Float.parseFloat(model.getCDieselVol()))*SystemStatus.getdRate()+(Float.parseFloat(model.getIPetrolVol())+ Float.parseFloat(model.getCPetrolVol()))*SystemStatus.getpRate())));
+            System.out.println("iDiesel:"+SystemStatus.getiDiesel());
+
+
+            model.setIDieselVol(String.valueOf(SystemStatus.getfDiesel()-(SystemStatus.getiDiesel()+Float.parseFloat(model.getCDieselVol()))));
+            model.setIPetrolVol(String.valueOf(SystemStatus.getfPetrol()-(SystemStatus.getiPetrol()+Float.parseFloat(model.getCPetrolVol()))));
+
+            model.setOilIncome(String.valueOf(Float.parseFloat(model.getCDieselVol())*SystemStatus.getdRate()+Float.parseFloat(model.getCPetrolVol())*SystemStatus.getpRate()));
 
             if(taskInterface!=null) {
                 taskInterface.onComplete(model);

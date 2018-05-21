@@ -133,22 +133,19 @@ public class DailyTotalAnalyticsController implements BackButtonInterface {
 
     @FXML
     public void showTodayAnalytics(MouseEvent e) throws IOException {
-        FXMLLoader loader=new FXMLLoader(getClass().getResource("../../view/main_home_views/dailyAnalytics.fxml"));
+
+        FXMLLoader loader=new FXMLLoader(getClass().getResource("../../view/dialogs/finalReadings.fxml"));
         Parent root=loader.load();
 
-        /*DailyAnalyticsController controller=loader.getController();
-        controller.setModel(DatabaseHandler.getTodayAnalytics());*/
+        FinalReadingsController controller=loader.getController();
 
-        Stage stage=(Stage)((Node)e.getSource()).getScene().getWindow();
+        controller.setStage((Stage)(((Node)e.getSource()).getScene().getWindow()));
+
+        Stage stage=new Stage();
         stage.setScene(new Scene(root));
+        stage.initModality(Modality.APPLICATION_MODAL);
         stage.show();
 
-        /*FinalReadingsController controller=loader.getController();
-        controller.setStage((Stage)((Node)e.getSource()).getScene().getWindow());
-        Stage stage=new Stage();
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.setScene(new Scene(root));
-        stage.show();*/
     }
 
 }

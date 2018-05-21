@@ -12,6 +12,7 @@ import sample.controller.main_home_controller.SettingsController;
 import sample.library.dialog_bottombar.BottomBarInterface;
 import sample.library.dialog_bottombar.DialogBottomBar;
 import sample.library.dialog_toolbar.DialogToolBar;
+import sample.model.SystemStatus;
 import sample.model.databases.DatabaseHandler;
 import sample.tasks.TaskManager;
 import sample.tasks.database_tasks.ChangeUserParameterTask;
@@ -103,14 +104,16 @@ public class ChangeUserParametersController implements BottomBarInterface {
 
             ChangeUserParameterTask task=new ChangeUserParameterTask(userName.getText().trim(),password.getText().trim());
             TaskManager.executeTask(task);
-            SettingsController.getInstance().loadSettings();
+
+            String[][] model=SettingsController.getInstance().getModel();
+
+            model[0][0]=userName.getText();
+            model[0][1]=SystemStatus.getCurrentDate();
+
+
+            SettingsController.getInstance().loadSettings(model);
             ((Node)e.getSource()).getScene().getWindow().hide();
-            /*if(DatabaseHandler.setAdminParameters(userName.getText().trim(),password.getText().trim())) {
-                SystemLogging.getLogger().fine("Admin Parameter Has Been Changed Successfully.");
-                ((Node)e.getSource()).getScene().getWindow().hide();
-            } else {
-                SystemLogging.getLogger().severe("Error Changing Admin Parameters!");
-            }*/
+
         }
     }
 

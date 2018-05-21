@@ -14,6 +14,7 @@ import sample.library.dialog_bottombar.DialogBottomBar;
 import sample.library.dialog_toolbar.DialogToolBar;
 import sample.model.RateModel;
 import javafx.scene.Node;
+import sample.model.SystemStatus;
 import sample.tasks.TaskManager;
 import sample.tasks.database_tasks.ChangeOilRateTask;
 
@@ -87,7 +88,16 @@ public class ChangeRateController implements BottomBarInterface {
                 SystemLogging.getLogger().warning("Failed to Store Rate,Using Current Rate Temporarily!");*/
 
             MainHomeController.getInstance().setRates(rDiesel.getText(),rPetrol.getText());
-            SettingsController.getInstance().loadSettings();
+
+            String[][] model=SettingsController.getInstance().getModel();
+
+            model[1][0]=rDiesel.getText();
+            model[1][1]=SystemStatus.getCurrentDate();
+
+            model[2][0]=rPetrol.getText();
+            model[2][1]=SystemStatus.getCurrentDate();
+
+            SettingsController.getInstance().loadSettings(model);
 
             Stage stage=(Stage)((Node)e.getSource()).getScene().getWindow();
             stage.close();
