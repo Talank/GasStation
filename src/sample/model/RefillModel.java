@@ -5,14 +5,16 @@ import java.sql.Date;
 public class RefillModel {
 
     private Float expected,actual,loss;
+    private int tankerNumber;
 
     private String date;
 
-    public RefillModel(Float expected, Float actual, Float loss, String date) {
+    public RefillModel(Float expected, Float actual, Float loss, String date, int tankerNumber) {
         this.expected = expected;
         this.actual = actual;
         this.loss = loss;
         this.date = date;
+        this.tankerNumber = tankerNumber;
     }
 
     public Float getExpected() {
@@ -45,5 +47,13 @@ public class RefillModel {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public int getTankerNumber() {
+        return tankerNumber;
+    }
+
+    public void setTankerNumber(int tankerNumber) {
+        this.tankerNumber = tankerNumber;
     }
 }

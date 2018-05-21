@@ -23,8 +23,9 @@ import java.sql.Date;
 
 public class RefillDialogController implements BottomBarInterface {
 
+   // public JFXTextField tankerNumber;
     @FXML
-    private JFXTextField expected, actual;
+    private JFXTextField expected, actual, tankerNumber;
 
     @FXML
     private DialogToolBar toolBar;
@@ -42,13 +43,23 @@ public class RefillDialogController implements BottomBarInterface {
         bottomBar.setButtonText("SAVE");
         bottomBar.setBottomBarInterface(this);
 
+
+        /**To validate Expected Value, Ensures the field is not empty **/
         RequiredFieldValidator expectedDieselValidator=new RequiredFieldValidator();
         expectedDieselValidator.setMessage("Expected Value Cannot Be Empty");
         expected.getValidators().add(expectedDieselValidator);
 
+
+        /**To validate Actual Value, Ensures the field is not empty **/
         RequiredFieldValidator actualDieselValidator=new RequiredFieldValidator();
         actualDieselValidator.setMessage("Actual Value Cannot Be Empty");
         actual.getValidators().add(actualDieselValidator);
+
+
+        /**To validate Tanker Number, Ensures the field is not empty **/
+        RequiredFieldValidator tankerNumberValidator=new RequiredFieldValidator();
+        tankerNumberValidator.setMessage("Tanker Number Cannot Be Empty");
+        tankerNumber.getValidators().add(tankerNumberValidator);
 
         expected.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)->{
             if(!newValue.matches("[0-9]{0,10}([\\.][0-9]{0,4})?")) {
@@ -74,6 +85,17 @@ public class RefillDialogController implements BottomBarInterface {
             }
         });
 
+        tankerNumber.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)->{
+            if(!newValue.matches("[0-9]{0,10}([\\.][0-9]{0,4})?")) {
+                tankerNumber.setText(oldValue);
+            } else {
+                if(newValue.isEmpty()) {
+                    tankerNumber.validate();
+                } else {
+                    tankerNumber.resetValidation();
+                }
+            }
+        });
 
     }
 
@@ -100,12 +122,17 @@ public class RefillDialogController implements BottomBarInterface {
             status++;
         }
 
+        if(tankerNumber.getText().isEmpty()) {
+            tankerNumber.validate();
+            status++;
+        }
 
         if(status==0) {
             float actualValue=Float.parseFloat(actual.getText())-SystemStatus.getDieselStock();
             float loss=Float.parseFloat(expected.getText())-actualValue;
 
-            RefillModel model=new RefillModel(Float.parseFloat(expected.getText()),actualValue,loss,SystemStatus.getCurrentDate());
+            /**Passing the value of Tanker number involved in this refill in RefillModel **/
+            RefillModel model=new RefillModel(Float.parseFloat(expected.getText()),actualValue,loss,SystemStatus.getCurrentDate(),Integer.parseInt(tankerNumber.getText()));
 
             if(mode==0) {
                 ProfitLossController.getInstance().addDieselModel(model);
