@@ -109,19 +109,8 @@ public class RefillDialogController implements BottomBarInterface {
 
             if(mode==0) {
                 ProfitLossController.getInstance().addDieselModel(model);
-
-                SystemStatus.setDieselStock(Float.parseFloat(actual.getText()));
-
-                SetupOilStockTask task=new SetupOilStockTask(actual.getText(),String.valueOf(SystemStatus.getPetrolStock()));
-                TaskManager.executeTask(task);
-
             } else {
                 ProfitLossController.getInstance().addPetrolModel(model);
-
-                SystemStatus.setPetrolStock(Float.parseFloat(actual.getText()));
-
-                SetupOilStockTask task=new SetupOilStockTask(String.valueOf(SystemStatus.getDieselStock()),actual.getText());
-                TaskManager.executeTask(task);
             }
             RefillTask task=new RefillTask(model,mode);
             TaskManager.executeTask(task);

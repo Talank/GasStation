@@ -5,6 +5,7 @@ import sample.model.SystemStatus;
 import sample.tasks.Tasks;
 
 import java.sql.PreparedStatement;
+import java.sql.Statement;
 
 public class RefillTask extends Tasks {
 
@@ -21,18 +22,26 @@ public class RefillTask extends Tasks {
     public void execute() {
         try {
 
-            PreparedStatement insertRefill;
+            connection.setAutoCommit(false);
+
+            Statement insertRefill=connection.createStatement();
 
             if(mode==0) {
-                insertRefill=connection.prepareStatement("INSERT INTO DieselRefill VALUES (?,?,?,?)");
+                insertRefill.addBatch("INSERT INTO DieselRefill VALUES ("+model.getExpected()+","+model.getActual()+","+model.getLoss()+",'"+SystemStatus.getCurrentDate()+"')");
+                insertRefill.addBatch("UPDATE SystemStatus SET VALUE='"+String.valueOf(SystemStatus.getDieselStock()+model.getActual())+"', DATE='"+SystemStatus.getCurrentDate()+"' WHERE ID=14");
+
             } else {
-                insertRefill=connection.prepareStatement("INSERT INTO PetrolRefill VALUES (?,?,?,?)");
+                insertRefill.addBatch("INSERT INTO PetrolRefill VALUES ("+model.getExpected()+","+model.getActual()+","+model.getLoss()+",'"+SystemStatus.getCurrentDate()+"')");
+                insertRefill.addBatch("UPDATE SystemStatus SET VALUE='"+String.valueOf(SystemStatus.getPetrolStock()+model.getActual())+"', DATE='"+SystemStatus.getCurrentDate()+"' WHERE ID=15");
+
             }
-            insertRefill.setFloat(1,model.getExpected());
-            insertRefill.setFloat(2,model.getActual());
-            insertRefill.setFloat(3,model.getLoss());
-            insertRefill.setString(4,SystemStatus.getCurrentDate());
-            insertRefill.execute();
+
+            insertRefill.executeBatch();
+            connection.commit();
+
+            connection.setAutoCommit(true);
+
+
         } catch(Exception e) {
             e.printStackTrace();
         }
