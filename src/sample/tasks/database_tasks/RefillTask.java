@@ -26,14 +26,15 @@ public class RefillTask extends Tasks {
 
             Statement insertRefill=connection.createStatement();
 
+
             if(mode==0) {
                 insertRefill.addBatch("INSERT INTO DieselRefill VALUES ("+model.getExpected()+","+model.getActual()+","+model.getLoss()+",'"+SystemStatus.getCurrentDate()+"')");
                 insertRefill.addBatch("UPDATE SystemStatus SET VALUE='"+String.valueOf(SystemStatus.getDieselStock()+model.getActual())+"', DATE='"+SystemStatus.getCurrentDate()+"' WHERE ID=14");
-
+                SystemStatus.setDieselStock(SystemStatus.getDieselStock()+model.getActual());
             } else {
                 insertRefill.addBatch("INSERT INTO PetrolRefill VALUES ("+model.getExpected()+","+model.getActual()+","+model.getLoss()+",'"+SystemStatus.getCurrentDate()+"')");
                 insertRefill.addBatch("UPDATE SystemStatus SET VALUE='"+String.valueOf(SystemStatus.getPetrolStock()+model.getActual())+"', DATE='"+SystemStatus.getCurrentDate()+"' WHERE ID=15");
-
+                SystemStatus.setPetrolStock(SystemStatus.getPetrolStock()+model.getActual());
             }
 
             insertRefill.executeBatch();
