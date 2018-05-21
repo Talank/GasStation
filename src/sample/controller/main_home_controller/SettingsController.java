@@ -64,6 +64,8 @@ public class SettingsController {
         instance=this;
     }
 
+    private String[][] model=null;
+
     @FXML
     public void initialize() {
 
@@ -77,10 +79,14 @@ public class SettingsController {
 
 //      Select First item by default so that we do not have to check for list selection
         debtList.getSelectionModel().select(0);
-
-
-        loadSettings();
-
+        task=new GetSettingsTask();
+        task.setOnSucceeded((WorkerStateEvent e)->{
+            model=task.getValue();
+            loadSettings(model);
+        });
+        Thread mainThread=new Thread(task);
+        mainThread.setDaemon(true);
+        mainThread.start();
 
     }
 
@@ -92,46 +98,41 @@ public class SettingsController {
     * */
 
 
-    public void loadSettings() {
-        task=new GetSettingsTask();
-        task.setOnSucceeded((WorkerStateEvent e)->{
-            String model[][]=task.getValue();
+    public void loadSettings(String[][] model) {
 
-            usernameValue.setText(model[0][0]);
-            usernameDate.setText(model[0][1]);
+        usernameValue.setText(model[0][0]);
+        usernameDate.setText(model[0][1]);
 
-            dRateValue.setText(model[1][0]);
-            dRateDate.setText(model[1][1]);
+        dRateValue.setText(model[1][0]);
+        dRateDate.setText(model[1][1]);
 
-            pRateValue.setText(model[2][0]);
-            pRateDate.setText(model[2][1]);
+        pRateValue.setText(model[2][0]);
+        pRateDate.setText(model[2][1]);
 
-            dMeterValue.setText(model[3][0]);
-            dMeterDate.setText(model[3][1]);
+        dMeterValue.setText(model[3][0]);
+        dMeterDate.setText(model[3][1]);
 
-            pMeterValue.setText(model[4][0]);
-            pMeterDate.setText(model[4][1]);
+        pMeterValue.setText(model[4][0]);
+        pMeterDate.setText(model[4][1]);
 
-            counterStockValue.setText(model[5][0]);
-            counterStockDate.setText(model[5][1]);
+        counterStockValue.setText(model[5][0]);
+        counterStockDate.setText(model[5][1]);
 
-            dieselStockValue.setText(model[6][0]);
-            dieselStockDate.setText(model[6][1]);
+        dieselStockValue.setText(model[6][0]);
+        dieselStockDate.setText(model[6][1]);
 
-            petrolStockValue.setText(model[7][0]);
-            petrolStockDate.setText(model[7][1]);
+        petrolStockValue.setText(model[7][0]);
+        petrolStockDate.setText(model[7][1]);
 
-            billPrinter.setText(model[8][0]);
-            billPrinterDate.setText(model[8][1]);
+        billPrinter.setText(model[8][0]);
+        billPrinterDate.setText(model[8][1]);
 
-            analyticsPrinter.setText(model[9][0]);
-            analyticsPrinterDate.setText(model[9][1]);
+        analyticsPrinter.setText(model[9][0]);
+        analyticsPrinterDate.setText(model[9][1]);
+    }
 
-        });
-
-        Thread mainThread=new Thread(task);
-        mainThread.setDaemon(true);
-        mainThread.start();
+    public String[][] getModel() {
+        return model;
     }
 
 
@@ -225,7 +226,7 @@ public class SettingsController {
 
     @FXML
     public void setupMeterReadings(MouseEvent e) throws IOException {
-        Parent root=FXMLLoader.load(getClass().getResource("../../view/dialogs/finalReadings.fxml"));
+        Parent root=FXMLLoader.load(getClass().getResource("../../view/dialogs/setupMeterReadings.fxml"));
         Scene scene=new Scene(root);
         Stage stage=new Stage();
         stage.initModality(Modality.APPLICATION_MODAL);

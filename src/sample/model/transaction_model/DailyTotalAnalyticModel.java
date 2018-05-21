@@ -4,33 +4,35 @@ import javafx.beans.property.SimpleStringProperty;
 
 public class DailyTotalAnalyticModel {
 
-    private SimpleStringProperty iDieselVol,iPetrolVol,cDieselVol,cPetrolVol,iExtra,cExtra,extraIncome,oilIncome,total,date;
+    private SimpleStringProperty iDieselVol,iPetrolVol,cDieselVol,cPetrolVol,iExtra,cExtra,extraIncome, oilIncome,total,date;
 
 
 
     public DailyTotalAnalyticModel() {
-        iDieselVol=new SimpleStringProperty();
+
         iPetrolVol=new SimpleStringProperty();
+        iDieselVol=new SimpleStringProperty();
         cDieselVol=new SimpleStringProperty();
         cPetrolVol=new SimpleStringProperty();
         extraIncome=new SimpleStringProperty();
-        oilIncome=new SimpleStringProperty();
+        oilIncome =new SimpleStringProperty();
         total=new SimpleStringProperty();
         date=new SimpleStringProperty();
         iExtra=new SimpleStringProperty();
         cExtra=new SimpleStringProperty();
     }
 
-    public DailyTotalAnalyticModel(String iDieselVol, String iPetrolVol, String cDieselVol, String cPetrolVol, String extraIncome, String oilIncome, String total, String date) {
-        this.iDieselVol = new SimpleStringProperty(iDieselVol);
-        this.iPetrolVol = new SimpleStringProperty(iPetrolVol);
+    public DailyTotalAnalyticModel(String iDieselVol,String iPetrolVol,String cDieselVol, String cPetrolVol, String extraIncome, String creditOilIncome, String total, String date) {
+        this.iDieselVol=new SimpleStringProperty(iDieselVol);
+        this.iPetrolVol=new SimpleStringProperty(iPetrolVol);
         this.cDieselVol = new SimpleStringProperty(cDieselVol);
         this.cPetrolVol = new SimpleStringProperty(cPetrolVol);
         this.extraIncome = new SimpleStringProperty(extraIncome);
-        this.oilIncome = new SimpleStringProperty(oilIncome);
+        this.oilIncome = new SimpleStringProperty(creditOilIncome);
         this.total = new SimpleStringProperty(total);
         this.date = new SimpleStringProperty(date);
     }
+
 
     public String getIDieselVol() {
         return iDieselVol.get();
@@ -47,6 +49,7 @@ public class DailyTotalAnalyticModel {
     public void setIPetrolVol(String iPetrolVol) {
         this.iPetrolVol.set(iPetrolVol);
     }
+
 
     public String getCDieselVol() {
         return cDieselVol.get();

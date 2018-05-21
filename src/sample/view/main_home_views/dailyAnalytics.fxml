@@ -355,15 +355,6 @@
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </padding>
             </VBox>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-               <children>
-                  <JFXButton buttonType="RAISED" onMouseClicked="#loadClosing" style="-fx-background-color: #2eee87;" text="TODAY CLOSING">
-                     <font>
-                        <Font size="25.0" />
-                     </font>
-                  </JFXButton>
-               </children>
-            </HBox>
          </children>
       </VBox>
    </center>

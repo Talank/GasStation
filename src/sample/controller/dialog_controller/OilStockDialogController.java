@@ -10,6 +10,7 @@ import sample.controller.main_home_controller.SettingsController;
 import sample.library.dialog_bottombar.BottomBarInterface;
 import sample.library.dialog_bottombar.DialogBottomBar;
 import sample.library.dialog_toolbar.DialogToolBar;
+import sample.model.SystemStatus;
 import sample.model.databases.DatabaseHandler;
 import sample.tasks.TaskManager;
 import sample.tasks.database_tasks.SetupOilStockTask;
@@ -85,7 +86,17 @@ public class OilStockDialogController implements BottomBarInterface {
         if(status==0) {
             SetupOilStockTask task=new SetupOilStockTask(dieselStockValue.getText(),petrolStockValue.getText());
             TaskManager.executeTask(task);
-            SettingsController.getInstance().loadSettings();
+
+            String[][] model=SettingsController.getInstance().getModel();
+
+            model[6][0]=dieselStockValue.getText();
+            model[6][1]=SystemStatus.getCurrentDate();
+
+            model[7][0]=petrolStockValue.getText();
+            model[7][1]=SystemStatus.getCurrentDate();
+
+
+            SettingsController.getInstance().loadSettings(model);
             ((Node)e.getSource()).getScene().getWindow().hide();
 
 

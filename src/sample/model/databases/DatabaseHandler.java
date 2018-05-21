@@ -1,15 +1,11 @@
 package sample.model.databases;
 
-import javafx.scene.layout.StackPane;
-import javafx.stage.Stage;
 import sample.Reference;
 import sample.controller.SystemLogging;
 import sample.model.*;
 import sample.model.transaction_model.DailyTotalAnalyticModel;
 import sample.model.transaction_model.Transaction;
 
-import javax.swing.plaf.nimbus.State;
-import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Calendar;

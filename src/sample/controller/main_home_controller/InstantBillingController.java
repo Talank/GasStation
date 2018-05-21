@@ -315,9 +315,6 @@ public class InstantBillingController {
     * */
 
     private void initializeOil() {
-        /*RequiredFieldValidator customerNameValidator=new RequiredFieldValidator();
-        customerNameValidator.setMessage("Customer Name Cannot Be Empty");
-        customerName.getValidators().add(customerNameValidator);*/
 
         RequiredFieldValidator volumeValidator=new RequiredFieldValidator();
         volumeValidator.setMessage("Volume Cannot Be Empty");
@@ -326,10 +323,6 @@ public class InstantBillingController {
         RequiredFieldValidator priceValidator=new RequiredFieldValidator();
         priceValidator.setMessage("Price Cannot Be Empty");
         price.getValidators().add(priceValidator);
-
-        /*RequiredFieldValidator vehicleNumberValidator=new RequiredFieldValidator();
-        vehicleNumberValidator.setMessage("Vehicle Number Cannot Be Empty");
-        vehicleNumber.getValidators().add(vehicleNumberValidator);*/
 
         customerName.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)->{
 
@@ -438,9 +431,10 @@ public class InstantBillingController {
 
         if(!isListEmpty()) {
             List<Transaction> newList=new ArrayList<>(transactionListView.getItems());
-            executeTransaction();
             InstantTransactionBill instantTransactionBill=new InstantTransactionBill(newList);
             instantTransactionBill.print();
+            transactionListView.getItems().clear();
+            masterClear();
             snackBar.show("Printing Bill",2000);
         } else {
             snackBar.show("No Transaction Detected.",2000);
@@ -486,38 +480,6 @@ public class InstantBillingController {
         }
 
         return status;
-    }
-
-    /*
-    * This Function is called when insert is clicked
-    *
-    * Check if the list is empty
-    * Store the transactions in the databases
-    *
-    * */
-
-    @FXML
-    public void insertTransaction(MouseEvent e) {
-        if(!isListEmpty()) {
-            executeTransaction();
-            /*if(DatabaseHandler.storeInstantTransaction(transactionListView.getItems())) {
-                snackBar.show("Transaction Inserted Into Database",2000);
-
-
-                SystemLogging.getLogger().fine("Instant Transaction Stored SuccessFully.");
-            } else {
-                snackBar.show("Error Inserting Transaction",2000);
-                SystemLogging.getLogger().severe("Error Storing Instant Transaction!");
-            }*/
-        }
-    }
-
-    private void executeTransaction() {
-        List<Transaction> newList=new ArrayList<>(transactionListView.getItems());//Create A shallow copy
-        StoreInstantTransactionTask task=new StoreInstantTransactionTask(newList);
-        TaskManager.executeTask(task);
-        transactionListView.getItems().clear();
-        masterClear();
     }
 
     /*
@@ -630,23 +592,45 @@ public class InstantBillingController {
     @FXML
     public void addNewItem(MouseEvent e) {
         if(mode==2) {
+
+            //The current Selection is Extra
+
             if(checkExtraInput()==0) {
+
+                //All the input fields for the extra are filled
+
                 Transaction transaction;
-                if(transactionListView.getSelectionModel().getSelectedItems().size()==0)
+                if(transactionListView.getSelectionModel().getSelectedItems().size()==0) {
+
+                    //This is the new Item to be added to the list
+
                     transaction=new Transaction();
-                else
+                } else {
+
+                    //This is the old item that the user might have edited
+
                     transaction=transactionListView.getSelectionModel().getSelectedItem();
+                }
+
+                //set the transaction parameters
+
                 transaction.extraTransaction(itemName.getText(),Float.parseFloat(rates.getText()),Integer.parseInt(quantity.getText()));
                 Transaction.setName(customerName.getText());
                 transaction.calcExtraPrice();
                 Transaction.setTotal(Transaction.getTotal()+transaction.getPrice());
 
+                //Show the calculated total value
                 total.setText(String.valueOf(Transaction.getTotal()));
                 if(transactionListView.getSelectionModel().getSelectedItems().size()==0) {
+
+                    //If user didn't select any of the items in the list then clear the current text fields for new items
+
                     listModels.add(transaction);
                     clearExtra();
                 }
 
+
+                //update the items Counts in the button as the item is added
 
                 itemsCount.setText(String.valueOf(listModels.size()));
             }
