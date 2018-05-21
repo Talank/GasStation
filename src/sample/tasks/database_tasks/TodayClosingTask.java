@@ -2,6 +2,7 @@ package sample.tasks.database_tasks;
 
 import sample.controller.SystemLogging;
 import sample.model.SystemStatus;
+import sample.model.transaction_model.DailyTotalAnalyticModel;
 import sample.nepali_date.NepaliDateGenerator;
 import sample.tasks.TaskManager;
 import sample.tasks.Tasks;
@@ -14,6 +15,13 @@ import java.time.LocalDate;
 
 
 public class TodayClosingTask extends Tasks {
+
+
+    private DailyTotalAnalyticModel model;
+
+    public TodayClosingTask(DailyTotalAnalyticModel model) {
+        this.model=model;
+    }
 
     @Override
     public void execute() {
@@ -30,6 +38,11 @@ public class TodayClosingTask extends Tasks {
             closing.addBatch("UPDATE SystemStatus SET VALUE='0' WHERE ID=4");
             closing.addBatch("UPDATE SystemStatus SET VALUE='0' WHERE ID=5");
             closing.addBatch("UPDATE SystemStatus SET VALUE='0' WHERE ID=6");
+            closing.addBatch("INSERT INTO DailyAnalytics VALUES ("+Float.parseFloat(model.getIDieselVol())
+                    +","+Float.parseFloat(model.getIPetrolVol())+","+Float.parseFloat(model.getCDieselVol())+","
+                    +Float.parseFloat(model.getCPetrolVol())+","+Float.parseFloat(model.getIExtra())+","+
+                    Float.parseFloat(model.getCExtra())+","+Float.parseFloat(model.getOilIncome())+","+
+                    SystemStatus.getdRate()+","+SystemStatus.getpRate()+",'"+SystemStatus.getCurrentDate()+"')");
 
             closing.executeBatch();
             connection.commit();

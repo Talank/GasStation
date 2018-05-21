@@ -17,10 +17,7 @@ import sample.nepali_date.ParseNepaliDate;
 import sample.tasks.Tasks;
 
 import java.io.IOException;
-import java.sql.Date;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -38,64 +35,18 @@ public class InitializeSystem extends Tasks {
         SystemLogging.initializeLogger();//Initialize The Logger
         SystemStatus.setMainHomePath("../../view/main_home_views/mainHome.fxml");
 
-        Calendar calendar=Calendar.getInstance();
-        calendar.set(2000,Calendar.JANUARY,32);
-
-        SystemLogging.log("Day of Month:"+calendar.get(Calendar.DAY_OF_MONTH));
 
         NepaliDateGenerator generator=new NepaliDateGenerator();
 
         SystemStatus.setCurrentDate(generator.toString());
         SystemStatus.setTransactionDate(generator.toString());
 
-
-        //To Be Removed
-
-
-        /*LocalTime time=LocalTime.now();
-        int hourDiff=17-time.getHour();
-
-        if(hourDiff<0) {
-            System.out.println("System Restart After 5 PM. Not Scheduling Task.");
-        } else {
-            final long delay=(hourDiff*3600)+time.getMinute()*60+time.getSecond();
-
-            System.out.println("Hour Delay:"+hourDiff);
-
-
-            Thread scheduleThread= new Thread(()->{
-                try {
-
-                    System.out.println("Total Delay:"+delay*1000);
-
-                    Thread.sleep(delay*1000);
-
-                    Platform.runLater(()->{
-
-                        try {
-                            Parent root=FXMLLoader.load(getClass().getResource("../../view/dialogs/finalReadings.fxml"));
-                            Stage stage=new Stage();
-                            stage.setScene(new Scene(root));
-                            stage.initModality(Modality.APPLICATION_MODAL);
-                            stage.show();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-
-                    });
-
-                } catch(InterruptedException e) {
-                    e.printStackTrace();
-                }
-
-            });
-            scheduleThread.setDaemon(true);
-            scheduleThread.start();
-
-        }*/
+        System.out.println("System Current Date:"+SystemStatus.getCurrentDate());
 
 
         int nDay=generator.getDateFormat().getnDay();
+
+        int totalDaysOfMonth=generator.getDateFormat().getTotalDaysOfMonth();
 
         int nMonth=generator.getDateFormat().getnMonth();
 
@@ -112,17 +63,57 @@ public class InitializeSystem extends Tasks {
             ResultSet resultSet=getDebitList.executeQuery("SELECT * FROM CreditCompany");
             while(resultSet.next()) {
 
-                model=new DebtListModel(resultSet.getString(2),resultSet.getString(5),resultSet.getString(4),resultSet.getInt(1),resultSet.getInt(3));
+                model=new DebtListModel(resultSet.getString(2),resultSet.getString(8),resultSet.getString(7),resultSet.getInt(1),resultSet.getInt(3),resultSet.getInt(4),resultSet.getInt(5),resultSet.getInt(6));
 
-                initialDate.setNepaliDate(resultSet.getString(5));
+                initialDate.setNepaliDate(resultSet.getString(8));
 
                 if(initialDate.getnMonth()<nMonth) {
                     expiredList.add(model);
                     model.setExpired(true);
-                } else if(initialDate.getnMonth()==nMonth&&initialDate.getnDay()<nDay) {
+                } else if(initialDate.getnMonth()==nMonth&&(nDay-initialDate.getnDay())>=Integer.parseInt(model.getDays())) {
                     expiredList.add(model);
                     model.setExpired(true);
                 }
+
+                if(model.isExpired()) {
+
+                    System.out.println("Model has been  set to expire");
+
+                    if(resultSet.getInt(5)==1) {
+
+                        System.out.println("Company previous due was cleared!");
+
+                        Statement getCounts=connection.createStatement();
+                        ResultSet countResult=getCounts.executeQuery("SELECT COUNT(*) FROM "+DatabaseHandler.generateTableName(model.getCompanyName(),model.getId()));
+                        countResult.next();
+                        int count=countResult.getInt(1);
+                        countResult=getCounts.executeQuery("SELECT EXPIRE_ID,TRANSACTION_ID FROM "+DatabaseHandler.generateTableName(model.getCompanyName(),model.getId())+" OFFSET "+(count-1)+" ROWS FETCH NEXT 1 ROWS ONLY");
+                        countResult.next();
+                        int expireID=countResult.getInt(1);
+                        int transactionID=countResult.getInt(2);
+
+                        PreparedStatement updateExpireID=connection.prepareStatement("UPDATE CreditCompany SET PREV_EXPIRE_ID="+expireID+",PREV_TRANSACTION_ID="+transactionID+" WHERE ID="+model.getId());
+                        updateExpireID.execute();
+
+                        model.setTransactionID(resultSet.getInt(3));
+                        model.setExpireID(resultSet.getInt(4));
+
+                        model.setPrevExpireID(expireID);
+                        model.setPrevTransactionID(transactionID);
+                    } else {
+
+                        System.out.println("Company Previous due was unclear");
+
+                        model.setTransactionID(resultSet.getInt(3));
+                        model.setExpireID(resultSet.getInt(4));
+                        model.setPrevExpireID(resultSet.getInt(5));
+                        model.setPrevTransactionID(resultSet.getInt(6));
+                    }
+
+
+                }
+
+
                 arrayList.add(model);
             }
         } catch(Exception e) {
@@ -156,26 +147,6 @@ public class InitializeSystem extends Tasks {
             e.printStackTrace();
         }
 
-        //This code is moved to Today Closing task as it is more Feasible to reset system when Closing is done rather than at start up
-
-        /*try {
-
-            connection.setAutoCommit(false);
-            Statement resetSystem=connection.createStatement();
-            resetSystem.addBatch("UPDATE SystemStatus SET VALUE='0' WHERE ID=1");
-            resetSystem.addBatch("UPDATE SystemStatus SET VALUE='0' WHERE ID=2");
-            resetSystem.addBatch("UPDATE SystemStatus SET VALUE='0' WHERE ID=3");
-            resetSystem.addBatch("UPDATE SystemStatus SET VALUE='0' WHERE ID=4");
-            resetSystem.addBatch("UPDATE SystemStatus SET VALUE='0' WHERE ID=5");
-            resetSystem.addBatch("UPDATE SystemStatus SET VALUE='0' WHERE ID=6");
-
-            resetSystem.executeBatch();
-            connection.commit();
-            connection.setAutoCommit(true);
-
-        } catch(SQLException e) {
-            System.out.println(e.getMessage());
-        }*/
 
         try {
             Statement getRate=connection.createStatement();

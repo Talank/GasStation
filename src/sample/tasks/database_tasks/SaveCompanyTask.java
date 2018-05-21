@@ -57,19 +57,22 @@ public class SaveCompanyTask extends Tasks {
                         break;
                 }
 
-                PreparedStatement addCompany=connection.prepareStatement("INSERT INTO CreditCompany VALUES(?,?,?,?,?)");
+                PreparedStatement addCompany=connection.prepareStatement("INSERT INTO CreditCompany VALUES(?,?,?,?,?,?,?,?)");
                 addCompany.setString(2,companyName);
                 addCompany.setInt(1,j);
-                addCompany.setString(4,creditCycle);
+                addCompany.setInt(4,1);
+                addCompany.setInt(5,1);
+                addCompany.setInt(6,1);
+                addCompany.setString(7,creditCycle);
                 addCompany.setInt(3,1);
-                addCompany.setString(5,SystemStatus.getCurrentDate());
+                addCompany.setString(8,SystemStatus.getCurrentDate());
                 addCompany.execute();
                 taskStatus++;
             }
 
             if(taskStatus==1) {
                 Statement createTable=connection.createStatement();
-                createTable.execute("CREATE TABLE "+DatabaseHandler.generateTableName(companyName,j)+" (TRANSACTION_ID INT NOT NULL,TYPE VARCHAR(10) NOT NULL,VEHICLE_NO VARCHAR(10) NOT NULL,RATE FLOAT NOT NULL,VOLUME FLOAT NOT NULL,PRICE FLOAT NOT NULL,DATE VARCHAR(30) NOT NULL)");
+                createTable.execute("CREATE TABLE "+DatabaseHandler.generateTableName(companyName,j)+" (EXPIRE_ID INT NOT NULL,TRANSACTION_ID INT NOT NULL,TYPE VARCHAR(10) NOT NULL,VEHICLE_NO VARCHAR(10) NOT NULL,RATE FLOAT NOT NULL,VOLUME FLOAT NOT NULL,PRICE FLOAT NOT NULL,DATE VARCHAR(30) NOT NULL)");
                 taskStatus++;
             }
 
@@ -78,7 +81,10 @@ public class SaveCompanyTask extends Tasks {
             final int data=j;
 
             Platform.runLater(()->{
-                taskInterface.onComplete(data);
+                if(taskInterface!=null) {
+                    taskInterface.onComplete(data);
+                }
+
             });
 
 

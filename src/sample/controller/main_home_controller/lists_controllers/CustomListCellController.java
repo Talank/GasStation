@@ -9,6 +9,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import sample.model.DebtListModel;
 import sample.model.SystemStatus;
+import sample.tasks.TaskManager;
+import sample.tasks.database_tasks.CompanyCreditClosingTask;
 
 import java.io.IOException;
 
@@ -49,12 +51,14 @@ public class CustomListCellController {
 
     @FXML
     public void closing(MouseEvent e) throws IOException {
-
-        model.setExpired(false);
         companyLabel.setTextFill(Color.BLACK);
         date.setTextFill(Color.BLACK);
         days.setTextFill(Color.BLACK);
         date.setText("Credit Time:"+SystemStatus.getCurrentDate());
+
+        CompanyCreditClosingTask task=new CompanyCreditClosingTask(model);
+        TaskManager.executeTask(task);
+
 
     }
 

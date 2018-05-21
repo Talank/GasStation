@@ -5,9 +5,9 @@ public class NepaliDateFormat {
 
     private String formattedDate;
 
-    private int nYear,nMonth,nDay;
+    private int nYear,nMonth,nDay,totalDaysOfMonth;
 
-    public static final String BAISHAK="BHADRA";
+    public static final String BAISHAK="BAISHAK";
     public static final String JESTHA="JESTHA";
     public static final String ASHAR="ASHAR";
     public static final String SHRAWAN="SHRAWAN";
@@ -24,11 +24,12 @@ public class NepaliDateFormat {
 
 
 
-    public NepaliDateFormat(int nYear, int nMonth, int nDay,String dayOfWeek) {
+    public NepaliDateFormat(int nYear, int nMonth, int nDay,int totalDaysOfMonth,String dayOfWeek) {
 
         this.nYear=nYear;
         this.nMonth=nMonth;
         this.nDay=nDay;
+        this.totalDaysOfMonth=totalDaysOfMonth;
 
         formattedDate=dayOfWeek+",";
 
@@ -99,6 +100,10 @@ public class NepaliDateFormat {
 
     public int getnDay() {
         return nDay;
+    }
+
+    public int getTotalDaysOfMonth() {
+        return totalDaysOfMonth;
     }
 
 

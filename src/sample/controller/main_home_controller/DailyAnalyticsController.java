@@ -124,7 +124,7 @@ public class DailyAnalyticsController {
 
     public void showResults() throws IOException {
 
-        TodayClosingTask task=new TodayClosingTask();
+        TodayClosingTask task=new TodayClosingTask(model);
         TaskManager.executeTask(task);
 
 

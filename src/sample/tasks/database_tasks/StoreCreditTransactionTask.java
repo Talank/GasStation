@@ -1,6 +1,7 @@
 package sample.tasks.database_tasks;
 
 import sample.controller.SystemLogging;
+import sample.model.DebtListModel;
 import sample.model.SystemStatus;
 import sample.model.databases.DatabaseHandler;
 import sample.model.transaction_model.Transaction;
@@ -21,10 +22,9 @@ public class StoreCreditTransactionTask extends Tasks {
 
     private int taskStatus=0;
 
-
-    public void setParameters(List<Transaction> instantTransaction,int[] ids) {
-        this.ids=ids;
-        this.instantTransaction=instantTransaction;
+    public StoreCreditTransactionTask(List<Transaction> instantTransaction, int[] ids) {
+        this.instantTransaction = instantTransaction;
+        this.ids = ids;
     }
 
     @Override
@@ -34,7 +34,7 @@ public class StoreCreditTransactionTask extends Tasks {
 
         try {
 
-            StringBuilder query=new StringBuilder("INSERT INTO "+DatabaseHandler.generateTableName(Transaction.getName(),ids[0])+" VALUES (?,?,?,?,?,?,?)");
+            StringBuilder query=new StringBuilder("INSERT INTO "+DatabaseHandler.generateTableName(Transaction.getName(),ids[0])+" VALUES (?,?,?,?,?,?,?,?)");
 
             PreparedStatement insertCredit=connection.prepareStatement(query.toString());
             if(taskStatus==0) {
@@ -52,12 +52,14 @@ public class StoreCreditTransactionTask extends Tasks {
 
                 for(Transaction transaction:instantTransaction) {
 
-                    insertCredit.setInt(1,ids[1]);
-                    insertCredit.setString(2,transaction.getType());
-                    insertCredit.setFloat(4,transaction.getRate());
+
+                    insertCredit.setInt(1,ids[2]++);
+                    insertCredit.setInt(2,ids[1]);
+                    insertCredit.setString(3,transaction.getType());
+                    insertCredit.setFloat(5,transaction.getRate());
                     if(transaction.getMode()==2) {
-                        insertCredit.setString(3,transaction.getType());
-                        insertCredit.setFloat(5,transaction.getQuantity());
+                        insertCredit.setString(4,transaction.getType());
+                        insertCredit.setFloat(6,transaction.getQuantity());
                         ePrice+=transaction.getPrice();
                     } else {
 
@@ -73,11 +75,11 @@ public class StoreCreditTransactionTask extends Tasks {
                             return;
                         }
 
-                        insertCredit.setString(3,transaction.getVehicleNo());
-                        insertCredit.setFloat(5,transaction.getVolume());
+                        insertCredit.setString(4,transaction.getVehicleNo());
+                        insertCredit.setFloat(6,transaction.getVolume());
                     }
-                    insertCredit.setFloat(6,transaction.getPrice());
-                    insertCredit.setString(7,SystemStatus.getTransactionDate());
+                    insertCredit.setFloat(7,transaction.getPrice());
+                    insertCredit.setString(8,SystemStatus.getTransactionDate());
 
                     insertCredit.addBatch();
 
@@ -92,7 +94,7 @@ public class StoreCreditTransactionTask extends Tasks {
                 connection.setAutoCommit(true);
 
                 ids[1]++;
-                insertCredit=connection.prepareStatement("UPDATE CreditCompany SET TRANSACTION_ID="+ids[1]+" WHERE ID="+ids[0]);
+                insertCredit=connection.prepareStatement("UPDATE CreditCompany SET TRANSACTION_ID="+ids[1]+",EXPIRE_ID="+ids[2]+" WHERE ID="+ids[0]);
                 insertCredit.execute();
 
                 taskStatus++;

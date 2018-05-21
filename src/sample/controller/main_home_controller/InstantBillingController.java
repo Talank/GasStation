@@ -315,9 +315,9 @@ public class InstantBillingController {
     * */
 
     private void initializeOil() {
-        RequiredFieldValidator customerNameValidator=new RequiredFieldValidator();
+        /*RequiredFieldValidator customerNameValidator=new RequiredFieldValidator();
         customerNameValidator.setMessage("Customer Name Cannot Be Empty");
-        customerName.getValidators().add(customerNameValidator);
+        customerName.getValidators().add(customerNameValidator);*/
 
         RequiredFieldValidator volumeValidator=new RequiredFieldValidator();
         volumeValidator.setMessage("Volume Cannot Be Empty");
@@ -327,38 +327,32 @@ public class InstantBillingController {
         priceValidator.setMessage("Price Cannot Be Empty");
         price.getValidators().add(priceValidator);
 
-        RequiredFieldValidator vehicleNumberValidator=new RequiredFieldValidator();
+        /*RequiredFieldValidator vehicleNumberValidator=new RequiredFieldValidator();
         vehicleNumberValidator.setMessage("Vehicle Number Cannot Be Empty");
-        vehicleNumber.getValidators().add(vehicleNumberValidator);
+        vehicleNumber.getValidators().add(vehicleNumberValidator);*/
 
         customerName.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)->{
-            if(!newValue.matches("[a-zA-Z ]*")) {//Recursion May Exists,Just a Work Around.
+
+            if(!newValue.matches("[a-zA-Z ]{0,15}")) {
                 customerName.setText(oldValue);
-            } else {
-                if(newValue.isEmpty()&&!force) {
-                    customerName.validate();
-                } else {
-                    customerName.resetValidation();
-                }
             }
+
         });
 
         vehicleNumber.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)->{
-            if(newValue.isEmpty()&&!force)
-                vehicleNumber.validate();
-            else {
-                vehicleNumber.resetValidation();
+
+            if(!newValue.matches("[0-9]{0,4}")) {
+                vehicleNumber.setText(oldValue);
             }
 
         });
 
         volume.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)->{
-            if(!newValue.matches("[0-9]{0,10}([\\.][0-9]{0,4})?"))
+            if(!newValue.matches("[0-9]{0,10}([\\.][0-9]{0,4})?")) {
                 volume.setText(oldValue);
-            else
-            if(newValue.isEmpty()&&!force)
+            } else if(newValue.isEmpty()&&!force) {
                 volume.validate();
-            else {
+            } else {
                 volume.resetValidation();
 
                 if(calcNowV) {
@@ -458,11 +452,6 @@ public class InstantBillingController {
 
     private int checkOilInput() {
         int status=0;
-        if(customerName.getText().trim().isEmpty()) {
-            customerName.validate();
-            status++;
-        }
-
         if(price.getText().trim().isEmpty()) {
             price.validate();
             status++;
@@ -473,10 +462,6 @@ public class InstantBillingController {
             status++;
         }
 
-        if(vehicleNumber.getText().trim().isEmpty()) {
-            vehicleNumber.validate();
-            status++;
-        }
         return status;
     }
 
@@ -484,11 +469,6 @@ public class InstantBillingController {
 //  Function to validate extra Input fields
     private int checkExtraInput() {
         int status=0;
-
-        if(customerName.getText().trim().isEmpty()) {
-            customerName.validate();
-            status++;
-        }
 
         if(rates.getText().trim().isEmpty()) {
             rates.validate();

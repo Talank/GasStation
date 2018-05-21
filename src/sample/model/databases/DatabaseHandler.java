@@ -419,7 +419,7 @@ public class DatabaseHandler {
     }
 
 
-    public static ArrayList<DebtListModel> getDebtCompany() {
+    /*public static ArrayList<DebtListModel> getDebtCompany() {
         ArrayList<DebtListModel> arrayList=new ArrayList<>();
         try {
             Statement getDebitList=connection.createStatement();
@@ -431,7 +431,7 @@ public class DatabaseHandler {
             e.printStackTrace();
         }
         return arrayList;
-    }
+    }*/
 
 
     public static ArrayList<CreditDetailsModel> getDebtCompanyDetails(int id) {

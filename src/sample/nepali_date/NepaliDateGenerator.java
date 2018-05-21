@@ -75,7 +75,9 @@ public class NepaliDateGenerator {
 
         /*convertedNepaliDate=LocalDate.of(nYear,nMonth,nDay);*/
 
-        dateFormat=new NepaliDateFormat(nYear,nMonth,nDay,currentEnglishDate.getDayOfWeek().name());
+
+
+        dateFormat=new NepaliDateFormat(nYear,nMonth,nDay,nepaliDate.getDaysOfYearMonth(nYear,nMonth),currentEnglishDate.getDayOfWeek().name());
 
         SystemLogging.log("Converted Nepali Date:"+dateFormat.toString());
 

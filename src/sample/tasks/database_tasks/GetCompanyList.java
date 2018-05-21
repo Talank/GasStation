@@ -27,7 +27,7 @@ public class GetCompanyList extends Tasks {
             Statement getDebitList=connection.createStatement();
             ResultSet resultSet=getDebitList.executeQuery("SELECT * FROM CreditCompany");
             while(resultSet.next()) {
-                arrayList.add(new DebtListModel(resultSet.getString(2),resultSet.getDate(5).toString(),resultSet.getString(4),resultSet.getInt(1),resultSet.getInt(3)));
+                arrayList.add(new DebtListModel(resultSet.getString(2),resultSet.getString(8),resultSet.getString(7),resultSet.getInt(1),resultSet.getInt(3),resultSet.getInt(4),resultSet.getInt(5),resultSet.getInt(6)));
             }
             taskInterface.onComplete(arrayList);
         } catch(Exception e) {

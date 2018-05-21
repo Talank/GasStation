@@ -25,7 +25,7 @@ public class SetupMeterReadingsTask extends Tasks {
         try {
 
 
-            if(SystemStatus.getDieselStock()!=Float.parseFloat(dieselReading)&&SystemStatus.getPetrolStock()!=Float.parseFloat(petrolReading)) {
+            if(SystemStatus.getiDiesel()!=Float.parseFloat(dieselReading)&&SystemStatus.getiPetrol()!=Float.parseFloat(petrolReading)) {
                 connection.setAutoCommit(false);
 
                 Statement updateStock=connection.createStatement();
@@ -36,22 +36,22 @@ public class SetupMeterReadingsTask extends Tasks {
                 connection.commit();
 
                 connection.setAutoCommit(true);
-                SystemStatus.setDieselStock(Float.parseFloat(dieselReading));
-                SystemStatus.setPetrolStock(Float.parseFloat(petrolReading));
+                SystemStatus.setiDiesel(Float.parseFloat(dieselReading));
+                SystemStatus.setiPetrol(Float.parseFloat(petrolReading));
 
 
             } else {
 
-                if(SystemStatus.getDieselStock()!=Float.parseFloat(dieselReading)) {
+                if(SystemStatus.getiDiesel()!=Float.parseFloat(dieselReading)) {
                     PreparedStatement updateStock=connection.prepareStatement("UPDATE SystemStatus SET VALUE='"+dieselReading+"', DATE='"+SystemStatus.getCurrentDate()+"' WHERE ID=11");
                     updateStock.execute();
-                    SystemStatus.setDieselStock(Float.parseFloat(dieselReading));
+                    SystemStatus.setiDiesel(Float.parseFloat(dieselReading));
                 }
 
-                if(SystemStatus.getPetrolStock()!=Float.parseFloat(petrolReading)) {
+                if(SystemStatus.getiPetrol()!=Float.parseFloat(petrolReading)) {
                     PreparedStatement updateStock=connection.prepareStatement("UPDATE SystemStatus SET VALUE='"+petrolReading+"', DATE='"+SystemStatus.getCurrentDate()+"' WHERE ID=12");
                     updateStock.execute();
-                    SystemStatus.setPetrolStock(Float.parseFloat(petrolReading));
+                    SystemStatus.setiPetrol(Float.parseFloat(petrolReading));
                 }
 
             }

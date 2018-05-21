@@ -16,8 +16,8 @@ import sample.controller.main_home_controller.lists_controllers.TransactionListC
 import sample.library.toolbar.ToolBar;
 
 import sample.model.CreditCompanyList;
+import sample.model.DebtListModel;
 import sample.model.SystemStatus;
-import sample.model.databases.DatabaseHandler;
 import sample.model.transaction_model.CreditTransactionBill;
 import sample.model.transaction_model.Transaction;
 import sample.tasks.TaskManager;
@@ -503,11 +503,14 @@ public class CreditBillingController {
             snackBar.show("Printing And Storing Bill.",2000);
 
             int[] ids=CreditCompanyList.getID(companyName.getValue());
-            if(ids[0]!=-1&&ids[1]!=-1) {
+            DebtListModel model=CreditCompanyList.getCompany(companyName.getValue());
+            if(ids[0]!=-1&&ids[1]!=-1&&ids[2]!=-1) {
+
+                model.setExpireID(ids[2]+transactionListView.getItems().size());
+                model.setTransactionID(ids[1]+1);
 
                 List<Transaction> newList=new ArrayList<>(transactionListView.getItems());//Create A shallow copy
-                StoreCreditTransactionTask task=new StoreCreditTransactionTask();
-                task.setParameters(newList,ids);
+                StoreCreditTransactionTask task=new StoreCreditTransactionTask(newList,ids);
                 TaskManager.executeTask(task);
                 transactionListView.getItems().clear();
                 masterClear();
@@ -515,13 +518,6 @@ public class CreditBillingController {
                 CreditTransactionBill transactionBill=new CreditTransactionBill(newList);
                 transactionBill.print();
 
-
-                /*if(DatabaseHandler.storeCreditTransaction(transactionListView.getItems(),ids[1],ids[0])) {
-                    CreditTransactionBill transactionBill=new CreditTransactionBill(transactionListView.getItems());
-                    transactionBill.print();
-                } else {
-                    snackBar.show("Error Printing The Bill",2000);
-                }*/
 
 
             }

@@ -2,16 +2,19 @@ package sample.model;
 
 public class DebtListModel {
     private String companyName,date,days;
-    private int id,transactionID;
+    private int id,transactionID,expireID,prevExpireID,prevTransactionID;
 
     private boolean isExpired=false;
 
-    public DebtListModel(String companyName,String date,String days,int id,int transactionID) {
+    public DebtListModel(String companyName,String date,String days,int id,int transactionID,int expireID,int prevExpireID,int prevTransactionID) {
         this.companyName = companyName;
         this.date=date;
         this.days=days;
         this.id=id;
         this.transactionID=transactionID;
+        this.expireID=expireID;
+        this.prevExpireID=prevExpireID;
+        this.prevTransactionID=prevTransactionID;
     }
 
     public String getCompanyName() {
@@ -58,7 +61,31 @@ public class DebtListModel {
         return isExpired;
     }
 
+    public int getExpireID() {
+        return expireID;
+    }
+
+    public void setExpireID(int expireID) {
+        this.expireID = expireID;
+    }
+
     public void setExpired(boolean expired) {
         isExpired = expired;
+    }
+
+    public int getPrevExpireID() {
+        return prevExpireID;
+    }
+
+    public void setPrevExpireID(int prevExpireID) {
+        this.prevExpireID = prevExpireID;
+    }
+
+    public int getPrevTransactionID() {
+        return prevTransactionID;
+    }
+
+    public void setPrevTransactionID(int prevTransactionID) {
+        this.prevTransactionID = prevTransactionID;
     }
 }
