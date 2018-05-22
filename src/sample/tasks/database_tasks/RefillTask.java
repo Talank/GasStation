@@ -5,6 +5,7 @@ import sample.model.SystemStatus;
 import sample.tasks.Tasks;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.Statement;
 
 public class RefillTask extends Tasks {
@@ -52,16 +53,16 @@ public class RefillTask extends Tasks {
              * **/
             //insertRefill.execute("SELECT TANKER_NO FROM TANKERS WHERE TANKER_NO= ("+model.getTankerNumber()+")")
 
-            int rows = 0;
-            rows = insertRefill.executeQuery("SELECT * FROM TANKERS WHERE TANKER_NO= ("+model.getTankerNumber()+")").getRow();
+//            int rows = 0;
+//            boolean rows = insertRefill.execute("SELECT COUNT(TANKER_NO) FROM TANKERS WHERE TANKER_NO= ("+model.getTankerNumber()+")");
+//            System.out.println(rows);
+            
 
-            if (rows>0) {
-                System.out.println("to line 55");
+            if (insertRefill.executeQuery("SELECT TANKER_NO FROM TANKERS WHERE TANKER_NO= ("+model.getTankerNumber()+")").next()) {
                 insertRefill.addBatch("UPDATE TANKERS SET TOTAL_LOSS= TOTAL_LOSS+("+model.getLoss()+"), COUNTS= COUNTS+1 WHERE TANKER_NO= ("+model.getTankerNumber()+")");
             }
 
             else {
-                System.out.println("to line 59");
                 insertRefill.addBatch("INSERT INTO TANKERS VALUES ("+model.getTankerNumber()+","+model.getLoss()+",1)");
             }
 
