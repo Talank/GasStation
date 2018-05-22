@@ -56,13 +56,14 @@ public class RefillTask extends Tasks {
 //            int rows = 0;
 //            boolean rows = insertRefill.execute("SELECT COUNT(TANKER_NO) FROM TANKERS WHERE TANKER_NO= ("+model.getTankerNumber()+")");
 //            System.out.println(rows);
-            
+
 
             if (insertRefill.executeQuery("SELECT TANKER_NO FROM TANKERS WHERE TANKER_NO= ("+model.getTankerNumber()+")").next()) {
                 insertRefill.addBatch("UPDATE TANKERS SET TOTAL_LOSS= TOTAL_LOSS+("+model.getLoss()+"), COUNTS= COUNTS+1 WHERE TANKER_NO= ("+model.getTankerNumber()+")");
             }
 
             else {
+                //System.out.println("got to line 66, else part");
                 insertRefill.addBatch("INSERT INTO TANKERS VALUES ("+model.getTankerNumber()+","+model.getLoss()+",1)");
             }
 
