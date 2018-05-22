@@ -502,8 +502,26 @@ public class CreditBillingController {
         if(!isListEmpty()) {
             snackBar.show("Printing And Storing Bill.",2000);
 
-            int[] ids=CreditCompanyList.getID(companyName.getValue());
             DebtListModel model=CreditCompanyList.getCompany(companyName.getValue());
+
+
+            List<Transaction> newList=new ArrayList<>(transactionListView.getItems());//Create A shallow copy
+            StoreCreditTransactionTask task=new StoreCreditTransactionTask(newList,model);
+            TaskManager.executeTask(task);
+
+
+            transactionListView.getItems().clear();
+            masterClear();
+
+            CreditTransactionBill transactionBill=new CreditTransactionBill(newList);
+            transactionBill.print();
+
+            /**
+             * To Be Removed as the following code posses serious out of sequence execution
+             */
+
+            /*int[] ids=CreditCompanyList.getID(companyName.getValue());
+
             if(ids[0]!=-1&&ids[1]!=-1&&ids[2]!=-1) {
 
                 model.setExpireID(ids[2]+transactionListView.getItems().size());
@@ -512,6 +530,8 @@ public class CreditBillingController {
                 List<Transaction> newList=new ArrayList<>(transactionListView.getItems());//Create A shallow copy
                 StoreCreditTransactionTask task=new StoreCreditTransactionTask(newList,ids);
                 TaskManager.executeTask(task);
+
+
                 transactionListView.getItems().clear();
                 masterClear();
 
@@ -520,7 +540,7 @@ public class CreditBillingController {
 
 
 
-            }
+            }*/
 
         } else {
             snackBar.show("No Transaction Detected.",2000);

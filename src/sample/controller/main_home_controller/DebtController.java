@@ -11,6 +11,7 @@ import javafx.scene.control.SelectionMode;
 
 import javafx.stage.Stage;
 import sample.controller.main_home_controller.lists_controllers.CreditCompanyDetailsController;
+import sample.controller.main_home_controller.lists_controllers.CreditCompanyListCell;
 import sample.controller.main_home_controller.lists_controllers.DebtListCell;
 import sample.library.toolbar.ToolBar;
 import sample.model.CreditCompanyList;
@@ -48,7 +49,7 @@ public class DebtController {
         toolBar.setTitle("Credit Company Lists");
         toolBar.setBackPath(SystemStatus.getMainHomePath());
 
-        debtList.setCellFactory(lv->new DebtListCell());
+        debtList.setCellFactory(lv->new CreditCompanyListCell());
         debtList.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         debtList.getItems().addAll(CreditCompanyList.getDetailCompanyList());
 

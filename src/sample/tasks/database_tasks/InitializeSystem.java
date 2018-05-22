@@ -63,21 +63,33 @@ public class InitializeSystem extends Tasks {
             ResultSet resultSet=getDebitList.executeQuery("SELECT * FROM CreditCompany");
             while(resultSet.next()) {
 
-                model=new DebtListModel(resultSet.getString(2),resultSet.getString(8),resultSet.getString(7),resultSet.getInt(1),resultSet.getInt(3),resultSet.getInt(4),resultSet.getInt(5),resultSet.getInt(6));
+                model=new DebtListModel(resultSet.getString(2),resultSet.getString(10),resultSet.getString(7),resultSet.getInt(1),resultSet.getInt(3),resultSet.getInt(4),resultSet.getInt(5),resultSet.getInt(6),resultSet.getFloat(8),resultSet.getFloat(9));
 
-                initialDate.setNepaliDate(resultSet.getString(8));
+                initialDate.setNepaliDate(resultSet.getString(10));
+
+                /**
+                 * Here we have two types of company i.e 30 days and other days(probably 15 days)
+                 * First check for the change in month,if there is month difference between the current month and the last time the company was credited,
+                 * then the company is expired.
+                 * It solves the problem if the software was not open in 1st day of the month ,because we are only interested in month difference
+                 *
+                 * Second case is for 15 days company,where we check if current day is more than 15 and the currently read company has 15 days cycle time,
+                 */
 
                 if(initialDate.getnMonth()<nMonth) {
                     expiredList.add(model);
                     model.setExpired(true);
-                } else if(initialDate.getnMonth()==nMonth&&(nDay-initialDate.getnDay())>=Integer.parseInt(model.getDays())) {
-                    expiredList.add(model);
-                    model.setExpired(true);
+                } else {
+
+                    if(nDay>=15&&(Integer.parseInt(model.getDays())!=30)) {
+                        expiredList.add(model);
+                        model.setExpired(true);
+                    }
+
                 }
 
                 if(model.isExpired()) {
 
-                    System.out.println("Model has been  set to expire");
 
                     if(resultSet.getInt(5)==1) {
 

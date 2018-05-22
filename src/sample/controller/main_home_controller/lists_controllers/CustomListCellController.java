@@ -3,10 +3,15 @@ package sample.controller.main_home_controller.lists_controllers;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import sample.controller.dialog_controller.PaymentDialogController;
 import sample.model.DebtListModel;
 import sample.model.SystemStatus;
 import sample.tasks.TaskManager;
@@ -49,8 +54,10 @@ public class CustomListCellController {
 
     }
 
+
+
     @FXML
-    public void closing(MouseEvent e) throws IOException {
+    public void closing(MouseEvent e) {
         companyLabel.setTextFill(Color.BLACK);
         date.setTextFill(Color.BLACK);
         days.setTextFill(Color.BLACK);
@@ -58,7 +65,21 @@ public class CustomListCellController {
 
         CompanyCreditClosingTask task=new CompanyCreditClosingTask(model);
         TaskManager.executeTask(task);
+    }
 
+    @FXML
+    public void payment(MouseEvent e) throws IOException {
+        FXMLLoader loader=new FXMLLoader(getClass().getResource("../../../view/dialogs/paymentDialog.fxml"));
+
+        Parent root=loader.load();
+
+        PaymentDialogController controller=loader.getController();
+        controller.setModel(model);
+
+        Stage stage=new Stage();
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setScene(new Scene(root));
+        stage.show();
 
     }
 

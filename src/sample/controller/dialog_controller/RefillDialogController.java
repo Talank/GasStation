@@ -128,27 +128,36 @@ public class RefillDialogController implements BottomBarInterface {
         }
 
         if(status==0) {
-            float actualValue=Float.parseFloat(actual.getText())-SystemStatus.getDieselStock();
-            float loss=Float.parseFloat(expected.getText())-actualValue;
 
-            /**Passing the value of Tanker number involved in this refill in RefillModel **/
-            RefillModel model=new RefillModel(Float.parseFloat(expected.getText()),actualValue,loss,SystemStatus.getCurrentDate(),Integer.parseInt(tankerNumber.getText()));
+            float actualValue,loss;
+            RefillModel model;
 
             if(mode==0) {
+                /**
+                 * This is for diesel,get the diesel actual value and its losses
+                 */
+
+                actualValue=Float.parseFloat(actual.getText())-SystemStatus.getDieselStock();
+                loss=Float.parseFloat(expected.getText())-actualValue;
+
+                model=new RefillModel(Float.parseFloat(expected.getText()),actualValue,loss,SystemStatus.getCurrentDate(),Integer.parseInt(tankerNumber.getText()));
                 ProfitLossController.getInstance().addDieselModel(model);
             } else {
+
+                /**
+                 * This is for petrol,get the petrol actual value and its losses
+                 */
+                actualValue=Float.parseFloat(actual.getText())-SystemStatus.getPetrolStock();
+                loss=Float.parseFloat(expected.getText())-actualValue;
+
+                model=new RefillModel(Float.parseFloat(expected.getText()),actualValue,loss,SystemStatus.getCurrentDate(),Integer.parseInt(tankerNumber.getText()));
                 ProfitLossController.getInstance().addPetrolModel(model);
             }
+
             RefillTask task=new RefillTask(model,mode);
             TaskManager.executeTask(task);
             ((Node)e.getSource()).getScene().getWindow().hide();
 
-            /*if(DatabaseHandler.storeRefill(model)) {
-                ((Node)e.getSource()).getScene().getWindow().hide();
-                SystemLogging.getLogger().fine("SuccessFully Refilled Data.");
-            } else {
-                SystemLogging.getLogger().severe("Error Storing Refill Data");
-            }*/
         }
     }
 

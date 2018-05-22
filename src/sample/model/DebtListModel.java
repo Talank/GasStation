@@ -4,9 +4,11 @@ public class DebtListModel {
     private String companyName,date,days;
     private int id,transactionID,expireID,prevExpireID,prevTransactionID;
 
+    private float due,total;
+
     private boolean isExpired=false;
 
-    public DebtListModel(String companyName,String date,String days,int id,int transactionID,int expireID,int prevExpireID,int prevTransactionID) {
+    public DebtListModel(String companyName,String date,String days,int id,int transactionID,int expireID,int prevExpireID,int prevTransactionID,float due,float total) {
         this.companyName = companyName;
         this.date=date;
         this.days=days;
@@ -15,6 +17,8 @@ public class DebtListModel {
         this.expireID=expireID;
         this.prevExpireID=prevExpireID;
         this.prevTransactionID=prevTransactionID;
+        this.due=due;
+        this.total=total;
     }
 
     public String getCompanyName() {
@@ -87,5 +91,21 @@ public class DebtListModel {
 
     public void setPrevTransactionID(int prevTransactionID) {
         this.prevTransactionID = prevTransactionID;
+    }
+
+    public float getDue() {
+        return due;
+    }
+
+    public void setDue(float due) {
+        this.due = due;
+    }
+
+    public float getTotal() {
+        return total;
+    }
+
+    public void setTotal(float total) {
+        this.total = total;
     }
 }

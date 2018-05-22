@@ -57,7 +57,7 @@ public class CompanyCreditClosingTask extends Tasks {
 
                 delete=connection.createStatement();
 
-                delete.execute("UPDATE CreditCompany SET TRANSACTION_ID="+lastTransaction+",EXPIRE_ID="+lastExpire+",PREV_EXPIRE_ID="+1+",PREV_TRANSACTION_ID="+1+",DATE='"+SystemStatus.getCurrentDate()+"'");
+                delete.execute("UPDATE CreditCompany SET DUE=DUE+TOTAL,TOTAL=0.0,TRANSACTION_ID="+lastTransaction+",EXPIRE_ID="+lastExpire+",PREV_EXPIRE_ID="+1+",PREV_TRANSACTION_ID="+1+",DATE='"+SystemStatus.getCurrentDate()+"'");
 
 
             } else {
@@ -68,7 +68,7 @@ public class CompanyCreditClosingTask extends Tasks {
 
                 Statement delete=connection.createStatement();
                 delete.addBatch("DELETE FROM "+tableName);
-                delete.addBatch("UPDATE CreditCompany SET TRANSACTION_ID="+1+",EXPIRE_ID="+1+",PREV_EXPIRE_ID="+1+",PREV_TRANSACTION_ID="+1+",DATE='"+SystemStatus.getCurrentDate()+"'");
+                delete.addBatch("UPDATE CreditCompany SET DUE=DUE+TOTAL,TOTAL=0.0,TRANSACTION_ID="+1+",EXPIRE_ID="+1+",PREV_EXPIRE_ID="+1+",PREV_TRANSACTION_ID="+1+",DATE='"+SystemStatus.getCurrentDate()+"'");
                 delete.executeBatch();
 
                 model.setTransactionID(1);

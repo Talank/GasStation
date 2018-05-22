@@ -1,10 +1,6 @@
 package sample.model;
 
-import sample.controller.SystemLogging;
-import sample.model.databases.DatabaseHandler;
-import sample.tasks.TaskInterface;
-import sample.tasks.TaskManager;
-import sample.tasks.database_tasks.GetCompanyList;
+
 
 import java.util.ArrayList;
 
@@ -71,6 +67,17 @@ public class CreditCompanyList {
 
         for(DebtListModel model:companyList) {
             if(model.getCompanyName().equals(companyName)) {
+                models=model;
+            }
+        }
+        return models;
+    }
+
+    public static DebtListModel getCompany(int id) {
+        DebtListModel models=null;
+
+        for(DebtListModel model:companyList) {
+            if(model.getId()==id) {
                 models=model;
             }
         }

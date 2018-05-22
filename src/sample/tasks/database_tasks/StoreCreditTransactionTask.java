@@ -18,13 +18,13 @@ public class StoreCreditTransactionTask extends Tasks {
 
     private List<Transaction> instantTransaction;
 
-    private int[] ids;
+    private DebtListModel model;
 
     private int taskStatus=0;
 
-    public StoreCreditTransactionTask(List<Transaction> instantTransaction, int[] ids) {
+    public StoreCreditTransactionTask(List<Transaction> instantTransaction, DebtListModel model) {
         this.instantTransaction = instantTransaction;
-        this.ids = ids;
+        this.model=model;
     }
 
     @Override
@@ -32,7 +32,11 @@ public class StoreCreditTransactionTask extends Tasks {
 
         float pVolume=0,dVolume=0,ePrice=0;
 
+        int ids[]=new int[]{model.getId(),model.getTransactionID(),model.getExpireID()};
+
         try {
+
+            float total=0;
 
             StringBuilder query=new StringBuilder("INSERT INTO "+DatabaseHandler.generateTableName(Transaction.getName(),ids[0])+" VALUES (?,?,?,?,?,?,?,?)");
 
@@ -41,8 +45,6 @@ public class StoreCreditTransactionTask extends Tasks {
                 connection.setAutoCommit(false);
 
                 System.out.println("ID:"+ids[1]);
-
-
 
                 System.out.println("Query:"+query);
 
@@ -71,6 +73,8 @@ public class StoreCreditTransactionTask extends Tasks {
                             return;
                         }
 
+                        total+=transaction.getPrice();
+
                         insertCredit.setString(4,transaction.getVehicleNo());
                         insertCredit.setFloat(6,transaction.getVolume());
                     }
@@ -90,8 +94,10 @@ public class StoreCreditTransactionTask extends Tasks {
                 connection.setAutoCommit(true);
 
                 ids[1]++;
-                insertCredit=connection.prepareStatement("UPDATE CreditCompany SET TRANSACTION_ID="+ids[1]+",EXPIRE_ID="+ids[2]+" WHERE ID="+ids[0]);
+                insertCredit=connection.prepareStatement("UPDATE CreditCompany SET TRANSACTION_ID="+ids[1]+",EXPIRE_ID="+ids[2]+",TOTAL=TOTAL+"+total+" WHERE ID="+ids[0]);
                 insertCredit.execute();
+
+                model.setTotal(model.getTotal()+total);
 
                 taskStatus++;
             }

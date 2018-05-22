@@ -30,6 +30,8 @@ public class SaveCompanyTask extends Tasks {
         boolean status;
         try {
 
+            connection.setAutoCommit(false);
+
             if(taskStatus==0) {
                 Statement getIDs=connection.createStatement();
                 ResultSet resultSet=getIDs.executeQuery("SELECT COUNT(*) FROM CreditCompany");
@@ -57,7 +59,20 @@ public class SaveCompanyTask extends Tasks {
                         break;
                 }
 
-                PreparedStatement addCompany=connection.prepareStatement("INSERT INTO CreditCompany VALUES(?,?,?,?,?,?,?,?)");
+                Statement saveCompany=connection.createStatement();
+
+                saveCompany.addBatch("INSERT INTO CreditCompany VALUES("+j+",'"+companyName+"',1,1,1,1,'"+creditCycle+"',0,0,'"+SystemStatus.getCurrentDate()+"')");
+                saveCompany.addBatch("CREATE TABLE "+DatabaseHandler.generateTableName(companyName,j)+" (EXPIRE_ID INT NOT NULL,TRANSACTION_ID INT NOT NULL,TYPE VARCHAR(10) NOT NULL,VEHICLE_NO VARCHAR(10) NOT NULL,RATE FLOAT NOT NULL,VOLUME FLOAT NOT NULL,PRICE FLOAT NOT NULL,DATE VARCHAR(30) NOT NULL)");
+
+                saveCompany.executeBatch();
+                connection.commit();
+                connection.setAutoCommit(true);
+
+                /**
+                 * Using Batch as atomic task rather than using taskStatus
+                 */
+
+                /*PreparedStatement addCompany=connection.prepareStatement("INSERT INTO CreditCompany VALUES(?,?,?,?,?,?,?,?,?,?)");
                 addCompany.setString(2,companyName);
                 addCompany.setInt(1,j);
                 addCompany.setInt(4,1);
@@ -65,16 +80,19 @@ public class SaveCompanyTask extends Tasks {
                 addCompany.setInt(6,1);
                 addCompany.setString(7,creditCycle);
                 addCompany.setInt(3,1);
-                addCompany.setString(8,SystemStatus.getCurrentDate());
+                addCompany.setFloat(8,0);
+                addCompany.setFloat(9,0);
+                addCompany.setString(10,SystemStatus.getCurrentDate());
+
                 addCompany.execute();
-                taskStatus++;
+                taskStatus++;*/
             }
 
-            if(taskStatus==1) {
+            /*if(taskStatus==1) {
                 Statement createTable=connection.createStatement();
                 createTable.execute("CREATE TABLE "+DatabaseHandler.generateTableName(companyName,j)+" (EXPIRE_ID INT NOT NULL,TRANSACTION_ID INT NOT NULL,TYPE VARCHAR(10) NOT NULL,VEHICLE_NO VARCHAR(10) NOT NULL,RATE FLOAT NOT NULL,VOLUME FLOAT NOT NULL,PRICE FLOAT NOT NULL,DATE VARCHAR(30) NOT NULL)");
                 taskStatus++;
-            }
+            }*/
 
             System.out.println("Company Saved SuccessFully.");
 
