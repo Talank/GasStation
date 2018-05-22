@@ -16,14 +16,17 @@ public class InstantTransactionBill {
 
     public void print() {
         StringBuilder builder=new StringBuilder();
-        builder.append("----------Ohm Petrol Pump----------\n");
-        builder.append(Transaction.getName()+"\n");
+        builder.append("----------Om Petrol Pump----------\n");
+        builder.append("Customer - "+Transaction.getName()+"\n");
         builder.append("-----------------------------------\n");
+        builder.append("Type     V.n     Qty     Rate     Total\n");
+        builder.append("-----------------------------------\n");
+
         for (Transaction transaction:transactions) {
             if(transaction.getType().equals("Diesel")||transaction.getType().equals("Petrol")) {
-                builder.append(transaction.getType()+" "+transaction.getVehicleNo()+" "+transaction.getVolume()+" "+transaction.getPrice()+"\n");
+                builder.append(transaction.getType()+"   "+transaction.getVehicleNo()+"   "+transaction.getVolume()+"   "+transaction.getPrice()/transaction.getVolume()+"  "+transaction.getPrice()+"\n");
             } else {
-                builder.append(transaction.getType()+" "+transaction.getQuantity()+" "+transaction.getRate()+" "+transaction.getPrice()+"\n");
+                builder.append(transaction.getType()+" "+ " xxxx    "+transaction.getQuantity()+"     "+transaction.getRate()+"  "+transaction.getPrice()+"\n");
             }
         }
         builder.append("-----------------------------------\n");

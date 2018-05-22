@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXRadioButton?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<?import sample.library.toolbar.ToolBar?>
+<!--<?import sample.library.output_task_loading.OutputTaskLoading?>-->
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controller.main_home_controller.TankCheckController">
+    <center>
+        <StackPane prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <children>
+                <VBox fx:id="tankCheckLayout">
+                    <children>
+
+                        <StackPane VBox.vgrow="ALWAYS">
+                            <children>
+                                <TableView fx:id="TankCheckTable">
+                                    <columns>
+                                        <TableColumn fx:id="tankerNo" prefWidth="75.0" text="TankerNo" />
+                                        <TableColumn fx:id="totalLoss" prefWidth="75.0" text="TotalLoss" />
+                                        <TableColumn fx:id="averageLoss" prefWidth="75.0" text="AverageLoss" />
+
+                                    </columns>
+                                    <columnResizePolicy>
+                                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                    </columnResizePolicy>
+                                </TableView>
+
+                            </children>
+                        </StackPane>
+                    </children>
+                </VBox>
+
+
+            </children>
+        </StackPane>
+    </center>
+
+    <top>
+        <ToolBar fx:id="toolBar" />
+    </top>
+</BorderPane>

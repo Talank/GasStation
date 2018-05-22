@@ -32,9 +32,10 @@ public class GetRefillTask extends Task<ArrayList<ArrayList<RefillModel>>> {
             totalSize+=resultSet.getInt(1);
 
             resultSet=getRefill.executeQuery("SELECT * FROM DieselRefill");
+            //resultSet.next();
 
-//            resultSet= getRefill.executeQuery("SELECT TANKER_NO FROM TANKERS");
-//            resultSet.next();
+          // resultSet= getRefill.executeQuery("SELECT * FROM TANKERS");
+           // resultSet.next();
 
             ArrayList<RefillModel> smallList=new ArrayList<>();
 
@@ -46,10 +47,11 @@ public class GetRefillTask extends Task<ArrayList<ArrayList<RefillModel>>> {
                 }
 
                 smallList.add(new RefillModel(resultSet.getFloat(1),resultSet.getFloat(2),resultSet.getFloat(3),resultSet.getString(4),resultSet.getInt(5)));
-
+                 //System.out.print(smallList.get(i).getTankerNumber());
                 Thread.sleep(300);//To be removed
                 currentSize++;
                 updateProgress(currentSize,totalSize);
+
             }
 
             arrayList.add(smallList);

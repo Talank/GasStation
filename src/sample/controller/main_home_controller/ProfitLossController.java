@@ -41,6 +41,9 @@ public class ProfitLossController implements BackButtonInterface {
     private JFXButton reFill;
 
     @FXML
+    private JFXButton checkTanker;
+
+    @FXML
     private JFXRadioButton dieselButton,petrolButton;
 
     @FXML
@@ -68,6 +71,9 @@ public class ProfitLossController implements BackButtonInterface {
     private TableColumn<RefillModel,String> dieselDate;
 
     @FXML
+    private TableColumn<RefillModel,String> petrolRemarks;
+
+    @FXML
     private TableView<RefillModel> petrolTable;
 
     @FXML
@@ -78,6 +84,9 @@ public class ProfitLossController implements BackButtonInterface {
 
     @FXML
     private TableColumn<RefillModel,String> dieselLoss;
+
+    @FXML
+    private TableColumn<RefillModel,String> dieselRemarks;
 
 
     @FXML
@@ -102,6 +111,7 @@ public class ProfitLossController implements BackButtonInterface {
     private GetRefillTask task=null;
 
 
+
     public ProfitLossController() {
         instance=this;
     }
@@ -121,10 +131,12 @@ public class ProfitLossController implements BackButtonInterface {
 
 
 
+
         dieselExpected.setCellValueFactory(new PropertyValueFactory<>("expected"));
         dieselActual.setCellValueFactory(new PropertyValueFactory<>("actual"));
         dieselLoss.setCellValueFactory(new PropertyValueFactory<>("loss"));
         dieselDate.setCellValueFactory(new PropertyValueFactory<>("date"));
+        dieselRemarks.setCellValueFactory(new PropertyValueFactory<>("TankerNumber"));
 
 
 
@@ -132,6 +144,7 @@ public class ProfitLossController implements BackButtonInterface {
         petrolActual.setCellValueFactory(new PropertyValueFactory<>("actual"));
         petrolLoss.setCellValueFactory(new PropertyValueFactory<>("loss"));
         petrolDate.setCellValueFactory(new PropertyValueFactory<>("date"));
+        petrolRemarks.setCellValueFactory(new PropertyValueFactory<>("TankerNumber"));
 
 
         task.setOnSucceeded((WorkerStateEvent e)->{
@@ -207,5 +220,22 @@ public class ProfitLossController implements BackButtonInterface {
         Stage stage=new Stage();
         stage.setScene(new Scene(root));
         stage.show();
+    }
+
+    @FXML
+    private void loadTankerCheck(MouseEvent mouseEvent) {
+
+        FXMLLoader loader=new FXMLLoader(getClass().getResource("../../view/dialogs/tankCheckDialog.fxml"));
+
+        Parent root= null;
+        try {
+            root = loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Stage stage=new Stage();
+        stage.setScene(new Scene(root));
+        stage.show();
+
     }
 }

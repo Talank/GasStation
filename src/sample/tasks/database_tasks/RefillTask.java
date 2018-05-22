@@ -14,6 +14,7 @@ public class RefillTask extends Tasks {
 
     private int mode;
 
+
     public RefillTask(RefillModel model,int mode) {
         this.model=model;
         this.mode=mode;
@@ -33,6 +34,7 @@ public class RefillTask extends Tasks {
                 insertRefill.addBatch("UPDATE SystemStatus SET VALUE='"+String.valueOf(SystemStatus.getDieselStock()+model.getActual())+"', DATE='"+SystemStatus.getCurrentDate()+"' WHERE ID=14");
                 SystemStatus.setDieselStock(SystemStatus.getDieselStock()+model.getActual());
             } else {
+
                 insertRefill.addBatch("INSERT INTO PetrolRefill VALUES ("+model.getExpected()+","+model.getActual()+","+model.getLoss()+",'"+SystemStatus.getCurrentDate()+"',"+model.getTankerNumber()+")");
                 insertRefill.addBatch("UPDATE SystemStatus SET VALUE='"+String.valueOf(SystemStatus.getPetrolStock()+model.getActual())+"', DATE='"+SystemStatus.getCurrentDate()+"' WHERE ID=15");
                 SystemStatus.setPetrolStock(SystemStatus.getPetrolStock()+model.getActual());
@@ -59,12 +61,16 @@ public class RefillTask extends Tasks {
 
 
             if (insertRefill.executeQuery("SELECT TANKER_NO FROM TANKERS WHERE TANKER_NO= ("+model.getTankerNumber()+")").next()) {
-                insertRefill.addBatch("UPDATE TANKERS SET TOTAL_LOSS= TOTAL_LOSS+("+model.getLoss()+"), COUNTS= COUNTS+1 WHERE TANKER_NO= ("+model.getTankerNumber()+")");
+
+                    insertRefill.addBatch("UPDATE TANKERS SET TOTAL_LOSS= TOTAL_LOSS+(" + model.getLoss() + "), COUNTS= COUNTS+1 WHERE TANKER_NO= (" + model.getTankerNumber() + ")");
+
+
             }
 
             else {
                 //System.out.println("got to line 66, else part");
-                insertRefill.addBatch("INSERT INTO TANKERS VALUES ("+model.getTankerNumber()+","+model.getLoss()+",1)");
+                String tankerType=(mode==0)?"Diesel":"Petrol";
+                insertRefill.addBatch("INSERT INTO TANKERS VALUES ("+model.getTankerNumber()+","+model.getLoss()+",1,'"+tankerType+"')");
             }
 
 
