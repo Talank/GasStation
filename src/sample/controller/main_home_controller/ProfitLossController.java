@@ -227,7 +227,39 @@ public class ProfitLossController implements BackButtonInterface {
 
                             int a=Integer.parseInt(item);
 
-                            this.setTextFill(Color.RED);
+                            Statement stmt = null;
+                            try {
+                                stmt = Tasks.getConnection().createStatement();
+                                ResultSet resultSet;
+                                float avg;
+
+                                resultSet = stmt.executeQuery("SELECT * FROM TANKERS WHERE TANKER_NO="+a);
+                                resultSet.next();
+                                if (resultSet.getRow() > 0) {
+                                    avg = resultSet.getFloat(2) / resultSet.getInt(3);
+
+                                    if (avg > 0 && avg <= 20) {
+                                        this.setTextFill(Color.GREEN);
+
+                                    } else if (avg >= 21 && avg <= 50) {
+                                        this.setTextFill(Color.BLUE);
+
+                                    } else if (avg > 50) {
+                                        this.setTextFill(Color.RED);
+                                        System.out.print("Not good tanker");
+
+                                    } else
+                                        System.out.print("Not valid tnaker");
+                                }
+
+
+
+                            } catch (SQLException e) {
+                                e.printStackTrace();
+                            }
+
+
+
                             // Get fancy and change color based on data
                             if(item.contains("@")) {
 
@@ -236,6 +268,7 @@ public class ProfitLossController implements BackButtonInterface {
                             setText(item);
 
                         }
+
                     }
                 };
             }
