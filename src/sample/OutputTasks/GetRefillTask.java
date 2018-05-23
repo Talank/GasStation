@@ -46,7 +46,7 @@ public class GetRefillTask extends Task<ArrayList<ArrayList<RefillModel>>> {
                     break;
                 }
 
-                smallList.add(new RefillModel(resultSet.getFloat(1),resultSet.getFloat(2),resultSet.getFloat(3),resultSet.getString(4),resultSet.getInt(5)));
+                smallList.add(new RefillModel(resultSet.getFloat(1),resultSet.getFloat(2),resultSet.getFloat(3),resultSet.getString(4),resultSet.getString(5)));
                  //System.out.print(smallList.get(i).getTankerNumber());
                 Thread.sleep(300);//To be removed
                 currentSize++;
@@ -68,7 +68,7 @@ public class GetRefillTask extends Task<ArrayList<ArrayList<RefillModel>>> {
                     break;
                 }
 
-                smallList.add(new RefillModel(resultSet.getFloat(1),resultSet.getFloat(2),resultSet.getFloat(3),resultSet.getString(4),resultSet.getInt(5)));
+                smallList.add(new RefillModel(resultSet.getFloat(1),resultSet.getFloat(2),resultSet.getFloat(3),resultSet.getString(4),resultSet.getString(5)));
 
                 Thread.sleep(300);//To be removed
                 currentSize++;

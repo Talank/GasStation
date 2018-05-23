@@ -8,6 +8,7 @@ import sample.tasks.Tasks;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+/*** This class is not currently used ****/
 
 public class GetTankCheckTask extends Task<ArrayList<TankCheckModel>> {
 
@@ -22,6 +23,7 @@ public class GetTankCheckTask extends Task<ArrayList<TankCheckModel>> {
 
 
             ResultSet resultSet=stmt.executeQuery("SELECT * FROM TANKERS");
+
 
 
             int i=0;

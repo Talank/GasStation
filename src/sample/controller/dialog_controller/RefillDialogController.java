@@ -140,7 +140,7 @@ public class RefillDialogController implements BottomBarInterface {
                 actualValue=Float.parseFloat(actual.getText())-SystemStatus.getDieselStock();
                 loss=Float.parseFloat(expected.getText())-actualValue;
 
-                model=new RefillModel(Float.parseFloat(expected.getText()),actualValue,loss,SystemStatus.getCurrentDate(),Integer.parseInt(tankerNumber.getText()));
+                model=new RefillModel(Float.parseFloat(expected.getText()),actualValue,loss,SystemStatus.getCurrentDate(),tankerNumber.getText());
                 ProfitLossController.getInstance().addDieselModel(model);
             } else {
 
@@ -150,7 +150,7 @@ public class RefillDialogController implements BottomBarInterface {
                 actualValue=Float.parseFloat(actual.getText())-SystemStatus.getPetrolStock();
                 loss=Float.parseFloat(expected.getText())-actualValue;
 
-                model=new RefillModel(Float.parseFloat(expected.getText()),actualValue,loss,SystemStatus.getCurrentDate(),Integer.parseInt(tankerNumber.getText()));
+                model=new RefillModel(Float.parseFloat(expected.getText()),actualValue,loss,SystemStatus.getCurrentDate(),tankerNumber.getText());
                 ProfitLossController.getInstance().addPetrolModel(model);
             }
 

@@ -2,6 +2,7 @@ package sample.controller.main_home_controller;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXRadioButton;
+import com.jfoenix.controls.JFXTextField;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -10,23 +11,29 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.Toggle;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Callback;
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 import sample.OutputTasks.GetRefillTask;
 import sample.controller.dialog_controller.RefillDialogController;
+import sample.controller.dialog_controller.TankRemarkController;
 import sample.library.output_task_loading.OutputTaskLoading;
 import sample.library.toolbar.BackButtonInterface;
 import sample.library.toolbar.ToolBar;
 import sample.model.SystemStatus;
 import sample.model.RefillModel;
+import sample.tasks.Tasks;
 
 import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 
 /*
@@ -42,6 +49,9 @@ public class ProfitLossController implements BackButtonInterface {
 
     @FXML
     private JFXButton checkTanker;
+
+    @FXML
+    private JFXTextField searchTanker;
 
     @FXML
     private JFXRadioButton dieselButton,petrolButton;
@@ -111,7 +121,6 @@ public class ProfitLossController implements BackButtonInterface {
     private GetRefillTask task=null;
 
 
-
     public ProfitLossController() {
         instance=this;
     }
@@ -137,14 +146,100 @@ public class ProfitLossController implements BackButtonInterface {
         dieselLoss.setCellValueFactory(new PropertyValueFactory<>("loss"));
         dieselDate.setCellValueFactory(new PropertyValueFactory<>("date"));
         dieselRemarks.setCellValueFactory(new PropertyValueFactory<>("TankerNumber"));
+        dieselRemarks.setCellFactory(new Callback<TableColumn<RefillModel, String>, TableCell<RefillModel, String>>() {
+            @Override
+            public TableCell<RefillModel, String> call(TableColumn<RefillModel, String> param) {
+                return new TableCell<RefillModel,String>(){
+                    @Override
+                    public void updateItem(String item, boolean empty) {
+
+                        super.updateItem(item, empty);
+                        if (!isEmpty()) {
+
+                            int a=Integer.parseInt(item);
+
+                            Statement stmt = null;
+                            try {
+                                stmt = Tasks.getConnection().createStatement();
+                                ResultSet resultSet;
+                                float avg;
+
+                                resultSet = stmt.executeQuery("SELECT * FROM TANKERS WHERE TANKER_NO="+ a);
+                                resultSet.next();
+                                if (resultSet.getRow() > 0) {
+                                    avg = resultSet.getFloat(2) / resultSet.getInt(3);
+
+                                     if (avg > 0 && avg <= 20) {
+                                         this.setTextFill(Color.GREEN);
+
+                                    } else if (avg >= 21 && avg <= 50) {
+                                         this.setTextFill(Color.BLUE);
+
+                                    } else if (avg > 50) {
+                                         this.setTextFill(Color.RED);
+                                        System.out.print("Not good tanker");
+
+                                    } else
+                                         System.out.print("Not valid tnaker");
+                                }
+                                else{
+                                    System.out.print("Tanker Not found");
+//                this.remarkLabel.setText("tanker not found");
+                                }
 
 
+                            } catch (SQLException e) {
+                                e.printStackTrace();
+                            }
+
+
+
+                            // Get fancy and change color based on data
+                            if(item.contains("@")) {
+
+                                this.setTextFill(Color.BLUEVIOLET);
+                            }
+                            setText(item);
+
+                        }
+                    }
+                };
+            }
+        });
+
+
+        // dieselRemarks.setStyle("-fx-selection-bar: red; -fx-selection-bar-non-focused: salmon;");
 
         petrolExpected.setCellValueFactory(new PropertyValueFactory<>("expected"));
         petrolActual.setCellValueFactory(new PropertyValueFactory<>("actual"));
         petrolLoss.setCellValueFactory(new PropertyValueFactory<>("loss"));
         petrolDate.setCellValueFactory(new PropertyValueFactory<>("date"));
         petrolRemarks.setCellValueFactory(new PropertyValueFactory<>("TankerNumber"));
+        petrolRemarks.setCellFactory(new Callback<TableColumn<RefillModel, String>, TableCell<RefillModel, String>>() {
+            @Override
+            public TableCell<RefillModel, String> call(TableColumn<RefillModel, String> param) {
+                return new TableCell<RefillModel,String>(){
+                    @Override
+                    public void updateItem(String item, boolean empty) {
+
+                        super.updateItem(item, empty);
+                        if (!isEmpty()) {
+
+                            int a=Integer.parseInt(item);
+
+                            this.setTextFill(Color.RED);
+                            // Get fancy and change color based on data
+                            if(item.contains("@")) {
+
+                                this.setTextFill(Color.BLUEVIOLET);
+                            }
+                            setText(item);
+
+                        }
+                    }
+                };
+            }
+        });
 
 
         task.setOnSucceeded((WorkerStateEvent e)->{
@@ -225,16 +320,21 @@ public class ProfitLossController implements BackButtonInterface {
     @FXML
     private void loadTankerCheck(MouseEvent mouseEvent) {
 
-        FXMLLoader loader=new FXMLLoader(getClass().getResource("../../view/dialogs/tankCheckDialog.fxml"));
+
+        //System.out.print(searchTanker.getText().toString());
+        FXMLLoader loader=new FXMLLoader(getClass().getResource("../../view/dialogs/tankRemark.fxml"));
 
         Parent root= null;
         try {
             root = loader.load();
+            TankRemarkController controller=new TankRemarkController();
+            controller.setData(Integer.parseInt(searchTanker.getText()));
         } catch (IOException e) {
             e.printStackTrace();
         }
         Stage stage=new Stage();
         stage.setScene(new Scene(root));
+        stage.initModality(Modality.APPLICATION_MODAL);
         stage.show();
 
     }

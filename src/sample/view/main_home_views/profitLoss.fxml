@@ -28,7 +28,7 @@
                            <children>
                               <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                                  <children>
-                                    <JFXTextField labelFloat="true" promptText="Tanker Number" unFocusColor="#23ff65">
+                                    <JFXTextField fx:id="searchTanker" labelFloat="true" promptText="Tanker Number" unFocusColor="#23ff65">
                                        <font>
                                           <Font size="25.0" />
                                        </font>
