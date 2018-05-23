@@ -176,6 +176,11 @@ public class MainHomeController {
         stage.show();
     }
 
+    @FXML
+    public void loadSystemStatus(MouseEvent e) throws IOException {
+        loadStage((Node)e.getSource(),"../../view/main_home_views/systemStatus.fxml");
+    }
+
     /*
     * Load the daily analytics view
     * */
