@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -23,6 +24,7 @@ import sample.tasks.TaskManager;
 import sample.tasks.Tasks;
 import sample.tasks.database_tasks.InitializeSystem;
 
+import java.awt.*;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -62,6 +64,8 @@ public class Main extends Application {
         SystemStatus.setStage(primaryStage);
 
         if(startup) {
+            primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("resources/logo.png")));
+
             primaryStage.setTitle("Ohm Gas Station");
             primaryStage.setScene(new Scene(root));
             primaryStage.show();

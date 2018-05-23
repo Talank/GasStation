@@ -22,17 +22,17 @@
                         <JFXListView fx:id="debtList" prefHeight="400.0" prefWidth="800.0" />
                      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="800.0" spacing="50.0">
                         <children>
-                                <JFXButton buttonType="RAISED" onMouseClicked="#editCompany" style="-fx-background-color: #2cea2f;" text="EDIT">
+                                <JFXButton buttonType="RAISED" onMouseClicked="#editCompany" style="-fx-background-color: #ffbb33;" text="EDIT">
                                     <font>
                                         <Font size="25.0" />
                                     </font>
                                 </JFXButton>
-                                <JFXButton buttonType="RAISED" onMouseClicked="#addCompany" style="-fx-background-color: #2cea2f;" text="ADD">
+                                <JFXButton buttonType="RAISED" onMouseClicked="#addCompany" style="-fx-background-color: #33b5e5;" text="ADD">
                                     <font>
                                         <Font size="25.0" />
                                     </font>
                                 </JFXButton>
-                                <JFXButton buttonType="RAISED" onMouseClicked="#deleteCompany" style="-fx-background-color: #2cea2f;" text="DELETE">
+                                <JFXButton buttonType="RAISED" onMouseClicked="#deleteCompany" style="-fx-background-color: #ff4444;" text="DELETE">
                                     <font>
                                         <Font size="25.0" />
                                     </font>
@@ -121,7 +121,7 @@
                            </Label>
                         </children>
                      </HBox>
-                     <JFXButton buttonType="RAISED" onMouseClicked="#setupOilStock" style="-fx-background-color: #2cea2f;" text="SETUP">
+                     <JFXButton buttonType="RAISED" onMouseClicked="#setupOilStock" style="-fx-background-color: #00C851;" text="SETUP">
                         <font>
                            <Font size="25.0" />
                         </font>
@@ -173,7 +173,7 @@
                            </Label>
                         </children>
                      </HBox>
-                     <JFXButton buttonType="RAISED" onMouseClicked="#setupCounterStock" style="-fx-background-color: #2cea2f;" text="SETUP">
+                     <JFXButton buttonType="RAISED" onMouseClicked="#setupCounterStock" style="-fx-background-color: #00C851;" text="SETUP">
                         <font>
                            <Font size="25.0" />
                         </font>
@@ -260,7 +260,7 @@
                            </Label>
                         </children>
                      </HBox>
-                     <JFXButton buttonType="RAISED" onMouseClicked="#setupMeterReadings" style="-fx-background-color: #2cea2f;" text="SETUP">
+                     <JFXButton buttonType="RAISED" onMouseClicked="#setupMeterReadings" style="-fx-background-color: #00C851;" text="SETUP">
                         <font>
                            <Font size="25.0" />
                         </font>
@@ -331,7 +331,7 @@
                            </Label>
                         </children>
                      </HBox>
-                     <JFXButton buttonType="RAISED" onMouseClicked="#setupPrinters" style="-fx-background-color: #2cea2f;" text="SETUP">
+                     <JFXButton buttonType="RAISED" onMouseClicked="#setupPrinters" style="-fx-background-color: #00C851;" text="SETUP">
                         <font>
                            <Font size="25.0" />
                         </font>
@@ -372,7 +372,7 @@
                            </Label>
                         </children>
                      </HBox>
-                     <JFXButton buttonType="RAISED" onMouseClicked="#changeUserNameAndPassword" style="-fx-background-color: #2cea2f;" text="CHANGE">
+                     <JFXButton buttonType="RAISED" onMouseClicked="#changeUserNameAndPassword" style="-fx-background-color: #00C851;" text="CHANGE">
                         <font>
                            <Font size="25.0" />
                         </font>
@@ -459,7 +459,7 @@
                            </Label>
                         </children>
                      </HBox>
-                     <JFXButton buttonType="RAISED" onMouseClicked="#changeOilRates" style="-fx-background-color: #2cea2f;" text="CHANGE">
+                     <JFXButton buttonType="RAISED" onMouseClicked="#changeOilRates" style="-fx-background-color: #00C851;" text="CHANGE">
                         <font>
                            <Font size="25.0" />
                         </font>
