@@ -1,21 +1,21 @@
 .instantButton{
-    -fx-background-image:url('../resources/instantBilling.png');
+    -fx-background-image:url('../resources/instantBilling.jpg');
     -fx-background-size:100% 100%;
 
 }
 
 .creditButton {
-    -fx-background-image:url('../resources/creditBilling.png');
+    -fx-background-image:url('../resources/creditBilling.jpg');
     -fx-background-size:100% 100%;
 }
 
 .debtButton {
-    -fx-background-image:url('../resources/creditAnalysis.png');
+    -fx-background-image:url('../resources/creditAnalysis.jpg');
     -fx-background-size:100% 100%;
 }
 
 .profitButton {
-    -fx-background-image:url('../resources/profitLoss.png');
+    -fx-background-image:url('../resources/profitLoss.jpg');
     -fx-background-size:100% 100%;
 }
 
@@ -25,6 +25,6 @@
 }
 
 .settingsButton {
-    -fx-background-image:url('../resources/settings.png');
+    -fx-background-image:url('../resources/settings.jpg');
     -fx-background-size:100% 100%;
 }
