@@ -3,6 +3,7 @@ package sample.controller.main_home_controller;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXRadioButton;
 import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.validation.RequiredFieldValidator;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -132,13 +133,27 @@ public class ProfitLossController implements BackButtonInterface {
         toolBar.setBackPath(SystemStatus.getMainHomePath());
         toolBar.addBackButtonInterface(this);
 
+        RequiredFieldValidator tankerValidator=new RequiredFieldValidator();
+        tankerValidator.setMessage("Invalid Tanker Number");
+        searchTanker.getValidators().add(tankerValidator);
+
+
+        searchTanker.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)->{
+
+            if(!newValue.matches("[0-9]{0,4}")) {
+                searchTanker.validate();
+                searchTanker.setText(oldValue);
+            } else {
+                searchTanker.resetValidation();
+            }
+        });
+
+
         profitLossLayout.setVisible(false);
         progressLayout.setVisible(true);
 
         task=new GetRefillTask();
         progressLayout.setProgressProperty(task.progressProperty());
-
-
 
 
         dieselExpected.setCellValueFactory(new PropertyValueFactory<>("expected"));
@@ -309,6 +324,8 @@ public class ProfitLossController implements BackButtonInterface {
         });
 
 
+
+
     }
 
     @Override
@@ -351,24 +368,23 @@ public class ProfitLossController implements BackButtonInterface {
     }
 
     @FXML
-    private void loadTankerCheck(MouseEvent mouseEvent) {
+    private void loadTankerCheck(MouseEvent mouseEvent) throws IOException {
 
 
-        //System.out.print(searchTanker.getText().toString());
-        FXMLLoader loader=new FXMLLoader(getClass().getResource("../../view/dialogs/tankRemark.fxml"));
+        if(!searchTanker.getText().isEmpty()) {
+            FXMLLoader loader=new FXMLLoader(getClass().getResource("../../view/dialogs/tankRemark.fxml"));
+            Parent root= loader.load();
 
-        Parent root= null;
-        try {
-            root = loader.load();
-            TankRemarkController controller=new TankRemarkController();
+            Stage stage=new Stage();
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.show();
+
+            TankRemarkController controller=loader.getController();
             controller.setData(Integer.parseInt(searchTanker.getText()));
-        } catch (IOException e) {
-            e.printStackTrace();
+        } else {
+            searchTanker.validate();
         }
-        Stage stage=new Stage();
-        stage.setScene(new Scene(root));
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.show();
 
     }
 }
