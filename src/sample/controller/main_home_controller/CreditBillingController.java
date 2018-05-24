@@ -7,11 +7,20 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 
+import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import sample.controller.dialog_controller.LoginDialogController;
 import sample.controller.main_home_controller.lists_controllers.TransactionListCell;
 import sample.library.toolbar.ToolBar;
 
@@ -23,7 +32,9 @@ import sample.model.transaction_model.Transaction;
 import sample.tasks.TaskManager;
 import sample.tasks.database_tasks.StoreCreditTransactionTask;
 
+import java.awt.*;
 import java.io.IOException;
+import java.sql.Date;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +55,7 @@ public class CreditBillingController {
     private float rate;
 
     @FXML
-    private JFXButton itemsCount;
+    private JFXButton itemsCount,adminButton;
 
     @FXML
     private JFXRadioButton diesel,petrol,extra;
@@ -81,8 +92,19 @@ public class CreditBillingController {
 
     private int mode=0;
 
+    public static CreditBillingController instance;
+
+    public boolean admin=false;
+
+    public float dRate,pRate;
+
+    public Date date;
+
+
+
     @FXML
     public void initialize() {
+        instance=this;
 
         toolBar.setBackPath(SystemStatus.getMainHomePath());
         toolBar.setTitle("Credit Billing");
@@ -130,6 +152,7 @@ public class CreditBillingController {
 
         });
 
+
         selection.selectedToggleProperty().addListener((ObservableValue<? extends Toggle> ov,Toggle old_toggle, Toggle new_toggle)->{
             if(((JFXRadioButton)new_toggle).getText().equals("Extra")) {
 
@@ -141,10 +164,19 @@ public class CreditBillingController {
                 dieselPetrol.setVisible(true);
 
                 if(((JFXRadioButton)new_toggle).getText().equals("Diesel")) {
-                    rate=SystemStatus.getdRate();
+
+                    if(admin) {
+                        rate=dRate;
+                    } else {
+                        rate=SystemStatus.getdRate();
+                    }
                     mode=0;
                 } else {
-                    rate=SystemStatus.getpRate();
+                    if(admin) {
+                        rate=pRate;
+                    } else {
+                        rate=SystemStatus.getpRate();
+                    }
                     mode=1;
                 }
 
@@ -346,6 +378,7 @@ public class CreditBillingController {
         quantity.resetValidation();
         price.resetValidation();
 
+
     }
 
     private int checkOilInput() {
@@ -397,6 +430,41 @@ public class CreditBillingController {
 
     private boolean isListEmpty() {
         return transactionListView.getItems().isEmpty();
+    }
+
+    public static CreditBillingController getInstance() {
+        return instance;
+    }
+
+    public void setAdmin(float dRate,float pRate,Date date) {
+        transactionListView.getItems().clear();
+        masterClear();
+        this.dRate=dRate;
+        this.pRate=pRate;
+        this.date=date;
+        admin=true;
+        if(((JFXRadioButton)selection.getSelectedToggle()).getText().equals("Diesel")) {
+            rate=dRate;
+        } else if(((JFXRadioButton)selection.getSelectedToggle()).getText().equals("Petrol")) {
+            rate=pRate;
+        }
+
+    }
+
+
+
+
+    @FXML
+    public void loadAdmin(MouseEvent e) throws IOException {
+
+        FXMLLoader loader=new FXMLLoader(getClass().getResource("../../view/dialogs/postingDialog.fxml"));
+        Parent root=loader.load();
+        Stage stage=new Stage();
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setScene(new Scene(root));
+        stage.show();
+
+
     }
 
 
@@ -467,11 +535,20 @@ public class CreditBillingController {
                 float rate;
                 if(mode==1) {
                     type="Petrol";
-                    rate=SystemStatus.getpRate();
+                    if(admin) {
+                        rate=pRate;
+                    } else {
+                        rate=SystemStatus.getpRate();
+                    }
+
                 }
                 else {
                     type="Diesel";
-                    rate=SystemStatus.getdRate();
+                    if(admin) {
+                        rate=dRate;
+                    } else {
+                        rate=SystemStatus.getdRate();
+                    }
                 }
                 Transaction transaction;
 
@@ -516,11 +593,22 @@ public class CreditBillingController {
 
             List<Transaction> newList=new ArrayList<>(transactionListView.getItems());//Create A shallow copy
             StoreCreditTransactionTask task=new StoreCreditTransactionTask(newList,model);
+
+            if(admin) {
+                task.setAdminDate(true,date);
+            }
             TaskManager.executeTask(task);
 
 
             transactionListView.getItems().clear();
             masterClear();
+
+            admin=false;
+            if(((JFXRadioButton)selection.getSelectedToggle()).getText().equals("Diesel")) {
+                rate=SystemStatus.getdRate();
+            } else if(((JFXRadioButton)selection.getSelectedToggle()).getText().equals("Petrol")) {
+                rate=SystemStatus.getpRate();
+            }
 
             CreditTransactionBill transactionBill=new CreditTransactionBill(newList);
             transactionBill.print();
@@ -530,4 +618,5 @@ public class CreditBillingController {
         }
 
     }
+
 }

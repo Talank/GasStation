@@ -20,9 +20,18 @@ public class StoreCreditTransactionTask extends Tasks {
 
     private DebtListModel model;
 
+    private boolean isAdmin;
+
+    private Date date;
+
     public StoreCreditTransactionTask(List<Transaction> instantTransaction, DebtListModel model) {
         this.instantTransaction = instantTransaction;
         this.model=model;
+    }
+
+    public void setAdminDate(boolean isAdmin,Date date) {
+        this.isAdmin=isAdmin;
+        this.date=date;
     }
 
     @Override
@@ -37,12 +46,12 @@ public class StoreCreditTransactionTask extends Tasks {
             float total=0;
 
             String tableName=DatabaseHandler.generateTableName(Transaction.getName(),ids[0]);
-
-            StringBuilder query=new StringBuilder("INSERT INTO "+DatabaseHandler.generateTableName(Transaction.getName(),ids[0])+" VALUES (?,?,?,?,?,?,?)");
-
-            /*PreparedStatement insertCredit=connection.prepareStatement(query.toString());*/
-
-
+            String transactionDate;
+            if(isAdmin) {
+                transactionDate=date.toString();
+            } else {
+                transactionDate=SystemStatus.getCurrentDate().toString();
+            }
 
 
             connection.setAutoCommit(false);
@@ -50,20 +59,12 @@ public class StoreCreditTransactionTask extends Tasks {
 
             System.out.println("ID:"+ids[1]);
 
-            System.out.println("Query:"+query);
-
             for(Transaction transaction:instantTransaction) {
 
-
-               /* insertCredit.setInt(1,ids[1]);
-                insertCredit.setString(2,transaction.getType());
-                insertCredit.setFloat(4,transaction.getRate());*/
                 if(transaction.getMode()==2) {
 
-                    storeCredit.addBatch("INSERT INTO "+tableName+" VALUES("+ids[1]+",'"+transaction.getType()+"','"+transaction.getType()+"',"+transaction.getRate()+","+transaction.getQuantity()+","+transaction.getPrice()+",'"+SystemStatus.getTransactionDate().toString()+"')");
+                    storeCredit.addBatch("INSERT INTO "+tableName+" VALUES("+ids[1]+",'"+transaction.getType()+"','"+transaction.getType()+"',"+transaction.getRate()+","+transaction.getQuantity()+","+transaction.getPrice()+",'"+transactionDate+"')");
 
-                    /*insertCredit.setString(3,transaction.getType());
-                    insertCredit.setFloat(5,transaction.getQuantity());*/
                     ePrice+=transaction.getPrice();
                 } else {
 
@@ -78,36 +79,24 @@ public class StoreCreditTransactionTask extends Tasks {
 
                         storeCredit.cancel();
 
-                        /*insertCredit.cancel();*/
                         return;
                     }
 
                     total+=transaction.getPrice();
 
 
-                    storeCredit.addBatch("INSERT INTO "+tableName+" VALUES("+ids[1]+",'"+transaction.getType()+"','"+transaction.getVehicleNo()+"',"+transaction.getRate()+","+transaction.getVolume()+","+transaction.getPrice()+",'"+SystemStatus.getTransactionDate().toString()+"')");
+                    storeCredit.addBatch("INSERT INTO "+tableName+" VALUES("+ids[1]+",'"+transaction.getType()+"','"+transaction.getVehicleNo()+"',"+transaction.getRate()+","+transaction.getVolume()+","+transaction.getPrice()+",'"+transactionDate+"')");
 
-                    /*insertCredit.setString(3,transaction.getVehicleNo());
-                    insertCredit.setFloat(5,transaction.getVolume());*/
                 }
-                /*insertCredit.setFloat(6,transaction.getPrice());
-                insertCredit.setDate(7,SystemStatus.getTransactionDate());*/
 
-                /*insertCredit.addBatch();*/
 
             }
 
-            /*insertCredit.executeBatch();
-            connection.commit();
-
-            connection.setAutoCommit(true);*/
 
             ids[1]++;
 
             storeCredit.addBatch("UPDATE CreditCompany SET TRANSACTION_ID="+ids[1]+",TOTAL=TOTAL+"+total+" WHERE ID="+ids[0]);
 
-            /*insertCredit=connection.prepareStatement("UPDATE CreditCompany SET TRANSACTION_ID="+ids[1]+",TOTAL=TOTAL+"+total+" WHERE ID="+ids[0]);
-            insertCredit.execute();*/
 
             model.setTotal(model.getTotal()+total);
             float petrolStock=pVolume;
@@ -134,8 +123,7 @@ public class StoreCreditTransactionTask extends Tasks {
             SystemStatus.setPetrolStock(petrolStock);
 
             resultSet.close();
-            /*connection.setAutoCommit(false);
-            Statement updateInstant=connection.createStatement();*/
+
 
             storeCredit.addBatch("UPDATE SystemStatus SET VALUE='"+String.valueOf(dVolume)+"' WHERE ID=4");
             storeCredit.addBatch("UPDATE SystemStatus SET VALUE='"+String.valueOf(pVolume)+"' WHERE ID=5");
@@ -148,9 +136,7 @@ public class StoreCreditTransactionTask extends Tasks {
 
             connection.setAutoCommit(true);
 
-            /*updateInstant.executeBatch();
-            connection.commit();
-            connection.setAutoCommit(true);*/
+
 
 
 

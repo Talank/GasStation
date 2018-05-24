@@ -45,6 +45,21 @@ public class NepaliDateGenerator {
         return dateFormat.toString();
     }
 
+    public int getTotalDays(LocalDate currentEnglishDate) {
+        int startYear=startEnglishDate.getYear();
+
+        int yearDiff=currentEnglishDate.getYear()-startYear;
+        System.out.println("Year Diff:"+yearDiff);
+        int totalDays=0;
+        for(int i=0;i<yearDiff;i++) {
+            totalDays+=Year.of(startYear++).length();
+        }
+
+        totalDays+=currentEnglishDate.getDayOfYear()-startEnglishDate.getDayOfYear();
+
+        return totalDays;
+    }
+
     private void convertDate() {
 
         int nYear=START_NEPALI_YEAR,nMonth=START_NEPALI_MONTH,nDay=START_NEPALI_DAY;
