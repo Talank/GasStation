@@ -32,8 +32,7 @@ public class GetRefillTask extends Task<ArrayList<ArrayList<RefillModel>>> {
 
             totalSize+=resultSet.getInt(1);
 
-            resultSet=getRefill.executeQuery("SELECT * FROM DieselRefill");
-
+            resultSet=getRefill.executeQuery("SELECT * FROM DieselRefill,Tankers where DieselRefill.Tanker_no=Tankers.Tanker_no");
 
             ArrayList<RefillModel> smallList=new ArrayList<>();
 
@@ -46,7 +45,25 @@ public class GetRefillTask extends Task<ArrayList<ArrayList<RefillModel>>> {
                     break;
                 }
 
-                smallList.add(new RefillModel(resultSet.getFloat(1),resultSet.getFloat(2),generator.convertDate(resultSet.getDate(4)),resultSet.getString(3)));
+            //The average value is to be calculated and Pass as a parameter to check the tanker status accordingly
+
+                float avgValue=resultSet.getFloat(6)/resultSet.getInt(7);
+                StringBuilder stringBuilder=new StringBuilder(resultSet.getString(3));
+
+                if (avgValue > 0 && avgValue <= 20) {
+                    stringBuilder.append("G");
+                } else if (avgValue >= 21 && avgValue <= 50) {
+                    stringBuilder.append("B");
+                } else if (avgValue > 50) {
+                    stringBuilder.append("R");
+
+                } else
+                    stringBuilder.append("P");
+
+               String codeData= stringBuilder.toString();
+
+
+                smallList.add(new RefillModel(resultSet.getFloat(1),resultSet.getFloat(2),generator.convertDate(resultSet.getDate(4)),codeData));
 
                 currentSize++;
                 updateProgress(currentSize,totalSize);
@@ -57,7 +74,7 @@ public class GetRefillTask extends Task<ArrayList<ArrayList<RefillModel>>> {
 
 
 
-            resultSet=getRefill.executeQuery("SELECT * FROM PetrolRefill");
+            resultSet=getRefill.executeQuery("SELECT * FROM PetrolRefill,Tankers where PetrolRefill.Tanker_no=Tankers.Tanker_no");
 
             smallList=new ArrayList<>();
             while(resultSet.next()) {
@@ -67,7 +84,25 @@ public class GetRefillTask extends Task<ArrayList<ArrayList<RefillModel>>> {
                     break;
                 }
 
-                smallList.add(new RefillModel(resultSet.getFloat(1),resultSet.getFloat(2),generator.convertDate(resultSet.getDate(4)),resultSet.getString(3)));
+                //The average value is to be calculated and Pass as a parameter to check the tanker status accordingly
+
+                float avgValue=resultSet.getFloat(6)/resultSet.getInt(7);
+                StringBuilder stringBuilder=new StringBuilder(resultSet.getString(3));
+
+                if (avgValue > 0 && avgValue <= 20) {
+                    stringBuilder.append("G");
+                } else if (avgValue >= 21 && avgValue <= 50) {
+                    stringBuilder.append("B");
+                } else if (avgValue > 50) {
+                    stringBuilder.append("R");
+
+                } else
+                    stringBuilder.append("P");
+
+                String codeData= stringBuilder.toString();
+
+
+                smallList.add(new RefillModel(resultSet.getFloat(1),resultSet.getFloat(2),generator.convertDate(resultSet.getDate(4)),codeData));
                 currentSize++;
                 updateProgress(currentSize,totalSize);
             }

@@ -1,6 +1,7 @@
 package sample.tasks.database_tasks;
 
 import sample.model.SystemStatus;
+import sample.model.TankerModel;
 import sample.tasks.Tasks;
 
 import javax.swing.plaf.nimbus.State;
@@ -22,19 +23,24 @@ public class GetTankRemarkTask extends Tasks {
         try {
 
             float avg;
+            int count=0;
+            String type;
 
             Statement getStatus=connection.createStatement();
 
             System.out.println("Tanker Numner:"+tankerNumber);
 
             ResultSet resultSet=getStatus.executeQuery("SELECT * FROM Tankers WHERE TANKER_NO="+tankerNumber);
-
             resultSet.next();
             avg = resultSet.getFloat(2) / resultSet.getInt(3);
+            count=resultSet.getInt(3);
+            type=resultSet.getString(4);
+
+            TankerModel tankerModel=new TankerModel(avg,count,type);
 
             System.out.println("Average:"+avg);
             if(taskInterface!=null)
-                taskInterface.onComplete(avg);
+                taskInterface.onComplete(tankerModel);
             /*if(resultSet.next()) {
 
             } else {

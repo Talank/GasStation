@@ -11,6 +11,7 @@ import sample.controller.main_home_controller.ProfitLossController;
 import sample.library.dialog_bottombar.BottomBarInterface;
 import sample.library.dialog_bottombar.DialogBottomBar;
 import sample.library.dialog_toolbar.DialogToolBar;
+import sample.model.TankerModel;
 import sample.tasks.TaskInterface;
 import sample.tasks.TaskManager;
 import sample.tasks.Tasks;
@@ -19,7 +20,7 @@ import sample.tasks.database_tasks.GetTankRemarkTask;
 import java.io.IOException;
 import java.sql.*;
 
-public class TankRemarkController implements BottomBarInterface,TaskInterface<Float> {
+public class TankRemarkController implements BottomBarInterface,TaskInterface<TankerModel> {
 
     @FXML
     private DialogToolBar toolBar;
@@ -36,6 +37,8 @@ public class TankRemarkController implements BottomBarInterface,TaskInterface<Fl
     private Label remarkLabel;
 
     private int vehicleNumber;
+    @FXML
+    private Label typeLabel;
 
     public TankRemarkController() {
         instance=this;
@@ -53,11 +56,13 @@ public class TankRemarkController implements BottomBarInterface,TaskInterface<Fl
     }
 
     @Override
-    public void onComplete(Float data) {
+    public void onComplete(TankerModel data) {
         //We are touching live scene ,so run it on UI thread
 
         Platform.runLater(()->{
-            float avg=data;
+            float avg=data.getAvg();
+            int count=data.getCount();
+            String type=data.getType();
 
             if(remarkLabel==null) {
                 System.out.println("Remark label was null");
@@ -73,6 +78,9 @@ public class TankRemarkController implements BottomBarInterface,TaskInterface<Fl
                     remarkLabel.setText("Not good tanker");
 
                 }
+                avgLossLabel.setText("Count : "+count);
+                typeLabel.setText(type);
+
             }
 
         });

@@ -171,49 +171,20 @@ public class ProfitLossController implements BackButtonInterface {
                         super.updateItem(item, empty);
                         if (!isEmpty()) {
 
-                            int a=Integer.parseInt(item);
+                            if(item.contains("G"))
+                                this.setTextFill(Color.GREEN);
 
-                            Statement stmt = null;
-                            try {
-                                stmt = Tasks.getConnection().createStatement();
-                                ResultSet resultSet;
-                                float avg;
+                            else if(item.contains("B"))
+                                this.setTextFill(Color.BLUE);
 
-                                resultSet = stmt.executeQuery("SELECT * FROM TANKERS WHERE TANKER_NO="+ a);
-                                resultSet.next();
-                                if (resultSet.getRow() > 0) {
-                                    avg = resultSet.getFloat(2) / resultSet.getInt(3);
+                            else if(item.contains("R"))
+                                this.setTextFill(Color.RED);
 
-                                     if (avg > 0 && avg <= 20) {
-                                         this.setTextFill(Color.GREEN);
+                            else
+                                this.setTextFill(Color.BLACK);
 
-                                    } else if (avg >= 21 && avg <= 50) {
-                                         this.setTextFill(Color.BLUE);
+                            item=item.substring(0,4);
 
-                                    } else if (avg > 50) {
-                                         this.setTextFill(Color.RED);
-                                        System.out.print("Not good tanker");
-
-                                    } else
-                                         System.out.print("Not valid tnaker");
-                                }
-                                else{
-                                    System.out.print("Tanker Not found");
-//                this.remarkLabel.setText("tanker not found");
-                                }
-
-
-                            } catch (SQLException e) {
-                                e.printStackTrace();
-                            }
-
-
-
-                            // Get fancy and change color based on data
-                            if(item.contains("@")) {
-
-                                this.setTextFill(Color.BLUEVIOLET);
-                            }
                             setText(item);
 
                         }
@@ -240,46 +211,22 @@ public class ProfitLossController implements BackButtonInterface {
                         super.updateItem(item, empty);
                         if (!isEmpty()) {
 
-                            int a=Integer.parseInt(item);
 
-                            Statement stmt = null;
-                            try {
-                                stmt = Tasks.getConnection().createStatement();
-                                ResultSet resultSet;
-                                float avg;
+                            if(item.contains("G"))
+                                this.setTextFill(Color.GREEN);
 
-                                resultSet = stmt.executeQuery("SELECT * FROM TANKERS WHERE TANKER_NO="+a);
-                                resultSet.next();
-                                if (resultSet.getRow() > 0) {
-                                    avg = resultSet.getFloat(2) / resultSet.getInt(3);
+                            else if(item.contains("B"))
+                                this.setTextFill(Color.BLUE);
 
-                                    if (avg > 0 && avg <= 20) {
-                                        this.setTextFill(Color.GREEN);
+                            else if(item.contains("R"))
+                                this.setTextFill(Color.RED);
 
-                                    } else if (avg >= 21 && avg <= 50) {
-                                        this.setTextFill(Color.BLUE);
+                            else
+                                this.setTextFill(Color.BLACK);
 
-                                    } else if (avg > 50) {
-                                        this.setTextFill(Color.RED);
-                                        System.out.print("Not good tanker");
-
-                                    } else
-                                        System.out.print("Not valid tnaker");
-                                }
+                            item=item.substring(0,4);
 
 
-
-                            } catch (SQLException e) {
-                                e.printStackTrace();
-                            }
-
-
-
-                            // Get fancy and change color based on data
-                            if(item.contains("@")) {
-
-                                this.setTextFill(Color.BLUEVIOLET);
-                            }
                             setText(item);
 
                         }
