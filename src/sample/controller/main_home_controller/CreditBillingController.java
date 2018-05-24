@@ -339,6 +339,13 @@ public class CreditBillingController {
         price.setText("");
         itemsCount.setText("0");
 
+        vehicleNumber.resetValidation();
+        volume.resetValidation();
+        itemName.resetValidation();
+        rates.resetValidation();
+        quantity.resetValidation();
+        price.resetValidation();
+
     }
 
     private int checkOilInput() {
@@ -433,15 +440,17 @@ public class CreditBillingController {
         if(mode==2) {
             if(checkExtraInput()==0) {
                 Transaction transaction;
-                if(transactionListView.getSelectionModel().getSelectedItems().size()==0)
+                if(transactionListView.getSelectionModel().getSelectedItems().size()==0) {
                     transaction=new Transaction();
-                else
+                    transaction.extraTransaction(itemName.getText(),Float.parseFloat(rates.getText()),Integer.parseInt(quantity.getText()));
+                } else {
                     transaction=transactionListView.getSelectionModel().getSelectedItem();
-                transaction.extraTransaction(itemName.getText(),Float.parseFloat(rates.getText()),Integer.parseInt(quantity.getText()));
-                Transaction.setName(companyName.getValue());
-
+                    Transaction.setTotal(Transaction.getTotal()-transaction.getPrice());
+                    transaction.extraTransaction(itemName.getText(),Float.parseFloat(rates.getText()),Integer.parseInt(quantity.getText()));
+                }
                 transaction.calcExtraPrice();
                 Transaction.setTotal(Transaction.getTotal()+transaction.getPrice());
+                Transaction.setName(companyName.getValue());
 
                 total.setText(String.valueOf(Transaction.getTotal()));
                 if(transactionListView.getSelectionModel().getSelectedItems().size()==0) {
@@ -515,32 +524,6 @@ public class CreditBillingController {
 
             CreditTransactionBill transactionBill=new CreditTransactionBill(newList);
             transactionBill.print();
-
-            /**
-             * To Be Removed as the following code posses serious out of sequence execution
-             */
-
-            /*int[] ids=CreditCompanyList.getID(companyName.getValue());
-
-            if(ids[0]!=-1&&ids[1]!=-1&&ids[2]!=-1) {
-
-                model.setExpireID(ids[2]+transactionListView.getItems().size());
-                model.setTransactionID(ids[1]+1);
-
-                List<Transaction> newList=new ArrayList<>(transactionListView.getItems());//Create A shallow copy
-                StoreCreditTransactionTask task=new StoreCreditTransactionTask(newList,ids);
-                TaskManager.executeTask(task);
-
-
-                transactionListView.getItems().clear();
-                masterClear();
-
-                CreditTransactionBill transactionBill=new CreditTransactionBill(newList);
-                transactionBill.print();
-
-
-
-            }*/
 
         } else {
             snackBar.show("No Transaction Detected.",2000);

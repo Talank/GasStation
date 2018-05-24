@@ -8,7 +8,8 @@ public class SystemStatus {
     private static float iDiesel,iPetrol,iCounter,fDiesel,fPetrol,dRate,pRate;
     private static float dieselStock,petrolStock;
     private static String mainHomePath;
-    private static String currentDate,transactionDate,billPrinter,analyticsPrinter;
+    private static Date currentDate,transactionDate;
+    private static String billPrinter,analyticsPrinter,nepaliTransactionDate,nepaliCurrentDate;
     private static Stage stage;
 
     public static void initializeInitial(DailyAnalyticsModel model) {
@@ -97,19 +98,19 @@ public class SystemStatus {
         SystemStatus.petrolStock = petrolStock;
     }
 
-    public static String getCurrentDate() {
+    public static Date getCurrentDate() {
         return currentDate;
     }
 
-    public static void setCurrentDate(String currentDate) {
+    public static void setCurrentDate(Date currentDate) {
         SystemStatus.currentDate = currentDate;
     }
 
-    public static String getTransactionDate() {
+    public static Date getTransactionDate() {
         return transactionDate;
     }
 
-    public static void setTransactionDate(String transactionDate) {
+    public static void setTransactionDate(Date transactionDate) {
         SystemStatus.transactionDate = transactionDate;
     }
 
@@ -131,6 +132,22 @@ public class SystemStatus {
 
     public static String getAnalyticsPrinter() {
         return analyticsPrinter;
+    }
+
+    public static String getNepaliTransactionDate() {
+        return nepaliTransactionDate;
+    }
+
+    public static void setNepaliTransactionDate(String nepaliTransactionDate) {
+        SystemStatus.nepaliTransactionDate = nepaliTransactionDate;
+    }
+
+    public static String getNepaliCurrentDate() {
+        return nepaliCurrentDate;
+    }
+
+    public static void setNepaliCurrentDate(String nepaliCurrentDate) {
+        SystemStatus.nepaliCurrentDate = nepaliCurrentDate;
     }
 
     public static void setAnalyticsPrinter(String analyticsPrinter) {

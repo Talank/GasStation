@@ -2,6 +2,7 @@ package sample.OutputTasks;
 
 import javafx.concurrent.Task;
 import sample.model.CreditDetailsModel;
+import sample.nepali_date.NepaliDateGenerator;
 import sample.tasks.Tasks;
 
 import java.sql.ResultSet;
@@ -38,17 +39,20 @@ public class GetCompanyDetailsTask extends Task<List<List<CreditDetailsModel>>> 
             List<CreditDetailsModel> smallList=new ArrayList<>();
             int  i=1;
             boolean create=false;
+
+            NepaliDateGenerator generator=new NepaliDateGenerator();
+
             while(resultSet.next()) {
                 if(isCancelled()) {
                     System.out.println("Task was requested to cancel. Cleaning up resources.");
                     mainList.clear();
                     break;
                 } else {
-                    if(i==resultSet.getInt(2)) {
-                        if(resultSet.getString(3).startsWith("D")||resultSet.getString(3).startsWith("P")) {
-                            smallList.add(new CreditDetailsModel(resultSet.getString(4),resultSet.getString(3),resultSet.getString(8),resultSet.getString(6),resultSet.getString(7),resultSet.getString(5)));
+                    if(i==resultSet.getInt(1)) {
+                        if(resultSet.getString(2).startsWith("D")||resultSet.getString(2).startsWith("P")) {
+                            smallList.add(new CreditDetailsModel(resultSet.getString(3),resultSet.getString(2),generator.convertDate(resultSet.getDate(7)),resultSet.getString(5),resultSet.getString(6),resultSet.getString(4)));
                         } else {
-                            smallList.add(new CreditDetailsModel("XXXX",resultSet.getString(3),resultSet.getString(8),String.valueOf(resultSet.getInt(6)),resultSet.getString(7),resultSet.getString(5)));
+                            smallList.add(new CreditDetailsModel("XXXX",resultSet.getString(2),generator.convertDate(resultSet.getDate(7)),String.valueOf(resultSet.getInt(5)),resultSet.getString(6),resultSet.getString(4)));
                         }
 
                     } else {
@@ -58,15 +62,13 @@ public class GetCompanyDetailsTask extends Task<List<List<CreditDetailsModel>>> 
                     }
                     if(create) {
                         smallList=new ArrayList<>();
-                        if(resultSet.getString(3).startsWith("D")||resultSet.getString(3).startsWith("P")) {
-                            smallList.add(new CreditDetailsModel(resultSet.getString(4),resultSet.getString(3),resultSet.getString(8),resultSet.getString(6),resultSet.getString(7),resultSet.getString(5)));
+                        if(resultSet.getString(2).startsWith("D")||resultSet.getString(2).startsWith("P")) {
+                            smallList.add(new CreditDetailsModel(resultSet.getString(3),resultSet.getString(2),generator.convertDate(resultSet.getDate(7)),resultSet.getString(5),resultSet.getString(6),resultSet.getString(4)));
                         } else {
-                            smallList.add(new CreditDetailsModel("XXXX",resultSet.getString(3),resultSet.getString(8),String.valueOf(resultSet.getInt(6)),resultSet.getString(7),resultSet.getString(5)));
+                            smallList.add(new CreditDetailsModel("XXXX",resultSet.getString(2),generator.convertDate(resultSet.getDate(7)),String.valueOf(resultSet.getInt(5)),resultSet.getString(6),resultSet.getString(4)));
                         }
                         create=false;
                     }
-
-                    Thread.sleep(100);//To be removed.just for demo
 
                     currentSize++;
                     updateProgress(currentSize,totalSize);

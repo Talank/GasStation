@@ -25,6 +25,7 @@ public class GetDailyTotalAnalyticsModelTask extends Tasks {
             model.setCPetrolVol(resultSet.getString(1));
             resultSet.next();
             model.setCExtra(resultSet.getString(1));
+            model.setExtraIncome(model.getCExtra());
             resultSet.close();
 
             System.out.println("iDiesel:"+SystemStatus.getiDiesel());
@@ -33,7 +34,13 @@ public class GetDailyTotalAnalyticsModelTask extends Tasks {
             model.setIDieselVol(String.valueOf(SystemStatus.getfDiesel()-(SystemStatus.getiDiesel()+Float.parseFloat(model.getCDieselVol()))));
             model.setIPetrolVol(String.valueOf(SystemStatus.getfPetrol()-(SystemStatus.getiPetrol()+Float.parseFloat(model.getCPetrolVol()))));
 
-            model.setOilIncome(String.valueOf(Float.parseFloat(model.getCDieselVol())*SystemStatus.getdRate()+Float.parseFloat(model.getCPetrolVol())*SystemStatus.getpRate()));
+            System.out.println(model.getCDieselVol());
+            System.out.println(model.getCPetrolVol());
+            System.out.println(model.getIDieselVol());
+            System.out.println(model.getIPetrolVol());
+
+            model.setOilIncome(SystemStatus.getdRate(),SystemStatus.getpRate());
+            model.setTotal();
 
             if(taskInterface!=null) {
                 taskInterface.onComplete(model);

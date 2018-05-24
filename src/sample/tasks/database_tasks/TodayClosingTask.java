@@ -7,6 +7,7 @@ import sample.nepali_date.NepaliDateGenerator;
 import sample.tasks.TaskManager;
 import sample.tasks.Tasks;
 
+import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
@@ -28,8 +29,8 @@ public class TodayClosingTask extends Tasks {
 
             connection.setAutoCommit(false);
             Statement closing=connection.createStatement();
-            closing.addBatch("UPDATE SystemStatus SET VALUE='"+String.valueOf(SystemStatus.getfDiesel())+"',DATE='"+SystemStatus.getCurrentDate()+"' WHERE ID=11");
-            closing.addBatch("UPDATE SystemStatus SET VALUE='"+String.valueOf(SystemStatus.getfPetrol())+"',DATE='"+SystemStatus.getCurrentDate()+"' WHERE ID=12");
+            closing.addBatch("UPDATE SystemStatus SET VALUE='"+String.valueOf(SystemStatus.getfDiesel())+"',DATE='"+SystemStatus.getCurrentDate().toString()+"' WHERE ID=11");
+            closing.addBatch("UPDATE SystemStatus SET VALUE='"+String.valueOf(SystemStatus.getfPetrol())+"',DATE='"+SystemStatus.getCurrentDate().toString()+"' WHERE ID=12");
             closing.addBatch("UPDATE SystemStatus SET VALUE='0' WHERE ID=1");
             closing.addBatch("UPDATE SystemStatus SET VALUE='0' WHERE ID=2");
             closing.addBatch("UPDATE SystemStatus SET VALUE='0' WHERE ID=3");
@@ -41,9 +42,9 @@ public class TodayClosingTask extends Tasks {
 
             closing.addBatch("INSERT INTO DailyAnalytics VALUES ("+Float.parseFloat(model.getIDieselVol())
                     +","+Float.parseFloat(model.getIPetrolVol())+","+Float.parseFloat(model.getCDieselVol())+","
-                    +Float.parseFloat(model.getCPetrolVol())+","+0f+","+
-                    Float.parseFloat(model.getCExtra())+","+Float.parseFloat(model.getOilIncome())+","+
-                    SystemStatus.getdRate()+","+SystemStatus.getpRate()+",'"+SystemStatus.getCurrentDate()+"')");
+                    +Float.parseFloat(model.getCPetrolVol())+","+
+                    Float.parseFloat(model.getCExtra())+","+
+                    SystemStatus.getdRate()+","+SystemStatus.getpRate()+",'"+SystemStatus.getCurrentDate().toString()+"')");
 
             closing.executeBatch();
             connection.commit();
@@ -53,7 +54,8 @@ public class TodayClosingTask extends Tasks {
             SystemStatus.setfPetrol(0f);
 
             LocalDate tomorrow=LocalDate.now().plusDays(1);
-            SystemStatus.setTransactionDate((new NepaliDateGenerator(tomorrow)).toString());
+            SystemStatus.setTransactionDate(Date.valueOf(tomorrow));
+            SystemStatus.setNepaliTransactionDate((new NepaliDateGenerator(tomorrow)).toString());
 
             SystemLogging.getLogger().fine("Closing Successfully Done. Next Transaction Stored on Date:"+SystemStatus.getTransactionDate());
             System.out.println("Closing Successfully Done. Next Transaction Stored on Date:"+SystemStatus.getTransactionDate());

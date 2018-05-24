@@ -105,7 +105,7 @@ public class ChangeCompanyController implements BottomBarInterface {
                     public void onComplete(Integer id) {
                         if(id!=-1) {
                             SystemLogging.getLogger().fine("Company Has Been Added.");
-                            SettingsController.getInstance().listModels.add(new DebtListModel(companyName.getText().trim(),(new Date((new java.util.Date()).getTime())).toString(),creditCycle.getText(),id,1,1,1,1,0,0));
+                            SettingsController.getInstance().listModels.add(new DebtListModel(companyName.getText().trim(),creditCycle.getText(),id,1,1,0f,0f));
                             ((Node)e.getSource()).getScene().getWindow().hide();
                         }
                     }

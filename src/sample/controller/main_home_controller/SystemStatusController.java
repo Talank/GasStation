@@ -34,8 +34,8 @@ public class SystemStatusController {
         toolBar.setTitle("System Status");
         toolBar.setBackPath(SystemStatus.getMainHomePath());
 
-        systemDate.setText(SystemStatus.getCurrentDate());
-        transactionDate.setText(SystemStatus.getTransactionDate());
+        systemDate.setText(SystemStatus.getNepaliCurrentDate());
+        transactionDate.setText(SystemStatus.getNepaliTransactionDate());
         currentDieselStock.setText(String.valueOf(SystemStatus.getDieselStock())+" Litres");
         currentPetrolStock.setText(String.valueOf(SystemStatus.getPetrolStock())+" Litres");
         initialDieselReadings.setText(String.valueOf(SystemStatus.getiDiesel())+" Litres");

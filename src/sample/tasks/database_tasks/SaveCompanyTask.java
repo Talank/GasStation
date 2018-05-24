@@ -7,10 +7,7 @@ import sample.nepali_date.NepaliDateGenerator;
 import sample.tasks.TaskManager;
 import sample.tasks.Tasks;
 
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 
 public class SaveCompanyTask extends Tasks {
 
@@ -61,38 +58,14 @@ public class SaveCompanyTask extends Tasks {
 
                 Statement saveCompany=connection.createStatement();
 
-                saveCompany.addBatch("INSERT INTO CreditCompany VALUES("+j+",'"+companyName+"',1,1,1,1,'"+creditCycle+"',0,0,'"+SystemStatus.getCurrentDate()+"')");
-                saveCompany.addBatch("CREATE TABLE "+DatabaseHandler.generateTableName(companyName,j)+" (EXPIRE_ID INT NOT NULL,TRANSACTION_ID INT NOT NULL,TYPE VARCHAR(10) NOT NULL,VEHICLE_NO VARCHAR(10) NOT NULL,RATE FLOAT NOT NULL,VOLUME FLOAT NOT NULL,PRICE FLOAT NOT NULL,DATE VARCHAR(30) NOT NULL)");
+                saveCompany.addBatch("INSERT INTO CreditCompany VALUES("+j+",'"+companyName+"',1,'"+SystemStatus.getCurrentDate().toString()+"',1,'"+creditCycle+"',0,0,'"+SystemStatus.getCurrentDate().toString()+"')");
+                saveCompany.addBatch("CREATE TABLE "+DatabaseHandler.generateTableName(companyName,j)+" (TRANSACTION_ID INT NOT NULL,TYPE VARCHAR(10) NOT NULL,VEHICLE_NO VARCHAR(10) NOT NULL,RATE FLOAT NOT NULL,VOLUME FLOAT NOT NULL,PRICE FLOAT NOT NULL,DATE DATE NOT NULL)");
 
                 saveCompany.executeBatch();
                 connection.commit();
                 connection.setAutoCommit(true);
-
-                /**
-                 * Using Batch as atomic task rather than using taskStatus
-                 */
-
-                /*PreparedStatement addCompany=connection.prepareStatement("INSERT INTO CreditCompany VALUES(?,?,?,?,?,?,?,?,?,?)");
-                addCompany.setString(2,companyName);
-                addCompany.setInt(1,j);
-                addCompany.setInt(4,1);
-                addCompany.setInt(5,1);
-                addCompany.setInt(6,1);
-                addCompany.setString(7,creditCycle);
-                addCompany.setInt(3,1);
-                addCompany.setFloat(8,0);
-                addCompany.setFloat(9,0);
-                addCompany.setString(10,SystemStatus.getCurrentDate());
-
-                addCompany.execute();
-                taskStatus++;*/
             }
 
-            /*if(taskStatus==1) {
-                Statement createTable=connection.createStatement();
-                createTable.execute("CREATE TABLE "+DatabaseHandler.generateTableName(companyName,j)+" (EXPIRE_ID INT NOT NULL,TRANSACTION_ID INT NOT NULL,TYPE VARCHAR(10) NOT NULL,VEHICLE_NO VARCHAR(10) NOT NULL,RATE FLOAT NOT NULL,VOLUME FLOAT NOT NULL,PRICE FLOAT NOT NULL,DATE VARCHAR(30) NOT NULL)");
-                taskStatus++;
-            }*/
 
             System.out.println("Company Saved SuccessFully.");
 
@@ -106,12 +79,13 @@ public class SaveCompanyTask extends Tasks {
             });
 
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             retryStatus++;
             System.out.println("Error Saving Company.ReScheduling Task Again. Retry:"+retryStatus);
 
             TaskManager.scheduleTask(this,5000);
             e.printStackTrace();
+            System.out.println(e.getNextException().getMessage());
         }
 
     }

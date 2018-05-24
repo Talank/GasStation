@@ -65,7 +65,7 @@ public class CounterStockDialogController implements BottomBarInterface {
 
             String[][] model=SettingsController.getInstance().getModel();
             model[5][0]=counterStock.getText();
-            model[5][1]=SystemStatus.getCurrentDate();
+            model[5][1]=SystemStatus.getNepaliCurrentDate();
 
             SettingsController.getInstance().loadSettings(model);
 

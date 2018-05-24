@@ -29,8 +29,8 @@ public class SetupOilStockTask extends Tasks {
                 connection.setAutoCommit(false);
 
                 Statement updateStock=connection.createStatement();
-                updateStock.addBatch("UPDATE SystemStatus SET VALUE='"+dieselStock+"', DATE='"+SystemStatus.getCurrentDate()+"' WHERE ID=14");
-                updateStock.addBatch("UPDATE SystemStatus SET VALUE='"+petrolStock+"', DATE='"+SystemStatus.getCurrentDate()+"' WHERE ID=15");
+                updateStock.addBatch("UPDATE SystemStatus SET VALUE='"+dieselStock+"', DATE='"+SystemStatus.getCurrentDate().toString()+"' WHERE ID=14");
+                updateStock.addBatch("UPDATE SystemStatus SET VALUE='"+petrolStock+"', DATE='"+SystemStatus.getCurrentDate().toString()+"' WHERE ID=15");
                 updateStock.executeBatch();
 
                 connection.commit();
@@ -43,13 +43,13 @@ public class SetupOilStockTask extends Tasks {
             } else {
 
                 if(SystemStatus.getDieselStock()!=Float.parseFloat(dieselStock)) {
-                    PreparedStatement updateStock=connection.prepareStatement("UPDATE SystemStatus SET VALUE='"+dieselStock+"', DATE='"+SystemStatus.getCurrentDate()+"' WHERE ID=14");
+                    PreparedStatement updateStock=connection.prepareStatement("UPDATE SystemStatus SET VALUE='"+dieselStock+"', DATE='"+SystemStatus.getCurrentDate().toString()+"' WHERE ID=14");
                     updateStock.execute();
                     SystemStatus.setDieselStock(Float.parseFloat(dieselStock));
                 }
 
                 if(SystemStatus.getPetrolStock()!=Float.parseFloat(petrolStock)) {
-                    PreparedStatement updateStock=connection.prepareStatement("UPDATE SystemStatus SET VALUE='"+petrolStock+"', DATE='"+SystemStatus.getCurrentDate()+"' WHERE ID=15");
+                    PreparedStatement updateStock=connection.prepareStatement("UPDATE SystemStatus SET VALUE='"+petrolStock+"', DATE='"+SystemStatus.getCurrentDate().toString()+"' WHERE ID=15");
                     updateStock.execute();
                     SystemStatus.setPetrolStock(Float.parseFloat(petrolStock));
                 }

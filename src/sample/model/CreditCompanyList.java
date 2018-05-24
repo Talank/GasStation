@@ -48,18 +48,7 @@ public class CreditCompanyList {
         return nameList;
     }
 
-    public static int[] getID(String companyName) {
-        int[] arr={-1,-1,-1};
-        for(DebtListModel model:companyList) {
-            if(model.getCompanyName().equals(companyName)) {
-                arr[0]=model.getId();
-                arr[1]=model.getTransactionID();
-                arr[2]=model.getExpireID();
-                return arr;
-            }
-        }
-        return arr;
-    }
+
 
     public static DebtListModel getCompany(String companyName) {
 

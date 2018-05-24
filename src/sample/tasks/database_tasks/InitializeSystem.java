@@ -16,16 +16,12 @@ import sample.nepali_date.NepaliDateGenerator;
 import sample.nepali_date.ParseNepaliDate;
 import sample.tasks.Tasks;
 
-import java.io.IOException;
+
 import java.sql.*;
+
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+
 
 public class InitializeSystem extends Tasks {
 
@@ -38,11 +34,16 @@ public class InitializeSystem extends Tasks {
 
         NepaliDateGenerator generator=new NepaliDateGenerator();
 
-        SystemStatus.setCurrentDate(generator.toString());
-        SystemStatus.setTransactionDate(generator.toString());
+        Date currentDate=new Date((new java.util.Date()).getTime());
 
-        System.out.println("System Current Date:"+SystemStatus.getCurrentDate());
+        SystemStatus.setCurrentDate(currentDate);
+        SystemStatus.setTransactionDate(currentDate);
 
+        SystemStatus.setNepaliCurrentDate(generator.toString());
+        SystemStatus.setNepaliTransactionDate(generator.toString());
+
+        System.out.println("System Current English Date:"+SystemStatus.getCurrentDate());
+        System.out.println("System Current Nepali Date:"+SystemStatus.getNepaliCurrentDate());
 
         int nDay=generator.getDateFormat().getnDay();
 
@@ -63,9 +64,14 @@ public class InitializeSystem extends Tasks {
             ResultSet resultSet=getDebitList.executeQuery("SELECT * FROM CreditCompany");
             while(resultSet.next()) {
 
-                model=new DebtListModel(resultSet.getString(2),resultSet.getString(10),resultSet.getString(7),resultSet.getInt(1),resultSet.getInt(3),resultSet.getInt(4),resultSet.getInt(5),resultSet.getInt(6),resultSet.getFloat(8),resultSet.getFloat(9));
+                model=new DebtListModel(resultSet.getString(2),resultSet.getString(6),resultSet.getInt(1),resultSet.getInt(3),resultSet.getInt(5),resultSet.getFloat(7),resultSet.getFloat(8));
 
-                initialDate.setNepaliDate(resultSet.getString(10));
+                model.setDate(generator.convertDate(resultSet.getDate(9)));
+                model.setPrevExpireDate(generator.convertDate(resultSet.getDate(4)));
+                model.setExpireDate(resultSet.getDate(4));
+
+
+                initialDate.setNepaliDate(model.getDate());
 
                 /**
                  * Here we have two types of company i.e 30 days and other days(probably 15 days)
@@ -99,27 +105,22 @@ public class InitializeSystem extends Tasks {
                         ResultSet countResult=getCounts.executeQuery("SELECT COUNT(*) FROM "+DatabaseHandler.generateTableName(model.getCompanyName(),model.getId()));
                         countResult.next();
                         int count=countResult.getInt(1);
-                        countResult=getCounts.executeQuery("SELECT EXPIRE_ID,TRANSACTION_ID FROM "+DatabaseHandler.generateTableName(model.getCompanyName(),model.getId())+" OFFSET "+(count-1)+" ROWS FETCH NEXT 1 ROWS ONLY");
+                        countResult=getCounts.executeQuery("SELECT TRANSACTION_ID FROM "+DatabaseHandler.generateTableName(model.getCompanyName(),model.getId())+" OFFSET "+(count-1)+" ROWS FETCH NEXT 1 ROWS ONLY");
                         countResult.next();
-                        int expireID=countResult.getInt(1);
-                        int transactionID=countResult.getInt(2);
 
-                        PreparedStatement updateExpireID=connection.prepareStatement("UPDATE CreditCompany SET PREV_EXPIRE_ID="+expireID+",PREV_TRANSACTION_ID="+transactionID+" WHERE ID="+model.getId());
+                        int transactionID=countResult.getInt(1);
+
+                        PreparedStatement updateExpireID=connection.prepareStatement("UPDATE CreditCompany SET PREV_TRANSACTION_ID="+transactionID+",PREV_EXPIRE_DATE='"+SystemStatus.getCurrentDate().toString()+"' WHERE ID="+model.getId());
                         updateExpireID.execute();
 
+                        model.setPrevExpireDate(generator.toString());
+                        model.setExpireDate(SystemStatus.getCurrentDate());
                         model.setTransactionID(resultSet.getInt(3));
-                        model.setExpireID(resultSet.getInt(4));
-
-                        model.setPrevExpireID(expireID);
                         model.setPrevTransactionID(transactionID);
                     } else {
-
                         System.out.println("Company Previous due was unclear");
-
                         model.setTransactionID(resultSet.getInt(3));
-                        model.setExpireID(resultSet.getInt(4));
-                        model.setPrevExpireID(resultSet.getInt(5));
-                        model.setPrevTransactionID(resultSet.getInt(6));
+                        model.setPrevTransactionID(resultSet.getInt(5));
                     }
 
 

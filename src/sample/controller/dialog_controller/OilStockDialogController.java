@@ -90,10 +90,10 @@ public class OilStockDialogController implements BottomBarInterface {
             String[][] model=SettingsController.getInstance().getModel();
 
             model[6][0]=dieselStockValue.getText();
-            model[6][1]=SystemStatus.getCurrentDate();
+            model[6][1]=SystemStatus.getNepaliCurrentDate();
 
             model[7][0]=petrolStockValue.getText();
-            model[7][1]=SystemStatus.getCurrentDate();
+            model[7][1]=SystemStatus.getNepaliCurrentDate();
 
 
             SettingsController.getInstance().loadSettings(model);

@@ -74,7 +74,7 @@ public class DailyAnalyticsController {
         dFinal.setText(model.getCDieselVol()+" L");
         dNet.setText("Rs."+(SystemStatus.getfPetrol()-SystemStatus.getiDiesel())*SystemStatus.getdRate()+"/-");
 
-        cInitial.setText("Rs."+model.getIExtra()+"/-");
+        cInitial.setText("Rs./-");
         cFinal.setText("Rs."+model.getCExtra()+"/-");
 
         netOil.setText("Rs."+model.getOilIncome()+"/-");

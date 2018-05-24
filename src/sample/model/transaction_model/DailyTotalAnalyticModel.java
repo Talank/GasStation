@@ -2,9 +2,11 @@ package sample.model.transaction_model;
 
 import javafx.beans.property.SimpleStringProperty;
 
+import java.awt.geom.FlatteningPathIterator;
+
 public class DailyTotalAnalyticModel {
 
-    private SimpleStringProperty iDieselVol,iPetrolVol,cDieselVol,cPetrolVol,iExtra,cExtra,extraIncome, oilIncome,total,date;
+    private SimpleStringProperty iDieselVol,iPetrolVol,cDieselVol,cPetrolVol,cExtra,extraIncome, oilIncome,total,date;
 
 
 
@@ -18,19 +20,19 @@ public class DailyTotalAnalyticModel {
         oilIncome =new SimpleStringProperty();
         total=new SimpleStringProperty();
         date=new SimpleStringProperty();
-        iExtra=new SimpleStringProperty();
         cExtra=new SimpleStringProperty();
     }
 
-    public DailyTotalAnalyticModel(String iDieselVol,String iPetrolVol,String cDieselVol, String cPetrolVol, String extraIncome, String creditOilIncome, String total, String date) {
+    public DailyTotalAnalyticModel(String iDieselVol,String iPetrolVol,String cDieselVol, String cPetrolVol, String extraIncome, String date) {
         this.iDieselVol=new SimpleStringProperty(iDieselVol);
         this.iPetrolVol=new SimpleStringProperty(iPetrolVol);
         this.cDieselVol = new SimpleStringProperty(cDieselVol);
         this.cPetrolVol = new SimpleStringProperty(cPetrolVol);
         this.extraIncome = new SimpleStringProperty(extraIncome);
-        this.oilIncome = new SimpleStringProperty(creditOilIncome);
-        this.total = new SimpleStringProperty(total);
+        this.oilIncome = new SimpleStringProperty();
+        this.total = new SimpleStringProperty();
         this.date = new SimpleStringProperty(date);
+
     }
 
 
@@ -79,16 +81,18 @@ public class DailyTotalAnalyticModel {
         return oilIncome.get();
     }
 
-    public void setOilIncome(String oilIncome) {
-        this.oilIncome.set(oilIncome);
+    public void setOilIncome(float dRate,float pRate) {
+        float total=(Float.parseFloat(iDieselVol.get())+Float.parseFloat(cDieselVol.get()))*dRate+(Float.parseFloat(iPetrolVol.get())+Float.parseFloat(cPetrolVol.get()))*pRate;
+        this.oilIncome.set(String.valueOf(total));
     }
 
     public String getTotal() {
         return total.get();
     }
 
-    public void setTotal(String total) {
-        this.total.set(total);
+    public void setTotal() {
+        float total=Float.parseFloat(oilIncome.get())+Float.parseFloat(extraIncome.get());
+        this.total.set(String.valueOf(total));
     }
 
     public String getDate() {
@@ -99,13 +103,6 @@ public class DailyTotalAnalyticModel {
         this.date.set(date);
     }
 
-    public String getIExtra() {
-        return iExtra.get();
-    }
-
-    public void setIExtra(String iExtra) {
-        this.iExtra.set(iExtra);
-    }
 
     public String getCExtra() {
         return cExtra.get();

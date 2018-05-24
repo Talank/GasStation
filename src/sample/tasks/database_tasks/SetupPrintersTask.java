@@ -1,5 +1,6 @@
 package sample.tasks.database_tasks;
 
+import sample.controller.main_home_controller.SettingsController;
 import sample.model.SystemStatus;
 import sample.tasks.Tasks;
 
@@ -24,8 +25,8 @@ public class SetupPrintersTask extends Tasks {
                 connection.setAutoCommit(false);
 
                 Statement updateStock=connection.createStatement();
-                updateStock.addBatch("UPDATE SystemStatus SET VALUE='"+billPrinterName+"', DATE='"+SystemStatus.getCurrentDate()+"' WHERE ID=16");
-                updateStock.addBatch("UPDATE SystemStatus SET VALUE='"+analyticsPrinterName+"', DATE='"+SystemStatus.getCurrentDate()+"' WHERE ID=17");
+                updateStock.addBatch("UPDATE SystemStatus SET VALUE='"+billPrinterName+"', DATE='"+SystemStatus.getCurrentDate().toString()+"' WHERE ID=16");
+                updateStock.addBatch("UPDATE SystemStatus SET VALUE='"+analyticsPrinterName+"', DATE='"+SystemStatus.getCurrentDate().toString()+"' WHERE ID=17");
                 updateStock.executeBatch();
 
                 connection.commit();
@@ -37,19 +38,23 @@ public class SetupPrintersTask extends Tasks {
             } else {
 
                 if(!SystemStatus.getBillPrinter().equals(billPrinterName)) {
-                    PreparedStatement setupBill=connection.prepareStatement("UPDATE SystemStatus SET VALUE='"+billPrinterName+"', DATE='"+SystemStatus.getCurrentDate()+"' WHERE ID=16");
+                    PreparedStatement setupBill=connection.prepareStatement("UPDATE SystemStatus SET VALUE='"+billPrinterName+"', DATE='"+SystemStatus.getCurrentDate().toString()+"' WHERE ID=16");
                     setupBill.execute();
                     SystemStatus.setBillPrinter(billPrinterName);
                 }
 
                 if(!SystemStatus.getAnalyticsPrinter().equals(analyticsPrinterName)) {
-                    PreparedStatement setupBill=connection.prepareStatement("UPDATE SystemStatus SET VALUE='"+analyticsPrinterName+"', DATE='"+SystemStatus.getCurrentDate()+"' WHERE ID=16");
+                    PreparedStatement setupBill=connection.prepareStatement("UPDATE SystemStatus SET VALUE='"+analyticsPrinterName+"', DATE='"+SystemStatus.getCurrentDate().toString()+"' WHERE ID=16");
                     setupBill.execute();
                     SystemStatus.setAnalyticsPrinter(analyticsPrinterName);
                 }
-
-
             }
+
+            String[][] model=SettingsController.getInstance().getModel();
+            model[8][0]=billPrinterName;
+            model[8][1]=SystemStatus.getNepaliCurrentDate();
+            model[9][0]=analyticsPrinterName;
+            model[9][1]=SystemStatus.getNepaliCurrentDate();
 
 
 

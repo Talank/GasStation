@@ -1,6 +1,7 @@
 package sample.OutputTasks;
 
 import javafx.concurrent.Task;
+import sample.nepali_date.NepaliDateGenerator;
 import sample.tasks.Tasks;
 
 import java.sql.ResultSet;
@@ -17,12 +18,15 @@ public class GetSettingsTask extends Task<String[][]> {
             Statement getSettings= Tasks.getConnection().createStatement();
             ResultSet resultSet=getSettings.executeQuery("SELECT VALUE,DATE FROM SystemStatus WHERE ID<18 AND ID>6");
             int i=0;
+
+            NepaliDateGenerator generator=new NepaliDateGenerator();
+
             while(resultSet.next()) {
                 if(i==1) {
                     resultSet.next();
                 }
                 model[i][0]=resultSet.getString(1);
-                model[i][1]=resultSet.getString(2);
+                model[i][1]=generator.convertDate(resultSet.getDate(2));
                 i++;
             }
 

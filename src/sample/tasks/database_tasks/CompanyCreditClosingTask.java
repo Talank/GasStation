@@ -30,54 +30,52 @@ public class CompanyCreditClosingTask extends Tasks {
 
                 Statement delete=connection.createStatement();
 
-                delete.execute("DELETE FROM "+tableName+" WHERE EXPIRE_ID<="+model.getPrevExpireID());
+                delete.execute("DELETE FROM "+tableName+" WHERE DATE<='"+model.getExpireDate().toString()+"'");
 
+                Statement getResults=connection.createStatement(ResultSet.TYPE_FORWARD_ONLY,ResultSet.CONCUR_UPDATABLE);
+                ResultSet totalResult=getResults.executeQuery("SELECT TRANSACTION_ID,PRICE FROM "+tableName);
 
-
-                connection.setAutoCommit(false);
-
-                delete=connection.createStatement();
-
-                Statement getResults=connection.createStatement();
-                ResultSet totalResult=getResults.executeQuery("SELECT EXPIRE_ID,TRANSACTION_ID FROM "+tableName);
-
-                int lastExpire=0,lastTransaction=0;
+                int lastTransaction=0;
+                float total=0;
                 while(totalResult.next()) {
+                    lastTransaction=(totalResult.getInt(1)-model.getPrevTransactionID());
+                    total+=totalResult.getFloat(2);
+                    totalResult.updateInt(1,lastTransaction);
+                    totalResult.updateRow();
 
-                    lastExpire=(totalResult.getInt(1)-model.getPrevExpireID());
-                    lastTransaction=(totalResult.getInt(2)-model.getPrevTransactionID());
-
-                    delete.addBatch("UPDATE "+tableName+" SET EXPIRE_ID="+lastExpire+", TRANSACTION_ID="+lastTransaction+" WHERE EXPIRE_ID="+totalResult.getInt(1));
+/*                    delete.addBatch("UPDATE "+tableName+" SET EXPIRE_ID="+lastExpire+", TRANSACTION_ID="+lastTransaction+" WHERE EXPIRE_ID="+totalResult.getInt(1));*/
                 }
 
-                lastExpire++;
                 lastTransaction++;
-
-                delete.executeBatch();
 
                 delete=connection.createStatement();
 
-                delete.execute("UPDATE CreditCompany SET DUE=DUE+TOTAL,TOTAL=0.0,TRANSACTION_ID="+lastTransaction+",EXPIRE_ID="+lastExpire+",PREV_EXPIRE_ID="+1+",PREV_TRANSACTION_ID="+1+",DATE='"+SystemStatus.getCurrentDate()+"'");
+                model.setDue(model.getDue()+model.getTotal());
+                model.setTotal(total);
+                model.setTransactionID(lastTransaction);
+
+                delete.execute("UPDATE CreditCompany SET DUE=DUE+TOTAL,TOTAL="+total+",TRANSACTION_ID="+lastTransaction+",PREV_TRANSACTION_ID="+1+",DATE='"+SystemStatus.getCurrentDate().toString()+"'");
 
 
             } else {
-
-                connection.setAutoCommit(false);
 
                 System.out.println("Model is not Expired");
 
                 Statement delete=connection.createStatement();
                 delete.addBatch("DELETE FROM "+tableName);
-                delete.addBatch("UPDATE CreditCompany SET DUE=DUE+TOTAL,TOTAL=0.0,TRANSACTION_ID="+1+",EXPIRE_ID="+1+",PREV_EXPIRE_ID="+1+",PREV_TRANSACTION_ID="+1+",DATE='"+SystemStatus.getCurrentDate()+"'");
+                delete.addBatch("UPDATE CreditCompany SET DUE=DUE+TOTAL,TOTAL=0.0,TRANSACTION_ID="+1+",PREV_TRANSACTION_ID="+1+",DATE='"+SystemStatus.getCurrentDate().toString()+"'");
                 delete.executeBatch();
 
+                model.setDue(model.getDue()+model.getTotal());
+                model.setTotal(0f);
+
                 model.setTransactionID(1);
-                model.setExpireID(1);
+                /*model.setExpireID(1);*/
 
-            }
-
+        }
             connection.commit();
             connection.setAutoCommit(true);
+
 
             model.setExpired(false);
 

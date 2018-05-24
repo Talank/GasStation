@@ -108,7 +108,7 @@ public class ChangeUserParametersController implements BottomBarInterface {
             String[][] model=SettingsController.getInstance().getModel();
 
             model[0][0]=userName.getText();
-            model[0][1]=SystemStatus.getCurrentDate();
+            model[0][1]=SystemStatus.getNepaliCurrentDate();
 
 
             SettingsController.getInstance().loadSettings(model);

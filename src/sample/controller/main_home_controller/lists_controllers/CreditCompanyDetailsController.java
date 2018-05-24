@@ -42,7 +42,4 @@ public class CreditCompanyDetailsController {
         price.setCellValueFactory(new PropertyValueFactory<>("price"));
     }
 
-    public void loadDetailsData(int id) {
-        tableView.getItems().setAll(DatabaseHandler.getDebtCompanyDetails(id));
-    }
 }

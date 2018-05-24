@@ -39,6 +39,12 @@ public class NepaliDateGenerator {
         convertDate();
     }
 
+    public String convertDate(Date date) {
+        currentEnglishDate=date.toLocalDate();
+        convertDate();
+        return dateFormat.toString();
+    }
+
     private void convertDate() {
 
         int nYear=START_NEPALI_YEAR,nMonth=START_NEPALI_MONTH,nDay=START_NEPALI_DAY;

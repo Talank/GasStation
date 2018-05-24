@@ -624,7 +624,7 @@ public class DatabaseHandler {
     }*/
 
 
-    public static ArrayList<DailyTotalAnalyticModel> getDailyTotalAnalyticModel() {
+ /*   public static ArrayList<DailyTotalAnalyticModel> getDailyTotalAnalyticModel() {
         ArrayList<DailyTotalAnalyticModel> arrayList=new ArrayList<>();
 
         try {
@@ -644,9 +644,9 @@ public class DatabaseHandler {
         System.out.println(arrayList.get(0).getIDieselVol());
 
         return arrayList;
-    }
+    }*/
 
-    public static DailyTotalAnalyticModel getTodayAnalytics() {
+   /* public static DailyTotalAnalyticModel getTodayAnalytics() {
         DailyTotalAnalyticModel model=new DailyTotalAnalyticModel();
         try {
 
@@ -674,7 +674,7 @@ public class DatabaseHandler {
         }
 
         return model;
-    }
+    }*/
 
     public static void initializeSystem() {
         try {
@@ -699,7 +699,7 @@ public class DatabaseHandler {
 
     }
 
-    public static void setDailyTotalAnalyticModel(DailyTotalAnalyticModel model) {
+/*    public static void setDailyTotalAnalyticModel(DailyTotalAnalyticModel model) {
 
         try {
             Date date=getCurrentDate();
@@ -725,7 +725,7 @@ public class DatabaseHandler {
             System.out.println(e.getMessage());
         }
 
-    }
+    }*/
 
 
     public static boolean checkCurrentDate(Date date) {

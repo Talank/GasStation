@@ -92,10 +92,10 @@ public class ChangeRateController implements BottomBarInterface {
             String[][] model=SettingsController.getInstance().getModel();
 
             model[1][0]=rDiesel.getText();
-            model[1][1]=SystemStatus.getCurrentDate();
+            model[1][1]=SystemStatus.getNepaliCurrentDate();
 
             model[2][0]=rPetrol.getText();
-            model[2][1]=SystemStatus.getCurrentDate();
+            model[2][1]=SystemStatus.getNepaliCurrentDate();
 
             SettingsController.getInstance().loadSettings(model);
 

@@ -91,10 +91,10 @@ public class SetupMeterReadingsController implements BottomBarInterface {
 
             String[][] model=SettingsController.getInstance().getModel();
             model[3][0]=fDiesel.getText();
-            model[3][1]=SystemStatus.getCurrentDate();
+            model[3][1]=SystemStatus.getNepaliCurrentDate();
 
             model[4][0]=fPetrol.getText();
-            model[4][1]=SystemStatus.getCurrentDate();
+            model[4][1]=SystemStatus.getNepaliCurrentDate();
 
             SettingsController.getInstance().loadSettings(model);
 

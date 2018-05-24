@@ -575,6 +575,14 @@ public class InstantBillingController {
         price.setText("");
         itemsCount.setText("0");
 
+        customerName.resetValidation();
+        vehicleNumber.resetValidation();
+        volume.resetValidation();
+        itemName.resetValidation();
+        rates.resetValidation();
+        quantity.resetValidation();
+        price.resetValidation();
+
     }
 
     /*
@@ -605,19 +613,24 @@ public class InstantBillingController {
                     //This is the new Item to be added to the list
 
                     transaction=new Transaction();
+                    transaction.extraTransaction(itemName.getText(),Float.parseFloat(rates.getText()),Integer.parseInt(quantity.getText()));
+
                 } else {
 
                     //This is the old item that the user might have edited
 
                     transaction=transactionListView.getSelectionModel().getSelectedItem();
+                    Transaction.setTotal(Transaction.getTotal()-transaction.getPrice());
+                    transaction.extraTransaction(itemName.getText(),Float.parseFloat(rates.getText()),Integer.parseInt(quantity.getText()));
+
                 }
 
                 //set the transaction parameters
-
-                transaction.extraTransaction(itemName.getText(),Float.parseFloat(rates.getText()),Integer.parseInt(quantity.getText()));
-                Transaction.setName(customerName.getText());
                 transaction.calcExtraPrice();
                 Transaction.setTotal(Transaction.getTotal()+transaction.getPrice());
+
+                Transaction.setName(customerName.getText());
+
 
                 //Show the calculated total value
                 total.setText(String.valueOf(Transaction.getTotal()));

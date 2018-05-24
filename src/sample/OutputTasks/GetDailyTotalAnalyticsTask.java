@@ -2,6 +2,7 @@ package sample.OutputTasks;
 
 import javafx.concurrent.Task;
 import sample.model.transaction_model.DailyTotalAnalyticModel;
+import sample.nepali_date.NepaliDateGenerator;
 import sample.tasks.Tasks;
 
 import java.sql.ResultSet;
@@ -26,7 +27,11 @@ public class GetDailyTotalAnalyticsTask extends Task<ArrayList<DailyTotalAnalyti
 
             totalSize=resultSet.getInt(1);
 
+            NepaliDateGenerator generator=new NepaliDateGenerator();
+
             resultSet=getAnalyticModel.executeQuery("SELECT * FROM DailyAnalytics");
+
+            DailyTotalAnalyticModel model;
 
             while(resultSet.next()) {
                 if(isCancelled()) {
@@ -34,7 +39,11 @@ public class GetDailyTotalAnalyticsTask extends Task<ArrayList<DailyTotalAnalyti
                     break;
                 }
 
-                arrayList.add(new DailyTotalAnalyticModel(resultSet.getString(1),resultSet.getString(2),resultSet.getString(3),resultSet.getString(4),String.valueOf(resultSet.getFloat(5)+resultSet.getFloat(6)),resultSet.getString(7),String.valueOf(resultSet.getFloat(7)+resultSet.getFloat(5)+resultSet.getFloat(6)),resultSet.getString(10)));
+                model=new DailyTotalAnalyticModel(resultSet.getString(1),resultSet.getString(2),resultSet.getString(3),resultSet.getString(4),String.valueOf(resultSet.getFloat(5)),generator.convertDate(resultSet.getDate(8)));
+                model.setOilIncome(resultSet.getFloat(6),resultSet.getFloat(7));
+                model.setTotal();
+
+                arrayList.add(model);
 
                 currentSize++;
                 updateProgress(currentSize,totalSize);

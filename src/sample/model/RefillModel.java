@@ -9,10 +9,10 @@ public class RefillModel {
 
     private String date;
 
-    public RefillModel(Float expected, Float actual, Float loss, String date, String  tankerNumber) {
+    public RefillModel(Float expected, Float actual, String date, String  tankerNumber) {
         this.expected = expected;
         this.actual = actual;
-        this.loss = loss;
+        this.loss = expected-actual;
         this.date = date;
         this.tankerNumber = tankerNumber;
     }

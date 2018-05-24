@@ -24,8 +24,8 @@ public class ChangeUserParameterTask extends Tasks {
 
             connection.setAutoCommit(false);
             Statement updateUser=connection.createStatement();
-            updateUser.addBatch("UPDATE SystemStatus SET VALUE='"+userName+"',DATE='"+SystemStatus.getCurrentDate()+"' WHERE ID=7");
-            updateUser.addBatch("UPDATE SystemStatus SET VALUE='"+password+"',DATE='"+SystemStatus.getCurrentDate()+"' WHERE ID=8");
+            updateUser.addBatch("UPDATE SystemStatus SET VALUE='"+userName+"',DATE='"+SystemStatus.getCurrentDate().toString()+"' WHERE ID=7");
+            updateUser.addBatch("UPDATE SystemStatus SET VALUE='"+password+"',DATE='"+SystemStatus.getCurrentDate().toString()+"' WHERE ID=8");
 
             updateUser.executeBatch();
             connection.commit();

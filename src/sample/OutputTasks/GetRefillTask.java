@@ -2,6 +2,7 @@ package sample.OutputTasks;
 
 import javafx.concurrent.Task;
 import sample.model.RefillModel;
+import sample.nepali_date.NepaliDateGenerator;
 import sample.tasks.Tasks;
 
 import java.sql.ResultSet;
@@ -32,12 +33,11 @@ public class GetRefillTask extends Task<ArrayList<ArrayList<RefillModel>>> {
             totalSize+=resultSet.getInt(1);
 
             resultSet=getRefill.executeQuery("SELECT * FROM DieselRefill");
-            //resultSet.next();
 
-          // resultSet= getRefill.executeQuery("SELECT * FROM TANKERS");
-           // resultSet.next();
 
             ArrayList<RefillModel> smallList=new ArrayList<>();
+
+            NepaliDateGenerator generator=new NepaliDateGenerator();
 
             while(resultSet.next()) {
 
@@ -46,8 +46,8 @@ public class GetRefillTask extends Task<ArrayList<ArrayList<RefillModel>>> {
                     break;
                 }
 
-                smallList.add(new RefillModel(resultSet.getFloat(1),resultSet.getFloat(2),resultSet.getFloat(3),resultSet.getString(4),resultSet.getString(5)));
-                 //System.out.print(smallList.get(i).getTankerNumber());
+                smallList.add(new RefillModel(resultSet.getFloat(1),resultSet.getFloat(2),generator.convertDate(resultSet.getDate(4)),resultSet.getString(3)));
+
                 currentSize++;
                 updateProgress(currentSize,totalSize);
 
@@ -67,7 +67,7 @@ public class GetRefillTask extends Task<ArrayList<ArrayList<RefillModel>>> {
                     break;
                 }
 
-                smallList.add(new RefillModel(resultSet.getFloat(1),resultSet.getFloat(2),resultSet.getFloat(3),resultSet.getString(4),resultSet.getString(5)));
+                smallList.add(new RefillModel(resultSet.getFloat(1),resultSet.getFloat(2),generator.convertDate(resultSet.getDate(4)),resultSet.getString(3)));
                 currentSize++;
                 updateProgress(currentSize,totalSize);
             }

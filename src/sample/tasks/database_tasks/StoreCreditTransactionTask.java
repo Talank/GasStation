@@ -20,8 +20,6 @@ public class StoreCreditTransactionTask extends Tasks {
 
     private DebtListModel model;
 
-    private int taskStatus=0;
-
     public StoreCreditTransactionTask(List<Transaction> instantTransaction, DebtListModel model) {
         this.instantTransaction = instantTransaction;
         this.model=model;
@@ -32,114 +30,129 @@ public class StoreCreditTransactionTask extends Tasks {
 
         float pVolume=0,dVolume=0,ePrice=0;
 
-        int ids[]=new int[]{model.getId(),model.getTransactionID(),model.getExpireID()};
+        int ids[]=new int[]{model.getId(),model.getTransactionID()};
 
         try {
 
             float total=0;
 
-            StringBuilder query=new StringBuilder("INSERT INTO "+DatabaseHandler.generateTableName(Transaction.getName(),ids[0])+" VALUES (?,?,?,?,?,?,?,?)");
+            String tableName=DatabaseHandler.generateTableName(Transaction.getName(),ids[0]);
 
-            PreparedStatement insertCredit=connection.prepareStatement(query.toString());
-            if(taskStatus==0) {
-                connection.setAutoCommit(false);
+            StringBuilder query=new StringBuilder("INSERT INTO "+DatabaseHandler.generateTableName(Transaction.getName(),ids[0])+" VALUES (?,?,?,?,?,?,?)");
 
-                System.out.println("ID:"+ids[1]);
-
-                System.out.println("Query:"+query);
-
-                for(Transaction transaction:instantTransaction) {
+            /*PreparedStatement insertCredit=connection.prepareStatement(query.toString());*/
 
 
-                    insertCredit.setInt(1,ids[2]++);
-                    insertCredit.setInt(2,ids[1]);
-                    insertCredit.setString(3,transaction.getType());
-                    insertCredit.setFloat(5,transaction.getRate());
-                    if(transaction.getMode()==2) {
-                        insertCredit.setString(4,transaction.getType());
-                        insertCredit.setFloat(6,transaction.getQuantity());
-                        ePrice+=transaction.getPrice();
+
+
+            connection.setAutoCommit(false);
+            Statement storeCredit=connection.createStatement();
+
+            System.out.println("ID:"+ids[1]);
+
+            System.out.println("Query:"+query);
+
+            for(Transaction transaction:instantTransaction) {
+
+
+               /* insertCredit.setInt(1,ids[1]);
+                insertCredit.setString(2,transaction.getType());
+                insertCredit.setFloat(4,transaction.getRate());*/
+                if(transaction.getMode()==2) {
+
+                    storeCredit.addBatch("INSERT INTO "+tableName+" VALUES("+ids[1]+",'"+transaction.getType()+"','"+transaction.getType()+"',"+transaction.getRate()+","+transaction.getQuantity()+","+transaction.getPrice()+",'"+SystemStatus.getTransactionDate().toString()+"')");
+
+                    /*insertCredit.setString(3,transaction.getType());
+                    insertCredit.setFloat(5,transaction.getQuantity());*/
+                    ePrice+=transaction.getPrice();
+                } else {
+
+                    if(transaction.getMode()==0) {
+                        dVolume+=transaction.getVolume();
                     } else {
-
-                        if(transaction.getMode()==0) {
-                            dVolume+=transaction.getVolume();
-                        } else {
-                            pVolume+=transaction.getVolume();
-                        }
-
-                        if((SystemStatus.getDieselStock()-dVolume)<0||(SystemStatus.getPetrolStock()-pVolume)<0) {
-                            System.out.println("The Stock was Negative");
-                            insertCredit.cancel();
-                            return;
-                        }
-
-                        total+=transaction.getPrice();
-
-                        insertCredit.setString(4,transaction.getVehicleNo());
-                        insertCredit.setFloat(6,transaction.getVolume());
+                        pVolume+=transaction.getVolume();
                     }
-                    insertCredit.setFloat(7,transaction.getPrice());
-                    insertCredit.setString(8,SystemStatus.getTransactionDate());
 
-                    insertCredit.addBatch();
+                    if((SystemStatus.getDieselStock()-dVolume)<0||(SystemStatus.getPetrolStock()-pVolume)<0) {
+                        System.out.println("The Stock was Negative");
 
+                        storeCredit.cancel();
+
+                        /*insertCredit.cancel();*/
+                        return;
+                    }
+
+                    total+=transaction.getPrice();
+
+
+                    storeCredit.addBatch("INSERT INTO "+tableName+" VALUES("+ids[1]+",'"+transaction.getType()+"','"+transaction.getVehicleNo()+"',"+transaction.getRate()+","+transaction.getVolume()+","+transaction.getPrice()+",'"+SystemStatus.getTransactionDate().toString()+"')");
+
+                    /*insertCredit.setString(3,transaction.getVehicleNo());
+                    insertCredit.setFloat(5,transaction.getVolume());*/
                 }
+                /*insertCredit.setFloat(6,transaction.getPrice());
+                insertCredit.setDate(7,SystemStatus.getTransactionDate());*/
 
-                insertCredit.executeBatch();
-                connection.commit();
-                taskStatus++;
+                /*insertCredit.addBatch();*/
+
             }
 
-            if(taskStatus==1) {
-                connection.setAutoCommit(true);
+            /*insertCredit.executeBatch();
+            connection.commit();
 
-                ids[1]++;
-                insertCredit=connection.prepareStatement("UPDATE CreditCompany SET TRANSACTION_ID="+ids[1]+",EXPIRE_ID="+ids[2]+",TOTAL=TOTAL+"+total+" WHERE ID="+ids[0]);
-                insertCredit.execute();
+            connection.setAutoCommit(true);*/
 
-                model.setTotal(model.getTotal()+total);
+            ids[1]++;
 
-                taskStatus++;
-            }
+            storeCredit.addBatch("UPDATE CreditCompany SET TRANSACTION_ID="+ids[1]+",TOTAL=TOTAL+"+total+" WHERE ID="+ids[0]);
 
-            if(taskStatus==2) {
-                float petrolStock=pVolume;
-                float dieselStock=dVolume;
+            /*insertCredit=connection.prepareStatement("UPDATE CreditCompany SET TRANSACTION_ID="+ids[1]+",TOTAL=TOTAL+"+total+" WHERE ID="+ids[0]);
+            insertCredit.execute();*/
 
-                Statement getInstant=connection.createStatement();
-                ResultSet resultSet;
+            model.setTotal(model.getTotal()+total);
+            float petrolStock=pVolume;
+            float dieselStock=dVolume;
 
-                resultSet=getInstant.executeQuery("SELECT VALUE FROM SystemStatus WHERE ID>3 AND ID<7 OR ID=14 OR ID=15");
+            Statement getInstant=connection.createStatement();
+            ResultSet resultSet;
+
+            resultSet=getInstant.executeQuery("SELECT VALUE FROM SystemStatus WHERE ID>3 AND ID<7 OR ID=14 OR ID=15");
 
 
-                resultSet.next();
-                dVolume+=Float.parseFloat(resultSet.getString(1));
-                resultSet.next();
-                pVolume+=Float.parseFloat(resultSet.getString(1));
-                resultSet.next();
-                ePrice+=Float.parseFloat(resultSet.getString(1));
-                resultSet.next();
-                dieselStock=Float.parseFloat(resultSet.getString(1))-dieselStock;
-                resultSet.next();
-                petrolStock=Float.parseFloat(resultSet.getString(1))-petrolStock;
+            resultSet.next();
+            dVolume+=Float.parseFloat(resultSet.getString(1));
+            resultSet.next();
+            pVolume+=Float.parseFloat(resultSet.getString(1));
+            resultSet.next();
+            ePrice+=Float.parseFloat(resultSet.getString(1));
+            resultSet.next();
+            dieselStock=Float.parseFloat(resultSet.getString(1))-dieselStock;
+            resultSet.next();
+            petrolStock=Float.parseFloat(resultSet.getString(1))-petrolStock;
 
-                SystemStatus.setDieselStock(dieselStock);
-                SystemStatus.setPetrolStock(petrolStock);
+            SystemStatus.setDieselStock(dieselStock);
+            SystemStatus.setPetrolStock(petrolStock);
 
-                resultSet.close();
-                connection.setAutoCommit(false);
-                Statement updateInstant=connection.createStatement();
-                updateInstant.addBatch("UPDATE SystemStatus SET VALUE='"+String.valueOf(dVolume)+"' WHERE ID=4");
-                updateInstant.addBatch("UPDATE SystemStatus SET VALUE='"+String.valueOf(pVolume)+"' WHERE ID=5");
-                updateInstant.addBatch("UPDATE SystemStatus SET VALUE='"+String.valueOf(ePrice)+"' WHERE ID=6");
-                updateInstant.addBatch("UPDATE SystemStatus SET VALUE='"+String.valueOf(dieselStock)+"' WHERE ID=14");
-                updateInstant.addBatch("UPDATE SystemStatus SET VALUE='"+String.valueOf(petrolStock)+"' WHERE ID=15");
+            resultSet.close();
+            /*connection.setAutoCommit(false);
+            Statement updateInstant=connection.createStatement();*/
 
-                updateInstant.executeBatch();
-                connection.commit();
-                connection.setAutoCommit(true);
-                taskStatus++;
-            }
+            storeCredit.addBatch("UPDATE SystemStatus SET VALUE='"+String.valueOf(dVolume)+"' WHERE ID=4");
+            storeCredit.addBatch("UPDATE SystemStatus SET VALUE='"+String.valueOf(pVolume)+"' WHERE ID=5");
+            storeCredit.addBatch("UPDATE SystemStatus SET VALUE='"+String.valueOf(ePrice)+"' WHERE ID=6");
+            storeCredit.addBatch("UPDATE SystemStatus SET VALUE='"+String.valueOf(dieselStock)+"' WHERE ID=14");
+            storeCredit.addBatch("UPDATE SystemStatus SET VALUE='"+String.valueOf(petrolStock)+"' WHERE ID=15");
+
+            storeCredit.executeBatch();
+            connection.commit();
+
+            connection.setAutoCommit(true);
+
+            /*updateInstant.executeBatch();
+            connection.commit();
+            connection.setAutoCommit(true);*/
+
+
 
             SystemLogging.getLogger().fine("Credit Transaction Stored in Database");
 

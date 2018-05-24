@@ -1,21 +1,22 @@
 package sample.model;
 
+import java.sql.Date;
+
 public class DebtListModel {
-    private String companyName,date,days;
-    private int id,transactionID,expireID,prevExpireID,prevTransactionID;
+    private String companyName,date,days,prevExpireDate;
+    private int id,transactionID,prevTransactionID;
+
+    private Date expireDate;
 
     private float due,total;
 
     private boolean isExpired=false;
 
-    public DebtListModel(String companyName,String date,String days,int id,int transactionID,int expireID,int prevExpireID,int prevTransactionID,float due,float total) {
+    public DebtListModel(String companyName,String days,int id,int transactionID,int prevTransactionID,float due,float total) {
         this.companyName = companyName;
-        this.date=date;
         this.days=days;
         this.id=id;
         this.transactionID=transactionID;
-        this.expireID=expireID;
-        this.prevExpireID=prevExpireID;
         this.prevTransactionID=prevTransactionID;
         this.due=due;
         this.total=total;
@@ -65,24 +66,8 @@ public class DebtListModel {
         return isExpired;
     }
 
-    public int getExpireID() {
-        return expireID;
-    }
-
-    public void setExpireID(int expireID) {
-        this.expireID = expireID;
-    }
-
     public void setExpired(boolean expired) {
         isExpired = expired;
-    }
-
-    public int getPrevExpireID() {
-        return prevExpireID;
-    }
-
-    public void setPrevExpireID(int prevExpireID) {
-        this.prevExpireID = prevExpireID;
     }
 
     public int getPrevTransactionID() {
@@ -107,5 +92,21 @@ public class DebtListModel {
 
     public void setTotal(float total) {
         this.total = total;
+    }
+
+    public String getPrevExpireDate() {
+        return prevExpireDate;
+    }
+
+    public void setPrevExpireDate(String prevExpireDate) {
+        this.prevExpireDate = prevExpireDate;
+    }
+
+    public Date getExpireDate() {
+        return expireDate;
+    }
+
+    public void setExpireDate(Date expireDate) {
+        this.expireDate = expireDate;
     }
 }
