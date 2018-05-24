@@ -279,6 +279,20 @@ public class SettingsController {
         stage.show();
     }
 
+    public void petrolPumpExpenditure(MouseEvent mouseEvent) throws IOException {
+        /**
+         * Petrol Pump expenditure code goes here
+         */
+        FXMLLoader loader=new FXMLLoader(getClass().getResource("../../view/dialogs/addExpenditure.fxml"));
+        Parent root=loader.load();
+
+        Stage stage=new Stage();
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setScene(new Scene(root));
+        stage.show();
+    }
+
+
     public void editModel(DebtListModel model) {
         listModels.remove(modelIndex);
         listModels.add(modelIndex,model);
@@ -290,6 +304,5 @@ public class SettingsController {
     public static SettingsController getInstance() {
         return instance;
     }
-
 
 }

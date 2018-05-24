@@ -470,6 +470,26 @@
                   </padding>
                </VBox>
 
+               <!--Adding new field-->
+
+               <VBox alignment="CENTER" layoutX="10.0" layoutY="425.0" style="-fx-background-color: #eeeeee;">
+                  <children>
+                     <Label text="Petrol Pump Expenditure">
+                        <font>
+                           <Font name="System Bold" size="30.0" />
+                        </font>
+                     </Label>
+                     <JFXButton buttonType="RAISED" onMouseClicked="#petrolPumpExpenditure" style="-fx-background-color: #00C851;" text="ADD">
+                        <font>
+                           <Font size="25.0" />
+                        </font>
+                     </JFXButton>
+                  </children>
+                  <padding>
+                     <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                  </padding>
+               </VBox>
+
             </VBox>
         </content>
       </ScrollPane>
