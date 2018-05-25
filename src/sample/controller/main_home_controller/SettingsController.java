@@ -23,6 +23,7 @@ import sample.model.SystemStatus;
 import sample.model.databases.DatabaseHandler;
 import sample.model.DebtListModel;
 import sample.tasks.TaskManager;
+import sample.tasks.database_tasks.ClearExpenditureTask;
 import sample.tasks.database_tasks.RemoveCompanyTask;
 
 import java.io.IOException;
@@ -279,6 +280,7 @@ public class SettingsController {
         stage.show();
     }
 
+    @FXML
     public void petrolPumpExpenditure(MouseEvent mouseEvent) throws IOException {
         /**
          * Petrol Pump expenditure code goes here
@@ -290,6 +292,12 @@ public class SettingsController {
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(new Scene(root));
         stage.show();
+    }
+
+    @FXML
+    public void clearExpenditure(MouseEvent e) {
+        ClearExpenditureTask task=new ClearExpenditureTask();
+        TaskManager.executeTask(task);
     }
 
 

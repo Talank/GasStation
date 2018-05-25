@@ -3,7 +3,7 @@ package sample.nepali_date;
 import java.sql.Date;
 import java.time.LocalDate;
 
-public class DateConvertor {
+public class DateConverter {
 
     public static final int START_ENGLISH_YEAR = 2018;
     public static final int START_ENGLISH_MONTH = 4;
@@ -14,7 +14,12 @@ public class DateConvertor {
     public static final int START_NEPALI_DAY = 1;
 
 
-    public static int getTotalDays(int nYear,int nMonth,int nDay) {
+    public DateConverter() {
+
+    }
+
+
+    public int getTotalDays(int nYear,int nMonth,int nDay) {
 
         NepaliDate date=new NepaliDate();
 
@@ -44,7 +49,7 @@ public class DateConvertor {
 
     }
 
-    public static Date getEnglishDate(int nYear,int nMonth,int nDay) {
+    public Date getEnglishDate(int nYear,int nMonth,int nDay) {
         int totalDays=getTotalDays(nYear,nMonth,nDay);
 
         return Date.valueOf(LocalDate.of(START_ENGLISH_YEAR,START_ENGLISH_MONTH,START_ENGLISH_DAY).plusDays(totalDays));

@@ -3,7 +3,6 @@ package sample.controller.dialog_controller;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.validation.RequiredFieldValidator;
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -15,7 +14,7 @@ import sample.library.dialog_bottombar.BottomBarInterface;
 import sample.library.dialog_bottombar.DialogBottomBar;
 import sample.library.dialog_toolbar.DialogToolBar;
 import sample.model.SystemStatus;
-import sample.nepali_date.DateConvertor;
+import sample.nepali_date.DateConverter;
 import sample.nepali_date.NepaliDate;
 import sample.nepali_date.NepaliDateFormat;
 import sample.nepali_date.NepaliDateGenerator;
@@ -175,7 +174,7 @@ public class PostingDialogController implements BottomBarInterface {
 
             LocalDate date=LocalDate.of(2018,4,14);
 
-            date=date.plusDays(DateConvertor.getTotalDays(customYear.getValue(),customMonth.getValue(),customDay.getValue()));
+            date=date.plusDays((new DateConverter()).getTotalDays(customYear.getValue(),customMonth.getValue(),customDay.getValue()));
 
             CreditBillingController.getInstance().setAdmin(Float.parseFloat(customDieselRate.getText()),Float.parseFloat(customPetrolRate.getText()),Date.valueOf(date));
             ((Node)e.getSource()).getScene().getWindow().hide();

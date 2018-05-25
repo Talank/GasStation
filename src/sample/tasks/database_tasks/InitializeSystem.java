@@ -5,7 +5,7 @@ import sample.model.CreditCompanyList;
 import sample.model.DebtListModel;
 import sample.model.SystemStatus;
 import sample.model.databases.DatabaseHandler;
-import sample.nepali_date.DateConvertor;
+import sample.nepali_date.DateConverter;
 import sample.nepali_date.NepaliDateGenerator;
 import sample.nepali_date.ParseNepaliDate;
 import sample.tasks.Tasks;
@@ -52,6 +52,7 @@ public class InitializeSystem extends Tasks {
         DebtListModel model;
 
         Date date=new Date(((new java.util.Date()).getTime()));
+        DateConverter converter=new DateConverter();
 
         try {
             Statement getDebitList = connection.createStatement();
@@ -78,23 +79,23 @@ public class InitializeSystem extends Tasks {
 
                 if(initialDate.getnMonth()==12) {
                     if(initialDate.getnYear()<nYear) {
-                        date=DateConvertor.getEnglishDate(initialDate.getnYear()+1,1,1);
+                        date=converter.getEnglishDate(initialDate.getnYear()+1,1,1);
                         expiredList.add(model);
                         model.setExpired(true);
                     } else if(initialDate.getnYear()==nYear) {
                         if (nDay >= 15 && (Integer.parseInt(model.getDays()) != 30)&&initialDate.getnDay()<15) {
-                            date=DateConvertor.getEnglishDate(nYear,nMonth,15);
+                            date=converter.getEnglishDate(nYear,nMonth,15);
                             expiredList.add(model);
                             model.setExpired(true);
                         }
                     }
                 } else {
                     if (initialDate.getnMonth() < nMonth) {
-                        date=DateConvertor.getEnglishDate(initialDate.getnYear(),initialDate.getnMonth()+1,1);
+                        date=converter.getEnglishDate(initialDate.getnYear(),initialDate.getnMonth()+1,1);
                         expiredList.add(model);
                         model.setExpired(true);
                     } else if (nDay >= 15 && (Integer.parseInt(model.getDays()) != 30)&&initialDate.getnDay()<15) {
-                        date=DateConvertor.getEnglishDate(nYear,nMonth,15);
+                        date=converter.getEnglishDate(nYear,nMonth,15);
                         expiredList.add(model);
                         model.setExpired(true);
                     }

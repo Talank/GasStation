@@ -6,6 +6,7 @@ import sample.nepali_date.NepaliDateGenerator;
 import sample.tasks.Tasks;
 
 import java.sql.Date;
+import java.sql.SQLException;
 import java.sql.Statement;
 
 public class AddExpenditureTask extends Tasks {
@@ -31,9 +32,19 @@ public class AddExpenditureTask extends Tasks {
              */
 
             addExpenditure.execute("INSERT INTO Expenditure VALUES ('"+memberName+"',"+expenditureAmount+",'"+expenditureRemarks+"','"+SystemStatus.getCurrentDate()+"')");
+            connection.commit();
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
+            System.out.println(e.getMessage());
+
+            try {
+                connection.rollback();
+                System.out.println("Error in Database detected. Rolling back Database to stable stage.");
+
+            } catch (SQLException e1) {
+                System.out.println("Unable to undo Changes.It restores when system restarts.");
+            }
         }
 
         /**

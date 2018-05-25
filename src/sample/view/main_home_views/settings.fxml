@@ -479,11 +479,23 @@
                            <Font name="System Bold" size="30.0" />
                         </font>
                      </Label>
-                     <JFXButton buttonType="RAISED" onMouseClicked="#petrolPumpExpenditure" style="-fx-background-color: #00C851;" text="ADD">
-                        <font>
-                           <Font size="25.0" />
-                        </font>
-                     </JFXButton>
+                     <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="50.0">
+                        <children>
+                           <JFXButton buttonType="RAISED" onMouseClicked="#petrolPumpExpenditure" style="-fx-background-color: #00C851;" text="ADD">
+                              <font>
+                                 <Font size="25.0" />
+                              </font>
+                           </JFXButton>
+                           <JFXButton buttonType="RAISED" onMouseClicked="#clearExpenditure" style="-fx-background-color: #00C851;" text="CLEAR">
+                              <font>
+                                 <Font size="25.0" />
+                              </font>
+                           </JFXButton>
+                        </children>
+                        <padding>
+                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                        </padding>
+                     </HBox>
                   </children>
                   <padding>
                      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
