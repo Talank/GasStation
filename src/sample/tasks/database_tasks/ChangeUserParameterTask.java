@@ -6,6 +6,7 @@ import sample.nepali_date.NepaliDateGenerator;
 import sample.tasks.Tasks;
 
 import java.sql.Date;
+import java.sql.SQLException;
 import java.sql.Statement;
 
 public class ChangeUserParameterTask extends Tasks {
@@ -22,18 +23,24 @@ public class ChangeUserParameterTask extends Tasks {
     public void execute() {
         try {
 
-            connection.setAutoCommit(false);
             Statement updateUser=connection.createStatement();
             updateUser.addBatch("UPDATE SystemStatus SET VALUE='"+userName+"',DATE='"+SystemStatus.getCurrentDate().toString()+"' WHERE ID=7");
             updateUser.addBatch("UPDATE SystemStatus SET VALUE='"+password+"',DATE='"+SystemStatus.getCurrentDate().toString()+"' WHERE ID=8");
 
             updateUser.executeBatch();
             connection.commit();
-            connection.setAutoCommit(true);
 
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
+            System.out.println(e.getNextException().getMessage());
+            try {
+                connection.rollback();
+                System.out.println("Error in Database detected. Rolling back Database to stable stage.");
+
+            } catch (SQLException e1) {
+                System.out.println("Unable to undo Changes.It restores when system restarts.");
+            }
         }
 
     }

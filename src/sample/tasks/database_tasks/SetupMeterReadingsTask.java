@@ -26,16 +26,12 @@ public class SetupMeterReadingsTask extends Tasks {
 
 
             if(SystemStatus.getiDiesel()!=Float.parseFloat(dieselReading)&&SystemStatus.getiPetrol()!=Float.parseFloat(petrolReading)) {
-                connection.setAutoCommit(false);
 
                 Statement updateStock=connection.createStatement();
                 updateStock.addBatch("UPDATE SystemStatus SET VALUE='"+dieselReading+"', DATE='"+SystemStatus.getCurrentDate().toString()+"' WHERE ID=11");
                 updateStock.addBatch("UPDATE SystemStatus SET VALUE='"+petrolReading+"', DATE='"+SystemStatus.getCurrentDate().toString()+"' WHERE ID=12");
                 updateStock.executeBatch();
 
-                connection.commit();
-
-                connection.setAutoCommit(true);
                 SystemStatus.setiDiesel(Float.parseFloat(dieselReading));
                 SystemStatus.setiPetrol(Float.parseFloat(petrolReading));
 
@@ -55,11 +51,18 @@ public class SetupMeterReadingsTask extends Tasks {
 
             }
 
-
-
+            connection.commit();
 
         } catch(SQLException e) {
             System.out.println(e.getMessage());
+
+            try {
+                connection.rollback();
+                System.out.println("Error in Database detected. Rolling back Database to stable stage.");
+
+            } catch (SQLException e1) {
+                System.out.println("Unable to undo Changes.It restores when system restarts.");
+            }
         }
 
     }

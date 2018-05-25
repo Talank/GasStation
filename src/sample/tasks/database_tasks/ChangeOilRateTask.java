@@ -27,14 +27,10 @@ public class ChangeOilRateTask extends Tasks {
 
 
             if(SystemStatus.getdRate()!=model.getrDiesel()&&SystemStatus.getpRate()!=model.getrPetrol()) {
-                connection.setAutoCommit(false);
                 Statement setRate=connection.createStatement();
                 setRate.addBatch("UPDATE SystemStatus SET VALUE='"+String.valueOf(model.getrDiesel())+"',DATE='"+SystemStatus.getCurrentDate().toString()+"' WHERE ID=9");
                 setRate.addBatch("UPDATE SystemStatus SET VALUE='"+String.valueOf(model.getrPetrol())+"',DATE='"+SystemStatus.getCurrentDate().toString()+"' WHERE ID=10");
                 setRate.executeBatch();
-
-                connection.commit();
-                connection.setAutoCommit(true);
 
                 SystemStatus.setpRate(model.getrPetrol());
                 SystemStatus.setdRate(model.getrDiesel());
@@ -53,8 +49,19 @@ public class ChangeOilRateTask extends Tasks {
                 }
             }
 
+            connection.commit();
+
         } catch(SQLException e) {
             System.out.println(e.getNextException().getMessage());
+            try {
+                connection.rollback();
+                System.out.println("Error in Database detected. Rolling back Database to stable stage.");
+
+            } catch (SQLException e1) {
+                System.out.println("Unable to undo Changes.It restores when system restarts.");
+            }
+
+
         }
     }
 }

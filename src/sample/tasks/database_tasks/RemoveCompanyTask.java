@@ -5,6 +5,7 @@ import sample.model.databases.DatabaseHandler;
 import sample.tasks.Tasks;
 
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 public class RemoveCompanyTask extends Tasks {
 
@@ -22,8 +23,17 @@ public class RemoveCompanyTask extends Tasks {
             delete.execute();
             delete=connection.prepareStatement("DROP TABLE "+DatabaseHandler.generateTableName(model.getCompanyName(),model.getId()));
             delete.execute();
-        } catch(Exception e) {
+            connection.commit();
+        } catch(SQLException e) {
             e.printStackTrace();
+            System.out.println(e.getMessage());
+            try {
+                connection.rollback();
+                System.out.println("Error in Database detected. Rolling back Database to stable stage.");
+
+            } catch (SQLException e1) {
+                System.out.println("Unable to undo Changes.It restores when system restarts.");
+            }
         }
     }
 }

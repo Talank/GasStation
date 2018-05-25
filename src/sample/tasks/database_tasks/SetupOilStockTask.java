@@ -26,16 +26,12 @@ public class SetupOilStockTask extends Tasks {
 
 
             if(SystemStatus.getDieselStock()!=Float.parseFloat(dieselStock)&&SystemStatus.getPetrolStock()!=Float.parseFloat(petrolStock)) {
-                connection.setAutoCommit(false);
 
                 Statement updateStock=connection.createStatement();
                 updateStock.addBatch("UPDATE SystemStatus SET VALUE='"+dieselStock+"', DATE='"+SystemStatus.getCurrentDate().toString()+"' WHERE ID=14");
                 updateStock.addBatch("UPDATE SystemStatus SET VALUE='"+petrolStock+"', DATE='"+SystemStatus.getCurrentDate().toString()+"' WHERE ID=15");
                 updateStock.executeBatch();
 
-                connection.commit();
-
-                connection.setAutoCommit(true);
                 SystemStatus.setDieselStock(Float.parseFloat(dieselStock));
                 SystemStatus.setPetrolStock(Float.parseFloat(petrolStock));
 
@@ -55,10 +51,19 @@ public class SetupOilStockTask extends Tasks {
                 }
 
             }
+            connection.commit();
 
 
         } catch(SQLException e) {
             System.out.println(e.getMessage());
+
+            try {
+                connection.rollback();
+                System.out.println("Error in Database detected. Rolling back Database to stable stage.");
+
+            } catch (SQLException e1) {
+                System.out.println("Unable to undo Changes.It restores when system restarts.");
+            }
         }
 
     }

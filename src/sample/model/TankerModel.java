@@ -2,9 +2,9 @@ package sample.model;
 
 public class TankerModel {
 
-    Float avg;
-    int count;
-    String type;
+    private Float avg;
+    private int count;
+    private String type;
 
 
     public TankerModel(Float avg,int count,String type){

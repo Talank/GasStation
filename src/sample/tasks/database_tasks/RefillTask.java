@@ -6,6 +6,7 @@ import sample.tasks.Tasks;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 
 public class RefillTask extends Tasks {
@@ -24,10 +25,8 @@ public class RefillTask extends Tasks {
     public void execute() {
         try {
 
-            connection.setAutoCommit(false);
 
             Statement insertRefill=connection.createStatement();
-
 
             if(mode==0) {
                 insertRefill.addBatch("INSERT INTO DieselRefill VALUES ("+model.getExpected()+","+model.getActual()+","+model.getTankerNumber()+",'"+SystemStatus.getCurrentDate().toString()+"')");
@@ -69,11 +68,16 @@ public class RefillTask extends Tasks {
             insertRefill.executeBatch();
             connection.commit();
 
-            connection.setAutoCommit(true);
-
-
-        } catch(Exception e) {
+        } catch(SQLException e) {
             e.printStackTrace();
+            System.out.println(e.getMessage());
+            try {
+                connection.rollback();
+                System.out.println("Error in Database detected. Rolling back Database to stable stage.");
+
+            } catch (SQLException e1) {
+                System.out.println("Unable to undo Changes.It restores when system restarts.");
+            }
         }
     }
 }

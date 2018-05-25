@@ -58,10 +58,15 @@ public class PaymentDialogController implements BottomBarInterface {
     @Override
     public void performAction(MouseEvent e) throws IOException {
         if(!payment.getText().isEmpty()) {
-            CompanyPaymentTask task=new CompanyPaymentTask(model,Float.parseFloat(payment.getText()));
-            TaskManager.executeTask(task);
 
-            ((Node)e.getSource()).getScene().getWindow().hide();
+            if(Float.parseFloat(payment.getText())<=model.getDue()) {
+                CompanyPaymentTask task=new CompanyPaymentTask(model,Float.parseFloat(payment.getText()));
+                TaskManager.executeTask(task);
+
+                ((Node)e.getSource()).getScene().getWindow().hide();
+            } else {
+                bottomBar.setErrorText("Payment Greater Than Due Amount.");
+            }
 
         } else {
             payment.validate();

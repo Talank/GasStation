@@ -53,8 +53,6 @@ public class StoreCreditTransactionTask extends Tasks {
                 transactionDate=SystemStatus.getCurrentDate().toString();
             }
 
-
-            connection.setAutoCommit(false);
             Statement storeCredit=connection.createStatement();
 
             System.out.println("ID:"+ids[1]);
@@ -134,12 +132,6 @@ public class StoreCreditTransactionTask extends Tasks {
             storeCredit.executeBatch();
             connection.commit();
 
-            connection.setAutoCommit(true);
-
-
-
-
-
             SystemLogging.getLogger().fine("Credit Transaction Stored in Database");
 
         }  catch(SQLException e) {
@@ -147,6 +139,14 @@ public class StoreCreditTransactionTask extends Tasks {
 
             retryStatus++;
             System.out.println("Error Inserting Credit Transaction.ReScheduling Task Again. Retry:"+retryStatus);
+
+            try {
+                connection.rollback();
+                System.out.println("Error in Database detected. Rolling back Database to stable stage.");
+
+            } catch (SQLException e1) {
+                System.out.println("Unable to undo Changes.It restores when system restarts.");
+            }
 
             TaskManager.scheduleTask(this,5000);
             System.out.println("Scheduling Task Again.");

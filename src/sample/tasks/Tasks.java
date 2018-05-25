@@ -19,6 +19,7 @@ public class Tasks {
         try {
             Class.forName(DRIVER);
             connection=DriverManager.getConnection(Reference.JDBC_URL);
+            connection.setAutoCommit(false);
             if(connection!=null) {
                 System.out.println("Connection Established");
                 return true;

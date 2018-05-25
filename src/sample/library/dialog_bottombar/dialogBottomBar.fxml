@@ -2,13 +2,21 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-
-<fx:root type="javafx.scene.layout.HBox" alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="600.0" spacing="20.0" style="-fx-background-color: #eeeeee;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="600.0" spacing="20.0" style="-fx-background-color: #eeeeee;" type="javafx.scene.layout.HBox" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <JFXButton onMouseClicked="#cancel" buttonType="RAISED" style="-fx-background-color: #ff4444;" text="CANCEL">
+      <HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
+         <HBox.margin>
+            <Insets left="10.0" />
+         </HBox.margin>
+         <children>
+            <Label fx:id="errorText" textFill="#ff001e" wrapText="true" />
+         </children>
+      </HBox>
+      <JFXButton buttonType="RAISED" onMouseClicked="#cancel" style="-fx-background-color: #ff4444;" text="CANCEL">
          <font>
             <Font size="25.0" />
          </font>

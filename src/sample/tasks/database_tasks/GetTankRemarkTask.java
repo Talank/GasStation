@@ -28,7 +28,7 @@ public class GetTankRemarkTask extends Tasks {
 
             Statement getStatus=connection.createStatement();
 
-            System.out.println("Tanker Numner:"+tankerNumber);
+            System.out.println("Tanker Number:"+tankerNumber);
 
             ResultSet resultSet=getStatus.executeQuery("SELECT * FROM Tankers WHERE TANKER_NO="+tankerNumber);
             resultSet.next();

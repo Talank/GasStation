@@ -1,25 +1,16 @@
 package sample.tasks.database_tasks;
 
-import javafx.application.Platform;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-import org.omg.PortableInterceptor.LOCATION_FORWARD;
 import sample.controller.SystemLogging;
-import sample.model.*;
+import sample.model.CreditCompanyList;
+import sample.model.DebtListModel;
+import sample.model.SystemStatus;
 import sample.model.databases.DatabaseHandler;
-import sample.nepali_date.NepaliDate;
-import sample.nepali_date.NepaliDateFormat;
+import sample.nepali_date.DateConvertor;
 import sample.nepali_date.NepaliDateGenerator;
 import sample.nepali_date.ParseNepaliDate;
 import sample.tasks.Tasks;
 
-
 import java.sql.*;
-
-import java.time.LocalDate;
 import java.util.ArrayList;
 
 
@@ -32,9 +23,9 @@ public class InitializeSystem extends Tasks {
         SystemStatus.setMainHomePath("../../view/main_home_views/mainHome.fxml");
 
 
-        NepaliDateGenerator generator=new NepaliDateGenerator();
+        NepaliDateGenerator generator = new NepaliDateGenerator();
 
-        Date currentDate=new Date((new java.util.Date()).getTime());
+        Date currentDate = new Date((new java.util.Date()).getTime());
 
         SystemStatus.setCurrentDate(currentDate);
         SystemStatus.setTransactionDate(currentDate);
@@ -42,29 +33,32 @@ public class InitializeSystem extends Tasks {
         SystemStatus.setNepaliCurrentDate(generator.toString());
         SystemStatus.setNepaliTransactionDate(generator.toString());
 
-        System.out.println("System Current English Date:"+SystemStatus.getCurrentDate());
-        System.out.println("System Current Nepali Date:"+SystemStatus.getNepaliCurrentDate());
+        System.out.println("System Current English Date:" + SystemStatus.getCurrentDate());
+        System.out.println("System Current Nepali Date:" + SystemStatus.getNepaliCurrentDate());
 
-        int nDay=generator.getDateFormat().getnDay();
+        int nDay = generator.getDateFormat().getnDay();
 
-        int totalDaysOfMonth=generator.getDateFormat().getTotalDaysOfMonth();
+        int totalDaysOfMonth = generator.getDateFormat().getTotalDaysOfMonth();
 
-        int nMonth=generator.getDateFormat().getnMonth();
+        int nMonth = generator.getDateFormat().getnMonth();
+        int nYear=generator.getDateFormat().getnYear();
 
-        ParseNepaliDate initialDate=new ParseNepaliDate();
+        ParseNepaliDate initialDate = new ParseNepaliDate();
 
-        ArrayList<DebtListModel> arrayList=new ArrayList<>();
+        ArrayList<DebtListModel> arrayList = new ArrayList<>();
 
-        ArrayList<DebtListModel> expiredList=new ArrayList<>();
+        ArrayList<DebtListModel> expiredList = new ArrayList<>();
 
         DebtListModel model;
 
-        try {
-            Statement getDebitList=connection.createStatement();
-            ResultSet resultSet=getDebitList.executeQuery("SELECT * FROM CreditCompany");
-            while(resultSet.next()) {
+        Date date=new Date(((new java.util.Date()).getTime()));
 
-                model=new DebtListModel(resultSet.getString(2),resultSet.getString(6),resultSet.getInt(1),resultSet.getInt(3),resultSet.getInt(5),resultSet.getFloat(7),resultSet.getFloat(8));
+        try {
+            Statement getDebitList = connection.createStatement();
+            ResultSet resultSet = getDebitList.executeQuery("SELECT * FROM CreditCompany");
+            while (resultSet.next()) {
+
+                model = new DebtListModel(resultSet.getString(2), resultSet.getString(6), resultSet.getInt(1), resultSet.getInt(3), resultSet.getInt(5), resultSet.getFloat(7), resultSet.getFloat(8));
 
                 model.setDate(generator.convertDate(resultSet.getDate(9)));
                 model.setPrevExpireDate(generator.convertDate(resultSet.getDate(4)));
@@ -74,47 +68,68 @@ public class InitializeSystem extends Tasks {
                 initialDate.setNepaliDate(model.getDate());
 
                 /**
-                 * Here we have two types of company i.e 30 days and other days(probably 15 days)
-                 * First check for the change in month,if there is month difference between the current month and the last time the company was credited,
-                 * then the company is expired.
-                 * It solves the problem if the software was not open in 1st day of the month ,because we are only interested in month difference
+                 *We have generally two cases
+                 * 1st when the last time the company credited was in 12th month,then the year may change,so we check if the year has changed,if so we expire the company in new year day
+                 * other wise we check if the year is same,then it might be the case that the 15 days credit cycle company may expire,so we check that
                  *
-                 * Second case is for 15 days company,where we check if current day is more than 15 and the currently read company has 15 days cycle time,
+                 * 2nd case is when the year is same and month is different,then the case is similar to 1st
                  */
 
-                if(initialDate.getnMonth()<nMonth) {
-                    expiredList.add(model);
-                    model.setExpired(true);
-                } else {
 
-                    if(nDay>=15&&(Integer.parseInt(model.getDays())!=30)) {
+                if(initialDate.getnMonth()==12) {
+                    if(initialDate.getnYear()<nYear) {
+                        date=DateConvertor.getEnglishDate(initialDate.getnYear()+1,1,1);
+                        expiredList.add(model);
+                        model.setExpired(true);
+                    } else if(initialDate.getnYear()==nYear) {
+                        if (nDay >= 15 && (Integer.parseInt(model.getDays()) != 30)&&initialDate.getnDay()<15) {
+                            date=DateConvertor.getEnglishDate(nYear,nMonth,15);
+                            expiredList.add(model);
+                            model.setExpired(true);
+                        }
+                    }
+                } else {
+                    if (initialDate.getnMonth() < nMonth) {
+                        date=DateConvertor.getEnglishDate(initialDate.getnYear(),initialDate.getnMonth()+1,1);
+                        expiredList.add(model);
+                        model.setExpired(true);
+                    } else if (nDay >= 15 && (Integer.parseInt(model.getDays()) != 30)&&initialDate.getnDay()<15) {
+                        date=DateConvertor.getEnglishDate(nYear,nMonth,15);
                         expiredList.add(model);
                         model.setExpired(true);
                     }
-
                 }
 
-                if(model.isExpired()) {
+                System.out.println("Current Expired English Date:"+date.toString());
 
 
-                    if(resultSet.getInt(5)==1) {
+                if (model.isExpired()) {
+
+                    /**
+                     *Here we check the value of PREV_TRANSACTION_ID
+                     * if it is 0 means that the company is not expired,if it is 1 then the company credit closing is done but payment is remaining
+                     *
+                     * We check if it is 0,then since the Company has just expired,we note the current date
+                     */
+
+                    if (resultSet.getInt(5) == 0) {
 
                         System.out.println("Company previous due was cleared!");
 
-                        Statement getCounts=connection.createStatement();
-                        ResultSet countResult=getCounts.executeQuery("SELECT COUNT(*) FROM "+DatabaseHandler.generateTableName(model.getCompanyName(),model.getId()));
+                        Statement getCounts = connection.createStatement();
+                        ResultSet countResult = getCounts.executeQuery("SELECT COUNT(*) FROM " + DatabaseHandler.generateTableName(model.getCompanyName(), model.getId()));
                         countResult.next();
-                        int count=countResult.getInt(1);
-                        countResult=getCounts.executeQuery("SELECT TRANSACTION_ID FROM "+DatabaseHandler.generateTableName(model.getCompanyName(),model.getId())+" OFFSET "+(count-1)+" ROWS FETCH NEXT 1 ROWS ONLY");
+                        int count = countResult.getInt(1);
+                        countResult = getCounts.executeQuery("SELECT TRANSACTION_ID FROM " + DatabaseHandler.generateTableName(model.getCompanyName(), model.getId()) + " OFFSET " + (count - 1) + " ROWS FETCH NEXT 1 ROWS ONLY");
                         countResult.next();
 
-                        int transactionID=countResult.getInt(1);
+                        int transactionID = countResult.getInt(1);
 
-                        PreparedStatement updateExpireID=connection.prepareStatement("UPDATE CreditCompany SET PREV_TRANSACTION_ID="+transactionID+",PREV_EXPIRE_DATE='"+SystemStatus.getCurrentDate().toString()+"' WHERE ID="+model.getId());
+                        PreparedStatement updateExpireID = connection.prepareStatement("UPDATE CreditCompany SET PREV_TRANSACTION_ID=" + transactionID + ",PREV_EXPIRE_DATE='" + date.toString() + "' WHERE ID=" + model.getId());
                         updateExpireID.execute();
 
                         model.setPrevExpireDate(generator.toString());
-                        model.setExpireDate(SystemStatus.getCurrentDate());
+                        model.setExpireDate(date);
                         model.setTransactionID(resultSet.getInt(3));
                         model.setPrevTransactionID(transactionID);
                     } else {
@@ -123,22 +138,17 @@ public class InitializeSystem extends Tasks {
                         model.setPrevTransactionID(resultSet.getInt(5));
                     }
 
-
                 }
-
-
                 arrayList.add(model);
             }
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
 
-        CreditCompanyList.setCompanyList(arrayList);
-        CreditCompanyList.setExpiredCompanyList(expiredList);
+            connection.commit();
 
-        try {
-            Statement getValues=connection.createStatement();
-            ResultSet resultSet=getValues.executeQuery("SELECT VALUE FROM SystemStatus WHERE ID>10 AND ID<18");
+            CreditCompanyList.setCompanyList(arrayList);
+            CreditCompanyList.setExpiredCompanyList(expiredList);
+            Statement getValues = connection.createStatement();
+
+            resultSet = getValues.executeQuery("SELECT VALUE FROM SystemStatus WHERE ID>10 AND ID<18");
 
             resultSet.next();
             SystemStatus.setiDiesel(Float.parseFloat(resultSet.getString(1)));
@@ -154,16 +164,9 @@ public class InitializeSystem extends Tasks {
             SystemStatus.setBillPrinter(resultSet.getString(1));
             resultSet.next();
             SystemStatus.setAnalyticsPrinter(resultSet.getString(1));
-            resultSet.close();
 
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
-
-
-        try {
-            Statement getRate=connection.createStatement();
-            ResultSet resultSet=getRate.executeQuery("SELECT VALUE FROM SystemStatus WHERE ID>8 AND ID<11");
+            Statement getRate = connection.createStatement();
+            resultSet = getRate.executeQuery("SELECT VALUE FROM SystemStatus WHERE ID>8 AND ID<11");
             resultSet.next();
 
             SystemStatus.setdRate((Float.parseFloat(resultSet.getString(1))));
@@ -171,10 +174,19 @@ public class InitializeSystem extends Tasks {
             SystemStatus.setpRate(Float.parseFloat(resultSet.getString(1)));
             resultSet.close();
 
+        } catch (SQLException e) {
 
-        } catch (Exception e) {
             e.printStackTrace();
+
+            try {
+                connection.rollback();
+                System.out.println("Error in Database detected. Rolling back Database to stable stage.");
+
+            } catch (SQLException e1) {
+                System.out.println("Unable to undo Changes.It restores when system restarts.");
+            }
         }
+
 
 
     }

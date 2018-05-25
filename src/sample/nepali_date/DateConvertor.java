@@ -1,5 +1,8 @@
 package sample.nepali_date;
 
+import java.sql.Date;
+import java.time.LocalDate;
+
 public class DateConvertor {
 
     public static final int START_ENGLISH_YEAR = 2018;
@@ -38,6 +41,13 @@ public class DateConvertor {
         }
 
         return totalDays;
+
+    }
+
+    public static Date getEnglishDate(int nYear,int nMonth,int nDay) {
+        int totalDays=getTotalDays(nYear,nMonth,nDay);
+
+        return Date.valueOf(LocalDate.of(START_ENGLISH_YEAR,START_ENGLISH_MONTH,START_ENGLISH_DAY).plusDays(totalDays));
 
     }
 

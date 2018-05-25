@@ -35,15 +35,27 @@ public class CompanyCreditClosingTask extends Tasks {
                 Statement getResults=connection.createStatement(ResultSet.TYPE_FORWARD_ONLY,ResultSet.CONCUR_UPDATABLE);
                 ResultSet totalResult=getResults.executeQuery("SELECT TRANSACTION_ID,PRICE FROM "+tableName);
 
-                int lastTransaction=0;
+                int lastTransaction=1,prevID=0,currentID;
                 float total=0;
-                while(totalResult.next()) {
-                    lastTransaction=(totalResult.getInt(1)-model.getPrevTransactionID());
+
+                if(totalResult.next()) {
+                    prevID=totalResult.getInt(1);
                     total+=totalResult.getFloat(2);
                     totalResult.updateInt(1,lastTransaction);
                     totalResult.updateRow();
+                }
 
-/*                    delete.addBatch("UPDATE "+tableName+" SET EXPIRE_ID="+lastExpire+", TRANSACTION_ID="+lastTransaction+" WHERE EXPIRE_ID="+totalResult.getInt(1));*/
+                while(totalResult.next()) {
+                    currentID=totalResult.getInt(1);
+
+                    if(prevID!=currentID) {
+                        prevID=currentID;
+                        lastTransaction++;
+                    }
+
+                    total+=totalResult.getFloat(2);
+                    totalResult.updateInt(1,lastTransaction);
+                    totalResult.updateRow();
                 }
 
                 lastTransaction++;
@@ -54,7 +66,7 @@ public class CompanyCreditClosingTask extends Tasks {
                 model.setTotal(total);
                 model.setTransactionID(lastTransaction);
 
-                delete.execute("UPDATE CreditCompany SET DUE=DUE+TOTAL,TOTAL="+total+",TRANSACTION_ID="+lastTransaction+",PREV_TRANSACTION_ID="+1+",DATE='"+SystemStatus.getCurrentDate().toString()+"'");
+                delete.execute("UPDATE CreditCompany SET DUE=DUE+TOTAL-"+total+",TOTAL="+total+",TRANSACTION_ID="+lastTransaction+",PREV_TRANSACTION_ID="+1);
 
 
             } else {
@@ -63,19 +75,16 @@ public class CompanyCreditClosingTask extends Tasks {
 
                 Statement delete=connection.createStatement();
                 delete.addBatch("DELETE FROM "+tableName);
-                delete.addBatch("UPDATE CreditCompany SET DUE=DUE+TOTAL,TOTAL=0.0,TRANSACTION_ID="+1+",PREV_TRANSACTION_ID="+1+",DATE='"+SystemStatus.getCurrentDate().toString()+"'");
+                delete.addBatch("UPDATE CreditCompany SET DUE=DUE+TOTAL,TOTAL=0.0,TRANSACTION_ID="+1+",PREV_TRANSACTION_ID="+1);
                 delete.executeBatch();
 
                 model.setDue(model.getDue()+model.getTotal());
                 model.setTotal(0f);
 
                 model.setTransactionID(1);
-                /*model.setExpireID(1);*/
 
-        }
+            }
             connection.commit();
-            connection.setAutoCommit(true);
-
 
             model.setExpired(false);
 
@@ -83,6 +92,13 @@ public class CompanyCreditClosingTask extends Tasks {
         } catch (SQLException e) {
             e.printStackTrace();
             System.out.println(e.getMessage());
+            try {
+                connection.rollback();
+                System.out.println("Error in Database detected. Rolling back Database to stable stage.");
+
+            } catch (SQLException e1) {
+                System.out.println("Unable to undo Changes.It restores when system restarts.");
+            }
         }
     }
 }

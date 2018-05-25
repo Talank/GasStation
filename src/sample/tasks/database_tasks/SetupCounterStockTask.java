@@ -23,8 +23,16 @@ public class SetupCounterStockTask extends Tasks {
         try {
             PreparedStatement insertStock=connection.prepareStatement("UPDATE SystemStatus SET VALUE='"+counterStock+"', DATE='"+SystemStatus.getCurrentDate().toString()+"' WHERE ID=13");
             insertStock.execute();
+            connection.commit();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+            try {
+                connection.rollback();
+                System.out.println("Error in Database detected. Rolling back Database to stable stage.");
+
+            } catch (SQLException e1) {
+                System.out.println("Unable to undo Changes.It restores when system restarts.");
+            }
         }
     }
 }

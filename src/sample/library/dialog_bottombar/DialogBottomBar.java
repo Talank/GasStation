@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXButton;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 
@@ -15,6 +16,9 @@ public class DialogBottomBar extends HBox {
 
     @FXML
     private JFXButton positiveButton;
+
+    @FXML
+    private Label errorText;
 
     private BottomBarInterface bottomBarInterface;
 
@@ -31,6 +35,10 @@ public class DialogBottomBar extends HBox {
 
     public void setButtonText(String text) {
         positiveButton.setText(text);
+    }
+
+    public void setErrorText(String msg) {
+        errorText.setText(msg);
     }
 
     public void setBottomBarInterface(BottomBarInterface bottomBarInterface) {

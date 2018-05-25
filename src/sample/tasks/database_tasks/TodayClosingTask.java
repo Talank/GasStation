@@ -27,7 +27,6 @@ public class TodayClosingTask extends Tasks {
 
         try {
 
-            connection.setAutoCommit(false);
             Statement closing=connection.createStatement();
             closing.addBatch("UPDATE SystemStatus SET VALUE='"+String.valueOf(SystemStatus.getfDiesel())+"',DATE='"+SystemStatus.getCurrentDate().toString()+"' WHERE ID=11");
             closing.addBatch("UPDATE SystemStatus SET VALUE='"+String.valueOf(SystemStatus.getfPetrol())+"',DATE='"+SystemStatus.getCurrentDate().toString()+"' WHERE ID=12");
@@ -48,7 +47,6 @@ public class TodayClosingTask extends Tasks {
 
             closing.executeBatch();
             connection.commit();
-            connection.setAutoCommit(true);
 
             SystemStatus.setfDiesel(0f);
             SystemStatus.setfPetrol(0f);
@@ -65,6 +63,14 @@ public class TodayClosingTask extends Tasks {
             retryStatus++;
 
             SystemLogging.getLogger().severe("Couldn't Perform Today Closing.Rescheduling Again.Retry Counter:"+retryStatus);
+
+            try {
+                connection.rollback();
+                System.out.println("Error in Database detected. Rolling back Database to stable stage.");
+
+            } catch (SQLException e1) {
+                System.out.println("Unable to undo Changes.It restores when system restarts.");
+            }
 
             System.out.println("Couldn't Perform Today Closing.Rescheduling Again.Retry Counter:"+retryStatus);
             TaskManager.scheduleTask(this,5000);

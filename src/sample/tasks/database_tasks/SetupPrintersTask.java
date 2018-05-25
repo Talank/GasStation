@@ -22,19 +22,15 @@ public class SetupPrintersTask extends Tasks {
         try {
 
             if(!SystemStatus.getBillPrinter().equals(billPrinterName)&&!SystemStatus.getAnalyticsPrinter().equals(analyticsPrinterName)) {
-                connection.setAutoCommit(false);
 
                 Statement updateStock=connection.createStatement();
                 updateStock.addBatch("UPDATE SystemStatus SET VALUE='"+billPrinterName+"', DATE='"+SystemStatus.getCurrentDate().toString()+"' WHERE ID=16");
                 updateStock.addBatch("UPDATE SystemStatus SET VALUE='"+analyticsPrinterName+"', DATE='"+SystemStatus.getCurrentDate().toString()+"' WHERE ID=17");
                 updateStock.executeBatch();
 
-                connection.commit();
-
                 SystemStatus.setBillPrinter(billPrinterName);
                 SystemStatus.setAnalyticsPrinter(analyticsPrinterName);
 
-                connection.setAutoCommit(true);
             } else {
 
                 if(!SystemStatus.getBillPrinter().equals(billPrinterName)) {
@@ -50,6 +46,8 @@ public class SetupPrintersTask extends Tasks {
                 }
             }
 
+            connection.commit();
+
             String[][] model=SettingsController.getInstance().getModel();
             model[8][0]=billPrinterName;
             model[8][1]=SystemStatus.getNepaliCurrentDate();
@@ -60,6 +58,14 @@ public class SetupPrintersTask extends Tasks {
 
         } catch(SQLException e) {
             System.out.println(e.getMessage());
+
+            try {
+                connection.rollback();
+                System.out.println("Error in Database detected. Rolling back Database to stable stage.");
+
+            } catch (SQLException e1) {
+                System.out.println("Unable to undo Changes.It restores when system restarts.");
+            }
         }
     }
 }
