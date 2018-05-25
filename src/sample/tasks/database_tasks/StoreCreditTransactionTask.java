@@ -87,6 +87,8 @@ public class StoreCreditTransactionTask extends Tasks {
 
                 }
 
+                ids[1]++;
+
 
             }
 
