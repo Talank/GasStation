@@ -6,6 +6,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import sample.controller.AppHomeController;
 import sample.controller.main_home_controller.MainHomeController;
 import sample.controller.SystemLogging;
 import sample.controller.main_home_controller.SettingsController;
@@ -87,7 +88,7 @@ public class ChangeRateController implements BottomBarInterface {
             else
                 SystemLogging.getLogger().warning("Failed to Store Rate,Using Current Rate Temporarily!");*/
 
-            MainHomeController.getInstance().setRates(rDiesel.getText(),rPetrol.getText());
+            AppHomeController.getInstance().setRates(rDiesel.getText(),rPetrol.getText());
 
             String[][] model=SettingsController.getInstance().getModel();
 

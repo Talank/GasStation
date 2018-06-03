@@ -15,9 +15,9 @@
 <?import sample.library.toolbar.ToolBar?>
 <?import sample.library.output_task_loading.OutputTaskLoading?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controller.main_home_controller.SystemStatusController">
+<BorderPane xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controller.main_home_controller.SystemStatusController">
    <center>
-      <ScrollPane fitToHeight="true" fitToWidth="true" BorderPane.alignment="CENTER">
+      <ScrollPane fitToWidth="true" BorderPane.alignment="CENTER">
          <content>
             <VBox alignment="CENTER">
                <children>
@@ -25,7 +25,7 @@
                      <children>
                         <StackPane>
                            <children>
-                              <JFXListView fx:id="expenditureList" prefHeight="400.0" prefWidth="800.0" visible="false" />
+                              <JFXListView fx:id="expenditureList" prefHeight="400.0" visible="false" />
                               <OutputTaskLoading fx:id="progressLayout" />
                            </children>
                         </StackPane>
@@ -39,18 +39,18 @@
                         </Label>
                      </children>
                   </VBox>
-                  <GridPane style="-fx-background-color: #cccccc;" vgap="50.0">
+                  <GridPane style="-fx-background-color: #cccccc;" vgap="50.0" VBox.vgrow="ALWAYS">
                      <columnConstraints>
                         <ColumnConstraints halignment="LEFT" hgrow="NEVER" minWidth="10.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
                      </columnConstraints>
                      <rowConstraints>
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" valignment="CENTER" vgrow="ALWAYS" />
+                        <RowConstraints minHeight="10.0" valignment="CENTER" vgrow="ALWAYS" />
+                        <RowConstraints minHeight="10.0" vgrow="ALWAYS" />
+                        <RowConstraints minHeight="10.0" vgrow="ALWAYS" />
+                        <RowConstraints minHeight="10.0" vgrow="ALWAYS" />
+                        <RowConstraints minHeight="10.0" vgrow="ALWAYS" />
                      </rowConstraints>
                      <children>
                         <Label text="System Date:">

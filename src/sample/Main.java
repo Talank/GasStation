@@ -48,8 +48,8 @@ public class Main extends Application {
             InitializeSystem initializeSystem=new InitializeSystem();
             initializeSystem.execute();
             startup=true;
-            loader=new FXMLLoader(getClass().getResource("view/main_home_views/mainHome.fxml"));
-//            loader=new FXMLLoader(getClass().getResource("view/appHome.fxml"));
+//            loader=new FXMLLoader(getClass().getResource("view/main_home_views/mainHome.fxml"));
+            loader=new FXMLLoader(getClass().getResource("view/appHome.fxml"));
         } else {
             startup=false;
             loader=new FXMLLoader(getClass().getResource("view/dialogs/errorDialog.fxml"));

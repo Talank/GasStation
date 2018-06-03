@@ -8,8 +8,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import sample.controller.AppHomeController;
 
 
 import java.io.IOException;
@@ -53,10 +55,13 @@ public class ToolBar extends GridPane {
         if(backButtonInterface!=null)
             backButtonInterface.cleanUp();
 
-        Parent root=FXMLLoader.load(getClass().getResource(backPath));
+        BorderPane borderPane=FXMLLoader.load(getClass().getResource(backPath));
+        AppHomeController.getInstance().loadStages(borderPane);
+
+        /*Parent root=FXMLLoader.load(getClass().getResource(backPath));
         Stage stage=(Stage)((Node)e.getSource()).getScene().getWindow();
         stage.setScene(new Scene(root));
-        stage.show();
+        stage.show();*/
     }
 
 }

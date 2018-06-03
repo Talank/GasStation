@@ -9,13 +9,11 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.BackgroundImage;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.omg.CORBA.NO_IMPLEMENT;
+import sample.controller.AppHomeController;
 import sample.controller.SystemLogging;
 import sample.controller.dialog_controller.FinalReadingsController;
 import sample.controller.dialog_controller.LoginDialogController;
@@ -43,6 +41,7 @@ public class MainHomeController {
 
     @FXML
     private GridPane rootGrid;
+
 
     @FXML
     private VBox instantBillingLayout;
@@ -116,8 +115,8 @@ public class MainHomeController {
 
 
 
-        rDiesel.setText(String.valueOf(SystemStatus.getdRate()));
-        rPetrol.setText(String.valueOf(SystemStatus.getpRate()));
+        /*rDiesel.setText(String.valueOf(SystemStatus.getdRate()));
+        rPetrol.setText(String.valueOf(SystemStatus.getpRate()));*/
 
     }
 
@@ -196,10 +195,13 @@ public class MainHomeController {
 
     @FXML
     public void loadProfitLoss(MouseEvent e) throws IOException {
-        Parent root=FXMLLoader.load(getClass().getResource("../../view/main_home_views/profitLoss.fxml"));
+        /*Parent root=FXMLLoader.load(getClass().getResource("../../view/main_home_views/profitLoss.fxml"));
         Stage stage=(Stage)((Node)e.getSource()).getScene().getWindow();
         stage.setScene(new Scene(root));
-        stage.show();
+        stage.show();*/
+
+        loadStage((Node)e.getSource(),"../../view/main_home_views/profitLoss.fxml");
+
     }
 
     /*
@@ -215,10 +217,7 @@ public class MainHomeController {
         stage.show();
     }
 
-    public void setRates(String rDiesel,String rPetrol) {
-        this.rDiesel.setText(rDiesel);
-        this.rPetrol.setText(rPetrol);
-    }
+
 
     /*
     * Get the current instance of the class
@@ -235,13 +234,17 @@ public class MainHomeController {
     * */
 
     private void loadStage(Node node,String path) throws IOException {
-        Parent root=FXMLLoader.load(getClass().getResource(path));
+        /*Parent root=FXMLLoader.load(getClass().getResource(path));
         Stage stage=(Stage)node.getScene().getWindow();
         Scene scene=new Scene(root);
         scene.getStylesheets().add(getClass().getResource("../../css/mainStyle.css").toExternalForm());
         stage.setScene(scene);
-        stage.show();
+        stage.show();*/
+
+        BorderPane borderPane=FXMLLoader.load(getClass().getResource(path));
+        AppHomeController.getInstance().loadStages(borderPane);
     }
+
 
 
 }

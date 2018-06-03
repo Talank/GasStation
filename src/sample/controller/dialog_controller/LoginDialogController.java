@@ -15,9 +15,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToolBar;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import sample.OutputTasks.GetAdminUser;
+import sample.controller.AppHomeController;
 import sample.controller.main_home_controller.MainHomeController;
 import sample.library.dialog_bottombar.BottomBarInterface;
 import sample.library.dialog_bottombar.DialogBottomBar;
@@ -102,7 +104,11 @@ public class LoginDialogController implements BottomBarInterface {
                     if(user.validate(task.getValue())) {
                         switch (this.status) {
                             case 1:
-                                MainHomeController.getInstance().showSettings(stage);
+
+                                BorderPane borderPane=FXMLLoader.load(getClass().getResource("../../view/main_home_views/settings.fxml"));
+                                AppHomeController.getInstance().loadStages(borderPane);
+
+//                                MainHomeController.getInstance().showSettings(stage);
                                 break;
                         }
                         Stage loginWindow=(Stage)((Node)e.getSource()).getScene().getWindow();

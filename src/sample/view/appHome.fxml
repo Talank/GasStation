@@ -1,22 +1,85 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controller.AppHomeController">
-   <top>
-      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="50.0" BorderPane.alignment="CENTER">
-         <children>
-            <Label text="Label" />
-            <Label text="Label" />
-            <Label text="Label" />
-            <Label text="Label" />
-         </children>
-      </HBox>
-   </top>
    <center>
       <StackPane fx:id="mainHome" BorderPane.alignment="CENTER" />
    </center>
+   <top>
+      <GridPane prefHeight="150.0" BorderPane.alignment="CENTER">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" vgrow="ALWAYS" />
+        </rowConstraints>
+         <children>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #aaaaaa; -fx-background-radius: 50px;">
+               <children>
+                  <Label text="Diesel Rate:" />
+                  <Label fx:id="dieselRate" text="Rs. 120.00" />
+               </children>
+               <GridPane.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </GridPane.margin>
+            </VBox>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #aaaaaa; -fx-background-radius: 50px;" GridPane.columnIndex="1">
+               <children>
+                  <Label text="Petrol Rate:" />
+                  <Label fx:id="petrolRate" text="Rs. 120.00" />
+               </children>
+               <GridPane.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </GridPane.margin>
+            </VBox>
+            <VBox alignment="CENTER" layoutX="266.0" layoutY="10.0" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #aaaaaa; -fx-background-radius: 50px;" GridPane.columnIndex="3">
+               <children>
+                  <Label text="Diesel Stock:" />
+                  <Label fx:id="dieselStock" text="10000 L" />
+               </children>
+               <GridPane.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </GridPane.margin>
+            </VBox>
+            <VBox alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #aaaaaa; -fx-background-radius: 50px;" GridPane.columnIndex="4">
+               <children>
+                  <Label text="Petrol Stock:" />
+                  <Label fx:id="petrolStock" text="10000 L" />
+               </children>
+               <GridPane.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </GridPane.margin>
+            </VBox>
+            <HBox alignment="CENTER" maxWidth="1.7976931348623157E308" GridPane.columnIndex="2">
+               <children>
+                  <JFXButton fx:id="settings" buttonType="RAISED" focusTraversable="false" onMouseClicked="#loadSettings" prefHeight="120.0" prefWidth="120.0" style="-fx-background-radius: 60px;" stylesheets="@../css/mainHomeStyle.css" text=" ">
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                     <styleClass>
+                        <String fx:value="settingsButton" />
+                        <String fx:value="buttonBackground" />
+                     </styleClass>
+                  </JFXButton>
+               </children>
+            </HBox>
+         </children>
+      </GridPane>
+   </top>
 </BorderPane>

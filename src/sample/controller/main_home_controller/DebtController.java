@@ -9,7 +9,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.SelectionMode;
 
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import sample.controller.AppHomeController;
+import sample.controller.dialog_controller.PaymentDialogController;
 import sample.controller.main_home_controller.lists_controllers.CreditCompanyDetailsController;
 import sample.controller.main_home_controller.lists_controllers.CreditCompanyListCell;
 import sample.controller.main_home_controller.lists_controllers.DebtListCell;
@@ -55,13 +58,23 @@ public class DebtController {
 
         debtList.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends DebtListModel> observable, DebtListModel oldValue, DebtListModel newValue)->{
             FXMLLoader loader=new FXMLLoader(getClass().getResource("../../view/main_home_views/credit_company_details/creditCompanyDetails.fxml"));
+
+
+
             try {
-                Parent root=loader.load();
+
+                BorderPane borderPane=loader.load();
+
+                AppHomeController.getInstance().loadStages(borderPane);
+                sample.controller.main_home_controller.credit_company_details_controller.CreditCompanyDetailsController controller=loader.getController();
+                controller.setParameters(DatabaseHandler.generateTableName(newValue.getCompanyName(),newValue.getId()));
+
+                /*Parent root=loader.load();
                 sample.controller.main_home_controller.credit_company_details_controller.CreditCompanyDetailsController controller=loader.getController();
                 controller.setParameters(DatabaseHandler.generateTableName(newValue.getCompanyName(),newValue.getId()));
                 Stage stage= ((Stage)debtList.getScene().getWindow());
                 stage.setScene(new Scene(root));
-                stage.show();
+                stage.show();*/
             } catch (IOException e) {
                 e.printStackTrace();
             }

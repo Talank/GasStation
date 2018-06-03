@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXButton?>
-<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
@@ -15,18 +12,18 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="rootLayout" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controller.main_home_controller.MainHomeController">
+<BorderPane fx:id="rootLayout" minHeight="-Infinity" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controller.main_home_controller.MainHomeController">
    <center>
-      <GridPane fx:id="rootGrid" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
-        <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-        </columnConstraints>
-        <rowConstraints>
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        </rowConstraints>
+      <GridPane fx:id="rootGrid" style="-fx-background-color: white;">
+         <columnConstraints>
+            <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
+            <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" vgrow="ALWAYS" />
+            <RowConstraints minHeight="10.0" vgrow="ALWAYS" />
+            <RowConstraints minHeight="10.0" vgrow="ALWAYS" />
+         </rowConstraints>
          <children>
             <VBox fx:id="instantBillingLayout" alignment="CENTER" onMouseClicked="#loadInstantBilling" styleClass="menuBackground" stylesheets="@../../css/mainHomeStyle.css">
                <children>
@@ -55,7 +52,7 @@
                   <Insets top="10.0" />
                </padding>
             </VBox>
-            <VBox fx:id="creditBillingLayout" alignment="CENTER" onMouseClicked="#loadCreditBilling" prefHeight="200.0" prefWidth="100.0" styleClass="menuBackground" stylesheets="@../../css/mainHomeStyle.css" GridPane.columnIndex="1">
+            <VBox fx:id="creditBillingLayout" alignment="CENTER" onMouseClicked="#loadCreditBilling" styleClass="menuBackground" stylesheets="@../../css/mainHomeStyle.css" GridPane.columnIndex="1">
                <children>
                   <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" style="-fx-background-color: #0878a1; -fx-background-radius: 85;">
                      <children>
@@ -85,7 +82,7 @@
                   <Insets top="10.0" />
                </padding>
             </VBox>
-            <VBox fx:id="creditLayout" alignment="CENTER" onMouseClicked="#loadDebt" prefHeight="200.0" prefWidth="100.0" styleClass="menuBackground" stylesheets="@../../css/mainHomeStyle.css" GridPane.rowIndex="1">
+            <VBox fx:id="creditLayout" alignment="CENTER" onMouseClicked="#loadDebt" styleClass="menuBackground" stylesheets="@../../css/mainHomeStyle.css" GridPane.rowIndex="1">
                <children>
                   <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" style="-fx-background-color: #0878a1; -fx-background-radius: 85;">
                      <children>
@@ -112,7 +109,7 @@
                   <Insets top="10.0" />
                </padding>
             </VBox>
-            <VBox fx:id="profitLossLayout" alignment="CENTER" onMouseClicked="#loadProfitLoss" prefHeight="200.0" prefWidth="100.0" styleClass="menuBackground" stylesheets="@../../css/mainHomeStyle.css" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <VBox fx:id="profitLossLayout" alignment="CENTER" onMouseClicked="#loadProfitLoss" styleClass="menuBackground" stylesheets="@../../css/mainHomeStyle.css" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <children>
                   <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" style="-fx-background-color: #0878a1; -fx-background-radius: 85;">
                      <children>
@@ -142,7 +139,7 @@
                   <Insets top="10.0" />
                </padding>
             </VBox>
-            <VBox fx:id="dailyAnalyticsLayout" alignment="CENTER" onMouseClicked="#loadDailyAnalytics" prefHeight="200.0" prefWidth="100.0" styleClass="menuBackground" stylesheets="@../../css/mainHomeStyle.css" GridPane.rowIndex="2">
+            <VBox fx:id="dailyAnalyticsLayout" alignment="CENTER" onMouseClicked="#loadDailyAnalytics" styleClass="menuBackground" stylesheets="@../../css/mainHomeStyle.css" GridPane.rowIndex="2">
                <children>
                   <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" style="-fx-background-color: #0878a1; -fx-background-radius: 85;">
                      <children>
@@ -172,7 +169,7 @@
                   <Insets top="10.0" />
                </padding>
             </VBox>
-            <VBox fx:id="settingsLayout" alignment="CENTER" onMouseClicked="#loadSystemStatus" prefHeight="200.0" prefWidth="100.0" styleClass="menuBackground" stylesheets="@../../css/mainHomeStyle.css" GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <VBox fx:id="settingsLayout" alignment="CENTER" onMouseClicked="#loadSystemStatus" styleClass="menuBackground" stylesheets="@../../css/mainHomeStyle.css" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <children>
                   <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" style="-fx-background-color: #0878a1; -fx-background-radius: 85;">
                      <children>
@@ -202,55 +199,4 @@
          </children>
       </GridPane>
    </center>
-   <top>
-      <HBox prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #cccccc;" BorderPane.alignment="CENTER">
-         <children>
-            <GridPane HBox.hgrow="ALWAYS">
-              <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-              </rowConstraints>
-               <children>
-                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
-                     <children>
-                        <Label text="Diesel">
-                           <font>
-                              <Font size="20.0" />
-                           </font>
-                        </Label>
-                        <TextField fx:id="rDiesel" editable="false" focusTraversable="false" />
-                     </children>
-                  </HBox>
-                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="2">
-                     <children>
-                        <Label text="Petrol">
-                           <font>
-                              <Font size="20.0" />
-                           </font>
-                        </Label>
-                        <TextField fx:id="rPetrol" editable="false" focusTraversable="false" />
-                     </children>
-                  </HBox>
-                  <HBox alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="100.0" GridPane.columnIndex="1">
-                     <children>
-                        <JFXButton fx:id="settings" buttonType="RAISED" focusTraversable="false" onMouseClicked="#loadSettings" prefHeight="80.0" prefWidth="80.0" style="-fx-background-radius: 40px;" stylesheets="@../../css/mainHomeStyle.css" text=" ">
-                           <font>
-                              <Font name="System Bold" size="20.0" />
-                           </font>
-                           <styleClass>
-                              <String fx:value="settingsButton" />
-                              <String fx:value="buttonBackground" />
-                           </styleClass>
-                        </JFXButton>
-                     </children>
-                  </HBox>
-               </children>
-            </GridPane>
-         </children>
-      </HBox>
-   </top>
 </BorderPane>

@@ -83,7 +83,7 @@ public class CompanyCreditClosingTask extends Tasks {
 
                 PreparedStatement updateCreditCompany=connection.prepareStatement("UPDATE CreditCompany SET DUE=DUE+TOTAL,TOTAL=0.0,TRANSACTION_ID=?,PREV_TRANSACTION_ID=?");
                 updateCreditCompany.setInt(1,1);
-                updateCreditCompany.setInt(1,1);
+                updateCreditCompany.setInt(2,1);
 
                 updateCreditCompany.execute();
 
