@@ -23,8 +23,7 @@ import sample.model.SystemStatus;
 import sample.model.databases.DatabaseHandler;
 import sample.model.DebtListModel;
 import sample.tasks.TaskManager;
-import sample.tasks.database_tasks.ClearExpenditureTask;
-import sample.tasks.database_tasks.RemoveCompanyTask;
+import sample.tasks.database_tasks.*;
 
 import java.io.IOException;
 
@@ -281,7 +280,25 @@ public class SettingsController {
     }
 
     @FXML
-    public void petrolPumpExpenditure(MouseEvent mouseEvent) throws IOException {
+    void clearDailyAnalytics(MouseEvent event) {
+        ClearDailyAnalyticsTask task=new ClearDailyAnalyticsTask();
+        TaskManager.executeTask(task);
+    }
+
+    @FXML
+    void clearDieselRefill(MouseEvent event) {
+        ClearDieselRefillTask task=new ClearDieselRefillTask();
+        TaskManager.executeTask(task);
+    }
+
+    @FXML
+    void clearPetrolRefill(MouseEvent event) {
+        ClearPetrolRefillTask task=new ClearPetrolRefillTask();
+        TaskManager.executeTask(task);
+    }
+
+    @FXML
+    public void petrolPumpExpenditure(MouseEvent e) throws IOException {
         /**
          * Petrol Pump expenditure code goes here
          */

@@ -28,9 +28,10 @@ public class CompanyCreditClosingTask extends Tasks {
 
                 System.out.println("Model is Expired");
 
-                Statement delete=connection.createStatement();
+                PreparedStatement deleteCredit=connection.prepareStatement("DELETE FROM "+tableName+" WHERE DATE<?");
+                deleteCredit.setDate(1,model.getExpireDate());
 
-                delete.execute("DELETE FROM "+tableName+" WHERE DATE<='"+model.getExpireDate().toString()+"'");
+                deleteCredit.execute();
 
                 Statement getResults=connection.createStatement(ResultSet.TYPE_FORWARD_ONLY,ResultSet.CONCUR_UPDATABLE);
                 ResultSet totalResult=getResults.executeQuery("SELECT TRANSACTION_ID,PRICE FROM "+tableName);
@@ -60,23 +61,31 @@ public class CompanyCreditClosingTask extends Tasks {
 
                 lastTransaction++;
 
-                delete=connection.createStatement();
+                deleteCredit=connection.prepareStatement("UPDATE CreditCompany SET DUE=DUE+TOTAL-?,TOTAL=?,TRANSACTION_ID=?,PREV_TRANSACTION_ID=? WHERE ID=?");
+                deleteCredit.setFloat(1,total);
+                deleteCredit.setFloat(2,total);
+                deleteCredit.setInt(3,lastTransaction);
+                deleteCredit.setInt(4,1);
+                deleteCredit.setInt(5,model.getId());
 
-                model.setDue(model.getDue()+model.getTotal());
+                deleteCredit.execute();
+
+                model.setDue(model.getDue()+(model.getTotal()-total));
                 model.setTotal(total);
                 model.setTransactionID(lastTransaction);
-
-                delete.execute("UPDATE CreditCompany SET DUE=DUE+TOTAL-"+total+",TOTAL="+total+",TRANSACTION_ID="+lastTransaction+",PREV_TRANSACTION_ID="+1);
-
 
             } else {
 
                 System.out.println("Model is not Expired");
 
                 Statement delete=connection.createStatement();
-                delete.addBatch("DELETE FROM "+tableName);
-                delete.addBatch("UPDATE CreditCompany SET DUE=DUE+TOTAL,TOTAL=0.0,TRANSACTION_ID="+1+",PREV_TRANSACTION_ID="+1);
-                delete.executeBatch();
+                delete.execute("DELETE FROM "+tableName);
+
+                PreparedStatement updateCreditCompany=connection.prepareStatement("UPDATE CreditCompany SET DUE=DUE+TOTAL,TOTAL=0.0,TRANSACTION_ID=?,PREV_TRANSACTION_ID=?");
+                updateCreditCompany.setInt(1,1);
+                updateCreditCompany.setInt(1,1);
+
+                updateCreditCompany.execute();
 
                 model.setDue(model.getDue()+model.getTotal());
                 model.setTotal(0f);

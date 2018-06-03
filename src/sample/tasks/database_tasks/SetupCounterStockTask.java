@@ -21,7 +21,10 @@ public class SetupCounterStockTask extends Tasks {
     @Override
     public void execute() {
         try {
-            PreparedStatement insertStock=connection.prepareStatement("UPDATE SystemStatus SET VALUE='"+counterStock+"', DATE='"+SystemStatus.getCurrentDate().toString()+"' WHERE ID=13");
+            PreparedStatement insertStock=connection.prepareStatement("UPDATE SystemStatus SET VALUE=?, DATE=? WHERE ID=?");
+            insertStock.setString(1,counterStock);
+            insertStock.setDate(2,SystemStatus.getCurrentDate());
+            insertStock.setInt(3,13);
             insertStock.execute();
             connection.commit();
         } catch (SQLException e) {

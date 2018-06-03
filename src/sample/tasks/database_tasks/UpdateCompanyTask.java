@@ -20,7 +20,11 @@ public class UpdateCompanyTask extends Tasks {
         try {
 
 
-            PreparedStatement update=connection.prepareStatement("UPDATE CreditCompany SET COMPANY_NAME='"+model.getCompanyName()+"',DAY='"+model.getDays()+"' WHERE ID="+model.getId());
+            PreparedStatement update=connection.prepareStatement("UPDATE CreditCompany SET COMPANY_NAME=?,DAY=? WHERE ID=?");
+            update.setString(1,model.getCompanyName());
+            update.setString(2,model.getDays());
+            update.setInt(3,model.getId());
+
             update.execute();
 
             connection.commit();

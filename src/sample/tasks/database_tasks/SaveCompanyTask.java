@@ -51,11 +51,21 @@ public class SaveCompanyTask extends Tasks {
             }
 
             Statement saveCompany=connection.createStatement();
+            saveCompany.execute("CREATE TABLE "+DatabaseHandler.generateTableName(companyName,j)+" (TRANSACTION_ID INT NOT NULL,TYPE VARCHAR(10) NOT NULL,VEHICLE_NO VARCHAR(10) NOT NULL,RATE FLOAT NOT NULL,VOLUME FLOAT NOT NULL,PRICE FLOAT NOT NULL,DATE DATE NOT NULL)");
 
-            saveCompany.addBatch("INSERT INTO CreditCompany VALUES("+j+",'"+companyName+"',1,'"+SystemStatus.getCurrentDate().toString()+"',0,'"+creditCycle+"',0,0,'"+SystemStatus.getCurrentDate().toString()+"')");
-            saveCompany.addBatch("CREATE TABLE "+DatabaseHandler.generateTableName(companyName,j)+" (TRANSACTION_ID INT NOT NULL,TYPE VARCHAR(10) NOT NULL,VEHICLE_NO VARCHAR(10) NOT NULL,RATE FLOAT NOT NULL,VOLUME FLOAT NOT NULL,PRICE FLOAT NOT NULL,DATE DATE NOT NULL)");
+            PreparedStatement insertCompany=connection.prepareStatement("INSERT INTO CreditCompany VALUES(?,?,?,?,?,?,?,?,?)");
+            insertCompany.setInt(1,j);
+            insertCompany.setString(2,companyName);
+            insertCompany.setInt(3,1);
+            insertCompany.setDate(4,SystemStatus.getCurrentDate());
+            insertCompany.setInt(5,0);
+            insertCompany.setString(6,creditCycle);
+            insertCompany.setFloat(7,0);
+            insertCompany.setFloat(8,0);
+            insertCompany.setDate(9,SystemStatus.getCurrentDate());
 
-            saveCompany.executeBatch();
+            insertCompany.execute();
+
             connection.commit();
 
             System.out.println("Company Saved SuccessFully.");

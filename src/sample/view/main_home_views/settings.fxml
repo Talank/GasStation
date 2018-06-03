@@ -14,7 +14,7 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controller.main_home_controller.SettingsController">
    <center>
-      <ScrollPane hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <ScrollPane hbarPolicy="NEVER" vvalue="1.0" BorderPane.alignment="CENTER">
         <content>
             <VBox spacing="10.0">
                <VBox prefHeight="400.0">
@@ -496,6 +496,57 @@
                            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                         </padding>
                      </HBox>
+                  </children>
+                  <padding>
+                     <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                  </padding>
+               </VBox>
+               <VBox alignment="CENTER" layoutX="10.0" layoutY="1416.0" style="-fx-background-color: #eeeeee;">
+                  <children>
+                     <Label text="Clear Daily Analytics">
+                        <font>
+                           <Font name="System Bold" size="30.0" />
+                        </font>
+                     </Label>
+                     <JFXButton buttonType="RAISED" onMouseClicked="#clearDailyAnalytics" style="-fx-background-color: #00C851;" text="CLEAR">
+                        <font>
+                           <Font size="25.0" />
+                        </font>
+                     </JFXButton>
+                  </children>
+                  <padding>
+                     <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                  </padding>
+               </VBox>
+               <VBox alignment="CENTER" layoutX="10.0" layoutY="1814.0" style="-fx-background-color: #eeeeee;">
+                  <children>
+                     <Label text="Clear Petrol Refill">
+                        <font>
+                           <Font name="System Bold" size="30.0" />
+                        </font>
+                     </Label>
+                     <JFXButton buttonType="RAISED" onMouseClicked="#clearPetrolRefill" style="-fx-background-color: #00C851;" text="CLEAR">
+                        <font>
+                           <Font size="25.0" />
+                        </font>
+                     </JFXButton>
+                  </children>
+                  <padding>
+                     <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                  </padding>
+               </VBox>
+               <VBox alignment="CENTER" layoutX="10.0" layoutY="1963.0" style="-fx-background-color: #eeeeee;">
+                  <children>
+                     <Label text="Clear Diesel Refill">
+                        <font>
+                           <Font name="System Bold" size="30.0" />
+                        </font>
+                     </Label>
+                     <JFXButton buttonType="RAISED" onMouseClicked="#clearDieselRefill" style="-fx-background-color: #00C851;" text="CLEAR">
+                        <font>
+                           <Font size="25.0" />
+                        </font>
+                     </JFXButton>
                   </children>
                   <padding>
                      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />

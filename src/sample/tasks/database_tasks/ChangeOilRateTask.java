@@ -27,9 +27,19 @@ public class ChangeOilRateTask extends Tasks {
 
 
             if(SystemStatus.getdRate()!=model.getrDiesel()&&SystemStatus.getpRate()!=model.getrPetrol()) {
-                Statement setRate=connection.createStatement();
-                setRate.addBatch("UPDATE SystemStatus SET VALUE='"+String.valueOf(model.getrDiesel())+"',DATE='"+SystemStatus.getCurrentDate().toString()+"' WHERE ID=9");
-                setRate.addBatch("UPDATE SystemStatus SET VALUE='"+String.valueOf(model.getrPetrol())+"',DATE='"+SystemStatus.getCurrentDate().toString()+"' WHERE ID=10");
+
+                PreparedStatement setRate=connection.prepareStatement("UPDATE SystemStatus SET VALUE=?,DATE=? WHERE ID=?");
+
+                setRate.setString(1,String.valueOf(model.getrDiesel()));
+                setRate.setDate(2,SystemStatus.getCurrentDate());
+                setRate.setInt(3,9);
+                setRate.addBatch();
+
+                setRate.setString(1,String.valueOf(model.getrPetrol()));
+                setRate.setDate(2,SystemStatus.getCurrentDate());
+                setRate.setInt(3,10);
+                setRate.addBatch();
+
                 setRate.executeBatch();
 
                 SystemStatus.setpRate(model.getrPetrol());
@@ -37,13 +47,21 @@ public class ChangeOilRateTask extends Tasks {
             } else {
 
                 if(SystemStatus.getdRate()!=model.getrDiesel()) {
-                    PreparedStatement updateRate=connection.prepareStatement("UPDATE SystemStatus SET VALUE='"+String.valueOf(model.getrDiesel())+"',DATE='"+SystemStatus.getCurrentDate().toString()+"' WHERE ID=9");
+                    PreparedStatement updateRate=connection.prepareStatement("UPDATE SystemStatus SET VALUE=?,DATE=? WHERE ID=?");
+                    updateRate.setString(1,String.valueOf(model.getrDiesel()));
+                    updateRate.setDate(2,SystemStatus.getCurrentDate());
+                    updateRate.setInt(3,9);
+
                     updateRate.execute();
                     SystemStatus.setdRate(model.getrDiesel());
                 }
 
                 if(SystemStatus.getpRate()!=model.getrPetrol()) {
-                    PreparedStatement updateRate=connection.prepareStatement("UPDATE SystemStatus SET VALUE='"+String.valueOf(model.getrPetrol())+"',DATE='"+SystemStatus.getCurrentDate().toString()+"' WHERE ID=10");
+                    PreparedStatement updateRate=connection.prepareStatement("UPDATE SystemStatus SET VALUE=?,DATE=? WHERE ID=?");
+                    updateRate.setString(1,String.valueOf(model.getrPetrol()));
+                    updateRate.setDate(2,SystemStatus.getCurrentDate());
+                    updateRate.setInt(3,10);
+
                     updateRate.execute();
                     SystemStatus.setdRate(model.getrDiesel());
                 }

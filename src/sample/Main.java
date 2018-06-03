@@ -49,6 +49,7 @@ public class Main extends Application {
             initializeSystem.execute();
             startup=true;
             loader=new FXMLLoader(getClass().getResource("view/main_home_views/mainHome.fxml"));
+//            loader=new FXMLLoader(getClass().getResource("view/appHome.fxml"));
         } else {
             startup=false;
             loader=new FXMLLoader(getClass().getResource("view/dialogs/errorDialog.fxml"));

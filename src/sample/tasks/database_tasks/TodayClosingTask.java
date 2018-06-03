@@ -8,6 +8,7 @@ import sample.tasks.TaskManager;
 import sample.tasks.Tasks;
 
 import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
@@ -27,25 +28,55 @@ public class TodayClosingTask extends Tasks {
 
         try {
 
-            Statement closing=connection.createStatement();
-            closing.addBatch("UPDATE SystemStatus SET VALUE='"+String.valueOf(SystemStatus.getfDiesel())+"',DATE='"+SystemStatus.getCurrentDate().toString()+"' WHERE ID=11");
-            closing.addBatch("UPDATE SystemStatus SET VALUE='"+String.valueOf(SystemStatus.getfPetrol())+"',DATE='"+SystemStatus.getCurrentDate().toString()+"' WHERE ID=12");
-            closing.addBatch("UPDATE SystemStatus SET VALUE='0' WHERE ID=1");
-            closing.addBatch("UPDATE SystemStatus SET VALUE='0' WHERE ID=2");
-            closing.addBatch("UPDATE SystemStatus SET VALUE='0' WHERE ID=3");
-            closing.addBatch("UPDATE SystemStatus SET VALUE='0' WHERE ID=4");
-            closing.addBatch("UPDATE SystemStatus SET VALUE='0' WHERE ID=5");
-            closing.addBatch("UPDATE SystemStatus SET VALUE='0' WHERE ID=6");
-            closing.addBatch("UPDATE SystemStatus SET VALUE='"+String.valueOf(SystemStatus.getfDiesel())+"' WHERE ID=11");
-            closing.addBatch("UPDATE SystemStatus SET VALUE='"+String.valueOf(SystemStatus.getfPetrol())+"' WHERE ID=12");
+            PreparedStatement closing=connection.prepareStatement("UPDATE SystemStatus SET VALUE=?,DATE=? WHERE ID=?");
 
-            closing.addBatch("INSERT INTO DailyAnalytics VALUES ("+Float.parseFloat(model.getIDieselVol())
-                    +","+Float.parseFloat(model.getIPetrolVol())+","+Float.parseFloat(model.getCDieselVol())+","
-                    +Float.parseFloat(model.getCPetrolVol())+","+
-                    Float.parseFloat(model.getCExtra())+","+
-                    SystemStatus.getdRate()+","+SystemStatus.getpRate()+",'"+SystemStatus.getCurrentDate().toString()+"')");
+            closing.setString(1,String.valueOf(SystemStatus.getfDiesel()));
+            closing.setDate(2,SystemStatus.getCurrentDate());
+            closing.setInt(3,11);
+            closing.addBatch();
+
+            closing.setString(1,String.valueOf(SystemStatus.getfPetrol()));
+            closing.setInt(3,12);
+            closing.addBatch();
+
+            closing.setString(1,String.valueOf(0));
+            closing.setInt(3,1);
+            closing.addBatch();
+
+            closing.setString(1,String.valueOf(0));
+            closing.setInt(3,2);
+            closing.addBatch();
+
+            closing.setString(1,String.valueOf(0));
+            closing.setInt(3,3);
+            closing.addBatch();
+
+            closing.setString(1,String.valueOf(0));
+            closing.setInt(3,4);
+            closing.addBatch();
+
+            closing.setString(1,String.valueOf(0));
+            closing.setInt(3,5);
+            closing.addBatch();
+
+            closing.setString(1,String.valueOf(0));
+            closing.setInt(3,6);
+            closing.addBatch();
 
             closing.executeBatch();
+
+            closing=connection.prepareStatement("INSERT INTO DailyAnalytics VALUES (?,?,?,?,?,?,?,?)");
+            closing.setFloat(1,Float.parseFloat(model.getIDieselVol()));
+            closing.setFloat(2,Float.parseFloat(model.getIPetrolVol()));
+            closing.setFloat(3,Float.parseFloat(model.getCDieselVol()));
+            closing.setFloat(4,Float.parseFloat(model.getCPetrolVol()));
+            closing.setFloat(5,Float.parseFloat(model.getCExtra()));
+            closing.setFloat(6,SystemStatus.getdRate());
+            closing.setFloat(7,SystemStatus.getpRate());
+            closing.setDate(8,SystemStatus.getCurrentDate());
+
+            closing.execute();
+
             connection.commit();
 
             SystemStatus.setfDiesel(0f);

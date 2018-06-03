@@ -25,17 +25,40 @@ public class RefillTask extends Tasks {
     public void execute() {
         try {
 
-
-            Statement insertRefill=connection.createStatement();
-
             if(mode==0) {
-                insertRefill.addBatch("INSERT INTO DieselRefill VALUES ("+model.getExpected()+","+model.getActual()+","+model.getTankerNumber()+",'"+SystemStatus.getCurrentDate().toString()+"')");
-                insertRefill.addBatch("UPDATE SystemStatus SET VALUE='"+String.valueOf(SystemStatus.getDieselStock()+model.getActual())+"', DATE='"+SystemStatus.getCurrentDate().toString()+"' WHERE ID=14");
+
+                PreparedStatement insertRefill=connection.prepareStatement("INSERT INTO DieselRefill VALUES (?,?,?,?)");
+                insertRefill.setFloat(1,model.getExpected());
+                insertRefill.setFloat(2,model.getActual());
+                insertRefill.setInt(3,Integer.parseInt(model.getTankerNumber()));
+                insertRefill.setDate(4,SystemStatus.getCurrentDate());
+
+                insertRefill.execute();
+
+                insertRefill=connection.prepareStatement("UPDATE SystemStatus SET VALUE=?,DATE=? WHERE ID=?");
+                insertRefill.setString(1,String.valueOf(SystemStatus.getDieselStock()+model.getActual()));
+                insertRefill.setDate(2,SystemStatus.getCurrentDate());
+                insertRefill.setInt(3,14);
+
+                insertRefill.execute();
+
                 SystemStatus.setDieselStock(SystemStatus.getDieselStock()+model.getActual());
             } else {
 
-                insertRefill.addBatch("INSERT INTO PetrolRefill VALUES ("+model.getExpected()+","+model.getActual()+","+model.getTankerNumber()+",'"+SystemStatus.getCurrentDate().toString()+"')");
-                insertRefill.addBatch("UPDATE SystemStatus SET VALUE='"+String.valueOf(SystemStatus.getPetrolStock()+model.getActual())+"', DATE='"+SystemStatus.getCurrentDate()+"' WHERE ID=15");
+                PreparedStatement insertRefill=connection.prepareStatement("INSERT INTO PetrolRefill VALUES (?,?,?,?)");
+                insertRefill.setFloat(1,model.getExpected());
+                insertRefill.setFloat(2,model.getActual());
+                insertRefill.setInt(3,Integer.parseInt(model.getTankerNumber()));
+                insertRefill.setDate(4,SystemStatus.getCurrentDate());
+
+                insertRefill.execute();
+
+                insertRefill=connection.prepareStatement("UPDATE SystemStatus SET VALUE=?,DATE=? WHERE ID=?");
+                insertRefill.setString(1,String.valueOf(SystemStatus.getPetrolStock()+model.getActual()));
+                insertRefill.setDate(2,SystemStatus.getCurrentDate());
+                insertRefill.setInt(3,15);
+
+                insertRefill.execute();
                 SystemStatus.setPetrolStock(SystemStatus.getPetrolStock()+model.getActual());
             }
 
@@ -53,19 +76,28 @@ public class RefillTask extends Tasks {
              * increment count by 1
              * **/
 
+            Statement insertRefill=connection.createStatement();
+
             if (insertRefill.executeQuery("SELECT TANKER_NO FROM TANKERS WHERE TANKER_NO= ("+model.getTankerNumber()+")").next()) {
 
-                    insertRefill.addBatch("UPDATE TANKERS SET TOTAL_LOSS= TOTAL_LOSS+(" + model.getLoss() + "), COUNTS= COUNTS+1 WHERE TANKER_NO= (" + model.getTankerNumber() + ")");
-
+                PreparedStatement updateTanker=connection.prepareStatement("UPDATE TANKERS SET TOTAL_LOSS= TOTAL_LOSS+?,COUNTS=COUNTS+1 WHERE TANKER_NO=?");
+                updateTanker.setFloat(1,model.getLoss());
+                updateTanker.setInt(2,Integer.parseInt(model.getTankerNumber()));
+                updateTanker.execute();
 
             } else {
-                //System.out.println("got to line 66, else part");
                 String tankerType=(mode==0)?"Diesel":"Petrol";
-                insertRefill.addBatch("INSERT INTO TANKERS VALUES ("+model.getTankerNumber()+","+model.getLoss()+",1,'"+tankerType+"')");
+
+                PreparedStatement insertTanker=connection.prepareStatement("INSERT INTO TANKERS VALUES (?,?,?,?)");
+                insertTanker.setInt(1,Integer.parseInt(model.getTankerNumber()));
+                insertTanker.setFloat(2,model.getLoss());
+                insertTanker.setInt(3,1);
+                insertTanker.setString(4,tankerType);
+
+                insertTanker.execute();
+
             }
 
-
-            insertRefill.executeBatch();
             connection.commit();
 
         } catch(SQLException e) {

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controller.AppHomeController">
+   <top>
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="50.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label text="Label" />
+            <Label text="Label" />
+            <Label text="Label" />
+            <Label text="Label" />
+         </children>
+      </HBox>
+   </top>
+   <center>
+      <StackPane fx:id="mainHome" BorderPane.alignment="CENTER" />
+   </center>
+</BorderPane>

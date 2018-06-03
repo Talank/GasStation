@@ -23,10 +23,19 @@ public class SetupPrintersTask extends Tasks {
 
             if(!SystemStatus.getBillPrinter().equals(billPrinterName)&&!SystemStatus.getAnalyticsPrinter().equals(analyticsPrinterName)) {
 
-                Statement updateStock=connection.createStatement();
-                updateStock.addBatch("UPDATE SystemStatus SET VALUE='"+billPrinterName+"', DATE='"+SystemStatus.getCurrentDate().toString()+"' WHERE ID=16");
-                updateStock.addBatch("UPDATE SystemStatus SET VALUE='"+analyticsPrinterName+"', DATE='"+SystemStatus.getCurrentDate().toString()+"' WHERE ID=17");
-                updateStock.executeBatch();
+                PreparedStatement updatePrinters=connection.prepareStatement("UPDATE SystemStatus SET VALUE=?,DATE=? WHERE ID=?");
+                updatePrinters.setString(1,billPrinterName);
+                updatePrinters.setDate(2,SystemStatus.getCurrentDate());
+                updatePrinters.setInt(3,16);
+
+                updatePrinters.addBatch();
+
+                updatePrinters.setString(1,analyticsPrinterName);
+                updatePrinters.setInt(3,17);
+
+                updatePrinters.addBatch();
+
+                updatePrinters.executeBatch();
 
                 SystemStatus.setBillPrinter(billPrinterName);
                 SystemStatus.setAnalyticsPrinter(analyticsPrinterName);
@@ -34,13 +43,21 @@ public class SetupPrintersTask extends Tasks {
             } else {
 
                 if(!SystemStatus.getBillPrinter().equals(billPrinterName)) {
-                    PreparedStatement setupBill=connection.prepareStatement("UPDATE SystemStatus SET VALUE='"+billPrinterName+"', DATE='"+SystemStatus.getCurrentDate().toString()+"' WHERE ID=16");
+                    PreparedStatement setupBill=connection.prepareStatement("UPDATE SystemStatus SET VALUE=?, DATE=? WHERE ID=?");
+                    setupBill.setString(1,billPrinterName);
+                    setupBill.setDate(2,SystemStatus.getCurrentDate());
+                    setupBill.setInt(3,16);
+
                     setupBill.execute();
                     SystemStatus.setBillPrinter(billPrinterName);
                 }
 
                 if(!SystemStatus.getAnalyticsPrinter().equals(analyticsPrinterName)) {
-                    PreparedStatement setupBill=connection.prepareStatement("UPDATE SystemStatus SET VALUE='"+analyticsPrinterName+"', DATE='"+SystemStatus.getCurrentDate().toString()+"' WHERE ID=16");
+                    PreparedStatement setupBill=connection.prepareStatement("UPDATE SystemStatus SET VALUE=?, DATE=? WHERE ID=?");
+                    setupBill.setString(1,analyticsPrinterName);
+                    setupBill.setDate(2,SystemStatus.getCurrentDate());
+                    setupBill.setInt(3,17);
+
                     setupBill.execute();
                     SystemStatus.setAnalyticsPrinter(analyticsPrinterName);
                 }

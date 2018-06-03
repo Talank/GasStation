@@ -6,6 +6,7 @@ import sample.nepali_date.NepaliDateGenerator;
 import sample.tasks.Tasks;
 
 import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -23,9 +24,17 @@ public class ChangeUserParameterTask extends Tasks {
     public void execute() {
         try {
 
-            Statement updateUser=connection.createStatement();
-            updateUser.addBatch("UPDATE SystemStatus SET VALUE='"+userName+"',DATE='"+SystemStatus.getCurrentDate().toString()+"' WHERE ID=7");
-            updateUser.addBatch("UPDATE SystemStatus SET VALUE='"+password+"',DATE='"+SystemStatus.getCurrentDate().toString()+"' WHERE ID=8");
+            PreparedStatement updateUser=connection.prepareStatement("UPDATE SystemStatus SET VALUE=?,DATE=? WHERE ID=?");
+
+            updateUser.setString(1,userName);
+            updateUser.setDate(2,SystemStatus.getCurrentDate());
+            updateUser.setInt(3,7);
+            updateUser.addBatch();
+
+            updateUser.setString(1,password);
+            updateUser.setDate(2,SystemStatus.getCurrentDate());
+            updateUser.setInt(3,8);
+            updateUser.addBatch();
 
             updateUser.executeBatch();
             connection.commit();

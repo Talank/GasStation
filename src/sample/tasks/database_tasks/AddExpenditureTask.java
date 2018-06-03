@@ -6,6 +6,7 @@ import sample.nepali_date.NepaliDateGenerator;
 import sample.tasks.Tasks;
 
 import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -24,14 +25,20 @@ public class AddExpenditureTask extends Tasks {
     @Override
     public void execute() {
         try {
-            Statement addExpenditure=connection.createStatement();
 
-            /**
-             * Query to
-             * add 3 fields+ SystemStatus.getCurrentDate()  in a table Expenditure
-             */
+            PreparedStatement addExpenditure=connection.prepareStatement("INSERT INTO Expenditure VALUES (?,?,?,?)");
 
-            addExpenditure.execute("INSERT INTO Expenditure VALUES ('"+memberName+"',"+expenditureAmount+",'"+expenditureRemarks+"','"+SystemStatus.getCurrentDate()+"')");
+            addExpenditure.setString(1,memberName);
+            addExpenditure.setInt(2,Integer.parseInt(expenditureAmount));
+            addExpenditure.setString(3,expenditureRemarks);
+            addExpenditure.setDate(4,SystemStatus.getCurrentDate());
+
+            addExpenditure.execute();
+
+
+            /*Statement addExpenditure=connection.createStatement();
+
+            addExpenditure.execute("INSERT INTO Expenditure VALUES ('"+memberName+"',"+expenditureAmount+",'"+expenditureRemarks+"','"+SystemStatus.getCurrentDate()+"')");*/
             connection.commit();
 
         } catch (SQLException e) {

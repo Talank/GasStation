@@ -46,22 +46,29 @@ public class StoreCreditTransactionTask extends Tasks {
             float total=0;
 
             String tableName=DatabaseHandler.generateTableName(Transaction.getName(),ids[0]);
-            String transactionDate;
+            Date transactionDate;
             if(isAdmin) {
-                transactionDate=date.toString();
+                transactionDate=date;
             } else {
-                transactionDate=SystemStatus.getCurrentDate().toString();
+                transactionDate=SystemStatus.getCurrentDate();
             }
 
-            Statement storeCredit=connection.createStatement();
+            PreparedStatement storeCredit=connection.prepareStatement("INSERT INTO "+tableName+" VALUES(?,?,?,?,?,?,?)");
 
             System.out.println("ID:"+ids[1]);
 
             for(Transaction transaction:instantTransaction) {
 
+                storeCredit.setInt(1,ids[1]);
+                storeCredit.setString(2,transaction.getType());
+                storeCredit.setFloat(4,transaction.getRate());
+                storeCredit.setFloat(6,transaction.getPrice());
+                storeCredit.setDate(7,transactionDate);
+
                 if(transaction.getMode()==2) {
 
-                    storeCredit.addBatch("INSERT INTO "+tableName+" VALUES("+ids[1]+",'"+transaction.getType()+"','"+transaction.getType()+"',"+transaction.getRate()+","+transaction.getQuantity()+","+transaction.getPrice()+",'"+transactionDate+"')");
+                    storeCredit.setString(3,transaction.getType());
+                    storeCredit.setFloat(5,transaction.getQuantity());
 
                     ePrice+=transaction.getPrice();
                 } else {
@@ -82,10 +89,11 @@ public class StoreCreditTransactionTask extends Tasks {
 
                     total+=transaction.getPrice();
 
-
-                    storeCredit.addBatch("INSERT INTO "+tableName+" VALUES("+ids[1]+",'"+transaction.getType()+"','"+transaction.getVehicleNo()+"',"+transaction.getRate()+","+transaction.getVolume()+","+transaction.getPrice()+",'"+transactionDate+"')");
+                    storeCredit.setString(3,transaction.getVehicleNo());
+                    storeCredit.setFloat(5,transaction.getVolume());
 
                 }
+                storeCredit.addBatch();
 
                 ids[1]++;
 
@@ -95,7 +103,14 @@ public class StoreCreditTransactionTask extends Tasks {
 
             ids[1]++;
 
-            storeCredit.addBatch("UPDATE CreditCompany SET TRANSACTION_ID="+ids[1]+",TOTAL=TOTAL+"+total+" WHERE ID="+ids[0]);
+            storeCredit.executeBatch();
+
+            storeCredit=connection.prepareStatement("UPDATE CreditCompany SET TRANSACTION_ID=?,TOTAL=TOTAL+? WHERE ID=?");
+            storeCredit.setInt(1,ids[1]);
+            storeCredit.setFloat(2,total);
+            storeCredit.setInt(3,ids[0]);
+
+            storeCredit.execute();
 
 
             model.setTotal(model.getTotal()+total);
@@ -124,12 +139,26 @@ public class StoreCreditTransactionTask extends Tasks {
 
             resultSet.close();
 
+            storeCredit=connection.prepareStatement("UPDATE SystemStatus SET VALUE=? WHERE ID=?");
+            storeCredit.setString(1,String.valueOf(dVolume));
+            storeCredit.setInt(2,4);
+            storeCredit.addBatch();
 
-            storeCredit.addBatch("UPDATE SystemStatus SET VALUE='"+String.valueOf(dVolume)+"' WHERE ID=4");
-            storeCredit.addBatch("UPDATE SystemStatus SET VALUE='"+String.valueOf(pVolume)+"' WHERE ID=5");
-            storeCredit.addBatch("UPDATE SystemStatus SET VALUE='"+String.valueOf(ePrice)+"' WHERE ID=6");
-            storeCredit.addBatch("UPDATE SystemStatus SET VALUE='"+String.valueOf(dieselStock)+"' WHERE ID=14");
-            storeCredit.addBatch("UPDATE SystemStatus SET VALUE='"+String.valueOf(petrolStock)+"' WHERE ID=15");
+            storeCredit.setString(1,String.valueOf(pVolume));
+            storeCredit.setInt(2,5);
+            storeCredit.addBatch();
+
+            storeCredit.setString(1,String.valueOf(ePrice));
+            storeCredit.setInt(2,6);
+            storeCredit.addBatch();
+
+            storeCredit.setString(1,String.valueOf(dieselStock));
+            storeCredit.setInt(2,14);
+            storeCredit.addBatch();
+
+            storeCredit.setString(1,String.valueOf(petrolStock));
+            storeCredit.setInt(2,15);
+            storeCredit.addBatch();
 
             storeCredit.executeBatch();
             connection.commit();
@@ -137,6 +166,7 @@ public class StoreCreditTransactionTask extends Tasks {
             SystemLogging.getLogger().fine("Credit Transaction Stored in Database");
 
         }  catch(SQLException e) {
+            e.printStackTrace();
             System.out.println(e.getMessage());
 
             retryStatus++;

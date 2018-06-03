@@ -7,6 +7,7 @@ import sample.model.transaction_model.Transaction;
 import sample.tasks.TaskManager;
 import sample.tasks.Tasks;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -68,17 +69,32 @@ public class StoreInstantTransactionTask extends Tasks {
             SystemStatus.setPetrolStock(petrolStock);
 
             resultSet.close();
-            connection.setAutoCommit(false);
-            Statement updateInstant=connection.createStatement();
-            updateInstant.addBatch("UPDATE SystemStatus SET VALUE='"+String.valueOf(dVolume)+"' WHERE ID=1");
-            updateInstant.addBatch("UPDATE SystemStatus SET VALUE='"+String.valueOf(pVolume)+"' WHERE ID=2");
-            updateInstant.addBatch("UPDATE SystemStatus SET VALUE='"+String.valueOf(ePrice)+"' WHERE ID=3");
-            updateInstant.addBatch("UPDATE SystemStatus SET VALUE='"+String.valueOf(dieselStock)+"' WHERE ID=14");
-            updateInstant.addBatch("UPDATE SystemStatus SET VALUE='"+String.valueOf(petrolStock)+"' WHERE ID=15");
+
+            PreparedStatement updateInstant=connection.prepareStatement("UPDATE SystemStatus SET VALUE=? WHERE ID=?");
+
+            updateInstant.setString(1,String.valueOf(dVolume));
+            updateInstant.setInt(2,1);
+            updateInstant.addBatch();
+
+            updateInstant.setString(1,String.valueOf(pVolume));
+            updateInstant.setInt(2,2);
+            updateInstant.addBatch();
+
+            updateInstant.setString(1,String.valueOf(ePrice));
+            updateInstant.setInt(2,3);
+            updateInstant.addBatch();
+
+            updateInstant.setString(1,String.valueOf(dieselStock));
+            updateInstant.setInt(2,14);
+            updateInstant.addBatch();
+
+            updateInstant.setString(1,String.valueOf(petrolStock));
+            updateInstant.setInt(2,15);
+            updateInstant.addBatch();
 
             updateInstant.executeBatch();
             connection.commit();
-            connection.setAutoCommit(true);
+
             SystemLogging.getLogger().fine("Instant Transaction Stored SuccessFully.");
 
             System.out.println("Transaction Inserted Successfully.");

@@ -5,6 +5,7 @@ import sample.nepali_date.NepaliDateGenerator;
 import sample.tasks.Tasks;
 
 import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -20,8 +21,10 @@ public class ClearExpenditureTask extends Tasks {
 
             Date clearDate=converter.getEnglishDate(generator.getDateFormat().getnYear(),generator.getDateFormat().getnMonth(),1);
 
-            Statement clear=connection.createStatement();
-            clear.execute("DELETE FROM Expenditure WHERE DATE<='"+clearDate.toString()+"'");
+            PreparedStatement clearExpenditure=connection.prepareStatement("DELETE FROM Expenditure WHERE DATE<?");
+            clearExpenditure.setDate(1,clearDate);
+
+            clearExpenditure.execute();
             connection.commit();
 
 

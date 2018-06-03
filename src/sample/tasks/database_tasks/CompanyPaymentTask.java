@@ -4,6 +4,7 @@ import sample.model.DebtListModel;
 import sample.model.SystemStatus;
 import sample.tasks.Tasks;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -40,14 +41,21 @@ public class CompanyPaymentTask extends Tasks {
             resultSet.next();
             if(resultSet.getInt(1)==1) {
 
-                updatePayment.execute("UPDATE CreditCompany SET DUE=DUE-"+payment+",PREV_TRANSACTION_ID=0"+",DATE=PREV_EXPIRE_DATE WHERE ID="+model.getId());
+                PreparedStatement creditPayment=connection.prepareStatement("UPDATE CreditCompany SET DUE=DUE-?,PREV_TRANSACTION_ID=0"+",DATE=PREV_EXPIRE_DATE WHERE ID=?");
+                creditPayment.setFloat(1,payment);
+                creditPayment.setInt(2,model.getId());
+                creditPayment.execute();
 
                 System.out.println("Company Payment Made SuccessFully");
             } else {
-                updatePayment.execute("UPDATE CreditCompany SET DUE=DUE-"+payment+" WHERE ID="+model.getId());
+                PreparedStatement creditPayment=connection.prepareStatement("UPDATE CreditCompany SET DUE=DUE-? WHERE ID=?");
+                creditPayment.setFloat(1,payment);
+                creditPayment.setInt(2,model.getId());
+
                 System.out.println("The Debt of the company has been deducted.");
             }
             model.setDue(model.getDue()-payment);
+            model.setDate(model.getPrevExpireDate());
             connection.commit();
         } catch(SQLException e) {
             e.printStackTrace();
