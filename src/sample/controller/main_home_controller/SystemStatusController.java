@@ -12,6 +12,7 @@ import sample.library.toolbar.BackButtonInterface;
 import sample.library.toolbar.ToolBar;
 import sample.model.ExpenditureModel;
 import sample.model.SystemStatus;
+import sample.model.nepaliPriceFormat.PriceFormat;
 
 public class SystemStatusController implements BackButtonInterface {
 
@@ -62,12 +63,17 @@ public class SystemStatusController implements BackButtonInterface {
             expenditureList.setItems(FXCollections.observableList(task.getValue()));
 
             int sum=0;
+            String tsum;
 
             for (ExpenditureModel model:task.getValue()) {
                 sum+=Integer.parseInt(model.getAmount());
             }
+            PriceFormat priceFormat=new PriceFormat();
+            priceFormat.setFormat(sum+"");
 
-            total.setText("Total Expenditure:Rs "+sum+"/-");
+            tsum=priceFormat.getResult();
+
+            total.setText("Total Expenditure:Rs "+tsum+"/-");
 
             expenditureList.setVisible(true);
             progressLayout.setVisible(false);

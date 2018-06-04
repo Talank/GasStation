@@ -7,6 +7,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import sample.model.DebtListModel;
+import sample.model.nepaliPriceFormat.PriceFormat;
 
 import java.io.IOException;
 
@@ -14,6 +15,7 @@ public class CreditCompanyListCellController {
 
     @FXML
     private Label companyName,companyCycle,companyDue,companyTotal,companyLastPaid;
+    PriceFormat priceFormat=new PriceFormat();
 
     private VBox vBox;
 
@@ -32,8 +34,10 @@ public class CreditCompanyListCellController {
     public void setModel(DebtListModel model) {
         companyName.setText(model.getCompanyName());
         companyCycle.setText("Cycle:"+model.getDays()+" Days.");
-        companyDue.setText("Due:Rs"+model.getDue());
-        companyTotal.setText("Total:Rs "+model.getTotal());
+        priceFormat.setFormat(model.getDue()+"");
+        companyDue.setText("Due:Rs"+priceFormat.getResult());
+        priceFormat.setFormat(model.getTotal()+"");
+        companyTotal.setText("Total:Rs"+priceFormat.getResult());
         companyLastPaid.setText("Last Paid On:"+model.getDate());
 
         companyDue.setTextFill(Color.RED);
