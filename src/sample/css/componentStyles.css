@@ -1,0 +1,19 @@
+
+
+.inputTextField {
+    -fx-font-size:25px;
+    -fx-pref-column-count:12;
+}
+
+.generalButton {
+    -fx-font-size:25px;
+    -fx-text-fill:black;
+}
+
+.billingRoundButton {
+    -fx-background-radius:40px;
+    -fx-font-size:25px;
+    -fx-pref-width:80px;
+    -fx-pref-height:80px;
+    -fx-background-radius:40px;
+}

@@ -1,0 +1,30 @@
+
+.inputTextFieldColor{
+    -jfx-focus-color:#0878a1;
+    -jfx-unfocus-color:#33b5e5;
+
+}
+
+.generalButtonColor {
+    -fx-background-color:#33b5e5;
+}
+
+.adminButtonColor {
+    -fx-background-color:#ff4444;
+}
+
+.countButtonColor {
+    -fx-background-color:#33b5e5;
+}
+
+.addButtonColor {
+    -fx-background-color:#00C851;
+}
+
+.removeButtonColor {
+    -fx-background-color:#ffbb33;
+}
+
+.clearButtonColor {
+    -fx-background-color:#ff4444;
+}

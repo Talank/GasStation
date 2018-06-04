@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import java.lang.String?>
+<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -22,10 +24,18 @@
                <children>
                   <HBox alignment="CENTER">
                      <children>
-                        <JFXButton buttonType="RAISED" onMouseClicked="#showTodayAnalytics" style="-fx-background-color: #20e475;" text="TODAY ANALYTICS">
+                        <JFXButton buttonType="RAISED" onMouseClicked="#showTodayAnalytics" text="TODAY ANALYTICS">
                            <font>
                               <Font size="25.0" />
                            </font>
+                           <stylesheets>
+                              <URL value="@../../css/appColorPalette.css" />
+                              <URL value="@../../css/componentStyles.css" />
+                           </stylesheets>
+                           <styleClass>
+                              <String fx:value="generalButton" />
+                              <String fx:value="generalButtonColor" />
+                           </styleClass>
                         </JFXButton>
                      </children>
                      <padding>

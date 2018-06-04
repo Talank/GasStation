@@ -1,42 +1,26 @@
-
-
-
-
 .menuBackground {
     -fx-background-color:#33b5e5;
+}
+
+.gridMenuItems {
+    -fx-background-color:#0878a1;
+    -fx-background-radius:85px;
+    -fx-effect:dropshadow(gaussian,#000000,10,0.0,0,2);
+}
+
+.gridMenuItemsText {
+    -fx-text-fill:white;
+    -fx-font-size:40px;
+    -fx-font-weight:bold;
+
 }
 
 .buttonBackground {
     -fx-background-color:#33b5e5;
 }
 
-.instantButton{
-    -fx-background-image:url('../resources/instantBilling.png');
-    -fx-background-size:100% 100%;
-
+.gridBackground {
+    -fx-background-color:white;
 }
 
-.creditButton {
-    -fx-background-image:url('../resources/creditBilling.png');
-    -fx-background-size:100% 100%;
-}
 
-.debtButton {
-    -fx-background-image:url('../resources/creditAnalysis.png');
-    -fx-background-size:100% 100%;
-}
-
-.profitButton {
-    -fx-background-image:url('../resources/profitLoss.png');
-    -fx-background-size:100% 100%;
-}
-
-.dailyButton {
-    -fx-background-image:url('../resources/dailyAnalytics.png');
-    -fx-background-size:100% 100%;
-}
-
-.settingsButton {
-    -fx-background-image:url('../resources/settings.png');
-    -fx-background-size:100% 100%;
-}

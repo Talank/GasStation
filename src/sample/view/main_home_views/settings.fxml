@@ -2,6 +2,8 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXListView?>
+<?import java.lang.String?>
+<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
@@ -22,20 +24,44 @@
                         <JFXListView fx:id="debtList" prefHeight="400.0" />
                      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="800.0" spacing="50.0">
                         <children>
-                                <JFXButton buttonType="RAISED" onMouseClicked="#editCompany" style="-fx-background-color: #ffbb33;" text="EDIT">
+                                <JFXButton buttonType="RAISED" onMouseClicked="#editCompany" text="EDIT">
                                     <font>
                                         <Font size="25.0" />
                                     </font>
+                              <stylesheets>
+                                 <URL value="@../../css/appColorPalette.css" />
+                                 <URL value="@../../css/componentStyles.css" />
+                              </stylesheets>
+                              <styleClass>
+                                 <String fx:value="removeButtonColor" />
+                                 <String fx:value="generalButton" />
+                              </styleClass>
                                 </JFXButton>
-                                <JFXButton buttonType="RAISED" onMouseClicked="#addCompany" style="-fx-background-color: #33b5e5;" text="ADD">
+                                <JFXButton buttonType="RAISED" onMouseClicked="#addCompany" text="ADD">
                                     <font>
                                         <Font size="25.0" />
                                     </font>
+                              <stylesheets>
+                                 <URL value="@../../css/appColorPalette.css" />
+                                 <URL value="@../../css/componentStyles.css" />
+                              </stylesheets>
+                              <styleClass>
+                                 <String fx:value="addButtonColor" />
+                                 <String fx:value="generalButton" />
+                              </styleClass>
                                 </JFXButton>
-                                <JFXButton buttonType="RAISED" onMouseClicked="#deleteCompany" style="-fx-background-color: #ff4444;" text="DELETE">
+                                <JFXButton buttonType="RAISED" onMouseClicked="#deleteCompany" text="DELETE">
                                     <font>
                                         <Font size="25.0" />
                                     </font>
+                              <stylesheets>
+                                 <URL value="@../../css/appColorPalette.css" />
+                                 <URL value="@../../css/componentStyles.css" />
+                              </stylesheets>
+                              <styleClass>
+                                 <String fx:value="clearButtonColor" />
+                                 <String fx:value="generalButton" />
+                              </styleClass>
                                 </JFXButton>
                         </children>
                         <padding>
@@ -121,10 +147,18 @@
                            </Label>
                         </children>
                      </HBox>
-                     <JFXButton buttonType="RAISED" onMouseClicked="#setupOilStock" style="-fx-background-color: #00C851;" text="SETUP">
+                     <JFXButton buttonType="RAISED" onMouseClicked="#setupOilStock" text="SETUP">
                         <font>
                            <Font size="25.0" />
                         </font>
+                        <stylesheets>
+                           <URL value="@../../css/appColorPalette.css" />
+                           <URL value="@../../css/componentStyles.css" />
+                        </stylesheets>
+                        <styleClass>
+                           <String fx:value="generalButton" />
+                           <String fx:value="removeButtonColor" />
+                        </styleClass>
                      </JFXButton>
                   </children>
                   <padding>
@@ -173,10 +207,18 @@
                            </Label>
                         </children>
                      </HBox>
-                     <JFXButton buttonType="RAISED" onMouseClicked="#setupCounterStock" style="-fx-background-color: #00C851;" text="SETUP">
+                     <JFXButton buttonType="RAISED" onMouseClicked="#setupCounterStock" text="SETUP">
                         <font>
                            <Font size="25.0" />
                         </font>
+                        <stylesheets>
+                           <URL value="@../../css/appColorPalette.css" />
+                           <URL value="@../../css/componentStyles.css" />
+                        </stylesheets>
+                        <styleClass>
+                           <String fx:value="removeButtonColor" />
+                           <String fx:value="generalButton" />
+                        </styleClass>
                      </JFXButton>
                   </children>
                   <padding>
@@ -260,10 +302,18 @@
                            </Label>
                         </children>
                      </HBox>
-                     <JFXButton buttonType="RAISED" onMouseClicked="#setupMeterReadings" style="-fx-background-color: #00C851;" text="SETUP">
+                     <JFXButton buttonType="RAISED" onMouseClicked="#setupMeterReadings" text="SETUP">
                         <font>
                            <Font size="25.0" />
                         </font>
+                        <stylesheets>
+                           <URL value="@../../css/appColorPalette.css" />
+                           <URL value="@../../css/componentStyles.css" />
+                        </stylesheets>
+                        <styleClass>
+                           <String fx:value="removeButtonColor" />
+                           <String fx:value="generalButton" />
+                        </styleClass>
                      </JFXButton>
                   </children>
                   <padding>
@@ -331,10 +381,18 @@
                            </Label>
                         </children>
                      </HBox>
-                     <JFXButton buttonType="RAISED" onMouseClicked="#setupPrinters" style="-fx-background-color: #00C851;" text="SETUP">
+                     <JFXButton buttonType="RAISED" onMouseClicked="#setupPrinters" text="SETUP">
                         <font>
                            <Font size="25.0" />
                         </font>
+                        <stylesheets>
+                           <URL value="@../../css/appColorPalette.css" />
+                           <URL value="@../../css/componentStyles.css" />
+                        </stylesheets>
+                        <styleClass>
+                           <String fx:value="generalButton" />
+                           <String fx:value="removeButtonColor" />
+                        </styleClass>
                      </JFXButton>
                   </children>
                   <padding>
@@ -372,10 +430,18 @@
                            </Label>
                         </children>
                      </HBox>
-                     <JFXButton buttonType="RAISED" onMouseClicked="#changeUserNameAndPassword" style="-fx-background-color: #00C851;" text="CHANGE">
+                     <JFXButton buttonType="RAISED" onMouseClicked="#changeUserNameAndPassword" text="CHANGE">
                         <font>
                            <Font size="25.0" />
                         </font>
+                        <stylesheets>
+                           <URL value="@../../css/appColorPalette.css" />
+                           <URL value="@../../css/componentStyles.css" />
+                        </stylesheets>
+                        <styleClass>
+                           <String fx:value="generalButton" />
+                           <String fx:value="generalButtonColor" />
+                        </styleClass>
                      </JFXButton>
                   </children>
                   <padding>
@@ -459,10 +525,18 @@
                            </Label>
                         </children>
                      </HBox>
-                     <JFXButton buttonType="RAISED" onMouseClicked="#changeOilRates" style="-fx-background-color: #00C851;" text="CHANGE">
+                     <JFXButton buttonType="RAISED" onMouseClicked="#changeOilRates" text="CHANGE">
                         <font>
                            <Font size="25.0" />
                         </font>
+                        <stylesheets>
+                           <URL value="@../../css/appColorPalette.css" />
+                           <URL value="@../../css/componentStyles.css" />
+                        </stylesheets>
+                        <styleClass>
+                           <String fx:value="generalButton" />
+                           <String fx:value="generalButtonColor" />
+                        </styleClass>
                      </JFXButton>
                   </children>
                   <padding>
@@ -481,15 +555,31 @@
                      </Label>
                      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="50.0">
                         <children>
-                           <JFXButton buttonType="RAISED" onMouseClicked="#petrolPumpExpenditure" style="-fx-background-color: #00C851;" text="ADD">
+                           <JFXButton buttonType="RAISED" onMouseClicked="#petrolPumpExpenditure" text="ADD">
                               <font>
                                  <Font size="25.0" />
                               </font>
+                              <stylesheets>
+                                 <URL value="@../../css/appColorPalette.css" />
+                                 <URL value="@../../css/componentStyles.css" />
+                              </stylesheets>
+                              <styleClass>
+                                 <String fx:value="addButtonColor" />
+                                 <String fx:value="generalButton" />
+                              </styleClass>
                            </JFXButton>
-                           <JFXButton buttonType="RAISED" onMouseClicked="#clearExpenditure" style="-fx-background-color: #00C851;" text="CLEAR">
+                           <JFXButton buttonType="RAISED" onMouseClicked="#clearExpenditure" text="CLEAR">
                               <font>
                                  <Font size="25.0" />
                               </font>
+                              <stylesheets>
+                                 <URL value="@../../css/appColorPalette.css" />
+                                 <URL value="@../../css/componentStyles.css" />
+                              </stylesheets>
+                              <styleClass>
+                                 <String fx:value="clearButtonColor" />
+                                 <String fx:value="generalButton" />
+                              </styleClass>
                            </JFXButton>
                         </children>
                         <padding>
@@ -508,10 +598,18 @@
                            <Font name="System Bold" size="30.0" />
                         </font>
                      </Label>
-                     <JFXButton buttonType="RAISED" onMouseClicked="#clearDailyAnalytics" style="-fx-background-color: #00C851;" text="CLEAR">
+                     <JFXButton buttonType="RAISED" onMouseClicked="#clearDailyAnalytics" text="CLEAR">
                         <font>
                            <Font size="25.0" />
                         </font>
+                        <stylesheets>
+                           <URL value="@../../css/appColorPalette.css" />
+                           <URL value="@../../css/componentStyles.css" />
+                        </stylesheets>
+                        <styleClass>
+                           <String fx:value="clearButtonColor" />
+                           <String fx:value="generalButton" />
+                        </styleClass>
                      </JFXButton>
                   </children>
                   <padding>
@@ -525,10 +623,18 @@
                            <Font name="System Bold" size="30.0" />
                         </font>
                      </Label>
-                     <JFXButton buttonType="RAISED" onMouseClicked="#clearPetrolRefill" style="-fx-background-color: #00C851;" text="CLEAR">
+                     <JFXButton buttonType="RAISED" onMouseClicked="#clearPetrolRefill" text="CLEAR">
                         <font>
                            <Font size="25.0" />
                         </font>
+                        <stylesheets>
+                           <URL value="@../../css/componentStyles.css" />
+                           <URL value="@../../css/appColorPalette.css" />
+                        </stylesheets>
+                        <styleClass>
+                           <String fx:value="generalButton" />
+                           <String fx:value="clearButtonColor" />
+                        </styleClass>
                      </JFXButton>
                   </children>
                   <padding>
@@ -542,10 +648,18 @@
                            <Font name="System Bold" size="30.0" />
                         </font>
                      </Label>
-                     <JFXButton buttonType="RAISED" onMouseClicked="#clearDieselRefill" style="-fx-background-color: #00C851;" text="CLEAR">
+                     <JFXButton buttonType="RAISED" onMouseClicked="#clearDieselRefill" text="CLEAR">
                         <font>
                            <Font size="25.0" />
                         </font>
+                        <stylesheets>
+                           <URL value="@../../css/appColorPalette.css" />
+                           <URL value="@../../css/componentStyles.css" />
+                        </stylesheets>
+                        <styleClass>
+                           <String fx:value="clearButtonColor" />
+                           <String fx:value="generalButton" />
+                        </styleClass>
                      </JFXButton>
                   </children>
                   <padding>

@@ -85,6 +85,9 @@ public class MainHomeController {
         SystemStatus.setdRate(rateModel.getrDiesel());
         SystemStatus.setpRate(rateModel.getrPetrol());*/
 
+        rootGrid.getColumnConstraints().get(0).setPercentWidth(50);
+        rootGrid.getColumnConstraints().get(1).setPercentWidth(50);
+
         JFXRippler instantRippler=new JFXRippler(instantBillingLayout);
         rootGrid.add(instantRippler,0,0);
         GridPane.setMargin(instantRippler,new Insets(5,5,5,5));

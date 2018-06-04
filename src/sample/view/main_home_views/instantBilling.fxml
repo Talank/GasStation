@@ -3,6 +3,8 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXRadioButton?>
 <?import com.jfoenix.controls.JFXTextField?>
+<?import java.lang.String?>
+<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
@@ -50,6 +52,14 @@
                      <font>
                         <Font size="25.0" />
                      </font>
+                     <stylesheets>
+                        <URL value="@../../css/appColorPalette.css" />
+                        <URL value="@../../css/componentStyles.css" />
+                     </stylesheets>
+                     <styleClass>
+                        <String fx:value="inputTextFieldColor" />
+                        <String fx:value="inputTextField" />
+                     </styleClass>
                   </JFXTextField>
                </children>
                <VBox.margin>
@@ -72,6 +82,14 @@
                                  <HBox.margin>
                                     <Insets />
                                  </HBox.margin>
+                                 <stylesheets>
+                                    <URL value="@../../css/componentStyles.css" />
+                                    <URL value="@../../css/appColorPalette.css" />
+                                 </stylesheets>
+                                 <styleClass>
+                                    <String fx:value="inputTextField" />
+                                    <String fx:value="inputTextFieldColor" />
+                                 </styleClass>
                               </JFXTextField>
                            </children>
                            <VBox.margin>
@@ -87,6 +105,14 @@
                                  <font>
                                     <Font size="25.0" />
                                  </font>
+                                 <stylesheets>
+                                    <URL value="@../../css/componentStyles.css" />
+                                    <URL value="@../../css/appColorPalette.css" />
+                                 </stylesheets>
+                                 <styleClass>
+                                    <String fx:value="inputTextField" />
+                                    <String fx:value="inputTextFieldColor" />
+                                 </styleClass>
                               </JFXTextField>
             
                            </children>
@@ -103,6 +129,14 @@
                                  <font>
                                     <Font size="25.0" />
                                  </font>
+                                 <stylesheets>
+                                    <URL value="@../../css/componentStyles.css" />
+                                    <URL value="@../../css/appColorPalette.css" />
+                                 </stylesheets>
+                                 <styleClass>
+                                    <String fx:value="inputTextField" />
+                                    <String fx:value="inputTextFieldColor" />
+                                 </styleClass>
                               </JFXTextField>
                            </children>
                            <VBox.margin>
@@ -207,25 +241,57 @@
    <right>
       <VBox alignment="CENTER" spacing="50.0" BorderPane.alignment="CENTER">
          <children>
-            <JFXButton fx:id="itemsCount" buttonType="RAISED" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #33b5e5; -fx-background-radius: 40px;" text="0">
+            <JFXButton fx:id="itemsCount" buttonType="RAISED" prefHeight="80.0" prefWidth="80.0" text="0">
                <font>
                   <Font size="25.0" />
                </font>
+               <stylesheets>
+                  <URL value="@../../css/appColorPalette.css" />
+                  <URL value="@../../css/componentStyles.css" />
+               </stylesheets>
+               <styleClass>
+                  <String fx:value="countButtonColor" />
+                  <String fx:value="billingRoundButton" />
+               </styleClass>
             </JFXButton>
-            <JFXButton fx:id="addItems" buttonType="RAISED" onMouseClicked="#addNewItem" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #00C851; -fx-background-radius: 40px;" text="+">
+            <JFXButton fx:id="addItems" buttonType="RAISED" onMouseClicked="#addNewItem" prefHeight="80.0" prefWidth="80.0" text="+">
                <font>
                   <Font size="35.0" />
                </font>
+               <stylesheets>
+                  <URL value="@../../css/componentStyles.css" />
+                  <URL value="@../../css/appColorPalette.css" />
+               </stylesheets>
+               <styleClass>
+                  <String fx:value="billingRoundButton" />
+                  <String fx:value="addButtonColor" />
+               </styleClass>
             </JFXButton>
-            <JFXButton buttonType="RAISED" onMouseClicked="#deleteItem" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #ffbb33; -fx-background-radius: 40px;" text="-">
+            <JFXButton buttonType="RAISED" onMouseClicked="#deleteItem" prefHeight="80.0" prefWidth="80.0" text="-">
                <font>
                   <Font size="35.0" />
                </font>
+               <stylesheets>
+                  <URL value="@../../css/componentStyles.css" />
+                  <URL value="@../../css/appColorPalette.css" />
+               </stylesheets>
+               <styleClass>
+                  <String fx:value="billingRoundButton" />
+                  <String fx:value="removeButtonColor" />
+               </styleClass>
             </JFXButton>
-             <JFXButton buttonType="RAISED" onMouseClicked="#clearSelection" prefHeight="80.0" prefWidth="80.0" style="-fx-background-color: #ff4444; -fx-background-radius: 40px;" text="X">
+             <JFXButton buttonType="RAISED" onMouseClicked="#clearSelection" prefHeight="80.0" prefWidth="80.0" text="X">
                  <font>
                      <Font size="35.0" />
                  </font>
+               <stylesheets>
+                  <URL value="@../../css/componentStyles.css" />
+                  <URL value="@../../css/appColorPalette.css" />
+               </stylesheets>
+               <styleClass>
+                  <String fx:value="billingRoundButton" />
+                  <String fx:value="clearButtonColor" />
+               </styleClass>
              </JFXButton>
          </children>
          <padding>

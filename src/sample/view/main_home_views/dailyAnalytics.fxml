@@ -10,9 +10,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<?import sample.library.toolbar.ToolBar?>
+<!--<?import sample.library.toolbar.ToolBar?>-->
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controller.main_home_controller.DailyAnalyticsController">
+<BorderPane xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controller.main_home_controller.DailyAnalyticsController">
    <center>
       <VBox BorderPane.alignment="CENTER">
          <children>
@@ -20,7 +20,7 @@
                <children>
                   <HBox>
                      <children>
-                        <Label text="Diesel Analytics">
+                        <Label styleClass="dailyAnalyticsTitle" stylesheets="@../../css/appHomeStyle.css" text="Diesel Analytics">
                            <font>
                               <Font name="System Bold" size="20.0" />
                            </font>
@@ -32,8 +32,8 @@
                   </HBox>
                   <GridPane style="-fx-background-color: #eeeeee;">
                     <columnConstraints>
-                      <ColumnConstraints hgrow="NEVER" minWidth="10.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
+                      <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
                     </columnConstraints>
                     <rowConstraints>
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -43,7 +43,7 @@
                      <children>
                         <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0">
                            <children>
-                              <Label text="Instant Transaction:">
+                              <Label styleClass="dailyAnalyticsText" stylesheets="@../../css/appHomeStyle.css" text="Instant Transaction:">
                                  <font>
                                     <Font size="20.0" />
                                  </font>
@@ -52,7 +52,7 @@
                         </HBox>
                         <HBox GridPane.columnIndex="1">
                            <children>
-                              <Label fx:id="dInitial" text="2300 L">
+                              <Label fx:id="dInitial" styleClass="dailyAnalyticsData" stylesheets="@../../css/appHomeStyle.css" text="2300 L">
                                  <font>
                                     <Font name="System Bold" size="20.0" />
                                  </font>
@@ -64,16 +64,16 @@
                         </HBox>
                         <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
                            <children>
-                              <Label text="Credit Transaction:">
+                              <Label styleClass="dailyAnalyticsText" stylesheets="@../../css/appHomeStyle.css" text="Credit Transaction:">
                                  <font>
                                     <Font size="20.0" />
                                  </font>
                               </Label>
                            </children>
                         </HBox>
-                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <HBox GridPane.columnIndex="1" GridPane.rowIndex="1">
                            <children>
-                              <Label fx:id="dFinal" text="4500 L">
+                              <Label fx:id="dFinal" styleClass="dailyAnalyticsData" stylesheets="@../../css/appHomeStyle.css" text="4500 L">
                                  <font>
                                     <Font name="System Bold" size="20.0" />
                                  </font>
@@ -85,16 +85,16 @@
                         </HBox>
                         <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2">
                            <children>
-                              <Label text="Net Income:">
+                              <Label styleClass="dailyAnalyticsText" stylesheets="@../../css/appHomeStyle.css" text="Net Income:">
                                  <font>
                                     <Font size="20.0" />
                                  </font>
                               </Label>
                            </children>
                         </HBox>
-                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                        <HBox GridPane.columnIndex="1" GridPane.rowIndex="2">
                            <children>
-                              <Label fx:id="dNet" text="Rs.24000/-" underline="true">
+                              <Label fx:id="dNet" styleClass="dailyAnalyticsData" stylesheets="@../../css/appHomeStyle.css" text="Rs.24000/-" underline="true">
                                  <font>
                                     <Font name="System Bold" size="20.0" />
                                  </font>
@@ -118,7 +118,7 @@
                <children>
                   <HBox>
                      <children>
-                        <Label text="Petrol Analytics">
+                        <Label styleClass="dailyAnalyticsTitle" stylesheets="@../../css/appHomeStyle.css" text="Petrol Analytics">
                            <font>
                               <Font name="System Bold" size="20.0" />
                            </font>
@@ -129,8 +129,8 @@
                      </padding></HBox>
                   <GridPane style="-fx-background-color: #eeeeee;">
                     <columnConstraints>
-                      <ColumnConstraints hgrow="NEVER" minWidth="10.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
+                      <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
                     </columnConstraints>
                     <rowConstraints>
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -140,7 +140,7 @@
                      <children>
                         <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0">
                            <children>
-                              <Label text="Instant Transaction:">
+                              <Label styleClass="dailyAnalyticsText" stylesheets="@../../css/appHomeStyle.css" text="Instant Transaction:">
                                  <font>
                                     <Font size="20.0" />
                                  </font>
@@ -149,7 +149,7 @@
                         </HBox>
                         <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
                            <children>
-                              <Label fx:id="pInitial" text="2300 L">
+                              <Label fx:id="pInitial" styleClass="dailyAnalyticsData" stylesheets="@../../css/appHomeStyle.css" text="2300 L">
                                  <font>
                                     <Font name="System Bold" size="20.0" />
                                  </font>
@@ -158,7 +158,7 @@
                         </HBox>
                         <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
                            <children>
-                              <Label text="Credit Transaction:">
+                              <Label styleClass="dailyAnalyticsText" stylesheets="@../../css/appHomeStyle.css" text="Credit Transaction:">
                                  <font>
                                     <Font size="20.0" />
                                  </font>
@@ -167,7 +167,7 @@
                         </HBox>
                         <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                            <children>
-                              <Label fx:id="pFinal" text="4500 L">
+                              <Label fx:id="pFinal" styleClass="dailyAnalyticsData" stylesheets="@../../css/appHomeStyle.css" text="4500 L">
                                  <font>
                                     <Font name="System Bold" size="20.0" />
                                  </font>
@@ -176,7 +176,7 @@
                         </HBox>
                         <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2">
                            <children>
-                              <Label text="Net Income:">
+                              <Label styleClass="dailyAnalyticsText" stylesheets="@../../css/appHomeStyle.css" text="Net Income:">
                                  <font>
                                     <Font size="20.0" />
                                  </font>
@@ -185,7 +185,7 @@
                         </HBox>
                         <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                            <children>
-                              <Label fx:id="pNet" text="Rs.24000/-" underline="true">
+                              <Label fx:id="pNet" styleClass="dailyAnalyticsData" stylesheets="@../../css/appHomeStyle.css" text="Rs.24000/-" underline="true">
                                  <font>
                                     <Font name="System Bold" size="20.0" />
                                  </font>
@@ -206,7 +206,7 @@
                <children>
                   <HBox>
                      <children>
-                        <Label text="Extra Analytics">
+                        <Label styleClass="dailyAnalyticsTitle" stylesheets="@../../css/appHomeStyle.css" text="Extra Analytics">
                            <font>
                               <Font name="System Bold" size="20.0" />
                            </font>
@@ -218,8 +218,8 @@
                   </HBox>
                   <GridPane style="-fx-background-color: #dddddd;">
                     <columnConstraints>
-                      <ColumnConstraints hgrow="NEVER" maxWidth="300.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints hgrow="ALWAYS" />
+                      <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
                     </columnConstraints>
                     <rowConstraints>
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -228,7 +228,7 @@
                      <children>
                         <HBox alignment="CENTER_RIGHT">
                            <children>
-                              <Label text="Instant Transaction:">
+                              <Label styleClass="dailyAnalyticsText" stylesheets="@../../css/appHomeStyle.css" text="Instant Transaction:">
                                  <font>
                                     <Font size="20.0" />
                                  </font>
@@ -237,7 +237,7 @@
                         </HBox>
                         <HBox GridPane.columnIndex="1">
                            <children>
-                              <Label fx:id="cInitial" text="Rs.2000">
+                              <Label fx:id="cInitial" styleClass="dailyAnalyticsData" stylesheets="@../../css/appHomeStyle.css" text="Rs.2000">
                                  <font>
                                     <Font name="System Bold" size="20.0" />
                                  </font>
@@ -249,7 +249,7 @@
                         </HBox>
                         <HBox alignment="CENTER_RIGHT" GridPane.rowIndex="1">
                            <children>
-                              <Label text="Credit Transaction:">
+                              <Label styleClass="dailyAnalyticsText" stylesheets="@../../css/appHomeStyle.css" text="Credit Transaction:">
                                  <font>
                                     <Font size="20.0" />
                                  </font>
@@ -258,7 +258,7 @@
                         </HBox>
                         <HBox GridPane.columnIndex="1" GridPane.rowIndex="1">
                            <children>
-                              <Label fx:id="cFinal" text="Rs.3500">
+                              <Label fx:id="cFinal" styleClass="dailyAnalyticsData" stylesheets="@../../css/appHomeStyle.css" text="Rs.3500">
                                  <font>
                                     <Font name="System Bold" size="20.0" />
                                  </font>
@@ -282,7 +282,7 @@
                <children>
                   <HBox>
                      <children>
-                        <Label text="Income Analytics">
+                        <Label styleClass="dailyAnalyticsTitle" stylesheets="@../../css/appHomeStyle.css" text="Income Analytics">
                            <font>
                               <Font name="System Bold" size="20.0" />
                            </font>
@@ -294,8 +294,8 @@
                   </HBox>
                   <GridPane style="-fx-background-color: #dddddd;">
                      <columnConstraints>
-                        <ColumnConstraints hgrow="NEVER" maxWidth="300.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="ALWAYS" />
+                        <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
                      </columnConstraints>
                      <rowConstraints>
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -304,7 +304,7 @@
                      <children>
                         <HBox alignment="CENTER_RIGHT">
                            <children>
-                              <Label text="Net Oil Income:">
+                              <Label styleClass="dailyAnalyticsText" stylesheets="@../../css/appHomeStyle.css" text="Net Oil Income:">
                                  <font>
                                     <Font size="20.0" />
                                  </font>
@@ -313,7 +313,7 @@
                         </HBox>
                         <HBox GridPane.columnIndex="1">
                            <children>
-                              <Label fx:id="netOil" text="Rs.2000">
+                              <Label fx:id="netOil" styleClass="dailyAnalyticsData" stylesheets="@../../css/appHomeStyle.css" text="Rs.2000">
                                  <font>
                                     <Font name="System Bold" size="20.0" />
                                  </font>
@@ -325,7 +325,7 @@
                         </HBox>
                         <HBox alignment="CENTER_RIGHT" GridPane.rowIndex="1">
                            <children>
-                              <Label text="Net Extra Income:">
+                              <Label styleClass="dailyAnalyticsText" stylesheets="@../../css/appHomeStyle.css" text="Net Extra Income:">
                                  <font>
                                     <Font size="20.0" />
                                  </font>
@@ -334,7 +334,7 @@
                         </HBox>
                         <HBox GridPane.columnIndex="1" GridPane.rowIndex="1">
                            <children>
-                              <Label fx:id="netExtra" text="Rs.3500">
+                              <Label fx:id="netExtra" styleClass="dailyAnalyticsData" stylesheets="@../../css/appHomeStyle.css" text="Rs.3500">
                                  <font>
                                     <Font name="System Bold" size="20.0" />
                                  </font>
@@ -361,7 +361,7 @@
       </VBox>
    </center>
 
-   <top>
+   <!--<top>
       <ToolBar fx:id="toolBar" />
-   </top>
+   </top>-->
 </BorderPane>
