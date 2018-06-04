@@ -11,6 +11,7 @@ import sample.model.databases.DatabaseHandler;
 import sample.nepali_date.NepaliDateGenerator;
 import sample.tasks.Tasks;
 
+import javax.naming.ldap.Control;
 import java.io.IOException;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -73,6 +74,8 @@ public class AddExpenditureTask extends Tasks {
              */
 
             Parent root=FXMLLoader.load(getClass().getResource("../../view/dialogs/errorDialog.fxml"));
+
+           // ErrorDialogController
 
             ErrorDialogController errorDialogController = new ErrorDialogController();
             errorDialogController.setErrorMessage(errorMessage);

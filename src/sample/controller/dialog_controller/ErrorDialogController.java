@@ -43,7 +43,7 @@ public class ErrorDialogController implements BottomBarInterface {
     public void setErrorMessage(String msg) {
 //        System.out.println(msg);
         Platform.runLater(()-> {
-            System.out.println(msg);
+            System.out.println(msg); /**Just to check if error message is passed or not! */
             errorLabel.setText(msg);
         });
     }
