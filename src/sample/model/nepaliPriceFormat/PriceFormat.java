@@ -5,7 +5,7 @@ public class PriceFormat {
 
 
     String result;
-    int m=4;//Initially the comma position will be at 4 from reverse side.
+    int m=4;//Initially the comma position will be at 4 from reverse  side.
 
 
     public PriceFormat(){
