@@ -2,6 +2,8 @@ package sample.tasks;
 
 import javafx.scene.Parent;
 
+import java.io.IOException;
+
 public class TaskManager {
 
 
@@ -29,7 +31,11 @@ public class TaskManager {
                     System.out.println("Task Detected, Executing Task.");
                     Tasks task=taskQueue.deQueue();
                     if(task.getRetryStatus()<=MAX_RETRY) {
-                        task.execute();
+                        try {
+                            task.execute();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     } else {
                         System.out.println("Task Failed Many Times. Stopping Task.");
                     }

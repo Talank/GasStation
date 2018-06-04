@@ -1,5 +1,6 @@
 package sample.controller.dialog_controller;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -21,6 +22,12 @@ public class ErrorDialogController implements BottomBarInterface {
     @FXML
     private Label errorLabel;
 
+    private static ErrorDialogController instance;
+
+    public ErrorDialogController(){
+        instance = this;
+    }
+
     @FXML
     public void initialize() {
         toolBar.setDialogTitle("Error");
@@ -34,10 +41,19 @@ public class ErrorDialogController implements BottomBarInterface {
     }
 
     public void setErrorMessage(String msg) {
-        errorLabel.setText(msg);
+//        System.out.println(msg);
+        Platform.runLater(()-> {
+            System.out.println(msg);
+            errorLabel.setText(msg);
+        });
     }
 
     public void setTitle(String title) {
         toolBar.setDialogTitle(title);
+        //System.out.print("Title of the error dialog has been set");
+    }
+
+    public static ErrorDialogController getInstane(){
+        return instance;
     }
 }
