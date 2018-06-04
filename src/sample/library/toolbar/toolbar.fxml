@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import java.lang.String?>
+<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -27,13 +29,21 @@
             </Label>
          </children>
       </HBox>
-      <JFXButton fx:id="backButton" buttonType="RAISED" onMouseClicked="#backToPath" style="-fx-background-color: #2af12a;" text="BACK">
+      <JFXButton fx:id="backButton" buttonType="RAISED" onMouseClicked="#backToPath" text="BACK">
          <font>
             <Font size="26.0" />
          </font>
          <GridPane.margin>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </GridPane.margin>
+         <stylesheets>
+            <URL value="@../../css/appColorPalette.css" />
+            <URL value="@../../css/componentStyles.css" />
+         </stylesheets>
+         <styleClass>
+            <String fx:value="generalButton" />
+            <String fx:value="generalButtonColor" />
+         </styleClass>
       </JFXButton>
    </children>
 </fx:root>

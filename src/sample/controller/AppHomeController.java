@@ -14,6 +14,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import sample.controller.dialog_controller.LoginDialogController;
 import sample.model.SystemStatus;
+import sample.model.nepaliPriceFormat.PriceFormat;
 
 import java.io.IOException;
 
@@ -31,10 +32,10 @@ public class AppHomeController {
     public void initialize() {
         instance=this;
 
-        dieselRate.setText("Rs. "+String.valueOf(SystemStatus.getdRate()));
-        petrolRate.setText("Rs. "+String.valueOf(SystemStatus.getpRate()));
-        dieselStock.setText(String.valueOf(SystemStatus.getDieselStock())+" L");
-        petrolStock.setText(String.valueOf(SystemStatus.getPetrolStock())+" L");
+        dieselRate.setText("Rs. "+(new PriceFormat(String.valueOf(SystemStatus.getdRate()))).getResult());
+        petrolRate.setText("Rs. "+(new PriceFormat(String.valueOf(SystemStatus.getpRate()))).getResult());
+        dieselStock.setText((new PriceFormat(String.valueOf(SystemStatus.getDieselStock()))).getResult()+" L");
+        petrolStock.setText((new PriceFormat(String.valueOf(SystemStatus.getPetrolStock()))).getResult()+" L");
 
         try {
 
@@ -55,14 +56,14 @@ public class AppHomeController {
 
     }
 
-    public void setRates(String dieselRate,String petrolRate) {
-        this.dieselRate.setText("Rs. "+dieselRate);
-        this.petrolRate.setText("Rs. "+petrolRate);
+    public void setRates() {
+        dieselRate.setText("Rs. "+(new PriceFormat(String.valueOf(SystemStatus.getdRate()))).getResult());
+        petrolRate.setText("Rs. "+(new PriceFormat(String.valueOf(SystemStatus.getpRate()))).getResult());
     }
 
-    public void setStock(String dieselStock,String petrolStock) {
-        this.dieselStock.setText(dieselStock+" L");
-        this.petrolStock.setText(petrolStock+" L");
+    public void setStock() {
+        dieselStock.setText((new PriceFormat(String.valueOf(SystemStatus.getDieselStock()))).getResult()+" L");
+        petrolStock.setText((new PriceFormat(String.valueOf(SystemStatus.getPetrolStock()))).getResult()+" L");
     }
 
     @FXML

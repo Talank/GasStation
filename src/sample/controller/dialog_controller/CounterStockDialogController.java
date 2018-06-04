@@ -34,7 +34,7 @@ public class CounterStockDialogController implements BottomBarInterface {
 
         toolBar.setDialogTitle("Setup Counter Stock");
 
-        bottomBar.setButtonText("SETUP");
+        bottomBar.setButtonText("SAVE");
         bottomBar.setBottomBarInterface(this);
 
         RequiredFieldValidator counterStockValidator=new RequiredFieldValidator();

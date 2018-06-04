@@ -50,7 +50,7 @@ public class FinalReadingsController implements BottomBarInterface {
 
         toolBar.setDialogTitle("Final Meter Readings");
 
-        bottomBar.setButtonText("START");
+        bottomBar.setButtonText("SAVE");
         bottomBar.setBottomBarInterface(this);
 
         RequiredFieldValidator dieselValidator=new RequiredFieldValidator();

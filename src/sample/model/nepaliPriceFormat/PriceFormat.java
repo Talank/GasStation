@@ -12,6 +12,10 @@ public class PriceFormat {
 
     }
 
+    public PriceFormat(String result) {
+        setFormat(result);
+    }
+
 
     public void setFormat(String  result){
         int floatPos = result.indexOf(".") > -1 ? result.length() - result.indexOf(".") : 0;

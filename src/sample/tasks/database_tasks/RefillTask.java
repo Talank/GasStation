@@ -1,5 +1,7 @@
 package sample.tasks.database_tasks;
 
+import javafx.application.Platform;
+import sample.controller.AppHomeController;
 import sample.model.RefillModel;
 import sample.model.SystemStatus;
 import sample.tasks.Tasks;
@@ -61,6 +63,8 @@ public class RefillTask extends Tasks {
                 insertRefill.execute();
                 SystemStatus.setPetrolStock(SystemStatus.getPetrolStock()+model.getActual());
             }
+
+            Platform.runLater(()->AppHomeController.getInstance().setStock());
 
 
             /**

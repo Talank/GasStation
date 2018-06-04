@@ -35,7 +35,7 @@ public class OilStockDialogController implements BottomBarInterface {
 
         toolBar.setDialogTitle("Setup Oil Stock");
 
-        bottomBar.setButtonText("SETUP");
+        bottomBar.setButtonText("SAVE");
         bottomBar.setBottomBarInterface(this);
 
         RequiredFieldValidator petrolStockValidator=new RequiredFieldValidator();
@@ -88,7 +88,7 @@ public class OilStockDialogController implements BottomBarInterface {
             SetupOilStockTask task=new SetupOilStockTask(dieselStockValue.getText(),petrolStockValue.getText());
             TaskManager.executeTask(task);
 
-            AppHomeController.getInstance().setStock(dieselStockValue.getText(),petrolStockValue.getText());
+
 
             String[][] model=SettingsController.getInstance().getModel();
 

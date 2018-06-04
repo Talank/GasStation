@@ -1,5 +1,7 @@
 package sample.tasks.database_tasks;
 
+import javafx.application.Platform;
+import sample.controller.AppHomeController;
 import sample.model.SystemStatus;
 import sample.model.databases.DatabaseHandler;
 import sample.nepali_date.NepaliDateGenerator;
@@ -67,6 +69,8 @@ public class SetupOilStockTask extends Tasks {
                 }
 
             }
+
+            Platform.runLater(()->AppHomeController.getInstance().setStock());
             connection.commit();
 
 

@@ -26,7 +26,7 @@ public class ClosingCalculationController implements BottomBarInterface {
     @FXML
     public void initialize() {
         toolBar.setDialogTitle("Closing Results");
-        bottomBar.setButtonText("OK");
+        bottomBar.setButtonText("SAVE");
         bottomBar.setBottomBarInterface(this);
     }
 

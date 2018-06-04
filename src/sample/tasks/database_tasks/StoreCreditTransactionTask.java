@@ -1,5 +1,7 @@
 package sample.tasks.database_tasks;
 
+import javafx.application.Platform;
+import sample.controller.AppHomeController;
 import sample.controller.SystemLogging;
 import sample.model.DebtListModel;
 import sample.model.SystemStatus;
@@ -71,6 +73,8 @@ public class StoreCreditTransactionTask extends Tasks {
                     storeCredit.setFloat(5,transaction.getQuantity());
 
                     ePrice+=transaction.getPrice();
+                    total+=ePrice;
+
                 } else {
 
                     if(transaction.getMode()==0) {
@@ -136,6 +140,10 @@ public class StoreCreditTransactionTask extends Tasks {
 
             SystemStatus.setDieselStock(dieselStock);
             SystemStatus.setPetrolStock(petrolStock);
+
+            Platform.runLater(()->{
+                AppHomeController.getInstance().setStock();
+            });
 
             resultSet.close();
 

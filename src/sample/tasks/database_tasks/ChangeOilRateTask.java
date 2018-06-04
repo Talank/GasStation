@@ -1,5 +1,7 @@
 package sample.tasks.database_tasks;
 
+import javafx.application.Platform;
+import sample.controller.AppHomeController;
 import sample.model.RateModel;
 import sample.model.SystemStatus;
 import sample.model.databases.DatabaseHandler;
@@ -66,6 +68,8 @@ public class ChangeOilRateTask extends Tasks {
                     SystemStatus.setdRate(model.getrDiesel());
                 }
             }
+
+            Platform.runLater(()->AppHomeController.getInstance().setRates());
 
             connection.commit();
 

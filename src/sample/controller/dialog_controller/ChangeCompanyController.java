@@ -46,7 +46,7 @@ public class ChangeCompanyController implements BottomBarInterface {
         toolBar.setDialogTitle("Add New Company");
 
         bottomBar.setBottomBarInterface(this);
-        bottomBar.setButtonText("CHANGE");
+        bottomBar.setButtonText("SAVE");
 
         RequiredFieldValidator nameValidator=new RequiredFieldValidator();
         nameValidator.setMessage("Company Name Cannot Be Empty");
