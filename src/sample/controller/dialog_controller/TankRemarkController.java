@@ -7,7 +7,6 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
-import sample.controller.main_home_controller.ProfitLossController;
 import sample.library.dialog_bottombar.BottomBarInterface;
 import sample.library.dialog_bottombar.DialogBottomBar;
 import sample.library.dialog_toolbar.DialogToolBar;
@@ -49,7 +48,6 @@ public class TankRemarkController implements BottomBarInterface,TaskInterface<Ta
         toolBar.setDialogTitle("Tanker Check");
         bottomBar.setButtonText("OK");
         bottomBar.setBottomBarInterface(this);
-        remarkLabel.setText("Yo");
 
 
 

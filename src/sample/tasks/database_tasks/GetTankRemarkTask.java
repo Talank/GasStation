@@ -38,7 +38,7 @@ public class GetTankRemarkTask extends Tasks {
 
             TankerModel tankerModel=new TankerModel(avg,count,type);
 
-            System.out.println("Average:"+avg);
+            //System.out.println("Average:"+avg);
             if(taskInterface!=null)
                 taskInterface.onComplete(tankerModel);
             /*if(resultSet.next()) {

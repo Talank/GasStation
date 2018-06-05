@@ -324,8 +324,8 @@ public class ProfitLossController implements BackButtonInterface {
             Parent root= loader.load();
 
             Stage stage=new Stage();
-            stage.setScene(new Scene(root));
             stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setScene(new Scene(root));
             stage.show();
 
             TankRemarkController controller=loader.getController();

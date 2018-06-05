@@ -27,6 +27,7 @@ import sample.library.toolbar.ToolBar;
 import sample.model.CreditCompanyList;
 import sample.model.DebtListModel;
 import sample.model.SystemStatus;
+import sample.model.nepaliPriceFormat.PriceFormat;
 import sample.model.transaction_model.CreditTransactionBill;
 import sample.model.transaction_model.Transaction;
 import sample.tasks.TaskManager;
@@ -53,6 +54,7 @@ public class CreditBillingController {
     private boolean calcNowV =false,calcNowP=false,calcOldV=false,calcOldP=false, listSelected =false,force=false;
     private DecimalFormat decimalFormat;
     private float rate;
+    private PriceFormat priceFormat;
 
     @FXML
     private JFXButton itemsCount,adminButton;
@@ -126,7 +128,9 @@ public class CreditBillingController {
                 if(newValue.getType().equals("Diesel")||newValue.getType().equals("Petrol")) {
 
                     vehicleNumber.setText(newValue.getVehicleNo());
-                    price.setText(String.valueOf(newValue.getPrice()));
+
+                    priceFormat=new PriceFormat(String.valueOf(newValue.getPrice()));
+                    price.setText(priceFormat.getResult());
                     volume.setText(String.valueOf(newValue.getVolume()));
                     if(newValue.getType().equals("Diesel")) {
                         if(selection.getSelectedToggle()!=diesel) {
