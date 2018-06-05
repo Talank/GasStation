@@ -2,7 +2,6 @@ package sample.tasks;
 
 import sample.Reference;
 
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
@@ -44,7 +43,7 @@ public class Tasks {
         return retryStatus;
     }
 
-    public void execute() throws IOException {
+    public void execute() {
 
     }
 

@@ -1,18 +1,9 @@
 package sample.tasks.database_tasks;
 
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-import sample.controller.dialog_controller.ErrorDialogController;
 import sample.model.SystemStatus;
 import sample.model.databases.DatabaseHandler;
 import sample.nepali_date.NepaliDateGenerator;
 import sample.tasks.Tasks;
-
-import javax.naming.ldap.Control;
-import java.io.IOException;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -20,7 +11,6 @@ import java.sql.Statement;
 
 public class AddExpenditureTask extends Tasks {
 
-    private  String errorMessage ="";
     private String memberName,expenditureRemarks;
     private String expenditureAmount;
 
@@ -32,10 +22,10 @@ public class AddExpenditureTask extends Tasks {
 
 
     @Override
-    public void execute() throws IOException {
+    public void execute() {
         try {
 
-            PreparedStatement addExpenditure=connection.prepareStatement("INSERT INTO Expenditure VALUES (?,?,?,?,?)");
+            PreparedStatement addExpenditure=connection.prepareStatement("INSERT INTO Expenditure VALUES (?,?,?,?)");
 
             addExpenditure.setString(1,memberName);
             addExpenditure.setInt(2,Integer.parseInt(expenditureAmount));
@@ -49,44 +39,18 @@ public class AddExpenditureTask extends Tasks {
 
             addExpenditure.execute("INSERT INTO Expenditure VALUES ('"+memberName+"',"+expenditureAmount+",'"+expenditureRemarks+"','"+SystemStatus.getCurrentDate()+"')");*/
             connection.commit();
-            System.out.println(errorMessage);
 
         } catch (SQLException e) {
             e.printStackTrace();
-            errorMessage += "Error: "+e.getMessage()+"\n";
-//            System.out.println(e.getMessage());
-            //System.out.println(errorMessage);
+            System.out.println(e.getMessage());
 
             try {
                 connection.rollback();
                 System.out.println("Error in Database detected. Rolling back Database to stable stage.");
-                errorMessage +="Database rolled back to stable state";
 
             } catch (SQLException e1) {
                 System.out.println("Unable to undo Changes.It restores when system restarts.");
-                errorMessage +="Can not rolled back to stable state \n Contact Software developers\n ALERT: keep ta backup of your data";
             }
-
-            /**
-             * Here display the error message in a dialog box;
-             * ERROR IN CODE: tyo  dialog box nei aaunna
-             * mathi line no. 37 ko query ma VALUES(?,?,?,?) hunxa error dialog check garna lai euta ? badi rakheko ho
-             */
-
-            Parent root=FXMLLoader.load(getClass().getResource("../../view/dialogs/errorDialog.fxml"));
-
-           // ErrorDialogController
-
-            ErrorDialogController errorDialogController = new ErrorDialogController();
-            errorDialogController.setErrorMessage(errorMessage);
-
-            System.out.println(getClass().getResource("../../view/dialogs/errorDialog.fxml"));
-
-            Scene scene=new Scene(root);
-            Stage stage=new Stage();
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setScene(scene);
-            stage.show();
 
         }
 
