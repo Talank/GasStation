@@ -40,17 +40,18 @@ public class Main extends Application {
     private FXMLLoader loader;
     private Parent root;
     private boolean startup=false;
+    private String msg="";
 
     @Override
     public void init() throws Exception {
-        if(Tasks.setupConnection()) {
+        InitializeSystem initializeSystem=new InitializeSystem();
+        if(Tasks.setupConnection()&&initializeSystem.customExecute()) {
             TaskManager.init(1);
-            InitializeSystem initializeSystem=new InitializeSystem();
-            initializeSystem.execute();
             startup=true;
 //            loader=new FXMLLoader(getClass().getResource("view/main_home_views/mainHome.fxml"));
             loader=new FXMLLoader(getClass().getResource("view/appHome.fxml"));
         } else {
+            msg=initializeSystem.getErrorMessage();
             startup=false;
             loader=new FXMLLoader(getClass().getResource("view/dialogs/errorDialog.fxml"));
         }
@@ -84,8 +85,8 @@ public class Main extends Application {
 
         } else {
             ErrorDialogController controller=loader.getController();
-            controller.setTitle("Database Error");
-            controller.setErrorMessage("Database Connection cannot be established. Please Contact SpirroTech Officials.");
+            controller.setTitle("Initialization Error");
+            controller.setErrorMessage(msg);
             Stage stage=new Stage();
             stage.setScene(new Scene(root));
             stage.show();
