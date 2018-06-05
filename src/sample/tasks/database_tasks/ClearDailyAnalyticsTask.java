@@ -23,6 +23,8 @@ public class ClearDailyAnalyticsTask extends Tasks {
 
             clearPetrolRefill.execute();
 
+            clearPetrolRefill.close();
+
             connection.commit();
 
         } catch(SQLException e) {

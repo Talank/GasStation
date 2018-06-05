@@ -70,6 +70,10 @@ public class CompanyCreditClosingTask extends Tasks {
 
                 deleteCredit.execute();
 
+                totalResult.close();
+                getResults.close();
+                deleteCredit.close();
+
                 model.setDue(model.getDue()+(model.getTotal()-total));
                 model.setTotal(total);
                 model.setTransactionID(lastTransaction);
@@ -86,6 +90,9 @@ public class CompanyCreditClosingTask extends Tasks {
                 updateCreditCompany.setInt(2,1);
 
                 updateCreditCompany.execute();
+
+                delete.close();
+                updateCreditCompany.close();
 
                 model.setDue(model.getDue()+model.getTotal());
                 model.setTotal(0f);

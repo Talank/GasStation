@@ -16,7 +16,7 @@
 
 <BorderPane xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controller.main_home_controller.SettingsController">
    <center>
-      <ScrollPane fitToWidth="true" hbarPolicy="NEVER" vvalue="1.0" BorderPane.alignment="CENTER">
+      <ScrollPane fitToWidth="true" hbarPolicy="NEVER" BorderPane.alignment="CENTER">
         <content>
             <VBox spacing="10.0">
                <VBox>

@@ -1,5 +1,6 @@
 package sample.tasks.database_tasks;
 
+import sample.model.AdminUser;
 import sample.model.SystemStatus;
 import sample.model.databases.DatabaseHandler;
 import sample.nepali_date.NepaliDateGenerator;
@@ -31,12 +32,15 @@ public class ChangeUserParameterTask extends Tasks {
             updateUser.setInt(3,7);
             updateUser.addBatch();
 
-            updateUser.setString(1,password);
+            updateUser.setString(1,(new AdminUser()).generatePasswordHash(password));
             updateUser.setDate(2,SystemStatus.getCurrentDate());
             updateUser.setInt(3,8);
             updateUser.addBatch();
 
             updateUser.executeBatch();
+
+            updateUser.close();
+
             connection.commit();
 
 

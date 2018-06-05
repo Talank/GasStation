@@ -34,10 +34,8 @@ public class AddExpenditureTask extends Tasks {
 
             addExpenditure.execute();
 
+            addExpenditure.close();
 
-            /*Statement addExpenditure=connection.createStatement();
-
-            addExpenditure.execute("INSERT INTO Expenditure VALUES ('"+memberName+"',"+expenditureAmount+",'"+expenditureRemarks+"','"+SystemStatus.getCurrentDate()+"')");*/
             connection.commit();
 
         } catch (SQLException e) {

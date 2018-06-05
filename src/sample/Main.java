@@ -25,6 +25,8 @@ import sample.tasks.Tasks;
 import sample.tasks.database_tasks.InitializeSystem;
 
 import java.awt.*;
+import java.sql.CallableStatement;
+import java.sql.SQLException;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -101,7 +103,19 @@ public class Main extends Application {
         * Derby Database caches the primary key,so close it before using it
         * otherwise the primary key increments with 100 in every insertion
         * */
+
+        try {
+            CallableStatement callableStatement= Tasks.getConnection().prepareCall("CALL SYSCS_UTIL.SYSCS_BACKUP_DATABASE(?)");
+            callableStatement.setString(1,Reference.DATABASE_BACKUP_PATH);
+            callableStatement.execute();
+            callableStatement.close();
+            System.out.println("Database Backup Has Been Created!");
+        } catch(SQLException e) {
+            e.printStackTrace();
+            System.out.println("Error Creating Database Backup!");
+        }
         DatabaseHandler.closeConnection();
+
     }
 
 

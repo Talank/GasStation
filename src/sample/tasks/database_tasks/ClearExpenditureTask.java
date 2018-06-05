@@ -25,9 +25,10 @@ public class ClearExpenditureTask extends Tasks {
             clearExpenditure.setDate(1,clearDate);
 
             clearExpenditure.execute();
+
+            clearExpenditure.close();
+
             connection.commit();
-
-
         } catch(SQLException e) {
             e.printStackTrace();
             System.out.println(e.getMessage());

@@ -26,8 +26,6 @@ public class ChangeOilRateTask extends Tasks {
     @Override
     public void execute() {
         try {
-
-
             if(SystemStatus.getdRate()!=model.getrDiesel()&&SystemStatus.getpRate()!=model.getrPetrol()) {
 
                 PreparedStatement setRate=connection.prepareStatement("UPDATE SystemStatus SET VALUE=?,DATE=? WHERE ID=?");
@@ -44,6 +42,8 @@ public class ChangeOilRateTask extends Tasks {
 
                 setRate.executeBatch();
 
+                setRate.close();
+
                 SystemStatus.setpRate(model.getrPetrol());
                 SystemStatus.setdRate(model.getrDiesel());
             } else {
@@ -55,6 +55,9 @@ public class ChangeOilRateTask extends Tasks {
                     updateRate.setInt(3,9);
 
                     updateRate.execute();
+
+                    updateRate.close();
+
                     SystemStatus.setdRate(model.getrDiesel());
                 }
 
@@ -65,6 +68,9 @@ public class ChangeOilRateTask extends Tasks {
                     updateRate.setInt(3,10);
 
                     updateRate.execute();
+
+                    updateRate.close();
+
                     SystemStatus.setdRate(model.getrDiesel());
                 }
             }
