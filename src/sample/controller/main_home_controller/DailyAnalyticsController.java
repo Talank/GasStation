@@ -39,7 +39,7 @@ public class DailyAnalyticsController {
     @FXML
     public void initialize() {
 
-        toolBar.setTitle("Today Analytics");
+        toolBar.setTitle("Today Analytics");//title
         toolBar.setBackPath("../../view/main_home_views/dailyTotalAnalytics.fxml");
 
         GetDailyTotalAnalyticsModelTask task=new GetDailyTotalAnalyticsModelTask();
