@@ -46,7 +46,6 @@ public class DailyAnalyticsController {
         task.addTaskInterfaceListener(new TaskInterface() {
             @Override
             public void onComplete(Object data) {
-
                 Platform.runLater(()->{
                     setModel((DailyTotalAnalyticModel)data);
                     System.out.println("Model is set.");
