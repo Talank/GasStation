@@ -1,5 +1,6 @@
 package sample.tasks.database_tasks;
 
+import sample.library.ErrorMessageDialogGenerator;
 import sample.model.SystemStatus;
 import sample.model.databases.DatabaseHandler;
 import sample.nepali_date.NepaliDateGenerator;
@@ -49,6 +50,13 @@ public class AddExpenditureTask extends Tasks {
             } catch (SQLException e1) {
                 System.out.println("Unable to undo Changes.It restores when system restarts.");
             }
+
+            String message="Error Storing Expenditure For User '"+memberName+"'.\n"+"Please Retry Again.";
+            String title="Expenditure Error";
+            ErrorMessageDialogGenerator generator=new ErrorMessageDialogGenerator(message,title);
+            generator.setTasks(this);
+            generator.showDialog();
+
 
         }
 

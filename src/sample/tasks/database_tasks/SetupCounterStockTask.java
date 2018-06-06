@@ -1,5 +1,6 @@
 package sample.tasks.database_tasks;
 
+import sample.library.ErrorMessageDialogGenerator;
 import sample.model.SystemStatus;
 import sample.model.databases.DatabaseHandler;
 import sample.nepali_date.NepaliDateGenerator;
@@ -26,6 +27,9 @@ public class SetupCounterStockTask extends Tasks {
             insertStock.setDate(2,SystemStatus.getCurrentDate());
             insertStock.setInt(3,13);
             insertStock.execute();
+
+            insertStock.close();
+
             connection.commit();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -36,6 +40,12 @@ public class SetupCounterStockTask extends Tasks {
             } catch (SQLException e1) {
                 System.out.println("Unable to undo Changes.It restores when system restarts.");
             }
+
+            String message="Error Setting Up Counter Value.\n"+"Please Retry Again.";
+            String title="Counter Setup Error";
+            ErrorMessageDialogGenerator generator=new ErrorMessageDialogGenerator(message,title);
+            generator.setTasks(this);
+            generator.showDialog();
         }
     }
 }

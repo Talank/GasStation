@@ -1,5 +1,6 @@
 package sample.tasks.database_tasks;
 
+import sample.library.ErrorMessageDialogGenerator;
 import sample.model.AdminUser;
 import sample.model.SystemStatus;
 import sample.model.databases.DatabaseHandler;
@@ -54,6 +55,13 @@ public class ChangeUserParameterTask extends Tasks {
             } catch (SQLException e1) {
                 System.out.println("Unable to undo Changes.It restores when system restarts.");
             }
+
+            String message="Error Changing User Parameters.\n"+"Please Retry Again.";
+            String title="User Parameter Error";
+            ErrorMessageDialogGenerator generator=new ErrorMessageDialogGenerator(message,title);
+            generator.setTasks(this);
+            generator.showDialog();
+
         }
 
     }

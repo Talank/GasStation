@@ -3,6 +3,7 @@ package sample.tasks.database_tasks;
 import javafx.application.Platform;
 import sample.controller.AppHomeController;
 import sample.controller.SystemLogging;
+import sample.library.ErrorMessageDialogGenerator;
 import sample.model.DebtListModel;
 import sample.model.SystemStatus;
 import sample.model.databases.DatabaseHandler;
@@ -145,7 +146,6 @@ public class StoreCreditTransactionTask extends Tasks {
                 AppHomeController.getInstance().setStock();
             });
 
-            resultSet.close();
 
             storeCredit=connection.prepareStatement("UPDATE SystemStatus SET VALUE=? WHERE ID=?");
             storeCredit.setString(1,String.valueOf(dVolume));
@@ -169,6 +169,13 @@ public class StoreCreditTransactionTask extends Tasks {
             storeCredit.addBatch();
 
             storeCredit.executeBatch();
+
+            resultSet.close();
+
+            storeCredit.close();
+
+            getInstant.close();
+
             connection.commit();
 
             SystemLogging.getLogger().fine("Credit Transaction Stored in Database");
@@ -177,7 +184,6 @@ public class StoreCreditTransactionTask extends Tasks {
             e.printStackTrace();
             System.out.println(e.getMessage());
 
-            retryStatus++;
             System.out.println("Error Inserting Credit Transaction.ReScheduling Task Again. Retry:"+retryStatus);
 
             try {
@@ -188,8 +194,12 @@ public class StoreCreditTransactionTask extends Tasks {
                 System.out.println("Unable to undo Changes.It restores when system restarts.");
             }
 
-            TaskManager.scheduleTask(this,5000);
-            System.out.println("Scheduling Task Again.");
+            String message="Error Storing Transaction For Company '"+model.getCompanyName()+"'.\n"+"Please Retry Again.";
+            String title="Transaction Error";
+            ErrorMessageDialogGenerator generator=new ErrorMessageDialogGenerator(message,title);
+            generator.setTasks(this);
+            generator.showDialog();
+
             SystemLogging.getLogger().warning("Error Storing Transaction in Database");
         }
 

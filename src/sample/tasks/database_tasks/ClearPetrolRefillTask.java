@@ -1,5 +1,6 @@
 package sample.tasks.database_tasks;
 
+import sample.library.ErrorMessageDialogGenerator;
 import sample.nepali_date.DateConverter;
 import sample.nepali_date.NepaliDateGenerator;
 import sample.tasks.Tasks;
@@ -38,6 +39,12 @@ public class ClearPetrolRefillTask extends Tasks {
             } catch (SQLException e1) {
                 System.out.println("Unable to undo Changes.It restores when system restarts.");
             }
+
+            String message="Error Clearing Petrol Refill.\n"+"Please Retry Again.";
+            String title="Petrol Refill Error";
+            ErrorMessageDialogGenerator generator=new ErrorMessageDialogGenerator(message,title);
+            generator.setTasks(this);
+            generator.showDialog();
         }
 
 

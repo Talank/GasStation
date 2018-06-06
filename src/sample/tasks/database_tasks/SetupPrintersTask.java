@@ -1,6 +1,7 @@
 package sample.tasks.database_tasks;
 
 import sample.controller.main_home_controller.SettingsController;
+import sample.library.ErrorMessageDialogGenerator;
 import sample.model.SystemStatus;
 import sample.tasks.Tasks;
 
@@ -37,6 +38,8 @@ public class SetupPrintersTask extends Tasks {
 
                 updatePrinters.executeBatch();
 
+                updatePrinters.close();
+
                 SystemStatus.setBillPrinter(billPrinterName);
                 SystemStatus.setAnalyticsPrinter(analyticsPrinterName);
 
@@ -49,6 +52,9 @@ public class SetupPrintersTask extends Tasks {
                     setupBill.setInt(3,16);
 
                     setupBill.execute();
+
+                    setupBill.close();
+
                     SystemStatus.setBillPrinter(billPrinterName);
                 }
 
@@ -59,6 +65,9 @@ public class SetupPrintersTask extends Tasks {
                     setupBill.setInt(3,17);
 
                     setupBill.execute();
+
+                    setupBill.close();
+
                     SystemStatus.setAnalyticsPrinter(analyticsPrinterName);
                 }
             }
@@ -83,6 +92,12 @@ public class SetupPrintersTask extends Tasks {
             } catch (SQLException e1) {
                 System.out.println("Unable to undo Changes.It restores when system restarts.");
             }
+
+            String message="Error Setting Up Printers.\n"+"Please Retry Again.";
+            String title="Printer Setup Error";
+            ErrorMessageDialogGenerator generator=new ErrorMessageDialogGenerator(message,title);
+            generator.setTasks(this);
+            generator.showDialog();
         }
     }
 }

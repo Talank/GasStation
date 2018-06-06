@@ -132,6 +132,10 @@ public class InitializeSystem extends Tasks {
                         PreparedStatement updateExpireID = connection.prepareStatement("UPDATE CreditCompany SET PREV_TRANSACTION_ID=" + transactionID + ",PREV_EXPIRE_DATE='" + date.toString() + "' WHERE ID=" + model.getId());
                         updateExpireID.execute();
 
+                        countResult.close();
+                        getCounts.close();
+                        updateExpireID.close();
+
                         model.setPrevExpireDate(generator.toString());
                         model.setExpireDate(date);
                         model.setTransactionID(resultSet.getInt(3));
@@ -184,7 +188,9 @@ public class InitializeSystem extends Tasks {
             SystemStatus.setdRate((Float.parseFloat(resultSet.getString(1))));
             resultSet.next();
             SystemStatus.setpRate(Float.parseFloat(resultSet.getString(1)));
+
             resultSet.close();
+            getRate.close();
 
             return true;
 

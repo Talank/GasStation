@@ -1,6 +1,7 @@
 package sample.tasks.database_tasks;
 
 import sample.controller.SystemLogging;
+import sample.library.ErrorMessageDialogGenerator;
 import sample.model.SystemStatus;
 import sample.model.transaction_model.DailyTotalAnalyticModel;
 import sample.nepali_date.NepaliDateGenerator;
@@ -77,6 +78,8 @@ public class TodayClosingTask extends Tasks {
 
             closing.execute();
 
+            closing.close();
+
             connection.commit();
 
             SystemStatus.setfDiesel(0f);
@@ -91,7 +94,6 @@ public class TodayClosingTask extends Tasks {
 
 
         } catch (SQLException e) {
-            retryStatus++;
 
             SystemLogging.getLogger().severe("Couldn't Perform Today Closing.Rescheduling Again.Retry Counter:"+retryStatus);
 
@@ -103,8 +105,12 @@ public class TodayClosingTask extends Tasks {
                 System.out.println("Unable to undo Changes.It restores when system restarts.");
             }
 
-            System.out.println("Couldn't Perform Today Closing.Rescheduling Again.Retry Counter:"+retryStatus);
-            TaskManager.scheduleTask(this,5000);
+            String message="Error Closing.\n"+"Please Retry Again.";
+            String title="System Error";
+            ErrorMessageDialogGenerator generator=new ErrorMessageDialogGenerator(message,title);
+            generator.setTasks(this);
+            generator.showDialog();
+
 
 
             System.out.println(e.getNextException().getMessage());

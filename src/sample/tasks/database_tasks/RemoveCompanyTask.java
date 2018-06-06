@@ -1,5 +1,6 @@
 package sample.tasks.database_tasks;
 
+import sample.library.ErrorMessageDialogGenerator;
 import sample.model.DebtListModel;
 import sample.model.databases.DatabaseHandler;
 import sample.tasks.Tasks;
@@ -23,6 +24,9 @@ public class RemoveCompanyTask extends Tasks {
             delete.execute();
             delete=connection.prepareStatement("DROP TABLE "+DatabaseHandler.generateTableName(model.getCompanyName(),model.getId()));
             delete.execute();
+
+            delete.close();
+
             connection.commit();
         } catch(SQLException e) {
             e.printStackTrace();
@@ -34,6 +38,12 @@ public class RemoveCompanyTask extends Tasks {
             } catch (SQLException e1) {
                 System.out.println("Unable to undo Changes.It restores when system restarts.");
             }
+
+            String message="Error Removing Company '"+model.getCompanyName()+"'.\n"+"Please Retry Again.";
+            String title="Company Error";
+            ErrorMessageDialogGenerator generator=new ErrorMessageDialogGenerator(message,title);
+            generator.setTasks(this);
+            generator.showDialog();
         }
     }
 }

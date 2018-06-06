@@ -1,5 +1,6 @@
 package sample.tasks.database_tasks;
 
+        import sample.library.ErrorMessageDialogGenerator;
         import sample.model.SystemStatus;
         import sample.model.databases.DatabaseHandler;
         import sample.nepali_date.NepaliDateGenerator;
@@ -41,6 +42,8 @@ public class SetupMeterReadingsTask extends Tasks {
 
                 updateStock.executeBatch();
 
+                updateStock.close();
+
                 SystemStatus.setiDiesel(Float.parseFloat(dieselReading));
                 SystemStatus.setiPetrol(Float.parseFloat(petrolReading));
 
@@ -53,6 +56,9 @@ public class SetupMeterReadingsTask extends Tasks {
                     updateStock.setDate(2,SystemStatus.getCurrentDate());
                     updateStock.setInt(3,11);
                     updateStock.execute();
+
+                    updateStock.close();
+
                     SystemStatus.setiDiesel(Float.parseFloat(dieselReading));
                 }
 
@@ -63,6 +69,9 @@ public class SetupMeterReadingsTask extends Tasks {
                     updateStock.setInt(3,12);
 
                     updateStock.execute();
+
+                    updateStock.close();
+
                     SystemStatus.setiPetrol(Float.parseFloat(petrolReading));
                 }
 
@@ -80,6 +89,12 @@ public class SetupMeterReadingsTask extends Tasks {
             } catch (SQLException e1) {
                 System.out.println("Unable to undo Changes.It restores when system restarts.");
             }
+
+            String message="Error Setting Up Final Meter Readings.\n"+"Please Retry Again.";
+            String title="Meter Readings Error";
+            ErrorMessageDialogGenerator generator=new ErrorMessageDialogGenerator(message,title);
+            generator.setTasks(this);
+            generator.showDialog();
         }
 
     }

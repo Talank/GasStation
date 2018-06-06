@@ -1,5 +1,6 @@
 package sample.tasks.database_tasks;
 
+import sample.library.ErrorMessageDialogGenerator;
 import sample.model.DebtListModel;
 import sample.tasks.Tasks;
 
@@ -27,6 +28,8 @@ public class UpdateCompanyTask extends Tasks {
 
             update.execute();
 
+            update.close();
+
             connection.commit();
 
         } catch(SQLException e) {
@@ -39,6 +42,11 @@ public class UpdateCompanyTask extends Tasks {
             } catch (SQLException e1) {
                 System.out.println("Unable to undo Changes.It restores when system restarts.");
             }
+            String message="Error Updating Company '"+model.getCompanyName()+"'.\n"+"Please Retry Again.";
+            String title="Company Error";
+            ErrorMessageDialogGenerator generator=new ErrorMessageDialogGenerator(message,title);
+            generator.setTasks(this);
+            generator.showDialog();
         }
 
     }
