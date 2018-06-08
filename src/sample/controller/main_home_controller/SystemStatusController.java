@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import sample.OutputTasks.GetExpenditureTask;
+import sample.controller.main_home_controller.credit_company_details_controller.NoSelectionModel;
 import sample.controller.main_home_controller.expenditure_list_controller.ExpenditureListCell;
 import sample.library.output_task_loading.OutputTaskLoading;
 import sample.library.toolbar.BackButtonInterface;
@@ -57,13 +58,14 @@ public class SystemStatusController implements BackButtonInterface {
         toolBar.addBackButtonInterface(this);
 
         expenditureList.setCellFactory(lv->new ExpenditureListCell());
+        expenditureList.setSelectionModel(new NoSelectionModel<>());
 
         task=new GetExpenditureTask();
         task.setOnSucceeded((WorkerStateEvent e)->{
             expenditureList.setItems(FXCollections.observableList(task.getValue()));
 
             int sum=0;
-            String tsum;
+            String totalSum;
 
             for (ExpenditureModel model:task.getValue()) {
                 sum+=Integer.parseInt(model.getAmount());
@@ -71,9 +73,9 @@ public class SystemStatusController implements BackButtonInterface {
             PriceFormat priceFormat=new PriceFormat();
             priceFormat.setFormat(sum+"");
 
-            tsum=priceFormat.getResult();
+            totalSum=priceFormat.getResult();
 
-            total.setText("Total Expenditure:Rs "+tsum+"/-");
+            total.setText("Total Expenditure:Rs "+totalSum+"/-");
 
             expenditureList.setVisible(true);
             progressLayout.setVisible(false);

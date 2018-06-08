@@ -1,6 +1,7 @@
 package sample.tasks.database_tasks;
 
 import sample.library.ErrorMessageDialogGenerator;
+import sample.library.SnackBarToastGenerator;
 import sample.model.DebtListModel;
 import sample.tasks.Tasks;
 
@@ -31,6 +32,9 @@ public class UpdateCompanyTask extends Tasks {
             update.close();
 
             connection.commit();
+
+            SnackBarToastGenerator snackBarToastGenerator=new SnackBarToastGenerator("Company Updated",1000);
+            snackBarToastGenerator.show();
 
         } catch(SQLException e) {
             e.printStackTrace();

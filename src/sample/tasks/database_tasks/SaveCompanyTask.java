@@ -2,6 +2,7 @@ package sample.tasks.database_tasks;
 
 import javafx.application.Platform;
 import sample.library.ErrorMessageDialogGenerator;
+import sample.library.SnackBarToastGenerator;
 import sample.model.SystemStatus;
 import sample.model.databases.DatabaseHandler;
 import sample.nepali_date.NepaliDateGenerator;
@@ -71,6 +72,9 @@ public class SaveCompanyTask extends Tasks {
             getIDs.close();
 
             connection.commit();
+
+            SnackBarToastGenerator snackBarToastGenerator=new SnackBarToastGenerator("Company Added SuccessFully",1000);
+            snackBarToastGenerator.show();
 
             System.out.println("Company Saved SuccessFully.");
 

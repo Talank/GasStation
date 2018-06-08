@@ -1,6 +1,7 @@
 package sample.tasks.database_tasks;
 
 import sample.library.ErrorMessageDialogGenerator;
+import sample.library.SnackBarToastGenerator;
 import sample.nepali_date.DateConverter;
 import sample.nepali_date.NepaliDateGenerator;
 import sample.tasks.Tasks;
@@ -27,6 +28,9 @@ public class ClearDailyAnalyticsTask extends Tasks {
             clearPetrolRefill.close();
 
             connection.commit();
+
+            SnackBarToastGenerator snackBarToastGenerator=new SnackBarToastGenerator("Daily Analytics Cleared",1000);
+            snackBarToastGenerator.show();
 
         } catch(SQLException e) {
             e.printStackTrace();

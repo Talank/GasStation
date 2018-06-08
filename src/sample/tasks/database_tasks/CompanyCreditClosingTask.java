@@ -1,6 +1,7 @@
 package sample.tasks.database_tasks;
 
 import sample.library.ErrorMessageDialogGenerator;
+import sample.library.SnackBarToastGenerator;
 import sample.model.DebtListModel;
 import sample.model.SystemStatus;
 import sample.model.databases.DatabaseHandler;
@@ -102,6 +103,9 @@ public class CompanyCreditClosingTask extends Tasks {
 
             }
             connection.commit();
+
+            SnackBarToastGenerator snackBarToastGenerator=new SnackBarToastGenerator("Company Closing SuccessFull",1000);
+            snackBarToastGenerator.show();
 
             model.setExpired(false);
 

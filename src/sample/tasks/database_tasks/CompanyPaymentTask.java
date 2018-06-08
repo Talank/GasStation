@@ -1,6 +1,7 @@
 package sample.tasks.database_tasks;
 
 import sample.library.ErrorMessageDialogGenerator;
+import sample.library.SnackBarToastGenerator;
 import sample.model.DebtListModel;
 import sample.model.SystemStatus;
 import sample.tasks.Tasks;
@@ -67,6 +68,10 @@ public class CompanyPaymentTask extends Tasks {
             model.setDate(model.getPrevExpireDate());
 
             connection.commit();
+
+            SnackBarToastGenerator snackBarToastGenerator=new SnackBarToastGenerator("Company Payment SuccessFull",1000);
+            snackBarToastGenerator.show();
+
         } catch(SQLException e) {
             e.printStackTrace();
             System.out.println(e.getMessage());

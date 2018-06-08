@@ -104,7 +104,12 @@ public class Main extends Application {
         * otherwise the primary key increments with 100 in every insertion
         * */
 
-        try {
+
+        /**
+         *Production Code
+         */
+
+        /*try {
             CallableStatement callableStatement= Tasks.getConnection().prepareCall("CALL SYSCS_UTIL.SYSCS_BACKUP_DATABASE(?)");
             callableStatement.setString(1,Reference.DATABASE_BACKUP_PATH);
             callableStatement.execute();
@@ -113,7 +118,7 @@ public class Main extends Application {
         } catch(SQLException e) {
             e.printStackTrace();
             System.out.println("Error Creating Database Backup!");
-        }
+        }*/
         DatabaseHandler.closeConnection();
 
     }

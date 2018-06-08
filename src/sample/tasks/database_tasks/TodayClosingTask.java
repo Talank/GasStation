@@ -2,6 +2,7 @@ package sample.tasks.database_tasks;
 
 import sample.controller.SystemLogging;
 import sample.library.ErrorMessageDialogGenerator;
+import sample.library.SnackBarToastGenerator;
 import sample.model.SystemStatus;
 import sample.model.transaction_model.DailyTotalAnalyticModel;
 import sample.nepali_date.NepaliDateGenerator;
@@ -81,6 +82,9 @@ public class TodayClosingTask extends Tasks {
             closing.close();
 
             connection.commit();
+
+            SnackBarToastGenerator snackBarToastGenerator=new SnackBarToastGenerator("Today Closing SuccessFull",1000);
+            snackBarToastGenerator.show();
 
             SystemStatus.setfDiesel(0f);
             SystemStatus.setfPetrol(0f);

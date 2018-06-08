@@ -236,12 +236,12 @@
       </VBox>
    </center>
    <left>
-      <ListView fx:id="transactionListView" prefWidth="350.0" BorderPane.alignment="CENTER" />
+      <ListView fx:id="transactionListView" prefWidth="300.0" BorderPane.alignment="CENTER" />
    </left>
    <right>
-      <VBox alignment="CENTER" spacing="50.0" BorderPane.alignment="CENTER">
+      <VBox alignment="CENTER" prefWidth="300.0" spacing="50.0" BorderPane.alignment="CENTER">
          <children>
-            <JFXButton fx:id="itemsCount" buttonType="RAISED" prefHeight="80.0" prefWidth="80.0" text="0" style="-fx-text-fill: white; -fx-font-weight: bold;">
+            <JFXButton fx:id="itemsCount" buttonType="RAISED" prefHeight="80.0" prefWidth="80.0" style="-fx-text-fill: white; -fx-font-weight: bold;" text="0">
                <font>
                   <Font size="25.0" />
                </font>

@@ -1,6 +1,7 @@
 package sample.model;
 
 import javafx.scene.control.Label;
+import sample.controller.AppHomeController;
 import sample.controller.SystemLogging;
 import sample.model.databases.DatabaseHandler;
 
@@ -15,6 +16,7 @@ public class CreditBill extends Bill {
         this.companyName = companyName;
     }
 
+    @Override
     public void printBill() {
 
         storeTransaction();
@@ -32,6 +34,7 @@ public class CreditBill extends Bill {
             SystemLogging.getLogger().fine("Bill Printed Successfully.");
         } else {
             SystemLogging.getLogger().warning("Error Printing Bill!");
+            AppHomeController.getInstance().showMessage("Error Printing Bill",1000);
         }
     }
 

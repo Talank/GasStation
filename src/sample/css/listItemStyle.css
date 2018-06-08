@@ -1,0 +1,14 @@
+.listItem {
+    -fx-background-color:#cccccc;
+    -fx-effect:dropshadow(gaussian,#000000,10,0.0,0,2);
+    -fx-padding:0px 20px 20px 20px;
+    -fx-border-insets:0px 20px 20px 20px;
+    -fx-background-insets:0px 20px 20px 20px;
+}
+
+.list-view .list-cell:even {
+    -fx-background-color: #ffffff;
+}
+.list-view .list-cell:odd {
+    -fx-background-color: #ffffff;
+}

@@ -1,6 +1,7 @@
 package sample.tasks.database_tasks;
 
 import sample.library.ErrorMessageDialogGenerator;
+import sample.library.SnackBarToastGenerator;
 import sample.model.AdminUser;
 import sample.model.SystemStatus;
 import sample.model.databases.DatabaseHandler;
@@ -43,6 +44,9 @@ public class ChangeUserParameterTask extends Tasks {
             updateUser.close();
 
             connection.commit();
+
+            SnackBarToastGenerator snackBarToastGenerator=new SnackBarToastGenerator("User Parameter Saved",1000);
+            snackBarToastGenerator.show();
 
 
         } catch (SQLException e) {

@@ -3,6 +3,7 @@ package sample.tasks.database_tasks;
 import javafx.application.Platform;
 import sample.controller.AppHomeController;
 import sample.library.ErrorMessageDialogGenerator;
+import sample.library.SnackBarToastGenerator;
 import sample.model.RateModel;
 import sample.model.SystemStatus;
 import sample.model.databases.DatabaseHandler;
@@ -76,9 +77,13 @@ public class ChangeOilRateTask extends Tasks {
                 }
             }
 
+            connection.commit();
+
             Platform.runLater(()->AppHomeController.getInstance().setRates());
 
-            connection.commit();
+            SnackBarToastGenerator snackBarToastGenerator=new SnackBarToastGenerator("Oil Rates Saved",1000);
+            snackBarToastGenerator.show();
+
 
         } catch(SQLException e) {
             System.out.println(e.getNextException().getMessage());

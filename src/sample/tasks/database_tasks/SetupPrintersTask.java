@@ -2,6 +2,7 @@ package sample.tasks.database_tasks;
 
 import sample.controller.main_home_controller.SettingsController;
 import sample.library.ErrorMessageDialogGenerator;
+import sample.library.SnackBarToastGenerator;
 import sample.model.SystemStatus;
 import sample.tasks.Tasks;
 
@@ -73,6 +74,9 @@ public class SetupPrintersTask extends Tasks {
             }
 
             connection.commit();
+
+            SnackBarToastGenerator snackBarToastGenerator=new SnackBarToastGenerator("Printer Saved",1000);
+            snackBarToastGenerator.show();
 
             String[][] model=SettingsController.getInstance().getModel();
             model[8][0]=billPrinterName;

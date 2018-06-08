@@ -1,6 +1,7 @@
 package sample.tasks.database_tasks;
 
 import sample.library.ErrorMessageDialogGenerator;
+import sample.library.SnackBarToastGenerator;
 import sample.model.SystemStatus;
 import sample.model.databases.DatabaseHandler;
 import sample.nepali_date.NepaliDateGenerator;
@@ -31,6 +32,10 @@ public class SetupCounterStockTask extends Tasks {
             insertStock.close();
 
             connection.commit();
+
+            SnackBarToastGenerator snackBarToastGenerator=new SnackBarToastGenerator("Counter Saved",1000);
+            snackBarToastGenerator.show();
+
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             try {

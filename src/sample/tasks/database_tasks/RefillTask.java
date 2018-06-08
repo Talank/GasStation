@@ -3,6 +3,7 @@ package sample.tasks.database_tasks;
 import javafx.application.Platform;
 import sample.controller.AppHomeController;
 import sample.library.ErrorMessageDialogGenerator;
+import sample.library.SnackBarToastGenerator;
 import sample.model.RefillModel;
 import sample.model.SystemStatus;
 import sample.tasks.Tasks;
@@ -69,7 +70,7 @@ public class RefillTask extends Tasks {
                 insertRefill.close();
             }
 
-            Platform.runLater(()->AppHomeController.getInstance().setStock());
+
 
 
             /**
@@ -112,6 +113,11 @@ public class RefillTask extends Tasks {
             }
 
             connection.commit();
+
+            Platform.runLater(()->AppHomeController.getInstance().setStock());
+
+            SnackBarToastGenerator snackBarToastGenerator=new SnackBarToastGenerator("Refill Added",1000);
+            snackBarToastGenerator.show();
 
         } catch(SQLException e) {
             e.printStackTrace();

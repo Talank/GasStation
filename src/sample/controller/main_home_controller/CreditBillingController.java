@@ -20,6 +20,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import sample.controller.AppHomeController;
 import sample.controller.dialog_controller.LoginDialogController;
 import sample.controller.main_home_controller.lists_controllers.TransactionListCell;
 import sample.library.toolbar.ToolBar;
@@ -586,10 +587,9 @@ public class CreditBillingController {
     @FXML
     public void printBill(MouseEvent e)throws IOException {
         if(!isListEmpty()) {
-            snackBar.show("Printing And Storing Bill.",2000);
+            AppHomeController.getInstance().showMessage("Printing Bill",1000);
 
             DebtListModel model=CreditCompanyList.getCompany(companyName.getValue());
-
 
             List<Transaction> newList=new ArrayList<>(transactionListView.getItems());//Create A shallow copy
             StoreCreditTransactionTask task=new StoreCreditTransactionTask(newList,model);
@@ -598,7 +598,6 @@ public class CreditBillingController {
                 task.setAdminDate(true,date);
             }
             TaskManager.executeTask(task);
-
 
             transactionListView.getItems().clear();
             masterClear();
@@ -610,11 +609,13 @@ public class CreditBillingController {
                 rate=SystemStatus.getpRate();
             }
 
+
+
             CreditTransactionBill transactionBill=new CreditTransactionBill(newList);
             transactionBill.print();
 
         } else {
-            snackBar.show("No Transaction Detected.",2000);
+            AppHomeController.getInstance().showMessage("No Transaction Detected",1000);
         }
 
     }

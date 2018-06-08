@@ -17,7 +17,7 @@
     <center>
       <StackPane BorderPane.alignment="CENTER">
          <children>
-            <JFXListView fx:id="detailsListView" />
+            <JFXListView fx:id="detailsListView" styleClass="list-view" stylesheets="@../../../css/listItemStyle.css" />
             <OutputTaskLoading fx:id="progressLayout" />
          </children>
       </StackPane>

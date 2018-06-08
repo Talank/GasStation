@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import sample.controller.AppHomeController;
 import sample.controller.SystemLogging;
 import sample.library.ErrorMessageDialogGenerator;
+import sample.library.SnackBarToastGenerator;
 import sample.model.DebtListModel;
 import sample.model.SystemStatus;
 import sample.model.databases.DatabaseHandler;
@@ -179,6 +180,9 @@ public class StoreCreditTransactionTask extends Tasks {
             connection.commit();
 
             SystemLogging.getLogger().fine("Credit Transaction Stored in Database");
+
+            SnackBarToastGenerator generator=new SnackBarToastGenerator("Credit Transaction Added",1000);
+            generator.show();
 
         }  catch(SQLException e) {
             e.printStackTrace();
