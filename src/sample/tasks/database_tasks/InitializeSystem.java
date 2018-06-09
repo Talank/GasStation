@@ -1,5 +1,6 @@
 package sample.tasks.database_tasks;
 
+import sample.SystemValidation;
 import sample.controller.SystemLogging;
 import sample.model.CreditCompanyList;
 import sample.model.DebtListModel;
@@ -16,8 +17,10 @@ import java.util.ArrayList;
 
 public class InitializeSystem extends Tasks {
 
-    @Override
-    public void execute() {
+
+    private String errorMessage;
+
+    public boolean customExecute() {
 
         SystemLogging.initializeLogger();//Initialize The Logger
         SystemStatus.setMainHomePath("../../view/main_home_views/mainHome.fxml");
@@ -129,6 +132,10 @@ public class InitializeSystem extends Tasks {
                         PreparedStatement updateExpireID = connection.prepareStatement("UPDATE CreditCompany SET PREV_TRANSACTION_ID=" + transactionID + ",PREV_EXPIRE_DATE='" + date.toString() + "' WHERE ID=" + model.getId());
                         updateExpireID.execute();
 
+                        countResult.close();
+                        getCounts.close();
+                        updateExpireID.close();
+
                         model.setPrevExpireDate(generator.toString());
                         model.setExpireDate(date);
                         model.setTransactionID(resultSet.getInt(3));
@@ -149,7 +156,7 @@ public class InitializeSystem extends Tasks {
             CreditCompanyList.setExpiredCompanyList(expiredList);
             Statement getValues = connection.createStatement();
 
-            resultSet = getValues.executeQuery("SELECT VALUE FROM SystemStatus WHERE ID>10 AND ID<18");
+            resultSet = getValues.executeQuery("SELECT VALUE FROM SystemStatus WHERE ID>10 AND ID<19");
 
             resultSet.next();
             SystemStatus.setiDiesel(Float.parseFloat(resultSet.getString(1)));
@@ -165,6 +172,14 @@ public class InitializeSystem extends Tasks {
             SystemStatus.setBillPrinter(resultSet.getString(1));
             resultSet.next();
             SystemStatus.setAnalyticsPrinter(resultSet.getString(1));
+            resultSet.next();
+
+            SystemValidation validation=new SystemValidation();
+            if(!validation.validate(resultSet.getString(1))) {
+                System.out.println("System Runtime Validation Failed");
+                errorMessage="System Validation Failed.Could not Initialize System.Please Contact The Company Officials.";
+                return false;
+            }
 
             Statement getRate = connection.createStatement();
             resultSet = getRate.executeQuery("SELECT VALUE FROM SystemStatus WHERE ID>8 AND ID<11");
@@ -173,7 +188,11 @@ public class InitializeSystem extends Tasks {
             SystemStatus.setdRate((Float.parseFloat(resultSet.getString(1))));
             resultSet.next();
             SystemStatus.setpRate(Float.parseFloat(resultSet.getString(1)));
+
             resultSet.close();
+            getRate.close();
+
+            return true;
 
         } catch (SQLException e) {
 
@@ -186,9 +205,15 @@ public class InitializeSystem extends Tasks {
             } catch (SQLException e1) {
                 System.out.println("Unable to undo Changes.It restores when system restarts.");
             }
+            errorMessage="Database Error Detected.Could not Initialize System.Please Contact The Company Officials.";
         }
 
-
+        return false;
 
     }
+
+    public String getErrorMessage() {
+        return errorMessage;
+    }
+
 }

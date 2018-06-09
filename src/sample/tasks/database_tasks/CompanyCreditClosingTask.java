@@ -1,5 +1,7 @@
 package sample.tasks.database_tasks;
 
+import sample.library.ErrorMessageDialogGenerator;
+import sample.library.SnackBarToastGenerator;
 import sample.model.DebtListModel;
 import sample.model.SystemStatus;
 import sample.model.databases.DatabaseHandler;
@@ -70,6 +72,10 @@ public class CompanyCreditClosingTask extends Tasks {
 
                 deleteCredit.execute();
 
+                totalResult.close();
+                getResults.close();
+                deleteCredit.close();
+
                 model.setDue(model.getDue()+(model.getTotal()-total));
                 model.setTotal(total);
                 model.setTransactionID(lastTransaction);
@@ -87,6 +93,9 @@ public class CompanyCreditClosingTask extends Tasks {
 
                 updateCreditCompany.execute();
 
+                delete.close();
+                updateCreditCompany.close();
+
                 model.setDue(model.getDue()+model.getTotal());
                 model.setTotal(0f);
 
@@ -94,6 +103,9 @@ public class CompanyCreditClosingTask extends Tasks {
 
             }
             connection.commit();
+
+            SnackBarToastGenerator snackBarToastGenerator=new SnackBarToastGenerator("Company Closing SuccessFull",1000);
+            snackBarToastGenerator.show();
 
             model.setExpired(false);
 
@@ -108,6 +120,12 @@ public class CompanyCreditClosingTask extends Tasks {
             } catch (SQLException e1) {
                 System.out.println("Unable to undo Changes.It restores when system restarts.");
             }
+
+            String message="Error Closing Company '"+model.getCompanyName()+"'.\n"+"Please Retry Again.";
+            String title="Company Error";
+            ErrorMessageDialogGenerator generator=new ErrorMessageDialogGenerator(message,title);
+            generator.setTasks(this);
+            generator.showDialog();
         }
     }
 }

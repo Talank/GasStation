@@ -1,5 +1,7 @@
 package sample.tasks.database_tasks;
 
+import sample.library.ErrorMessageDialogGenerator;
+import sample.library.SnackBarToastGenerator;
 import sample.model.DebtListModel;
 import sample.model.SystemStatus;
 import sample.tasks.Tasks;
@@ -46,17 +48,30 @@ public class CompanyPaymentTask extends Tasks {
                 creditPayment.setInt(2,model.getId());
                 creditPayment.execute();
 
+                creditPayment.close();
+
                 System.out.println("Company Payment Made SuccessFully");
             } else {
                 PreparedStatement creditPayment=connection.prepareStatement("UPDATE CreditCompany SET DUE=DUE-? WHERE ID=?");
                 creditPayment.setFloat(1,payment);
                 creditPayment.setInt(2,model.getId());
+                creditPayment.execute();
+
+                creditPayment.close();
 
                 System.out.println("The Debt of the company has been deducted.");
             }
+
+            resultSet.close();
+
             model.setDue(model.getDue()-payment);
             model.setDate(model.getPrevExpireDate());
+
             connection.commit();
+
+            SnackBarToastGenerator snackBarToastGenerator=new SnackBarToastGenerator("Company Payment SuccessFull",1000);
+            snackBarToastGenerator.show();
+
         } catch(SQLException e) {
             e.printStackTrace();
             System.out.println(e.getMessage());
@@ -69,6 +84,12 @@ public class CompanyPaymentTask extends Tasks {
             } catch (SQLException e1) {
                 System.out.println("Unable to undo Changes.It restores when system restarts.");
             }
+
+            String message="Error in Company Payment of '"+model.getCompanyName()+".\n"+"Please Retry Again.";
+            String title="Company Error";
+            ErrorMessageDialogGenerator generator=new ErrorMessageDialogGenerator(message,title);
+            generator.setTasks(this);
+            generator.showDialog();
         }
     }
 }

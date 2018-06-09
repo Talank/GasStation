@@ -2,6 +2,7 @@ package sample.model;
 
 
 import javafx.scene.control.Label;
+import sample.controller.AppHomeController;
 import sample.controller.SystemLogging;
 
 public class InstantBill extends Bill {
@@ -12,6 +13,7 @@ public class InstantBill extends Bill {
         this.name = name;
     }
 
+    @Override
     public void printBill() {
         Label label=new Label();
         StringBuilder builder=new StringBuilder();
@@ -26,6 +28,7 @@ public class InstantBill extends Bill {
             SystemLogging.getLogger().fine("Bill Printed Successfully.");
         } else {
             SystemLogging.getLogger().warning("Error Printing Bill!");
+            AppHomeController.getInstance().showMessage("Error Printing Bill",1000);
         }
 
     }

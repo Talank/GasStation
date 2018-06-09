@@ -12,6 +12,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import sample.controller.dialog_controller.PaymentDialogController;
+import sample.model.CreditCompanyClosingBill;
 import sample.model.DebtListModel;
 import sample.model.SystemStatus;
 import sample.tasks.TaskManager;
@@ -63,8 +64,11 @@ public class CustomListCellController {
         days.setTextFill(Color.BLACK);
         date.setText("Credit Time:"+SystemStatus.getCurrentDate());
 
-        CompanyCreditClosingTask task=new CompanyCreditClosingTask(model);
-        TaskManager.executeTask(task);
+        CreditCompanyClosingBill bill=new CreditCompanyClosingBill();
+        if(bill.printBill()) {
+            CompanyCreditClosingTask task=new CompanyCreditClosingTask(model);
+            TaskManager.executeTask(task);
+        }
     }
 
     @FXML

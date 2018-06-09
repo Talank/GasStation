@@ -2,6 +2,8 @@ package sample.tasks.database_tasks;
 
 import javafx.application.Platform;
 import sample.controller.AppHomeController;
+import sample.library.ErrorMessageDialogGenerator;
+import sample.library.SnackBarToastGenerator;
 import sample.model.SystemStatus;
 import sample.model.databases.DatabaseHandler;
 import sample.nepali_date.NepaliDateGenerator;
@@ -43,6 +45,8 @@ public class SetupOilStockTask extends Tasks {
 
                 updateStock.executeBatch();
 
+                updateStock.close();
+
                 SystemStatus.setDieselStock(Float.parseFloat(dieselStock));
                 SystemStatus.setPetrolStock(Float.parseFloat(petrolStock));
 
@@ -56,6 +60,9 @@ public class SetupOilStockTask extends Tasks {
                     updateStock.setInt(3,14);
 
                     updateStock.execute();
+
+                    updateStock.close();
+
                     SystemStatus.setDieselStock(Float.parseFloat(dieselStock));
                 }
 
@@ -65,14 +72,20 @@ public class SetupOilStockTask extends Tasks {
                     updateStock.setDate(2,SystemStatus.getCurrentDate());
                     updateStock.setInt(3,15);
                     updateStock.execute();
+
+                    updateStock.close();
+
                     SystemStatus.setPetrolStock(Float.parseFloat(petrolStock));
                 }
 
             }
 
-            Platform.runLater(()->AppHomeController.getInstance().setStock());
             connection.commit();
 
+            Platform.runLater(()->AppHomeController.getInstance().setStock());
+
+            SnackBarToastGenerator snackBarToastGenerator=new SnackBarToastGenerator("Oil Stock Saved",1000);
+            snackBarToastGenerator.show();
 
         } catch(SQLException e) {
             System.out.println(e.getMessage());
@@ -84,6 +97,12 @@ public class SetupOilStockTask extends Tasks {
             } catch (SQLException e1) {
                 System.out.println("Unable to undo Changes.It restores when system restarts.");
             }
+
+            String message="Error Setting up Oil Stock.\n"+"Please Retry Again.";
+            String title="Oil Stock Error";
+            ErrorMessageDialogGenerator generator=new ErrorMessageDialogGenerator(message,title);
+            generator.setTasks(this);
+            generator.showDialog();
         }
 
     }

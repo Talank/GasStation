@@ -1,10 +1,17 @@
 
 
-
 .toolBarBubbleColor {
     -fx-background-color:#33b5e5;
     -fx-background-radius:50px;
     -fx-effect:dropshadow(gaussian,#000000,10,0.0,0,2);
+}
+
+.jfx-snackbar-content {
+    -fx-background-color: #000000;
+}
+
+.jfx-snackbar-toast {
+    -fx-text-fill:#ffffff;
 }
 
 .toolBarBubbleInfoText {

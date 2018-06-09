@@ -28,6 +28,9 @@
                </font>
             </Label>
          </children>
+         <GridPane.margin>
+            <Insets left="-100.0" />
+         </GridPane.margin>
       </HBox>
       <JFXButton fx:id="backButton" buttonType="RAISED" onMouseClicked="#backToPath" text="BACK">
          <font>

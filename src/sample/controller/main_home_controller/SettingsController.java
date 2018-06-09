@@ -15,6 +15,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import sample.OutputTasks.GetSettingsTask;
 import sample.controller.dialog_controller.*;
+import sample.controller.main_home_controller.credit_company_details_controller.NoSelectionModel;
 import sample.controller.main_home_controller.lists_controllers.DebtListCell;
 import sample.controller.SystemLogging;
 import sample.library.toolbar.ToolBar;
@@ -73,7 +74,7 @@ public class SettingsController {
         toolBar.setBackPath(SystemStatus.getMainHomePath());
 
         debtList.setCellFactory(lv->new DebtListCell());
-        debtList.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        debtList.setSelectionModel(new NoSelectionModel<>());
         listModels=FXCollections.observableList(CreditCompanyList.getDetailCompanyList());
         debtList.setItems(listModels);
 

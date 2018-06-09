@@ -2,6 +2,8 @@ package sample.tasks.database_tasks;
 
 import javafx.application.Platform;
 import sample.controller.AppHomeController;
+import sample.library.ErrorMessageDialogGenerator;
+import sample.library.SnackBarToastGenerator;
 import sample.model.RefillModel;
 import sample.model.SystemStatus;
 import sample.tasks.Tasks;
@@ -44,6 +46,8 @@ public class RefillTask extends Tasks {
 
                 insertRefill.execute();
 
+                insertRefill.close();
+
                 SystemStatus.setDieselStock(SystemStatus.getDieselStock()+model.getActual());
             } else {
 
@@ -62,9 +66,11 @@ public class RefillTask extends Tasks {
 
                 insertRefill.execute();
                 SystemStatus.setPetrolStock(SystemStatus.getPetrolStock()+model.getActual());
+
+                insertRefill.close();
             }
 
-            Platform.runLater(()->AppHomeController.getInstance().setStock());
+
 
 
             /**
@@ -89,6 +95,8 @@ public class RefillTask extends Tasks {
                 updateTanker.setInt(2,Integer.parseInt(model.getTankerNumber()));
                 updateTanker.execute();
 
+                updateTanker.close();
+
             } else {
                 String tankerType=(mode==0)?"Diesel":"Petrol";
 
@@ -100,9 +108,16 @@ public class RefillTask extends Tasks {
 
                 insertTanker.execute();
 
+                insertTanker.close();
+
             }
 
             connection.commit();
+
+            Platform.runLater(()->AppHomeController.getInstance().setStock());
+
+            SnackBarToastGenerator snackBarToastGenerator=new SnackBarToastGenerator("Refill Added",1000);
+            snackBarToastGenerator.show();
 
         } catch(SQLException e) {
             e.printStackTrace();
@@ -114,6 +129,12 @@ public class RefillTask extends Tasks {
             } catch (SQLException e1) {
                 System.out.println("Unable to undo Changes.It restores when system restarts.");
             }
+
+            String message="Error Adding Refill.\n"+"Please Retry Again.";
+            String title="Refill Error";
+            ErrorMessageDialogGenerator generator=new ErrorMessageDialogGenerator(message,title);
+            generator.setTasks(this);
+            generator.showDialog();
         }
     }
 }

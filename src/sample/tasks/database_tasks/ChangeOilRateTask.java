@@ -2,6 +2,8 @@ package sample.tasks.database_tasks;
 
 import javafx.application.Platform;
 import sample.controller.AppHomeController;
+import sample.library.ErrorMessageDialogGenerator;
+import sample.library.SnackBarToastGenerator;
 import sample.model.RateModel;
 import sample.model.SystemStatus;
 import sample.model.databases.DatabaseHandler;
@@ -26,8 +28,6 @@ public class ChangeOilRateTask extends Tasks {
     @Override
     public void execute() {
         try {
-
-
             if(SystemStatus.getdRate()!=model.getrDiesel()&&SystemStatus.getpRate()!=model.getrPetrol()) {
 
                 PreparedStatement setRate=connection.prepareStatement("UPDATE SystemStatus SET VALUE=?,DATE=? WHERE ID=?");
@@ -44,6 +44,8 @@ public class ChangeOilRateTask extends Tasks {
 
                 setRate.executeBatch();
 
+                setRate.close();
+
                 SystemStatus.setpRate(model.getrPetrol());
                 SystemStatus.setdRate(model.getrDiesel());
             } else {
@@ -55,6 +57,9 @@ public class ChangeOilRateTask extends Tasks {
                     updateRate.setInt(3,9);
 
                     updateRate.execute();
+
+                    updateRate.close();
+
                     SystemStatus.setdRate(model.getrDiesel());
                 }
 
@@ -65,13 +70,20 @@ public class ChangeOilRateTask extends Tasks {
                     updateRate.setInt(3,10);
 
                     updateRate.execute();
+
+                    updateRate.close();
+
                     SystemStatus.setdRate(model.getrDiesel());
                 }
             }
 
+            connection.commit();
+
             Platform.runLater(()->AppHomeController.getInstance().setRates());
 
-            connection.commit();
+            SnackBarToastGenerator snackBarToastGenerator=new SnackBarToastGenerator("Oil Rates Saved",1000);
+            snackBarToastGenerator.show();
+
 
         } catch(SQLException e) {
             System.out.println(e.getNextException().getMessage());
@@ -82,6 +94,12 @@ public class ChangeOilRateTask extends Tasks {
             } catch (SQLException e1) {
                 System.out.println("Unable to undo Changes.It restores when system restarts.");
             }
+
+            String message="Error Changing Oil Rates.\n"+"Please Retry Again.";
+            String title="Oil Rate Update Error";
+            ErrorMessageDialogGenerator generator=new ErrorMessageDialogGenerator(message,title);
+            generator.setTasks(this);
+            generator.showDialog();
 
 
         }

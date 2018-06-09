@@ -1,5 +1,8 @@
 package sample.tasks.database_tasks;
 
+import sample.library.ErrorMessageDialogGenerator;
+import sample.library.SnackBarToastGenerator;
+import sample.model.AdminUser;
 import sample.model.SystemStatus;
 import sample.model.databases.DatabaseHandler;
 import sample.nepali_date.NepaliDateGenerator;
@@ -31,13 +34,19 @@ public class ChangeUserParameterTask extends Tasks {
             updateUser.setInt(3,7);
             updateUser.addBatch();
 
-            updateUser.setString(1,password);
+            updateUser.setString(1,(new AdminUser()).generatePasswordHash(password));
             updateUser.setDate(2,SystemStatus.getCurrentDate());
             updateUser.setInt(3,8);
             updateUser.addBatch();
 
             updateUser.executeBatch();
+
+            updateUser.close();
+
             connection.commit();
+
+            SnackBarToastGenerator snackBarToastGenerator=new SnackBarToastGenerator("User Parameter Saved",1000);
+            snackBarToastGenerator.show();
 
 
         } catch (SQLException e) {
@@ -50,6 +59,13 @@ public class ChangeUserParameterTask extends Tasks {
             } catch (SQLException e1) {
                 System.out.println("Unable to undo Changes.It restores when system restarts.");
             }
+
+            String message="Error Changing User Parameters.\n"+"Please Retry Again.";
+            String title="User Parameter Error";
+            ErrorMessageDialogGenerator generator=new ErrorMessageDialogGenerator(message,title);
+            generator.setTasks(this);
+            generator.showDialog();
+
         }
 
     }

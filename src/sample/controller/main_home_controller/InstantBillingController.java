@@ -15,6 +15,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import sample.controller.AppHomeController;
 import sample.controller.SystemLogging;
 import sample.controller.main_home_controller.lists_controllers.TransactionListCell;
 import sample.model.databases.DatabaseHandler;
@@ -430,14 +431,17 @@ public class InstantBillingController {
     public void printBill(MouseEvent e)throws IOException {
 
         if(!isListEmpty()) {
+            AppHomeController.getInstance().showMessage("Printing Bill",1000);
+
             List<Transaction> newList=new ArrayList<>(transactionListView.getItems());
             InstantTransactionBill instantTransactionBill=new InstantTransactionBill(newList);
             instantTransactionBill.print();
             transactionListView.getItems().clear();
             masterClear();
-            snackBar.show("Printing Bill",2000);
+
+
         } else {
-            snackBar.show("No Transaction Detected.",2000);
+            AppHomeController.getInstance().showMessage("No Transaction Detected",1000);
         }
 
     }

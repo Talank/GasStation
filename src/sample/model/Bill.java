@@ -1,6 +1,6 @@
 package sample.model;
 
-public class Bill {
+public abstract class Bill {
     protected String price,volume,vehicleNo,type;
     protected boolean isDiesel;
 
@@ -14,4 +14,11 @@ public class Bill {
         else
             type="Petrol";
     }
+
+    public Bill() {
+
+    }
+
+    abstract public void printBill();
+
 }

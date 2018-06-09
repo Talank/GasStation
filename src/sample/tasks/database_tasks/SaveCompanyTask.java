@@ -1,6 +1,8 @@
 package sample.tasks.database_tasks;
 
 import javafx.application.Platform;
+import sample.library.ErrorMessageDialogGenerator;
+import sample.library.SnackBarToastGenerator;
 import sample.model.SystemStatus;
 import sample.model.databases.DatabaseHandler;
 import sample.nepali_date.NepaliDateGenerator;
@@ -28,14 +30,12 @@ public class SaveCompanyTask extends Tasks {
             ResultSet resultSet=getIDs.executeQuery("SELECT COUNT(*) FROM CreditCompany");
             resultSet.next();
             int idArray[]=new int[resultSet.getInt(1)];
-            resultSet.close();
 
             resultSet=getIDs.executeQuery("SELECT ID FROM CreditCompany");
 
             while(resultSet.next())
                 idArray[i++]=resultSet.getInt(1);
             j=1;
-
 
             while(true) {
                 status=false;
@@ -66,7 +66,15 @@ public class SaveCompanyTask extends Tasks {
 
             insertCompany.execute();
 
+            resultSet.close();
+            insertCompany.close();
+            saveCompany.close();
+            getIDs.close();
+
             connection.commit();
+
+            SnackBarToastGenerator snackBarToastGenerator=new SnackBarToastGenerator("Company Added SuccessFully",1000);
+            snackBarToastGenerator.show();
 
             System.out.println("Company Saved SuccessFully.");
 
@@ -82,8 +90,6 @@ public class SaveCompanyTask extends Tasks {
 
         } catch (SQLException e) {
             retryStatus++;
-            System.out.println("Error Saving Company.ReScheduling Task Again. Retry:"+retryStatus);
-
             try {
                 connection.rollback();
                 System.out.println("Error in Database detected. Rolling back Database to stable stage.");
@@ -92,7 +98,12 @@ public class SaveCompanyTask extends Tasks {
                 System.out.println("Unable to undo Changes.It restores when system restarts.");
             }
 
-            TaskManager.scheduleTask(this,5000);
+            String message="Error Saving Company'"+companyName+"'.\n"+"Please Retry Again.";
+            String title="Company Error";
+            ErrorMessageDialogGenerator generator=new ErrorMessageDialogGenerator(message,title);
+            generator.setTasks(this);
+            generator.showDialog();
+
             e.printStackTrace();
             System.out.println(e.getNextException().getMessage());
         }

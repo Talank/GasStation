@@ -238,15 +238,12 @@
         </VBox>
     </center>
     <left>
-        <ListView fx:id="transactionListView" prefWidth="350.0" BorderPane.alignment="CENTER" />
+        <ListView fx:id="transactionListView" prefWidth="300.0" BorderPane.alignment="CENTER" />
     </left>
     <right>
-        <VBox alignment="CENTER" spacing="50.0" BorderPane.alignment="CENTER">
+        <VBox alignment="CENTER" prefWidth="300.0" spacing="50.0" BorderPane.alignment="CENTER">
             <children>
-            <JFXButton fx:id="adminButton" buttonType="RAISED" layoutX="20.0" layoutY="175.0" onMouseClicked="#loadAdmin" prefHeight="80.0" prefWidth="80.0" text="A">
-               <font>
-                  <Font size="25.0" />
-               </font>
+            <JFXButton fx:id="adminButton" buttonType="RAISED" layoutX="20.0" layoutY="175.0" onMouseClicked="#loadAdmin" prefHeight="80.0" prefWidth="80.0">
                <stylesheets>
                   <URL value="@../../css/componentStyles.css" />
                   <URL value="@../../css/appColorPalette.css" />
@@ -254,9 +251,10 @@
                <styleClass>
                   <String fx:value="billingRoundButton" />
                   <String fx:value="adminButtonColor" />
+                   <String fx:value="adminButtonIcon" />
                </styleClass>
             </JFXButton>
-                <JFXButton fx:id="itemsCount" buttonType="RAISED" prefHeight="80.0" prefWidth="80.0" text="0">
+                <JFXButton fx:id="itemsCount" buttonType="RAISED" prefHeight="80.0" prefWidth="80.0" style="-fx-text-fill: white; -fx-font-weight: bold;" text="0">
                     <font>
                         <Font size="25.0" />
                     </font>
@@ -269,42 +267,36 @@
                   <String fx:value="billingRoundButton" />
                </styleClass>
                 </JFXButton>
-                <JFXButton fx:id="addItems" buttonType="RAISED" onMouseClicked="#addNewItem" prefHeight="80.0" prefWidth="80.0" text="+">
-                    <font>
-                        <Font size="35.0" />
-                    </font>
+                <JFXButton fx:id="addItems" buttonType="RAISED" onMouseClicked="#addNewItem" prefHeight="80.0" prefWidth="80.0">
                <stylesheets>
                   <URL value="@../../css/componentStyles.css" />
                   <URL value="@../../css/appColorPalette.css" />
                </stylesheets>
                <styleClass>
                   <String fx:value="addButtonColor" />
+                   <String fx:value="addButtonIcon" />
                   <String fx:value="billingRoundButton" />
                </styleClass>
                 </JFXButton>
-                <JFXButton buttonType="RAISED" onMouseClicked="#deleteItem" prefHeight="80.0" prefWidth="80.0" text="-">
-                    <font>
-                        <Font size="35.0" />
-                    </font>
+                <JFXButton buttonType="RAISED" onMouseClicked="#deleteItem" prefHeight="80.0" prefWidth="80.0">
                <stylesheets>
                   <URL value="@../../css/componentStyles.css" />
                   <URL value="@../../css/appColorPalette.css" />
                </stylesheets>
                <styleClass>
                   <String fx:value="removeButtonColor" />
+                   <String fx:value="removeButtonIcon" />
                   <String fx:value="billingRoundButton" />
                </styleClass>
                 </JFXButton>
-                <JFXButton buttonType="RAISED" onMouseClicked="#clearSelection" prefHeight="80.0" prefWidth="80.0" text="X">
-                    <font>
-                        <Font size="35.0" />
-                    </font>
+                <JFXButton buttonType="RAISED" onMouseClicked="#clearSelection" prefHeight="80.0" prefWidth="80.0">
                <stylesheets>
                   <URL value="@../../css/componentStyles.css" />
                   <URL value="@../../css/appColorPalette.css" />
                </stylesheets>
                <styleClass>
                   <String fx:value="clearButtonColor" />
+                   <String fx:value="clearButtonIcon" />
                   <String fx:value="billingRoundButton" />
                </styleClass>
                 </JFXButton>
