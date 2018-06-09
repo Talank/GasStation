@@ -8,6 +8,7 @@ public class TaskManager {
     private static TaskQueue taskQueue;
     private static int maxThread=0;
     private static Thread mainThread;
+    private static final int TIMEOUT=20000;
 
     private static final int MAX_RETRY=5;
 
@@ -19,8 +20,8 @@ public class TaskManager {
             while(true) {
                 if(taskQueue.isEmpty()) {
                     try {
-                        System.out.println("No Task Detected.Sleep:5s");
-                         Thread.sleep(5000);
+                        System.out.println("No Task Detected.Sleep:"+TIMEOUT+" ms");
+                         Thread.sleep(TIMEOUT);
                     } catch (InterruptedException e) {
                         System.out.println("Interrupted:Checking For Tasks.");
                      //   e.printStackTrace();

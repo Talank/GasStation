@@ -9,7 +9,9 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import sample.controller.AppHomeController;
 import sample.controller.SystemLogging;
 import sample.controller.main_home_controller.DailyAnalyticsController;
 import sample.controller.main_home_controller.SettingsController;
@@ -38,12 +40,6 @@ public class FinalReadingsController implements BottomBarInterface {
 
     @FXML
     private DialogBottomBar bottomBar;
-
-
-
-    private Stage stage;
-
-
 
     @FXML
     public void initialize() {
@@ -105,9 +101,8 @@ public class FinalReadingsController implements BottomBarInterface {
             SystemStatus.setfDiesel(Float.parseFloat(fDiesel.getText()));
             SystemStatus.setfPetrol(Float.parseFloat(fPetrol.getText()));
 
-            Parent root=FXMLLoader.load(getClass().getResource("../../view/main_home_views/dailyAnalytics.fxml"));
-            stage.setScene(new Scene(root));
-            stage.show();
+            BorderPane borderPane=FXMLLoader.load(getClass().getResource("../../view/main_home_views/dailyAnalytics.fxml"));
+            AppHomeController.getInstance().loadStages(borderPane);
 
             ((Node)e.getSource()).getScene().getWindow().hide();
 
@@ -115,9 +110,6 @@ public class FinalReadingsController implements BottomBarInterface {
     }
 
 
-    public void setStage(Stage stage) {
-        this.stage=stage;
-    }
 
 
 }

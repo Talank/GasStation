@@ -28,16 +28,9 @@ public class GetDailyTotalAnalyticsModelTask extends Tasks {
             model.setExtraIncome(model.getCExtra());
             resultSet.close();
 
-            System.out.println("iDiesel:"+SystemStatus.getiDiesel());
-
-
             model.setIDieselVol(String.valueOf(SystemStatus.getfDiesel()-(SystemStatus.getiDiesel()+Float.parseFloat(model.getCDieselVol()))));
             model.setIPetrolVol(String.valueOf(SystemStatus.getfPetrol()-(SystemStatus.getiPetrol()+Float.parseFloat(model.getCPetrolVol()))));
 
-            System.out.println(model.getCDieselVol());
-            System.out.println(model.getCPetrolVol());
-            System.out.println(model.getIDieselVol());
-            System.out.println(model.getIPetrolVol());
 
             model.setOilIncome(SystemStatus.getdRate(),SystemStatus.getpRate());
             model.setTotal();

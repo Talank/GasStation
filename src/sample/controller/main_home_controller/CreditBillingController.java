@@ -609,8 +609,6 @@ public class CreditBillingController {
                 rate=SystemStatus.getpRate();
             }
 
-
-
             CreditTransactionBill transactionBill=new CreditTransactionBill(newList);
             transactionBill.print();
 

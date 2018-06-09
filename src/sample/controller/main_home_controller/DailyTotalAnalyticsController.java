@@ -137,10 +137,6 @@ public class DailyTotalAnalyticsController implements BackButtonInterface {
         FXMLLoader loader=new FXMLLoader(getClass().getResource("../../view/dialogs/finalReadings.fxml"));
         Parent root=loader.load();
 
-        FinalReadingsController controller=loader.getController();
-
-        controller.setStage((Stage)(((Node)e.getSource()).getScene().getWindow()));
-
         Stage stage=new Stage();
         stage.setScene(new Scene(root));
         stage.initModality(Modality.APPLICATION_MODAL);
