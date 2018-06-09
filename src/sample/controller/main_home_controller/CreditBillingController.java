@@ -450,6 +450,7 @@ public class CreditBillingController {
             rate=pRate;
         }
 
+        adminButton.setBorder(new Border(new BorderStroke(Color.RED,BorderStrokeStyle.SOLID,new CornerRadii(50),new BorderWidths(5),new Insets(-10))));
     }
 
 
@@ -603,6 +604,9 @@ public class CreditBillingController {
             masterClear();
 
             admin=false;
+
+            adminButton.setBorder(new Border(new BorderStroke(Color.TRANSPARENT,BorderStrokeStyle.NONE,CornerRadii.EMPTY,BorderWidths.EMPTY)));
+
             if(((JFXRadioButton)selection.getSelectedToggle()).getText().equals("Diesel")) {
                 rate=SystemStatus.getdRate();
             } else if(((JFXRadioButton)selection.getSelectedToggle()).getText().equals("Petrol")) {

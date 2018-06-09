@@ -1,5 +1,7 @@
 package sample.tasks.database_tasks;
 
+import javafx.application.Platform;
+import sample.controller.AppHomeController;
 import sample.controller.SystemLogging;
 import sample.library.ErrorMessageDialogGenerator;
 import sample.library.SnackBarToastGenerator;
@@ -39,6 +41,14 @@ public class TodayClosingTask extends Tasks {
 
             closing.setString(1,String.valueOf(SystemStatus.getfPetrol()));
             closing.setInt(3,12);
+            closing.addBatch();
+
+            closing.setString(1,String.valueOf(SystemStatus.getDieselStock()-Float.parseFloat(model.getIDieselVol())));
+            closing.setInt(3,14);
+            closing.addBatch();
+
+            closing.setString(1,String.valueOf(SystemStatus.getPetrolStock()-Float.parseFloat(model.getIPetrolVol())));
+            closing.setInt(3,15);
             closing.addBatch();
 
             closing.setString(1,String.valueOf(0));
@@ -83,7 +93,9 @@ public class TodayClosingTask extends Tasks {
 
             connection.commit();
 
-            SnackBarToastGenerator snackBarToastGenerator=new SnackBarToastGenerator("Today Closing SuccessFull",1000);
+            Platform.runLater(()->AppHomeController.getInstance().setStock());
+
+            SnackBarToastGenerator snackBarToastGenerator=new SnackBarToastGenerator("Today Closing SuccessFull. Auto Stock Adjust",1000);
             snackBarToastGenerator.show();
 
             SystemStatus.setfDiesel(0f);
@@ -98,8 +110,6 @@ public class TodayClosingTask extends Tasks {
 
 
         } catch (SQLException e) {
-
-            SystemLogging.getLogger().severe("Couldn't Perform Today Closing.Rescheduling Again.Retry Counter:"+retryStatus);
 
             try {
                 connection.rollback();

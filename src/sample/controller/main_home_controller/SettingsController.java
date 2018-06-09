@@ -74,7 +74,7 @@ public class SettingsController {
         toolBar.setBackPath(SystemStatus.getMainHomePath());
 
         debtList.setCellFactory(lv->new DebtListCell());
-        debtList.setSelectionModel(new NoSelectionModel<>());
+        debtList.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         listModels=FXCollections.observableList(CreditCompanyList.getDetailCompanyList());
         debtList.setItems(listModels);
 

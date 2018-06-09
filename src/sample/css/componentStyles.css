@@ -6,11 +6,15 @@
 }
 
 .generalButton {
+    -fx-focus-color:transparent;
+    -fx-faint-focus-color:transparent;
     -fx-font-size:25px;
     -fx-text-fill:black;
 }
 
 .billingRoundButton {
+    -fx-focus-color:transparent;
+    -fx-faint-focus-color:transparent;
     -fx-background-radius:40px;
     -fx-font-size:25px;
     -fx-pref-width:80px;
