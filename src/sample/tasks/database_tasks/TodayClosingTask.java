@@ -93,6 +93,9 @@ public class TodayClosingTask extends Tasks {
 
             connection.commit();
 
+            SystemStatus.setDieselStock(SystemStatus.getDieselStock()-Float.parseFloat(model.getIDieselVol()));
+            SystemStatus.setPetrolStock(SystemStatus.getPetrolStock()-Float.parseFloat(model.getIPetrolVol()));
+
             Platform.runLater(()->AppHomeController.getInstance().setStock());
 
             SnackBarToastGenerator snackBarToastGenerator=new SnackBarToastGenerator("Today Closing SuccessFull. Auto Stock Adjust",1000);
@@ -124,8 +127,6 @@ public class TodayClosingTask extends Tasks {
             ErrorMessageDialogGenerator generator=new ErrorMessageDialogGenerator(message,title);
             generator.setTasks(this);
             generator.showDialog();
-
-
 
             System.out.println(e.getNextException().getMessage());
         }
