@@ -181,8 +181,8 @@ public class StoreCreditTransactionTask extends Tasks {
 
             SystemLogging.getLogger().fine("Credit Transaction Stored in Database");
 
-            SnackBarToastGenerator generator=new SnackBarToastGenerator("Credit Transaction Added",1000);
-            generator.show();
+            SnackBarToastGenerator snackBarToastGenerator=new SnackBarToastGenerator("Credit Transaction Added",1000);
+            snackBarToastGenerator.show();
 
         }  catch(SQLException e) {
             e.printStackTrace();
