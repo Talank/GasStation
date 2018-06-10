@@ -39,7 +39,7 @@ import java.sql.Statement;
 
 /*
 * This Class Provides and stores the info for the tanker refill
-*
+* just to remove merge
 *
 * */
 
@@ -305,6 +305,7 @@ public class ProfitLossController implements BackButtonInterface {
         controller.setMode(mode);
         if(mode==0) {
             controller.setToolBarTitle("Diesel Refill");
+
         } else {
             controller.setToolBarTitle("Petrol Refill");
         }

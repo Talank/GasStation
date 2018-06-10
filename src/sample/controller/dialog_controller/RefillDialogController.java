@@ -15,11 +15,17 @@ import sample.model.SystemStatus;
 import sample.model.RefillModel;
 import sample.model.databases.DatabaseHandler;
 import sample.tasks.TaskManager;
+import sample.tasks.Tasks;
 import sample.tasks.database_tasks.RefillTask;
 import sample.tasks.database_tasks.SetupOilStockTask;
 
+import javax.xml.transform.Result;
 import java.io.IOException;
 import java.sql.Date;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 
 public class RefillDialogController implements BottomBarInterface {
 
@@ -131,6 +137,7 @@ public class RefillDialogController implements BottomBarInterface {
 
             float actualValue,loss;
             RefillModel model;
+            RefillTask task;
 
             if(mode==0) {
                 /**
@@ -140,8 +147,9 @@ public class RefillDialogController implements BottomBarInterface {
                 actualValue=Float.parseFloat(actual.getText())-SystemStatus.getDieselStock();
 
                 model=new RefillModel(Float.parseFloat(expected.getText()),actualValue,SystemStatus.getNepaliCurrentDate(),tankerNumber.getText());
-                ProfitLossController.getInstance().addDieselModel(model);
-            } else {
+
+               // ProfitLossController.getInstance().addDieselModel(model);
+            }  else {
 
                 /**
                  * This is for petrol,get the petrol actual value and its losses
@@ -149,10 +157,11 @@ public class RefillDialogController implements BottomBarInterface {
                 actualValue=Float.parseFloat(actual.getText())-SystemStatus.getPetrolStock();
 
                 model=new RefillModel(Float.parseFloat(expected.getText()),actualValue,SystemStatus.getNepaliCurrentDate(),tankerNumber.getText());
-                ProfitLossController.getInstance().addPetrolModel(model);
+
+               // ProfitLossController.getInstance().addPetrolModel(model);
             }
 
-            RefillTask task=new RefillTask(model,mode);
+            task=new RefillTask(model,mode);
             TaskManager.executeTask(task);
             ((Node)e.getSource()).getScene().getWindow().hide();
 

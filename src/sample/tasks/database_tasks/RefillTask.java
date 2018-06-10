@@ -2,6 +2,7 @@ package sample.tasks.database_tasks;
 
 import javafx.application.Platform;
 import sample.controller.AppHomeController;
+import sample.controller.main_home_controller.ProfitLossController;
 import sample.library.ErrorMessageDialogGenerator;
 import sample.library.SnackBarToastGenerator;
 import sample.model.RefillModel;
@@ -87,12 +88,27 @@ public class RefillTask extends Tasks {
              * **/
 
             Statement insertRefill=connection.createStatement();
+             ResultSet resultSet=insertRefill.executeQuery("SELECT TANKER_NO,TOTAL_LOSS,COUNTS FROM TANKERS WHERE TANKER_NO= ("+model.getTankerNumber()+")");
+            if (resultSet.next()) {
+                float avgValue=(resultSet.getFloat(2)+model.getLoss())/(resultSet.getInt(3)+1);
+                StringBuilder stringBuilder=new StringBuilder(resultSet.getString(1));
+                if (avgValue > 0 && avgValue <= 20) {
+                    stringBuilder.append("G");
+                } else if (avgValue >= 21 && avgValue <= 50) {
+                    stringBuilder.append("B");
+                } else if (avgValue > 50) {
+                    stringBuilder.append("R");
 
-            if (insertRefill.executeQuery("SELECT TANKER_NO FROM TANKERS WHERE TANKER_NO= ("+model.getTankerNumber()+")").next()) {
+                } else
+                    stringBuilder.append("P");
+
+                String codeData=stringBuilder.toString();
+                model=new RefillModel(model.getExpected(),model.getActual(),model.getDate(),codeData);
 
                 PreparedStatement updateTanker=connection.prepareStatement("UPDATE TANKERS SET TOTAL_LOSS= TOTAL_LOSS+?,COUNTS=COUNTS+1 WHERE TANKER_NO=?");
                 updateTanker.setFloat(1,model.getLoss());
-                updateTanker.setInt(2,Integer.parseInt(model.getTankerNumber()));
+                String colorTankCode=model.getTankerNumber();
+                updateTanker.setInt(2,Integer.parseInt(colorTankCode.substring(0,4)));
                 updateTanker.execute();
 
                 updateTanker.close();
@@ -102,7 +118,8 @@ public class RefillTask extends Tasks {
 
                 PreparedStatement insertTanker=connection.prepareStatement("INSERT INTO TANKERS VALUES (?,?,?,?)");
                 insertTanker.setInt(1,Integer.parseInt(model.getTankerNumber()));
-                insertTanker.setFloat(2,model.getLoss());
+                insertTanker.setFloat(
+                        2,model.getLoss());
                 insertTanker.setInt(3,1);
                 insertTanker.setString(4,tankerType);
 
@@ -111,7 +128,10 @@ public class RefillTask extends Tasks {
                 insertTanker.close();
 
             }
-
+            if(mode==0)
+            Platform.runLater(()->ProfitLossController.getInstance().addDieselModel(model));
+            else
+                Platform.runLater(()->ProfitLossController.getInstance().addPetrolModel(model));
             connection.commit();
 
             Platform.runLater(()->AppHomeController.getInstance().setStock());
