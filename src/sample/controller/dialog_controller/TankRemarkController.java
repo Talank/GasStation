@@ -86,7 +86,7 @@ public class TankRemarkController implements BottomBarInterface,TaskInterface<Ta
 
     @Override
     public void onError() {
-
+        bottomBar.setErrorText("Invalid Tanker Number");
     }
 
     @Override

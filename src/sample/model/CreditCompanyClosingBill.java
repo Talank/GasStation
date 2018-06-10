@@ -5,12 +5,15 @@ import sample.controller.AppHomeController;
 
 public class CreditCompanyClosingBill {
 
-    public CreditCompanyClosingBill() {
+    private DebtListModel model;
 
+    public CreditCompanyClosingBill(DebtListModel model) {
+        this.model=model;
     }
 
     public boolean printBill() {
         Label label=new Label();
+        label.setText("Company Name:"+model.getCompanyName());
 
         if(PrintBill.print(label)) {
             return true;

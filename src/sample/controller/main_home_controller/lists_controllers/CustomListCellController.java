@@ -64,7 +64,7 @@ public class CustomListCellController {
         days.setTextFill(Color.BLACK);
         date.setText("Credit Time:"+SystemStatus.getCurrentDate());
 
-        CreditCompanyClosingBill bill=new CreditCompanyClosingBill();
+        CreditCompanyClosingBill bill=new CreditCompanyClosingBill(model);
         if(bill.printBill()) {
             CompanyCreditClosingTask task=new CompanyCreditClosingTask(model);
             TaskManager.executeTask(task);

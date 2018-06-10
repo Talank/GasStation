@@ -13,6 +13,7 @@ import sample.library.dialog_bottombar.DialogBottomBar;
 import sample.library.dialog_toolbar.DialogToolBar;
 import sample.model.SystemStatus;
 import sample.model.RefillModel;
+import sample.model.TankerModel;
 import sample.model.databases.DatabaseHandler;
 import sample.tasks.TaskManager;
 import sample.tasks.Tasks;
@@ -135,7 +136,7 @@ public class RefillDialogController implements BottomBarInterface {
 
         if(status==0) {
 
-            float actualValue,loss;
+            float actualValue;
             RefillModel model;
             RefillTask task;
 
@@ -146,9 +147,16 @@ public class RefillDialogController implements BottomBarInterface {
 
                 actualValue=Float.parseFloat(actual.getText())-SystemStatus.getDieselStock();
 
-                model=new RefillModel(Float.parseFloat(expected.getText()),actualValue,SystemStatus.getNepaliCurrentDate(),tankerNumber.getText());
+                if((Float.parseFloat(expected.getText())-actualValue)>=0) {
+                    model=new RefillModel(Float.parseFloat(expected.getText()),actualValue,SystemStatus.getNepaliCurrentDate(),
+                            new TankerModel(-1f,-1,"Diesel",tankerNumber.getText()));
+                    task=new RefillTask(model,mode);
+                    TaskManager.executeTask(task);
+                    ((Node)e.getSource()).getScene().getWindow().hide();
+                } else {
+                    bottomBar.setErrorText("-Ve Loss Encountered.");
+                }
 
-               // ProfitLossController.getInstance().addDieselModel(model);
             }  else {
 
                 /**
@@ -156,14 +164,17 @@ public class RefillDialogController implements BottomBarInterface {
                  */
                 actualValue=Float.parseFloat(actual.getText())-SystemStatus.getPetrolStock();
 
-                model=new RefillModel(Float.parseFloat(expected.getText()),actualValue,SystemStatus.getNepaliCurrentDate(),tankerNumber.getText());
-
-               // ProfitLossController.getInstance().addPetrolModel(model);
+                if((Float.parseFloat(expected.getText())-actualValue)>=0) {
+                    model=new RefillModel(Float.parseFloat(expected.getText()),actualValue,SystemStatus.getNepaliCurrentDate(),
+                            new TankerModel(-1f,-1,"Petrol",tankerNumber.getText()));
+                    task=new RefillTask(model,mode);
+                    TaskManager.executeTask(task);
+                    ((Node)e.getSource()).getScene().getWindow().hide();
+                } else {
+                    bottomBar.setErrorText("-Ve Loss Encountered.");
+                }
             }
 
-            task=new RefillTask(model,mode);
-            TaskManager.executeTask(task);
-            ((Node)e.getSource()).getScene().getWindow().hide();
 
         }
     }

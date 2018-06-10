@@ -23,7 +23,7 @@ public class GetTankRemarkTask extends Tasks {
         try {
 
             float avg;
-            int count=0;
+            int count;
             String type;
 
             Statement getStatus=connection.createStatement();
@@ -31,21 +31,21 @@ public class GetTankRemarkTask extends Tasks {
             System.out.println("Tanker Number:"+tankerNumber);
 
             ResultSet resultSet=getStatus.executeQuery("SELECT * FROM Tankers WHERE TANKER_NO="+tankerNumber);
-            resultSet.next();
-            avg = resultSet.getFloat(2) / resultSet.getInt(3);
-            count=resultSet.getInt(3);
-            type=resultSet.getString(4);
 
-            TankerModel tankerModel=new TankerModel(avg,count,type);
+            if(resultSet.next()) {
+                avg = resultSet.getFloat(2) / resultSet.getInt(3);
+                count=resultSet.getInt(3);
+                type=resultSet.getString(4);
 
-            //System.out.println("Average:"+avg);
-            if(taskInterface!=null)
-                taskInterface.onComplete(tankerModel);
-            /*if(resultSet.next()) {
-
+                TankerModel tankerModel=new TankerModel(avg,count,type,(String.valueOf(tankerNumber)+"X"));
+                if(taskInterface!=null)
+                    taskInterface.onComplete(tankerModel);
             } else {
-                System.out.println("No result Found");
-            }*/
+                if(taskInterface!=null)
+                    taskInterface.onError();
+            }
+
+
 
 
         } catch(SQLException e) {

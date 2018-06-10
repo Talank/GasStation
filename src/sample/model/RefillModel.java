@@ -1,20 +1,43 @@
 package sample.model;
 
 import java.sql.Date;
+import java.util.ArrayList;
 
 public class RefillModel {
 
+    private static ArrayList<TankerModel> tankerModels=new ArrayList<>();
+
     private Float expected,actual,loss;
-    private String tankerNumber;
+    private TankerModel tankerModel;
+    private boolean isAvailable=false;
 
     private String date;
 
-    public RefillModel(Float expected, Float actual, String date, String  tankerNumber) {
+    public RefillModel(Float expected, Float actual, String date, TankerModel tankerModel) {
         this.expected = expected;
         this.actual = actual;
         this.loss = expected-actual;
         this.date = date;
-        this.tankerNumber = tankerNumber;
+        checkAndAddTanker(tankerModel);
+    }
+
+    public void checkAndAddTanker(TankerModel tankerModel) {
+
+        for(TankerModel model:tankerModels) {
+
+            if((model.getTankerNumber()).substring(0,4).equals(tankerModel.getTankerNumber().substring(0,4))) {
+                isAvailable=true;
+                this.tankerModel=model;
+                break;
+            }
+
+        }
+
+        if(!isAvailable) {
+            tankerModels.add(tankerModel);
+            this.tankerModel=tankerModel;
+        }
+
     }
 
     public Float getExpected() {
@@ -49,11 +72,27 @@ public class RefillModel {
         this.date = date;
     }
 
+    public TankerModel getTankerModel() {
+        return tankerModel;
+    }
+
+    public void setTankerModel(TankerModel tankerModel) {
+        this.tankerModel = tankerModel;
+    }
+
     public String getTankerNumber() {
-        return tankerNumber;
+        return tankerModel.getTankerNumber();
     }
 
     public void setTankerNumber(String tankerNumber) {
-        this.tankerNumber = tankerNumber;
+        this.tankerModel.setTankerNumber(tankerNumber);
+    }
+
+    public boolean isAvailable() {
+        return isAvailable;
+    }
+
+    public void setAvailable(boolean available) {
+        isAvailable = available;
     }
 }

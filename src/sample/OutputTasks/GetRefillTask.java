@@ -2,6 +2,7 @@ package sample.OutputTasks;
 
 import javafx.concurrent.Task;
 import sample.model.RefillModel;
+import sample.model.TankerModel;
 import sample.nepali_date.NepaliDateGenerator;
 import sample.tasks.Tasks;
 
@@ -63,7 +64,8 @@ public class GetRefillTask extends Task<ArrayList<ArrayList<RefillModel>>> {
                String codeData= stringBuilder.toString();
 
 
-                smallList.add(new RefillModel(resultSet.getFloat(1),resultSet.getFloat(2),generator.convertDate(resultSet.getDate(4)),codeData));
+                smallList.add(new RefillModel(resultSet.getFloat(1),resultSet.getFloat(2),generator.convertDate(resultSet.getDate(4)),
+                        new TankerModel(avgValue,resultSet.getInt(7),resultSet.getString(8),codeData)));
 
                 currentSize++;
                 updateProgress(currentSize,totalSize);
@@ -102,7 +104,8 @@ public class GetRefillTask extends Task<ArrayList<ArrayList<RefillModel>>> {
                 String codeData= stringBuilder.toString();
 
 
-                smallList.add(new RefillModel(resultSet.getFloat(1),resultSet.getFloat(2),generator.convertDate(resultSet.getDate(4)),codeData));
+                smallList.add(new RefillModel(resultSet.getFloat(1),resultSet.getFloat(2),generator.convertDate(resultSet.getDate(4)),
+                        new TankerModel(avgValue,resultSet.getInt(7),resultSet.getString(8),codeData)));
                 currentSize++;
                 updateProgress(currentSize,totalSize);
             }

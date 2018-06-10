@@ -35,7 +35,7 @@ public class RefillTask extends Tasks {
                 PreparedStatement insertRefill=connection.prepareStatement("INSERT INTO DieselRefill VALUES (?,?,?,?)");
                 insertRefill.setFloat(1,model.getExpected());
                 insertRefill.setFloat(2,model.getActual());
-                insertRefill.setInt(3,Integer.parseInt(model.getTankerNumber()));
+                insertRefill.setInt(3,Integer.parseInt(model.getTankerNumber().substring(0,4)));
                 insertRefill.setDate(4,SystemStatus.getCurrentDate());
 
                 insertRefill.execute();
@@ -55,7 +55,7 @@ public class RefillTask extends Tasks {
                 PreparedStatement insertRefill=connection.prepareStatement("INSERT INTO PetrolRefill VALUES (?,?,?,?)");
                 insertRefill.setFloat(1,model.getExpected());
                 insertRefill.setFloat(2,model.getActual());
-                insertRefill.setInt(3,Integer.parseInt(model.getTankerNumber()));
+                insertRefill.setInt(3,Integer.parseInt(model.getTankerNumber().substring(0,4)));
                 insertRefill.setDate(4,SystemStatus.getCurrentDate());
 
                 insertRefill.execute();
@@ -87,11 +87,11 @@ public class RefillTask extends Tasks {
              * increment count by 1
              * **/
 
-            Statement insertRefill=connection.createStatement();
-             ResultSet resultSet=insertRefill.executeQuery("SELECT TANKER_NO,TOTAL_LOSS,COUNTS FROM TANKERS WHERE TANKER_NO= ("+model.getTankerNumber()+")");
-            if (resultSet.next()) {
-                float avgValue=(resultSet.getFloat(2)+model.getLoss())/(resultSet.getInt(3)+1);
-                StringBuilder stringBuilder=new StringBuilder(resultSet.getString(1));
+
+            if(model.isAvailable()) {
+
+                float avgValue=((model.getTankerModel().getLoss())+model.getLoss())/((model.getTankerModel().getCount())+1);
+                StringBuilder stringBuilder=new StringBuilder(model.getTankerNumber().substring(0,4));
                 if (avgValue > 0 && avgValue <= 20) {
                     stringBuilder.append("G");
                 } else if (avgValue >= 21 && avgValue <= 50) {
@@ -103,7 +103,9 @@ public class RefillTask extends Tasks {
                     stringBuilder.append("P");
 
                 String codeData=stringBuilder.toString();
-                model=new RefillModel(model.getExpected(),model.getActual(),model.getDate(),codeData);
+                model.setTankerNumber(codeData);
+                model.getTankerModel().setAvg(avgValue);
+                model.getTankerModel().setCount((model.getTankerModel().getCount())+1);
 
                 PreparedStatement updateTanker=connection.prepareStatement("UPDATE TANKERS SET TOTAL_LOSS= TOTAL_LOSS+?,COUNTS=COUNTS+1 WHERE TANKER_NO=?");
                 updateTanker.setFloat(1,model.getLoss());
@@ -114,22 +116,71 @@ public class RefillTask extends Tasks {
                 updateTanker.close();
 
             } else {
-                String tankerType=(mode==0)?"Diesel":"Petrol";
+                Statement insertRefill=connection.createStatement();
+                ResultSet resultSet=insertRefill.executeQuery("SELECT TANKER_NO,TOTAL_LOSS,COUNTS FROM TANKERS WHERE TANKER_NO= ("+model.getTankerNumber().substring(0,4)+")");
+                if (resultSet.next()) {
+                    float avgValue=(resultSet.getFloat(2)+model.getLoss())/(resultSet.getInt(3)+1);
+                    StringBuilder stringBuilder=new StringBuilder(resultSet.getString(1));
+                    if (avgValue > 0 && avgValue <= 20) {
+                        stringBuilder.append("G");
+                    } else if (avgValue >= 21 && avgValue <= 50) {
+                        stringBuilder.append("B");
+                    } else if (avgValue > 50) {
+                        stringBuilder.append("R");
 
-                PreparedStatement insertTanker=connection.prepareStatement("INSERT INTO TANKERS VALUES (?,?,?,?)");
-                insertTanker.setInt(1,Integer.parseInt(model.getTankerNumber()));
-                insertTanker.setFloat(
-                        2,model.getLoss());
-                insertTanker.setInt(3,1);
-                insertTanker.setString(4,tankerType);
+                    } else
+                        stringBuilder.append("P");
 
-                insertTanker.execute();
+                    String codeData=stringBuilder.toString();
+                    model.setTankerNumber(codeData);
+                    model.getTankerModel().setAvg(avgValue);
+                    model.getTankerModel().setCount(resultSet.getInt(3)+1);
 
-                insertTanker.close();
+                    PreparedStatement updateTanker=connection.prepareStatement("UPDATE TANKERS SET TOTAL_LOSS= TOTAL_LOSS+?,COUNTS=COUNTS+1 WHERE TANKER_NO=?");
+                    updateTanker.setFloat(1,model.getLoss());
+                    String colorTankCode=model.getTankerNumber();
+                    updateTanker.setInt(2,Integer.parseInt(colorTankCode.substring(0,4)));
+                    updateTanker.execute();
 
+                    updateTanker.close();
+
+                } else {
+
+                    float avgValue=model.getLoss();
+                    StringBuilder stringBuilder=new StringBuilder(model.getTankerNumber().substring(0,4));
+                    if (avgValue > 0 && avgValue <= 20) {
+                        stringBuilder.append("G");
+                    } else if (avgValue >= 21 && avgValue <= 50) {
+                        stringBuilder.append("B");
+                    } else if (avgValue > 50) {
+                        stringBuilder.append("R");
+
+                    } else
+                        stringBuilder.append("P");
+
+                    String codeData=stringBuilder.toString();
+                    model.setTankerNumber(codeData);
+                    model.getTankerModel().setAvg(avgValue);
+                    model.getTankerModel().setCount(1);
+
+                    String tankerType=(mode==0)?"Diesel":"Petrol";
+
+                    PreparedStatement insertTanker=connection.prepareStatement("INSERT INTO TANKERS VALUES (?,?,?,?)");
+                    insertTanker.setInt(1,Integer.parseInt(model.getTankerNumber().substring(0,4)));
+                    insertTanker.setFloat(
+                            2,model.getLoss());
+                    insertTanker.setInt(3,1);
+                    insertTanker.setString(4,tankerType);
+
+                    insertTanker.execute();
+
+                    insertTanker.close();
+
+                }
             }
+
             if(mode==0)
-            Platform.runLater(()->ProfitLossController.getInstance().addDieselModel(model));
+                Platform.runLater(()->ProfitLossController.getInstance().addDieselModel(model));
             else
                 Platform.runLater(()->ProfitLossController.getInstance().addPetrolModel(model));
             connection.commit();
