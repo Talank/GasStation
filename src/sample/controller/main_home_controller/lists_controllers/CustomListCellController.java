@@ -25,9 +25,6 @@ public class CustomListCellController {
     @FXML
     private Label companyLabel,date,days;
 
-
-    private DebtListModel model;
-
     private VBox vbox;
 
     public CustomListCellController() {
@@ -42,7 +39,6 @@ public class CustomListCellController {
     }
 
     public void setData(DebtListModel model) {
-        this.model=model;
         companyLabel.setText(model.getCompanyName());
         date.setText("Credit Time:"+model.getDate());
         days.setText("Credit Cycle:"+model.getDays()+" Days");
@@ -56,38 +52,6 @@ public class CustomListCellController {
             days.setTextFill(Color.BLACK);
         }
 
-
-    }
-
-
-
-    @FXML
-    public void closing(MouseEvent e) {
-        companyLabel.setTextFill(Color.BLACK);
-        date.setTextFill(Color.BLACK);
-        days.setTextFill(Color.BLACK);
-        date.setText("Credit Time:"+SystemStatus.getCurrentDate());
-
-        CreditCompanyClosingBill bill=new CreditCompanyClosingBill(model);
-        if(bill.printBill()) {
-            CompanyCreditClosingTask task=new CompanyCreditClosingTask(model);
-            TaskManager.executeTask(task);
-        }
-    }
-
-    @FXML
-    public void payment(MouseEvent e) throws IOException {
-        FXMLLoader loader=new FXMLLoader(getClass().getResource("../../../view/dialogs/paymentDialog.fxml"));
-
-        Parent root=loader.load();
-
-        PaymentDialogController controller=loader.getController();
-        controller.setModel(model);
-
-        Stage stage=new Stage();
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.setScene(new Scene(root));
-        stage.show();
 
     }
 
