@@ -1,5 +1,6 @@
 package sample.tasks.database_tasks;
 
+import sample.controller.main_home_controller.SettingsController;
 import sample.library.ErrorMessageDialogGenerator;
 import sample.library.SnackBarToastGenerator;
 import sample.model.DebtListModel;
@@ -39,22 +40,22 @@ public class CompanyPaymentTask extends Tasks {
 
             Statement updatePayment=connection.createStatement();
 
-            ResultSet resultSet=updatePayment.executeQuery("SELECT PREV_TRANSACTION_ID FROM CreditCompany WHERE ID="+model.getId());
+            ResultSet resultSet=updatePayment.executeQuery("SELECT PREV_TRANSACTION_ID FROM CreditCompany WHERE COMPANY_NAME='"+model.getCompanyName()+"'");
             resultSet.next();
             if(resultSet.getInt(1)==1) {
 
-                PreparedStatement creditPayment=connection.prepareStatement("UPDATE CreditCompany SET DUE=DUE-?,PREV_TRANSACTION_ID=0"+",DATE=PREV_EXPIRE_DATE WHERE ID=?");
+                PreparedStatement creditPayment=connection.prepareStatement("UPDATE CreditCompany SET DUE=DUE-?,PREV_TRANSACTION_ID=0"+",DATE=PREV_EXPIRE_DATE WHERE COMPANY_NAME=?");
                 creditPayment.setFloat(1,payment);
-                creditPayment.setInt(2,model.getId());
+                creditPayment.setString(2,model.getCompanyName());
                 creditPayment.execute();
 
                 creditPayment.close();
 
                 System.out.println("Company Payment Made SuccessFully");
             } else {
-                PreparedStatement creditPayment=connection.prepareStatement("UPDATE CreditCompany SET DUE=DUE-? WHERE ID=?");
+                PreparedStatement creditPayment=connection.prepareStatement("UPDATE CreditCompany SET DUE=DUE-? WHERE COMPANY_NAME=?");
                 creditPayment.setFloat(1,payment);
-                creditPayment.setInt(2,model.getId());
+                creditPayment.setString(2,model.getCompanyName());
                 creditPayment.execute();
 
                 creditPayment.close();
@@ -64,10 +65,13 @@ public class CompanyPaymentTask extends Tasks {
 
             resultSet.close();
 
+            connection.commit();
+
             model.setDue(model.getDue()-payment);
             model.setDate(model.getPrevExpireDate());
+            model.setExpired(false);
 
-            connection.commit();
+            SettingsController.getInstance().refreshList(model);
 
             SnackBarToastGenerator snackBarToastGenerator=new SnackBarToastGenerator("Company Payment SuccessFull",1000);
             snackBarToastGenerator.show();

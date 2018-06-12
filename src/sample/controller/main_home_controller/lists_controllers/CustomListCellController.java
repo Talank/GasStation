@@ -50,6 +50,10 @@ public class CustomListCellController {
             companyLabel.setTextFill(Color.RED);
             date.setTextFill(Color.RED);
             days.setTextFill(Color.RED);
+        } else {
+            companyLabel.setTextFill(Color.BLACK);
+            date.setTextFill(Color.BLACK);
+            days.setTextFill(Color.BLACK);
         }
 
 

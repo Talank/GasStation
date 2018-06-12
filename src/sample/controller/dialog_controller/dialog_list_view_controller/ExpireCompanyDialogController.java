@@ -50,16 +50,16 @@ public class ExpireCompanyDialogController implements BottomBarInterface {
         expireListView.getItems().addAll(CreditCompanyList.getExpiredCompanyList());
 
         expireListView.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends DebtListModel> observable, DebtListModel oldValue, DebtListModel newValue)->{
-            FXMLLoader loader=new FXMLLoader(getClass().getResource("../../../view/main_home_views/credit_company_details/creditCompanyDetails.fxml"));
+            /*FXMLLoader loader=new FXMLLoader(getClass().getResource("../../../view/main_home_views/credit_company_details/creditCompanyDetails.fxml"));
             try {
                 Parent root=loader.load();
                 sample.controller.main_home_controller.credit_company_details_controller.CreditCompanyDetailsController controller=loader.getController();
-                controller.setParameters(DatabaseHandler.generateTableName(newValue.getCompanyName(),newValue.getId()));
+                controller.setParameters(DatabaseHandler.generateTableName(newValue.getCompanyName()));
                 SystemStatus.getStage().setScene(new Scene(root));
                 SystemStatus.getStage().show();
             } catch (IOException e) {
                 e.printStackTrace();
-            }
+            }*/
         });
 
     }

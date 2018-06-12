@@ -1,0 +1,13 @@
+.settingsItemStyle {
+    -fx-background-color:#cccccc;
+    -fx-effect:dropshadow(gaussian,#000000,10,0.0,0,2);
+    -fx-padding:0px 30px 30px 30px;
+    -fx-border-insets:0px 20px 20px 20px;
+    -fx-background-insets:0px 20px 20px 20px;
+}
+
+.settingsTitleText {
+    -fx-font-size:30px;
+    -fx-font-weight:bold;
+    -fx-text-fill:#000000;
+}

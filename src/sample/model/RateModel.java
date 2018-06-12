@@ -26,9 +26,4 @@ public class RateModel {
         this.rPetrol = rPetrol;
     }
 
-    public boolean storeRate() {
-        if(DatabaseHandler.setCurrentRate(rDiesel,rPetrol))
-            return true;
-        return false;
-    }
 }

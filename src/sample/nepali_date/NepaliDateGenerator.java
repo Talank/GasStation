@@ -49,7 +49,6 @@ public class NepaliDateGenerator {
         int startYear=startEnglishDate.getYear();
 
         int yearDiff=currentEnglishDate.getYear()-startYear;
-        System.out.println("Year Diff:"+yearDiff);
         int totalDays=0;
         for(int i=0;i<yearDiff;i++) {
             totalDays+=Year.of(startYear++).length();
@@ -68,14 +67,12 @@ public class NepaliDateGenerator {
         int startYear=startEnglishDate.getYear();
 
         int yearDiff=currentEnglishDate.getYear()-startYear;
-        System.out.println("Year Diff:"+yearDiff);
         int totalDays=0;
         for(int i=0;i<yearDiff;i++) {
             totalDays+=Year.of(startYear++).length();
         }
 
         totalDays+=currentEnglishDate.getDayOfYear()-startEnglishDate.getDayOfYear();
-        System.out.println("Total Days:"+totalDays);
 
         NepaliDate nepaliDate=new NepaliDate();
 
@@ -94,7 +91,6 @@ public class NepaliDateGenerator {
             }
         }
 
-        /*convertedNepaliDate=LocalDate.of(nYear,nMonth,nDay);*/
 
 
 
@@ -115,10 +111,6 @@ public class NepaliDateGenerator {
         return dateFormat.toString();
     }
 
-
-    /*public LocalDate getConvertedNepaliDate() {
-        return convertedNepaliDate;
-    }*/
 
     public void test() {
 

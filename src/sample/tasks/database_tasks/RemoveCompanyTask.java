@@ -21,9 +21,9 @@ public class RemoveCompanyTask extends Tasks {
     @Override
     public void execute() {
         try {
-            PreparedStatement delete=connection.prepareStatement("DELETE FROM CreditCompany WHERE ID="+model.getId());
+            PreparedStatement delete=connection.prepareStatement("DELETE FROM CreditCompany WHERE COMPANY_NAME="+model.getCompanyName());
             delete.execute();
-            delete=connection.prepareStatement("DROP TABLE "+DatabaseHandler.generateTableName(model.getCompanyName(),model.getId()));
+            delete=connection.prepareStatement("DROP TABLE "+DatabaseHandler.generateTableName(model.getCompanyName()));
             delete.execute();
 
             delete.close();

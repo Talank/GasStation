@@ -23,7 +23,6 @@ public class ParseNepaliDate {
 
         dayOfWeek=nepaliDate.substring(0,firstIndex);
 
-        System.out.println("Day Of Week"+dayOfWeek);
 
         nepaliDate=nepaliDate.substring(firstIndex+1,nepaliDate.length());
 
@@ -31,7 +30,6 @@ public class ParseNepaliDate {
 
         String month=nepaliDate.substring(0,firstIndex);
 
-        System.out.println("Month:"+month);
 
         if(month.equalsIgnoreCase(NepaliDateFormat.BAISHAK)) {
             nMonth=1;
@@ -59,7 +57,6 @@ public class ParseNepaliDate {
             nMonth=12;
         }
 
-        System.out.println("Month:"+nMonth);
 
         nepaliDate=nepaliDate.substring(firstIndex+1,nepaliDate.length());
 
@@ -67,13 +64,10 @@ public class ParseNepaliDate {
 
         nDay=Integer.parseInt(nepaliDate.substring(0,firstIndex));
 
-        System.out.println("Day:"+nDay);
-
         nepaliDate=nepaliDate.substring(firstIndex+1,nepaliDate.length());
 
         nYear=Integer.parseInt(nepaliDate);
 
-        System.out.println("Year:"+nYear);
 
     }
 

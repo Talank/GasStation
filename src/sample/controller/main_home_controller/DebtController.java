@@ -67,14 +67,8 @@ public class DebtController {
 
                 AppHomeController.getInstance().loadStages(borderPane);
                 sample.controller.main_home_controller.credit_company_details_controller.CreditCompanyDetailsController controller=loader.getController();
-                controller.setParameters(DatabaseHandler.generateTableName(newValue.getCompanyName(),newValue.getId()));
+                controller.setParameters(DatabaseHandler.generateTableName(newValue.getCompanyName()));
 
-                /*Parent root=loader.load();
-                sample.controller.main_home_controller.credit_company_details_controller.CreditCompanyDetailsController controller=loader.getController();
-                controller.setParameters(DatabaseHandler.generateTableName(newValue.getCompanyName(),newValue.getId()));
-                Stage stage= ((Stage)debtList.getScene().getWindow());
-                stage.setScene(new Scene(root));
-                stage.show();*/
             } catch (IOException e) {
                 e.printStackTrace();
             }

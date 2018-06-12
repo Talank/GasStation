@@ -43,13 +43,12 @@ public class StoreCreditTransactionTask extends Tasks {
 
         float pVolume=0,dVolume=0,ePrice=0;
 
-        int ids[]=new int[]{model.getId(),model.getTransactionID()};
 
         try {
 
             float total=0;
 
-            String tableName=DatabaseHandler.generateTableName(Transaction.getName(),ids[0]);
+            String tableName=DatabaseHandler.generateTableName(Transaction.getName());
             Date transactionDate;
             if(isAdmin) {
                 transactionDate=date;
@@ -59,11 +58,9 @@ public class StoreCreditTransactionTask extends Tasks {
 
             PreparedStatement storeCredit=connection.prepareStatement("INSERT INTO "+tableName+" VALUES(?,?,?,?,?,?,?)");
 
-            System.out.println("ID:"+ids[1]);
-
             for(Transaction transaction:instantTransaction) {
 
-                storeCredit.setInt(1,ids[1]);
+                storeCredit.setInt(1,model.getTransactionID());
                 storeCredit.setString(2,transaction.getType());
                 storeCredit.setFloat(4,transaction.getRate());
                 storeCredit.setFloat(6,transaction.getPrice());
@@ -101,20 +98,17 @@ public class StoreCreditTransactionTask extends Tasks {
                 }
                 storeCredit.addBatch();
 
-                ids[1]++;
-
 
             }
 
-
-            ids[1]++;
-
             storeCredit.executeBatch();
 
-            storeCredit=connection.prepareStatement("UPDATE CreditCompany SET TRANSACTION_ID=?,TOTAL=TOTAL+? WHERE ID=?");
-            storeCredit.setInt(1,ids[1]);
+            model.setTransactionID(model.getTransactionID()+1);
+
+            storeCredit=connection.prepareStatement("UPDATE CreditCompany SET TRANSACTION_ID=?,TOTAL=TOTAL+? WHERE COMPANY_NAME=?");
+            storeCredit.setInt(1,model.getTransactionID());
             storeCredit.setFloat(2,total);
-            storeCredit.setInt(3,ids[0]);
+            storeCredit.setString(3,model.getCompanyName());
 
             storeCredit.execute();
 

@@ -25,6 +25,18 @@
     -fx-background-position: center;
 }
 
+.closeButtonIcon {
+    -fx-background-image: url("../resources/subtract.png");
+}
+
+.editButtonIcon {
+    -fx-background-image: url("../resources/subtract.png");
+}
+
+.payButtonIcon {
+    -fx-background-image: url("../resources/subtract.png");
+}
+
 .removeButtonIcon {
     -fx-background-image: url("../resources/subtract.png");
 }

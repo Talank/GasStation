@@ -103,7 +103,7 @@ public class SplashController {
             status++;
         }
 
-        if(status==0) { //All the fields are filled
+      /*  if(status==0) { //All the fields are filled
             float iDiesel=Float.parseFloat(dieselMeter.getText());
             float iPetrol=Float.parseFloat(petrolMeter.getText());
             float iCounter=Float.parseFloat(counterMeter.getText());
@@ -119,7 +119,7 @@ public class SplashController {
             } else {
                 SystemLogging.getLogger().severe("Error Storing Initial Values,System might misbehave!");
             }
-        }
+        }*/
 
     }
 }

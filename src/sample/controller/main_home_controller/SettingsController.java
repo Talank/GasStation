@@ -1,6 +1,7 @@
 package sample.controller.main_home_controller;
 
 import com.jfoenix.controls.JFXListView;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.WorkerStateEvent;
@@ -16,13 +17,16 @@ import javafx.stage.Stage;
 import sample.OutputTasks.GetSettingsTask;
 import sample.controller.dialog_controller.*;
 import sample.controller.main_home_controller.credit_company_details_controller.NoSelectionModel;
+import sample.controller.main_home_controller.lists_controllers.CustomListCellController;
 import sample.controller.main_home_controller.lists_controllers.DebtListCell;
 import sample.controller.SystemLogging;
 import sample.library.toolbar.ToolBar;
+import sample.model.CreditCompanyClosingBill;
 import sample.model.CreditCompanyList;
 import sample.model.SystemStatus;
 import sample.model.databases.DatabaseHandler;
 import sample.model.DebtListModel;
+import sample.tasks.TaskInterface;
 import sample.tasks.TaskManager;
 import sample.tasks.database_tasks.*;
 
@@ -77,6 +81,7 @@ public class SettingsController {
         debtList.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         listModels=FXCollections.observableList(CreditCompanyList.getDetailCompanyList());
         debtList.setItems(listModels);
+
 
 //      Select First item by default so that we do not have to check for list selection
         debtList.getSelectionModel().select(0);
@@ -192,6 +197,40 @@ public class SettingsController {
         stage.show();
 
     }
+
+    public void refreshList(DebtListModel model) {
+        System.out.println("Trying To Refresh");
+        Platform.runLater(()->debtList.getItems().set(debtList.getItems().indexOf(model),model));
+    }
+
+    @FXML
+    public void closeCompany(MouseEvent e) {
+
+        DebtListModel model=debtList.getSelectionModel().getSelectedItem();
+        
+        CreditCompanyClosingBill bill=new CreditCompanyClosingBill(model);
+        if(bill.printBill()) {
+            CompanyCreditClosingTask task=new CompanyCreditClosingTask(model);
+            TaskManager.executeTask(task);
+        }
+    }
+
+    @FXML
+    public void payCompany(MouseEvent e) throws IOException {
+        DebtListModel model=debtList.getSelectionModel().getSelectedItem();
+        FXMLLoader loader=new FXMLLoader(getClass().getResource("../../view/dialogs/paymentDialog.fxml"));
+
+        Parent root=loader.load();
+
+        PaymentDialogController controller=loader.getController();
+        controller.setModel(model);
+
+        Stage stage=new Stage();
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setScene(new Scene(root));
+        stage.show();
+    }
+
 
     /*
      * Load the dialog to get the new change rate

@@ -62,15 +62,5 @@ public class CreditCompanyList {
         return models;
     }
 
-    public static DebtListModel getCompany(int id) {
-        DebtListModel models=null;
-
-        for(DebtListModel model:companyList) {
-            if(model.getId()==id) {
-                models=model;
-            }
-        }
-        return models;
-    }
 
 }

@@ -4,7 +4,7 @@ import java.sql.Date;
 
 public class DebtListModel {
     private String companyName,date,days,prevExpireDate;
-    private int id,transactionID,prevTransactionID;
+    private int transactionID,prevTransactionID;
 
     private Date expireDate;
 
@@ -12,10 +12,9 @@ public class DebtListModel {
 
     private boolean isExpired=false;
 
-    public DebtListModel(String companyName,String days,int id,int transactionID,int prevTransactionID,float due,float total) {
+    public DebtListModel(String companyName,String days,int transactionID,int prevTransactionID,float due,float total) {
         this.companyName = companyName;
         this.days=days;
-        this.id=id;
         this.transactionID=transactionID;
         this.prevTransactionID=prevTransactionID;
         this.due=due;
@@ -44,14 +43,6 @@ public class DebtListModel {
 
     public void setDays(String days) {
         this.days = days;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public int getTransactionID() {

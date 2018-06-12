@@ -25,7 +25,7 @@ public class CompanyCreditClosingTask extends Tasks {
     public void execute() {
         try {
 
-            String tableName=DatabaseHandler.generateTableName(model.getCompanyName(),model.getId());
+            String tableName=DatabaseHandler.generateTableName(model.getCompanyName());
             if(model.isExpired()) {
 
                 System.out.println("Model is Expired");
@@ -63,12 +63,12 @@ public class CompanyCreditClosingTask extends Tasks {
 
                 lastTransaction++;
 
-                deleteCredit=connection.prepareStatement("UPDATE CreditCompany SET DUE=DUE+TOTAL-?,TOTAL=?,TRANSACTION_ID=?,PREV_TRANSACTION_ID=? WHERE ID=?");
+                deleteCredit=connection.prepareStatement("UPDATE CreditCompany SET DUE=DUE+TOTAL-?,TOTAL=?,TRANSACTION_ID=?,PREV_TRANSACTION_ID=? WHERE COMPANY_NAME=?");
                 deleteCredit.setFloat(1,total);
                 deleteCredit.setFloat(2,total);
                 deleteCredit.setInt(3,lastTransaction);
                 deleteCredit.setInt(4,1);
-                deleteCredit.setInt(5,model.getId());
+                deleteCredit.setString(5,model.getCompanyName());
 
                 deleteCredit.execute();
 
@@ -107,8 +107,9 @@ public class CompanyCreditClosingTask extends Tasks {
             SnackBarToastGenerator snackBarToastGenerator=new SnackBarToastGenerator("Company Closing SuccessFull",1000);
             snackBarToastGenerator.show();
 
-            model.setExpired(false);
-
+            if(taskInterface!=null) {
+                taskInterface.onComplete(null);
+            }
 
         } catch (SQLException e) {
             e.printStackTrace();

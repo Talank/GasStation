@@ -62,11 +62,11 @@ public class InitializeSystem extends Tasks {
             ResultSet resultSet = getDebitList.executeQuery("SELECT * FROM CreditCompany");
             while (resultSet.next()) {
 
-                model = new DebtListModel(resultSet.getString(2), resultSet.getString(6), resultSet.getInt(1), resultSet.getInt(3), resultSet.getInt(5), resultSet.getFloat(7), resultSet.getFloat(8));
+                model = new DebtListModel(resultSet.getString(1), resultSet.getString(5), resultSet.getInt(2), resultSet.getInt(4), resultSet.getFloat(6), resultSet.getFloat(7));
 
-                model.setDate(generator.convertDate(resultSet.getDate(9)));
-                model.setPrevExpireDate(generator.convertDate(resultSet.getDate(4)));
-                model.setExpireDate(resultSet.getDate(4));
+                model.setDate(generator.convertDate(resultSet.getDate(8 )));
+                model.setPrevExpireDate(generator.convertDate(resultSet.getDate(3)));
+                model.setExpireDate(resultSet.getDate(3));
 
 
                 initialDate.setNepaliDate(model.getDate());
@@ -116,20 +116,24 @@ public class InitializeSystem extends Tasks {
                      * We check if it is 0,then since the Company has just expired,we note the current date
                      */
 
-                    if (resultSet.getInt(5) == 0) {
+                    if (resultSet.getInt(4) == 0) {
 
                         System.out.println("Company previous due was cleared!");
 
                         Statement getCounts = connection.createStatement();
-                        ResultSet countResult = getCounts.executeQuery("SELECT COUNT(*) FROM " + DatabaseHandler.generateTableName(model.getCompanyName(), model.getId()));
+                        ResultSet countResult = getCounts.executeQuery("SELECT COUNT(*) FROM " + DatabaseHandler.generateTableName(model.getCompanyName()));
                         countResult.next();
                         int count = countResult.getInt(1);
-                        countResult = getCounts.executeQuery("SELECT TRANSACTION_ID FROM " + DatabaseHandler.generateTableName(model.getCompanyName(), model.getId()) + " OFFSET " + (count - 1) + " ROWS FETCH NEXT 1 ROWS ONLY");
+                        countResult = getCounts.executeQuery("SELECT TRANSACTION_ID FROM " + DatabaseHandler.generateTableName(model.getCompanyName()) + " OFFSET " + (count - 1) + " ROWS FETCH NEXT 1 ROWS ONLY");
                         countResult.next();
 
                         int transactionID = countResult.getInt(1);
 
-                        PreparedStatement updateExpireID = connection.prepareStatement("UPDATE CreditCompany SET PREV_TRANSACTION_ID=" + transactionID + ",PREV_EXPIRE_DATE='" + date.toString() + "' WHERE ID=" + model.getId());
+                        PreparedStatement updateExpireID = connection.prepareStatement("UPDATE CreditCompany SET PREV_TRANSACTION_ID=?,PREV_EXPIRE_DATE=? WHERE COMPANY_NAME=?");
+                        updateExpireID.setInt(1,transactionID);
+                        updateExpireID.setDate(2,date);
+                        updateExpireID.setString(3,model.getCompanyName());
+
                         updateExpireID.execute();
 
                         countResult.close();
@@ -138,12 +142,12 @@ public class InitializeSystem extends Tasks {
 
                         model.setPrevExpireDate(generator.toString());
                         model.setExpireDate(date);
-                        model.setTransactionID(resultSet.getInt(3));
+                        model.setTransactionID(resultSet.getInt(2));
                         model.setPrevTransactionID(transactionID);
                     } else {
                         System.out.println("Company Previous due was unclear");
-                        model.setTransactionID(resultSet.getInt(3));
-                        model.setPrevTransactionID(resultSet.getInt(5));
+                        model.setTransactionID(resultSet.getInt(2));
+                        model.setPrevTransactionID(resultSet.getInt(4));
                     }
 
                 }

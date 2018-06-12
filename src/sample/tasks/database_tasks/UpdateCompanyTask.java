@@ -1,5 +1,7 @@
 package sample.tasks.database_tasks;
 
+import javafx.application.Platform;
+import sample.controller.main_home_controller.SettingsController;
 import sample.library.ErrorMessageDialogGenerator;
 import sample.library.SnackBarToastGenerator;
 import sample.model.DebtListModel;
@@ -22,16 +24,18 @@ public class UpdateCompanyTask extends Tasks {
         try {
 
 
-            PreparedStatement update=connection.prepareStatement("UPDATE CreditCompany SET COMPANY_NAME=?,DAY=? WHERE ID=?");
+            PreparedStatement update=connection.prepareStatement("UPDATE CreditCompany SET COMPANY_NAME=?,DAY=? WHERE COMPANY_NAME=?");
             update.setString(1,model.getCompanyName());
             update.setString(2,model.getDays());
-            update.setInt(3,model.getId());
+            update.setString(3,model.getCompanyName());
 
             update.execute();
 
             update.close();
 
             connection.commit();
+
+            Platform.runLater(()->SettingsController.getInstance().editModel(model));
 
             SnackBarToastGenerator snackBarToastGenerator=new SnackBarToastGenerator("Company Updated",1000);
             snackBarToastGenerator.show();

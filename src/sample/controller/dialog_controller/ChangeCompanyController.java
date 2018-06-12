@@ -105,8 +105,8 @@ public class ChangeCompanyController implements BottomBarInterface {
                     public void onComplete(Integer id) {
                         if(id!=-1) {
                             SystemLogging.getLogger().fine("Company Has Been Added.");
-                            SettingsController.getInstance().listModels.add(new DebtListModel(companyName.getText().trim(),creditCycle.getText(),id,1,1,0f,0f));
-                            ((Node)e.getSource()).getScene().getWindow().hide();
+
+
                         }
                     }
 
@@ -116,16 +116,7 @@ public class ChangeCompanyController implements BottomBarInterface {
                     }
                 });
                 TaskManager.executeTask(task);
-
-
-                /*int id=DatabaseHandler.saveCompany(companyName.getText().trim(),creditCycle.getText());
-                if(id!=-1) {
-                    SystemLogging.getLogger().fine("Company Has Been Added.");
-                    SettingsController.getInstance().listModels.add(new DebtListModel(companyName.getText().trim(),(new Date((new java.util.Date()).getTime())).toString(),creditCycle.getText(),id,1));
-                    ((Node)e.getSource()).getScene().getWindow().hide();
-                } else {
-                    SystemLogging.getLogger().severe("Error Adding Company!");
-                }*/
+                ((Node)e.getSource()).getScene().getWindow().hide();
 
             } else {
                 model.setCompanyName(companyName.getText().trim());
@@ -133,16 +124,8 @@ public class ChangeCompanyController implements BottomBarInterface {
                 UpdateCompanyTask task=new UpdateCompanyTask(model);
                 TaskManager.executeTask(task);
 
-                SettingsController.getInstance().editModel(model);
                 ((Node)e.getSource()).getScene().getWindow().hide();
 
-                /*if(DatabaseHandler.updateCompany(model)) {
-                    SystemLogging.getLogger().fine("Company Details Has Been Changed");
-                    SettingsController.getInstance().editModel(model);
-                    ((Node)e.getSource()).getScene().getWindow().hide();
-                } else {
-                    SystemLogging.getLogger().fine("Error Changing Company Details!");
-                }*/
             }
         }
     }

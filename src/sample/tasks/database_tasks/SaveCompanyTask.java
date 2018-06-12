@@ -1,8 +1,10 @@
 package sample.tasks.database_tasks;
 
 import javafx.application.Platform;
+import sample.controller.main_home_controller.SettingsController;
 import sample.library.ErrorMessageDialogGenerator;
 import sample.library.SnackBarToastGenerator;
+import sample.model.DebtListModel;
 import sample.model.SystemStatus;
 import sample.model.databases.DatabaseHandler;
 import sample.nepali_date.NepaliDateGenerator;
@@ -23,46 +25,28 @@ public class SaveCompanyTask extends Tasks {
 
     @Override
     public void execute() {
-        int i=0,j=0;
-        boolean status;
         try {
+            String lowerCompanyName=companyName.toLowerCase();
             Statement getIDs=connection.createStatement();
-            ResultSet resultSet=getIDs.executeQuery("SELECT COUNT(*) FROM CreditCompany");
-            resultSet.next();
-            int idArray[]=new int[resultSet.getInt(1)];
-
-            resultSet=getIDs.executeQuery("SELECT ID FROM CreditCompany");
-
-            while(resultSet.next())
-                idArray[i++]=resultSet.getInt(1);
-            j=1;
-
-            while(true) {
-                status=false;
-                for(i=0;i<idArray.length;i++) {
-                    if(j==idArray[i]) {
-                        status=true;
-                        j++;
-                        break;
-                    }
-                }
-                if(!status)
-                    break;
+            ResultSet resultSet=getIDs.executeQuery("SELECT * FROM CreditCompany WHERE LOWER(COMPANY_NAME)='"+lowerCompanyName+"'");
+            if(resultSet.next()) {
+                SnackBarToastGenerator generator=new SnackBarToastGenerator("Company Already Exists",2000);
+                generator.show();
+                return;
             }
 
             Statement saveCompany=connection.createStatement();
-            saveCompany.execute("CREATE TABLE "+DatabaseHandler.generateTableName(companyName,j)+" (TRANSACTION_ID INT NOT NULL,TYPE VARCHAR(10) NOT NULL,VEHICLE_NO VARCHAR(10) NOT NULL,RATE FLOAT NOT NULL,VOLUME FLOAT NOT NULL,PRICE FLOAT NOT NULL,DATE DATE NOT NULL)");
+            saveCompany.execute("CREATE TABLE "+DatabaseHandler.generateTableName(companyName)+" (TRANSACTION_ID INT NOT NULL,TYPE VARCHAR(10) NOT NULL,VEHICLE_NO VARCHAR(10) NOT NULL,RATE FLOAT NOT NULL,VOLUME FLOAT NOT NULL,PRICE FLOAT NOT NULL,DATE DATE NOT NULL)");
 
-            PreparedStatement insertCompany=connection.prepareStatement("INSERT INTO CreditCompany VALUES(?,?,?,?,?,?,?,?,?)");
-            insertCompany.setInt(1,j);
-            insertCompany.setString(2,companyName);
-            insertCompany.setInt(3,1);
-            insertCompany.setDate(4,SystemStatus.getCurrentDate());
-            insertCompany.setInt(5,0);
-            insertCompany.setString(6,creditCycle);
+            PreparedStatement insertCompany=connection.prepareStatement("INSERT INTO CreditCompany VALUES(?,?,?,?,?,?,?,?)");
+            insertCompany.setString(1,companyName);
+            insertCompany.setInt(2,1);
+            insertCompany.setDate(3,SystemStatus.getCurrentDate());
+            insertCompany.setInt(4,0);
+            insertCompany.setString(5,creditCycle);
+            insertCompany.setFloat(6,0);
             insertCompany.setFloat(7,0);
-            insertCompany.setFloat(8,0);
-            insertCompany.setDate(9,SystemStatus.getCurrentDate());
+            insertCompany.setDate(8,SystemStatus.getCurrentDate());
 
             insertCompany.execute();
 
@@ -73,19 +57,12 @@ public class SaveCompanyTask extends Tasks {
 
             connection.commit();
 
+            Platform.runLater(()->SettingsController.getInstance().listModels.add(new DebtListModel(companyName,creditCycle,1,1,0f,0f)));
+
             SnackBarToastGenerator snackBarToastGenerator=new SnackBarToastGenerator("Company Added SuccessFully",1000);
             snackBarToastGenerator.show();
 
             System.out.println("Company Saved SuccessFully.");
-
-            final int data=j;
-
-            Platform.runLater(()->{
-                if(taskInterface!=null) {
-                    taskInterface.onComplete(data);
-                }
-
-            });
 
 
         } catch (SQLException e) {

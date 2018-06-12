@@ -6,10 +6,12 @@ import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
+import sample.controller.main_home_controller.SettingsController;
 import sample.library.dialog_bottombar.BottomBarInterface;
 import sample.library.dialog_bottombar.DialogBottomBar;
 import sample.library.dialog_toolbar.DialogToolBar;
 import sample.model.DebtListModel;
+import sample.tasks.TaskInterface;
 import sample.tasks.TaskManager;
 import sample.tasks.database_tasks.CompanyPaymentTask;
 
@@ -62,7 +64,6 @@ public class PaymentDialogController implements BottomBarInterface {
             if(Float.parseFloat(payment.getText())<=model.getDue()) {
                 CompanyPaymentTask task=new CompanyPaymentTask(model,Float.parseFloat(payment.getText()));
                 TaskManager.executeTask(task);
-
                 ((Node)e.getSource()).getScene().getWindow().hide();
             } else {
                 bottomBar.setErrorText("Payment Greater Than Due Amount.");

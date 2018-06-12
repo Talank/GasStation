@@ -6,9 +6,13 @@
     -fx-background-insets:0px 20px 20px 20px;
 }
 
-.list-view .list-cell:even {
+.list-cell:even {
     -fx-background-color: #ffffff;
 }
-.list-view .list-cell:odd {
+.list-cell:odd {
     -fx-background-color: #ffffff;
+}
+
+.list-cell:filled:selected {
+    -fx-background-color: #0093ff;
 }
