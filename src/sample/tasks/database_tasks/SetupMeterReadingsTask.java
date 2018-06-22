@@ -45,9 +45,6 @@ public class SetupMeterReadingsTask extends Tasks {
 
                 updateStock.close();
 
-                SystemStatus.setiDiesel(Float.parseFloat(dieselReading));
-                SystemStatus.setiPetrol(Float.parseFloat(petrolReading));
-
             } else {
 
                 if(SystemStatus.getiDiesel()!=Float.parseFloat(dieselReading)) {
@@ -59,8 +56,6 @@ public class SetupMeterReadingsTask extends Tasks {
                     updateStock.execute();
 
                     updateStock.close();
-
-                    SystemStatus.setiDiesel(Float.parseFloat(dieselReading));
                 }
 
                 if(SystemStatus.getiPetrol()!=Float.parseFloat(petrolReading)) {
@@ -72,13 +67,14 @@ public class SetupMeterReadingsTask extends Tasks {
                     updateStock.execute();
 
                     updateStock.close();
-
-                    SystemStatus.setiPetrol(Float.parseFloat(petrolReading));
                 }
 
             }
 
             connection.commit();
+
+            SystemStatus.setiDiesel(Float.parseFloat(dieselReading));
+            SystemStatus.setiPetrol(Float.parseFloat(petrolReading));
 
             SnackBarToastGenerator snackBarToastGenerator=new SnackBarToastGenerator("Meter Reading Saved",1000);
             snackBarToastGenerator.show();

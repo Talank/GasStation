@@ -45,9 +45,6 @@ public class ChangeOilRateTask extends Tasks {
                 setRate.executeBatch();
 
                 setRate.close();
-
-                SystemStatus.setpRate(model.getrPetrol());
-                SystemStatus.setdRate(model.getrDiesel());
             } else {
 
                 if(SystemStatus.getdRate()!=model.getrDiesel()) {
@@ -59,8 +56,6 @@ public class ChangeOilRateTask extends Tasks {
                     updateRate.execute();
 
                     updateRate.close();
-
-                    SystemStatus.setdRate(model.getrDiesel());
                 }
 
                 if(SystemStatus.getpRate()!=model.getrPetrol()) {
@@ -72,12 +67,13 @@ public class ChangeOilRateTask extends Tasks {
                     updateRate.execute();
 
                     updateRate.close();
-
-                    SystemStatus.setdRate(model.getrDiesel());
                 }
             }
 
             connection.commit();
+
+            SystemStatus.setpRate(model.getrPetrol());
+            SystemStatus.setdRate(model.getrDiesel());
 
             Platform.runLater(()->AppHomeController.getInstance().setRates());
 

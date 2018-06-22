@@ -103,18 +103,20 @@ public class RefillTask extends Tasks {
                     stringBuilder.append("P");
 
                 String codeData=stringBuilder.toString();
-                model.setTankerNumber(codeData);
-                model.getTankerModel().setAvg(avgValue);
-                model.getTankerModel().setCount((model.getTankerModel().getCount())+1);
+
 
                 PreparedStatement updateTanker=connection.prepareStatement("UPDATE TANKERS SET TOTAL_LOSS= TOTAL_LOSS+?,COUNTS=COUNTS+1 WHERE TANKER_NO=?");
                 updateTanker.setFloat(1,model.getLoss());
-                String colorTankCode=model.getTankerNumber();
-                updateTanker.setInt(2,Integer.parseInt(colorTankCode.substring(0,4)));
+                updateTanker.setInt(2,Integer.parseInt(codeData.substring(0,4)));
                 updateTanker.execute();
 
                 updateTanker.close();
 
+                connection.commit();
+
+                model.setTankerNumber(codeData);
+                model.getTankerModel().setAvg(avgValue);
+                model.getTankerModel().setCount((model.getTankerModel().getCount())+1);
             } else {
                 Statement insertRefill=connection.createStatement();
                 ResultSet resultSet=insertRefill.executeQuery("SELECT TANKER_NO,TOTAL_LOSS,COUNTS FROM TANKERS WHERE TANKER_NO= ("+model.getTankerNumber().substring(0,4)+")");
@@ -132,17 +134,20 @@ public class RefillTask extends Tasks {
                         stringBuilder.append("P");
 
                     String codeData=stringBuilder.toString();
-                    model.setTankerNumber(codeData);
-                    model.getTankerModel().setAvg(avgValue);
-                    model.getTankerModel().setCount(resultSet.getInt(3)+1);
 
                     PreparedStatement updateTanker=connection.prepareStatement("UPDATE TANKERS SET TOTAL_LOSS= TOTAL_LOSS+?,COUNTS=COUNTS+1 WHERE TANKER_NO=?");
                     updateTanker.setFloat(1,model.getLoss());
-                    String colorTankCode=model.getTankerNumber();
-                    updateTanker.setInt(2,Integer.parseInt(colorTankCode.substring(0,4)));
+
+                    updateTanker.setInt(2,Integer.parseInt(codeData.substring(0,4)));
                     updateTanker.execute();
 
                     updateTanker.close();
+
+                    connection.commit();
+
+                    model.setTankerNumber(codeData);
+                    model.getTankerModel().setAvg(avgValue);
+                    model.getTankerModel().setCount(resultSet.getInt(3)+1);
 
                 } else {
 
@@ -159,14 +164,12 @@ public class RefillTask extends Tasks {
                         stringBuilder.append("P");
 
                     String codeData=stringBuilder.toString();
-                    model.setTankerNumber(codeData);
-                    model.getTankerModel().setAvg(avgValue);
-                    model.getTankerModel().setCount(1);
+
 
                     String tankerType=(mode==0)?"Diesel":"Petrol";
 
                     PreparedStatement insertTanker=connection.prepareStatement("INSERT INTO TANKERS VALUES (?,?,?,?)");
-                    insertTanker.setInt(1,Integer.parseInt(model.getTankerNumber().substring(0,4)));
+                    insertTanker.setInt(1,Integer.parseInt(codeData.substring(0,4)));
                     insertTanker.setFloat(
                             2,model.getLoss());
                     insertTanker.setInt(3,1);
@@ -176,6 +179,11 @@ public class RefillTask extends Tasks {
 
                     insertTanker.close();
 
+                    connection.commit();
+
+                    model.setTankerNumber(codeData);
+                    model.getTankerModel().setAvg(avgValue);
+                    model.getTankerModel().setCount(1);
                 }
             }
 
@@ -183,7 +191,6 @@ public class RefillTask extends Tasks {
                 Platform.runLater(()->ProfitLossController.getInstance().addDieselModel(model));
             else
                 Platform.runLater(()->ProfitLossController.getInstance().addPetrolModel(model));
-            connection.commit();
 
             Platform.runLater(()->AppHomeController.getInstance().setStock());
 

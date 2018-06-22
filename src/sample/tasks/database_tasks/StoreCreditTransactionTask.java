@@ -103,17 +103,13 @@ public class StoreCreditTransactionTask extends Tasks {
 
             storeCredit.executeBatch();
 
-            model.setTransactionID(model.getTransactionID()+1);
-
             storeCredit=connection.prepareStatement("UPDATE CreditCompany SET TRANSACTION_ID=?,TOTAL=TOTAL+? WHERE COMPANY_NAME=?");
-            storeCredit.setInt(1,model.getTransactionID());
+            storeCredit.setInt(1,model.getTransactionID()+1);
             storeCredit.setFloat(2,total);
             storeCredit.setString(3,model.getCompanyName());
 
             storeCredit.execute();
 
-
-            model.setTotal(model.getTotal()+total);
             float petrolStock=pVolume;
             float dieselStock=dVolume;
 
@@ -121,7 +117,6 @@ public class StoreCreditTransactionTask extends Tasks {
             ResultSet resultSet;
 
             resultSet=getInstant.executeQuery("SELECT VALUE FROM SystemStatus WHERE ID>3 AND ID<7 OR ID=14 OR ID=15");
-
 
             resultSet.next();
             dVolume+=Float.parseFloat(resultSet.getString(1));
@@ -133,14 +128,6 @@ public class StoreCreditTransactionTask extends Tasks {
             dieselStock=Float.parseFloat(resultSet.getString(1))-dieselStock;
             resultSet.next();
             petrolStock=Float.parseFloat(resultSet.getString(1))-petrolStock;
-
-            SystemStatus.setDieselStock(dieselStock);
-            SystemStatus.setPetrolStock(petrolStock);
-
-            Platform.runLater(()->{
-                AppHomeController.getInstance().setStock();
-            });
-
 
             storeCredit=connection.prepareStatement("UPDATE SystemStatus SET VALUE=? WHERE ID=?");
             storeCredit.setString(1,String.valueOf(dVolume));
@@ -172,6 +159,14 @@ public class StoreCreditTransactionTask extends Tasks {
             getInstant.close();
 
             connection.commit();
+
+            model.setTransactionID(model.getTransactionID()+1);
+            model.setTotal(model.getTotal()+total);
+
+            SystemStatus.setDieselStock(dieselStock);
+            SystemStatus.setPetrolStock(petrolStock);
+
+            Platform.runLater(()-> AppHomeController.getInstance().setStock());
 
             SystemLogging.getLogger().fine("Credit Transaction Stored in Database");
 

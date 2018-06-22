@@ -76,6 +76,8 @@ public class CompanyCreditClosingTask extends Tasks {
                 getResults.close();
                 deleteCredit.close();
 
+                connection.commit();
+
                 model.setDue(model.getDue()+(model.getTotal()-total));
                 model.setTotal(total);
                 model.setTransactionID(lastTransaction);
@@ -96,13 +98,15 @@ public class CompanyCreditClosingTask extends Tasks {
                 delete.close();
                 updateCreditCompany.close();
 
+                connection.commit();
+
                 model.setDue(model.getDue()+model.getTotal());
                 model.setTotal(0f);
 
                 model.setTransactionID(1);
 
             }
-            connection.commit();
+
 
             SnackBarToastGenerator snackBarToastGenerator=new SnackBarToastGenerator("Company Closing SuccessFull",1000);
             snackBarToastGenerator.show();

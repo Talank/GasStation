@@ -40,10 +40,6 @@ public class SetupPrintersTask extends Tasks {
                 updatePrinters.executeBatch();
 
                 updatePrinters.close();
-
-                SystemStatus.setBillPrinter(billPrinterName);
-                SystemStatus.setAnalyticsPrinter(analyticsPrinterName);
-
             } else {
 
                 if(!SystemStatus.getBillPrinter().equals(billPrinterName)) {
@@ -55,8 +51,6 @@ public class SetupPrintersTask extends Tasks {
                     setupBill.execute();
 
                     setupBill.close();
-
-                    SystemStatus.setBillPrinter(billPrinterName);
                 }
 
                 if(!SystemStatus.getAnalyticsPrinter().equals(analyticsPrinterName)) {
@@ -68,12 +62,13 @@ public class SetupPrintersTask extends Tasks {
                     setupBill.execute();
 
                     setupBill.close();
-
-                    SystemStatus.setAnalyticsPrinter(analyticsPrinterName);
                 }
             }
 
             connection.commit();
+
+            SystemStatus.setBillPrinter(billPrinterName);
+            SystemStatus.setAnalyticsPrinter(analyticsPrinterName);
 
             SnackBarToastGenerator snackBarToastGenerator=new SnackBarToastGenerator("Printer Saved",1000);
             snackBarToastGenerator.show();

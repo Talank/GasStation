@@ -38,7 +38,7 @@ public class CreditCompanyListCellController {
         companyDue.setText("Due:Rs"+priceFormat.getResult());
         priceFormat.setFormat(model.getTotal()+"");
         companyTotal.setText("Total:Rs"+priceFormat.getResult());
-        companyLastPaid.setText("Last Paid On:"+model.getDate());
+        companyLastPaid.setText("Current Session:"+model.getDate());
 
         companyDue.setTextFill(Color.RED);
         companyTotal.setTextFill(Color.GREEN);

@@ -47,10 +47,6 @@ public class SetupOilStockTask extends Tasks {
 
                 updateStock.close();
 
-                SystemStatus.setDieselStock(Float.parseFloat(dieselStock));
-                SystemStatus.setPetrolStock(Float.parseFloat(petrolStock));
-
-
             } else {
 
                 if(SystemStatus.getDieselStock()!=Float.parseFloat(dieselStock)) {
@@ -62,8 +58,6 @@ public class SetupOilStockTask extends Tasks {
                     updateStock.execute();
 
                     updateStock.close();
-
-                    SystemStatus.setDieselStock(Float.parseFloat(dieselStock));
                 }
 
                 if(SystemStatus.getPetrolStock()!=Float.parseFloat(petrolStock)) {
@@ -74,13 +68,14 @@ public class SetupOilStockTask extends Tasks {
                     updateStock.execute();
 
                     updateStock.close();
-
-                    SystemStatus.setPetrolStock(Float.parseFloat(petrolStock));
                 }
 
             }
 
             connection.commit();
+
+            SystemStatus.setDieselStock(Float.parseFloat(dieselStock));
+            SystemStatus.setPetrolStock(Float.parseFloat(petrolStock));
 
             Platform.runLater(()->AppHomeController.getInstance().setStock());
 
