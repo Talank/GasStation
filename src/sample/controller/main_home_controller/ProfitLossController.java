@@ -292,7 +292,7 @@ public class ProfitLossController implements BackButtonInterface {
         petrolTable.setItems(null);
         petrolTable.layout();
         petrolTableData.add(model);
-        petrolTable.setItems(dieselTableData);
+        petrolTable.setItems(petrolTableData);
     }
 
 
