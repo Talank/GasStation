@@ -31,6 +31,7 @@ import sample.tasks.TaskManager;
 import sample.tasks.database_tasks.*;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 
 /*
@@ -204,7 +205,7 @@ public class SettingsController {
     }
 
     @FXML
-    public void closeCompany(MouseEvent e) {
+    public void closeCompany(MouseEvent e) throws SQLException {
 
         DebtListModel model=debtList.getSelectionModel().getSelectedItem();
         
