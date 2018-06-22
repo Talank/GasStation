@@ -10,6 +10,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import sample.model.CreditDetailsModel;
+import sample.model.nepaliPriceFormat.PriceFormat;
 
 import java.util.List;
 
@@ -61,7 +62,8 @@ public class CustomCreditListCellController {
             for(int i=0;i<modelLists.size();i++) {
                 total+=Float.parseFloat(modelLists.get(i).getPrice());
             }
-            this.total.setText("Total:Rs."+String.valueOf(total)+"/-");
+            PriceFormat priceFormat=new PriceFormat(String.valueOf(total));
+            this.total.setText("Total:Rs."+priceFormat.getResult()+"/-");
         }
 
     }

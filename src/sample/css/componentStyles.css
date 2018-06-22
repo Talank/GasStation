@@ -26,15 +26,15 @@
 }
 
 .closeButtonIcon {
-    -fx-background-image: url("../resources/subtract.png");
+    -fx-background-image: url("../resources/refresh.png");
 }
 
 .editButtonIcon {
-    -fx-background-image: url("../resources/subtract.png");
+    -fx-background-image: url("../resources/edit.png");
 }
 
 .payButtonIcon {
-    -fx-background-image: url("../resources/subtract.png");
+    -fx-background-image: url("../resources/pay.png");
 }
 
 .removeButtonIcon {
