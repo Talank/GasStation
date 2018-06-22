@@ -28,22 +28,20 @@ public class GetTankRemarkTask extends Tasks {
 
             Statement getStatus=connection.createStatement();
 
-            System.out.println("Tanker Number:"+tankerNumber);
-
             ResultSet resultSet=getStatus.executeQuery("SELECT * FROM Tankers WHERE TANKER_NO="+tankerNumber);
 
-            if(resultSet.next()) {
-                avg = resultSet.getFloat(2) / resultSet.getInt(3);
-                count=resultSet.getInt(3);
-                type=resultSet.getString(4);
+                 if (resultSet.next()) {
+                     avg = resultSet.getFloat(2) / resultSet.getInt(3);
+                     count = resultSet.getInt(3);
+                     type = resultSet.getString(4);
+                     TankerModel tankerModel = new TankerModel(avg, count, type, (String.valueOf(tankerNumber) + "X"));
+                     if (taskInterface != null)
+                         taskInterface.onComplete(tankerModel);
+                 } else {
+                     if (taskInterface != null)
+                         taskInterface.onError();
+                 }
 
-                TankerModel tankerModel=new TankerModel(avg,count,type,(String.valueOf(tankerNumber)+"X"));
-                if(taskInterface!=null)
-                    taskInterface.onComplete(tankerModel);
-            } else {
-                if(taskInterface!=null)
-                    taskInterface.onError();
-            }
 
 
 

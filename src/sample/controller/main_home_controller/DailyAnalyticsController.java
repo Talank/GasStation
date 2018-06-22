@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import sample.library.toolbar.ToolBar;
 import sample.model.SystemStatus;
+import sample.model.nepaliPriceFormat.PriceFormat;
 import sample.model.transaction_model.DailyTotalAnalyticModel;
 import sample.tasks.TaskInterface;
 import sample.tasks.TaskManager;
@@ -28,9 +29,7 @@ public class DailyAnalyticsController {
 
     private DailyTotalAnalyticModel model;
 
-
     public static DailyAnalyticsController instance;
-
     public DailyAnalyticsController() {
         instance=this;
     }
@@ -64,20 +63,20 @@ public class DailyAnalyticsController {
 
     public void setModel(DailyTotalAnalyticModel model) {
         this.model=model;
-        pInitial.setText(model.getIPetrolVol()+" L");
+        pInitial.setText(new PriceFormat(model.getIPetrolVol()).getResult()+" L");
 
-        pFinal.setText(model.getCPetrolVol()+" L");
-        pNet.setText("Rs."+(SystemStatus.getfDiesel()-SystemStatus.getiPetrol())*SystemStatus.getpRate()+"/-");
+        pFinal.setText(new PriceFormat(model.getCPetrolVol()).getResult()+" L");
+        pNet.setText("Rs."+new PriceFormat((SystemStatus.getfDiesel()-SystemStatus.getiPetrol())*SystemStatus.getpRate()+"").getResult()+"/-");
 
-        dInitial.setText(model.getIDieselVol()+" L");
-        dFinal.setText(model.getCDieselVol()+" L");
-        dNet.setText("Rs."+(SystemStatus.getfPetrol()-SystemStatus.getiDiesel())*SystemStatus.getdRate()+"/-");
+        dInitial.setText(new PriceFormat(model.getIDieselVol()).getResult()+" L");
+        dFinal.setText(new PriceFormat(model.getCDieselVol()).getResult()+" L");
+        dNet.setText("Rs."+new PriceFormat((SystemStatus.getfPetrol()-SystemStatus.getiDiesel())*SystemStatus.getdRate()+"").getResult()+"/-");
 
         cInitial.setText("Rs./-");
         cFinal.setText("Rs."+model.getCExtra()+"/-");
 
-        netOil.setText("Rs."+model.getOilIncome()+"/-");
-        netExtra.setText("Rs."+model.getCExtra()+"/-");
+        netOil.setText("Rs."+new PriceFormat(model.getOilIncome()).getResult()+"/-");
+        netExtra.setText("Rs."+new PriceFormat(model.getCExtra()).getResult()+"/-");
 
         TodayClosingTask tasks=new TodayClosingTask(model);
         TaskManager.executeTask(tasks);

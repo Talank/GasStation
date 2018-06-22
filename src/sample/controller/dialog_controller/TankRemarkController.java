@@ -66,16 +66,14 @@ public class TankRemarkController implements BottomBarInterface,TaskInterface<Ta
                 System.out.println("Remark label was null");
             } else {
                 if (avg > 0 && avg <= 20) {
-                    // this.remarkLabel.setText("The tanker is good");
                     remarkLabel.setText("The tanker is good");
                 } else if (avg >= 21 && avg <= 50) {
-                    //this.remarkLabel.setText("Normal tanker");
                     remarkLabel.setText("Normal tanker");
                 } else if (avg > 50) {
-                    //this.remarkLabel.setText("Not good tanker");
                     remarkLabel.setText("Not good tanker");
 
                 }
+
                 avgLossLabel.setText("Count : "+count);
                 typeLabel.setText(type);
 
@@ -86,7 +84,13 @@ public class TankRemarkController implements BottomBarInterface,TaskInterface<Ta
 
     @Override
     public void onError() {
-        bottomBar.setErrorText("Invalid Tanker Number");
+        Platform.runLater(()-> {
+            System.out.println("Invalid");
+            bottomBar.setErrorText("Invalid Tanker Number");
+            remarkLabel.setText("Sorry! The tanker is not found");
+            typeLabel.setText("");
+            avgLossLabel.setText("");
+        });
     }
 
     @Override

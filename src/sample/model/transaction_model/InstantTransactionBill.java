@@ -2,6 +2,7 @@ package sample.model.transaction_model;
 
 import javafx.scene.control.Label;
 import sample.model.PrintBill;
+import sample.model.nepaliPriceFormat.PriceFormat;
 
 
 import java.util.List;
@@ -21,16 +22,20 @@ public class InstantTransactionBill {
         builder.append("-----------------------------------\n");
         builder.append("Type     V.n     Qty     Rate     Total\n");
         builder.append("-----------------------------------\n");
+        PriceFormat priceFormat=new PriceFormat();
 
+        priceFormat.getResult();
         for (Transaction transaction:transactions) {
+            priceFormat.setFormat(transaction.getPrice()+"");
             if(transaction.getType().equals("Diesel")||transaction.getType().equals("Petrol")) {
-                builder.append(transaction.getType()+"   "+transaction.getVehicleNo()+"   "+transaction.getVolume()+"   "+transaction.getPrice()/transaction.getVolume()+"  "+transaction.getPrice()+"\n");
+                builder.append(transaction.getType()+"   "+transaction.getVehicleNo()+"   "+transaction.getVolume()+"   "+transaction.getPrice()/transaction.getVolume()+"  "+priceFormat.getResult()+"\n");
             } else {
-                builder.append(transaction.getType()+" "+ " xxxx    "+transaction.getQuantity()+"     "+transaction.getRate()+"  "+transaction.getPrice()+"\n");
+                builder.append(transaction.getType()+" "+ " xxxx    "+transaction.getQuantity()+"     "+transaction.getRate()+"  "+priceFormat.getResult()+"\n");
             }
         }
         builder.append("-----------------------------------\n");
-        builder.append("Total:Rs."+Transaction.getTotal()+"\n");
+        priceFormat.setFormat(Transaction.getTotal()+"");
+        builder.append("Total:Rs."+priceFormat.getResult()+"\n");
 
         Label label=new Label(builder.toString());
         PrintBill.print(label);
