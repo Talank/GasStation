@@ -15,6 +15,7 @@ public class ApplicationPreLoader extends Preloader {
         this.primaryStage=primaryStage;
         Parent root=FXMLLoader.load(getClass().getResource("view/startingScreen.fxml"));
         primaryStage.setScene(new Scene(root));
+        primaryStage.setMaximized(true);
         primaryStage.show();
 
     }
