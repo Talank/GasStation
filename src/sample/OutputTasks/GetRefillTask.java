@@ -51,13 +51,12 @@ public class GetRefillTask extends Task<ArrayList<ArrayList<RefillModel>>> {
                 float avgValue=resultSet.getFloat(6)/resultSet.getInt(7);
                 StringBuilder stringBuilder=new StringBuilder(resultSet.getString(3));
 
-                if (avgValue > 0 && avgValue <= 20) {
+                if (avgValue >= 0 && avgValue <= 20) {
                     stringBuilder.append("G");
                 } else if (avgValue >= 21 && avgValue <= 50) {
                     stringBuilder.append("B");
                 } else if (avgValue > 50) {
                     stringBuilder.append("R");
-
                 } else
                     stringBuilder.append("P");
 
@@ -91,7 +90,7 @@ public class GetRefillTask extends Task<ArrayList<ArrayList<RefillModel>>> {
                 float avgValue=resultSet.getFloat(6)/resultSet.getInt(7);
                 StringBuilder stringBuilder=new StringBuilder(resultSet.getString(3));
 
-                if (avgValue > 0 && avgValue <= 20) {
+                if (avgValue >= 0 && avgValue <= 20) {
                     stringBuilder.append("G");
                 } else if (avgValue >= 21 && avgValue <= 50) {
                     stringBuilder.append("B");

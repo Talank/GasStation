@@ -210,7 +210,7 @@ public class ProfitLossController implements BackButtonInterface {
 
                         super.updateItem(item, empty);
                         if (!isEmpty()) {
-
+                           System.out.println(item);
 
                             if(item.contains("G"))
                                 this.setTextFill(Color.GREEN);

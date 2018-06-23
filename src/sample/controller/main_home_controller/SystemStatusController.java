@@ -80,16 +80,21 @@ public class SystemStatusController implements BackButtonInterface {
             expenditureList.setVisible(true);
             progressLayout.setVisible(false);
         });
-
+        PriceFormat priceFormat=new PriceFormat();
 
         progressLayout.setProgressProperty(task.progressProperty());
 
         systemDate.setText(SystemStatus.getNepaliCurrentDate());
         transactionDate.setText(SystemStatus.getNepaliTransactionDate());
-        currentDieselStock.setText(String.valueOf(SystemStatus.getDieselStock())+" Litres");
-        currentPetrolStock.setText(String.valueOf(SystemStatus.getPetrolStock())+" Litres");
-        initialDieselReadings.setText(String.valueOf(SystemStatus.getiDiesel())+" Litres");
-        initialPetrolReadings.setText(String.valueOf(SystemStatus.getiPetrol())+" Litres");
+
+        priceFormat.setFormat(String.valueOf(SystemStatus.getDieselStock()));
+        currentDieselStock.setText(priceFormat.getResult()+" Litres");
+        priceFormat.setFormat(String.valueOf(SystemStatus.getPetrolStock()));
+        currentPetrolStock.setText(priceFormat.getResult()+" Litres");
+        priceFormat.setFormat(String.valueOf(SystemStatus.getiDiesel()));
+        initialDieselReadings.setText(priceFormat.getResult()+" Litres");
+        priceFormat.setFormat(String.valueOf(SystemStatus.getiPetrol()));
+        initialPetrolReadings.setText(priceFormat.getResult()+" Litres");
 
         Thread mainThread=new Thread(task);
         mainThread.setDaemon(true);

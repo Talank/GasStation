@@ -96,6 +96,7 @@ public class FinalReadingsController implements BottomBarInterface {
             fDiesel.validate();
             status++;
         }
+
         if(status==0) {
 
             SystemStatus.setfDiesel(Float.parseFloat(fDiesel.getText()));
