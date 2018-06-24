@@ -1,5 +1,6 @@
 package sample.tasks.database_tasks;
 
+import sample.controller.SystemLogging;
 import sample.library.ErrorMessageDialogGenerator;
 import sample.library.SnackBarToastGenerator;
 import sample.model.SystemStatus;
@@ -39,6 +40,7 @@ public class AddExpenditureTask extends Tasks {
             addExpenditure.close();
 
             connection.commit();
+            SystemLogging.getLogger().fine("Expenditure stored in database");
 
             SnackBarToastGenerator snackBarToastGenerator=new SnackBarToastGenerator("Expenditure Added",1000);
             snackBarToastGenerator.show();
@@ -46,12 +48,17 @@ public class AddExpenditureTask extends Tasks {
         } catch (SQLException e) {
             e.printStackTrace();
             System.out.println(e.getMessage());
+            SystemLogging.getLogger().warning("Expenditure error stored in database");
+
+
 
             try {
                 connection.rollback();
+                SystemLogging.getLogger().fine("Rollback database to  stable done");
                 System.out.println("Error in Database detected. Rolling back Database to stable stage.");
 
             } catch (SQLException e1) {
+                SystemLogging.getLogger().warning("Unable to rollback ");
                 System.out.println("Unable to undo Changes.It restores when system restarts.");
             }
 

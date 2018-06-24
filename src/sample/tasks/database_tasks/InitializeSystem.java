@@ -156,6 +156,7 @@ public class InitializeSystem extends Tasks {
             }
 
             connection.commit();
+            SystemLogging.getLogger().fine("Initialize System done");
 
             CreditCompanyList.setCompanyList(arrayList);
             CreditCompanyList.setExpiredCompanyList(expiredList);
@@ -202,12 +203,15 @@ public class InitializeSystem extends Tasks {
         } catch (SQLException e) {
 
             e.printStackTrace();
+            SystemLogging.getLogger().warning("Failed to initialize the system ");
 
             try {
                 connection.rollback();
+                SystemLogging.getLogger().fine("Rollback done in initializing system ");
                 System.out.println("Error in Database detected. Rolling back Database to stable stage.");
 
             } catch (SQLException e1) {
+                SystemLogging.getLogger().warning("failed to rollback initialize system ");
                 System.out.println("Unable to undo Changes.It restores when system restarts.");
             }
             errorMessage="Database Error Detected.Could not Initialize System.Please Contact The Company Officials.";

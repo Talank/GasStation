@@ -1,5 +1,6 @@
 package sample.tasks.database_tasks;
 
+import sample.controller.SystemLogging;
 import sample.library.ErrorMessageDialogGenerator;
 import sample.library.SnackBarToastGenerator;
 import sample.model.AdminUser;
@@ -44,7 +45,7 @@ public class ChangeUserParameterTask extends Tasks {
             updateUser.close();
 
             connection.commit();
-
+            SystemLogging.getLogger().fine("SystemStatus change in user parameters done");
             SnackBarToastGenerator snackBarToastGenerator=new SnackBarToastGenerator("User Parameter Saved",1000);
             snackBarToastGenerator.show();
 
@@ -52,11 +53,14 @@ public class ChangeUserParameterTask extends Tasks {
         } catch (SQLException e) {
             e.printStackTrace();
             System.out.println(e.getNextException().getMessage());
+            SystemLogging.getLogger().warning("SystemStatus failed to change in user parameters");
             try {
                 connection.rollback();
+                SystemLogging.getLogger().fine("Rollback SystemStatus to stable state in user parameters");
                 System.out.println("Error in Database detected. Rolling back Database to stable stage.");
 
             } catch (SQLException e1) {
+                SystemLogging.getLogger().warning("SystemStatus failed to rollback in user parameters");
                 System.out.println("Unable to undo Changes.It restores when system restarts.");
             }
 

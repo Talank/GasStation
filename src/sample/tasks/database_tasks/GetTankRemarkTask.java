@@ -1,5 +1,6 @@
 package sample.tasks.database_tasks;
 
+import sample.controller.SystemLogging;
 import sample.model.SystemStatus;
 import sample.model.TankerModel;
 import sample.tasks.Tasks;
@@ -37,6 +38,8 @@ public class GetTankRemarkTask extends Tasks {
                      TankerModel tankerModel = new TankerModel(avg, count, type, (String.valueOf(tankerNumber) + "X"));
                      if (taskInterface != null)
                          taskInterface.onComplete(tankerModel);
+                     SystemLogging.getLogger().fine("Tankers selected ");
+
                  } else {
                      if (taskInterface != null)
                          taskInterface.onError();
@@ -48,6 +51,7 @@ public class GetTankRemarkTask extends Tasks {
 
         } catch(SQLException e) {
             e.printStackTrace();
+            SystemLogging.getLogger().warning("Tankers remark not done");
             System.out.println(e.getMessage());
         }
 

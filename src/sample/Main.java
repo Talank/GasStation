@@ -50,6 +50,7 @@ public class Main extends Application {
         if(Tasks.setupConnection()&&initializeSystem.customExecute()) {
             TaskManager.init(1);
             startup=true;
+
 //            loader=new FXMLLoader(getClass().getResource("view/main_home_views/mainHome.fxml"));
             loader=new FXMLLoader(getClass().getResource("view/appHome.fxml"));
         } else {

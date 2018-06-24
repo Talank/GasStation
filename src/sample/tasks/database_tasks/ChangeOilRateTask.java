@@ -2,6 +2,7 @@ package sample.tasks.database_tasks;
 
 import javafx.application.Platform;
 import sample.controller.AppHomeController;
+import sample.controller.SystemLogging;
 import sample.library.ErrorMessageDialogGenerator;
 import sample.library.SnackBarToastGenerator;
 import sample.model.RateModel;
@@ -71,6 +72,7 @@ public class ChangeOilRateTask extends Tasks {
             }
 
             connection.commit();
+            SystemLogging.getLogger().fine("SystemStatus Oil Rates Successfully changed");
 
             SystemStatus.setpRate(model.getrPetrol());
             SystemStatus.setdRate(model.getrDiesel());
@@ -83,11 +85,14 @@ public class ChangeOilRateTask extends Tasks {
 
         } catch(SQLException e) {
             System.out.println(e.getNextException().getMessage());
+            SystemLogging.getLogger().warning("SystemStatus failed to change oil rates");
             try {
                 connection.rollback();
+                SystemLogging.getLogger().fine("Rollback to stable stage in SystemStatus");
                 System.out.println("Error in Database detected. Rolling back Database to stable stage.");
 
             } catch (SQLException e1) {
+                SystemLogging.getLogger().warning("Rollback failed in SystemStatus");
                 System.out.println("Unable to undo Changes.It restores when system restarts.");
             }
 

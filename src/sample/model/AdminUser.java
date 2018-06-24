@@ -1,6 +1,8 @@
 package sample.model;
 
 
+import sample.controller.SystemLogging;
+
 import java.security.MessageDigest;
 
 public class AdminUser {

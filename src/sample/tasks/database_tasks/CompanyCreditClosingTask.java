@@ -1,5 +1,6 @@
 package sample.tasks.database_tasks;
 
+import sample.controller.SystemLogging;
 import sample.library.ErrorMessageDialogGenerator;
 import sample.library.SnackBarToastGenerator;
 import sample.model.CreditCompanyClosingBill;
@@ -78,6 +79,7 @@ public class CompanyCreditClosingTask extends Tasks {
                 deleteCredit.close();
 
                 connection.commit();
+                SystemLogging.getLogger().fine("CreditCompany successfully updated ");
 
                 model.setDue(model.getDue()+(model.getTotal()-total));
                 model.setTotal(total);
@@ -100,6 +102,7 @@ public class CompanyCreditClosingTask extends Tasks {
                 updateCreditCompany.close();
 
                 connection.commit();
+                SystemLogging.getLogger().fine("CreditCompany successfully updated ");
 
                 model.setDue(model.getDue()+model.getTotal());
                 model.setTotal(0f);
@@ -123,12 +126,15 @@ public class CompanyCreditClosingTask extends Tasks {
 
         } catch (SQLException e) {
             e.printStackTrace();
+            SystemLogging.getLogger().warning("CreditCompany failed to update");
             System.out.println(e.getMessage());
             try {
                 connection.rollback();
+                SystemLogging.getLogger().fine("Rollback CreditCompany");
                 System.out.println("Error in Database detected. Rolling back Database to stable stage.");
 
             } catch (SQLException e1) {
+                SystemLogging.getLogger().warning("failed to rollback CreditCompany");
                 System.out.println("Unable to undo Changes.It restores when system restarts.");
             }
 

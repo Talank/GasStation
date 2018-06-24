@@ -3,6 +3,7 @@ package sample.model;
 import javafx.scene.control.Label;
 import sample.OutputTasks.GetCompanyClosing;
 import sample.controller.AppHomeController;
+import sample.controller.SystemLogging;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -37,8 +38,10 @@ public class CreditCompanyClosingBill {
 
         label.setText(builder.toString());
         if(PrintBill.print(label)) {
+            SystemLogging.getLogger().fine("Credit Company Successfully closed");
             return true;
         } else {
+            SystemLogging.getLogger().fine("Credit Company failed to close");
             AppHomeController.getInstance().showMessage("Error Printing Bill",1000);
         }
         return false;

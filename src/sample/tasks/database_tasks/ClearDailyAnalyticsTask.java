@@ -1,5 +1,6 @@
 package sample.tasks.database_tasks;
 
+import sample.controller.SystemLogging;
 import sample.library.ErrorMessageDialogGenerator;
 import sample.library.SnackBarToastGenerator;
 import sample.nepali_date.DateConverter;
@@ -28,6 +29,7 @@ public class ClearDailyAnalyticsTask extends Tasks {
             clearPetrolRefill.close();
 
             connection.commit();
+            SystemLogging.getLogger().fine("DailyAnalytics successfully clears the records in database");
 
             SnackBarToastGenerator snackBarToastGenerator=new SnackBarToastGenerator("Daily Analytics Cleared",1000);
             snackBarToastGenerator.show();
@@ -35,12 +37,15 @@ public class ClearDailyAnalyticsTask extends Tasks {
         } catch(SQLException e) {
             e.printStackTrace();
             System.out.println(e.getMessage());
+            SystemLogging.getLogger().warning("DailyAnalytics failed to clear the records");
 
             try {
                 connection.rollback();
+                SystemLogging.getLogger().fine("Rollback successfully done in DailyAnalytics");
                 System.out.println("Error in Database detected. Rolling back Database to stable stage.");
 
             } catch (SQLException e1) {
+                SystemLogging.getLogger().warning("Rollback failed in DailyAnalytics");
                 System.out.println("Unable to undo Changes.It restores when system restarts.");
             }
 

@@ -1,5 +1,6 @@
 package sample.tasks.database_tasks;
 
+import sample.controller.SystemLogging;
 import sample.library.ErrorMessageDialogGenerator;
 import sample.library.SnackBarToastGenerator;
 import sample.nepali_date.DateConverter;
@@ -28,19 +29,23 @@ public class ClearPetrolRefillTask extends Tasks {
             clearPetrolRefill.close();
 
             connection.commit();
+            SystemLogging.getLogger().fine("PetrolRefill successfully cleared");
 
             SnackBarToastGenerator snackBarToastGenerator=new SnackBarToastGenerator("Petrol Refill Cleared",1000);
             snackBarToastGenerator.show();
 
         } catch(SQLException e) {
             e.printStackTrace();
+            SystemLogging.getLogger().warning("PetrolRefill failed to clear");
             System.out.println(e.getMessage());
 
             try {
                 connection.rollback();
+                SystemLogging.getLogger().fine("Rollback successfully done in PetrolRefill");
                 System.out.println("Error in Database detected. Rolling back Database to stable stage.");
 
             } catch (SQLException e1) {
+                SystemLogging.getLogger().warning("Rollback failed in PetrolRefill");
                 System.out.println("Unable to undo Changes.It restores when system restarts.");
             }
 

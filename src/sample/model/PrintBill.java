@@ -5,6 +5,7 @@ import javafx.print.Printer;
 import javafx.print.PrinterJob;
 import javafx.scene.Node;
 import javafx.stage.Stage;
+import sample.controller.SystemLogging;
 
 
 public class PrintBill {
@@ -24,6 +25,7 @@ public class PrintBill {
         PrinterJob printerJob=PrinterJob.createPrinterJob(currentPrinter);
         if(printerJob.printPage(node)) {
             printerJob.endJob();
+            SystemLogging.getLogger().fine("Printing Operation successfully done");
             return true;
         }
     }
