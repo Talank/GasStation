@@ -289,27 +289,33 @@ public class CreditBillingController {
 
 
         vehicleNumber.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)->{
-            if(newValue.isEmpty()&&!force)
-                vehicleNumber.validate();
-            else {
-                vehicleNumber.resetValidation();
+            if(!newValue.matches("[0-9]{0,4}")) {
+                vehicleNumber.setText(oldValue);
+            } else {
+                if(newValue.isEmpty()&&!force) {
+                    vehicleNumber.validate();
+                } else {
+                    vehicleNumber.resetValidation();
+                }
             }
 
         });
 
         volume.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)->{
-            if(!newValue.matches("[0-9]{0,10}([\\.][0-9]{0,4})?"))
+            if(!newValue.matches("[0-9]{0,10}([\\.][0-9]{0,4})?")) {
                 volume.setText(oldValue);
-            else
-            if(newValue.isEmpty()&&!force)
-                volume.validate();
-            else {
-                volume.resetValidation();
-                if(calcNowV) {
-                    price.setText(decimalFormat.format(Float.parseFloat(volume.getText())*rate));
-                }
+            } else {
+                if(newValue.isEmpty()&&!force) {
+                    volume.validate();
+                } else {
+                    volume.resetValidation();
+                    if(calcNowV) {
+                        price.setText(decimalFormat.format(Float.parseFloat(volume.getText())*rate));
+                    }
 
+                }
             }
+
 
         });
 
@@ -402,7 +408,7 @@ public class CreditBillingController {
             status++;
         }
 
-        if(vehicleNumber.getText().trim().isEmpty()) {
+        if(vehicleNumber.getText().isEmpty()||(vehicleNumber.getText().length()<4)) {
             vehicleNumber.validate();
             status++;
         }

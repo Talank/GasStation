@@ -1,5 +1,6 @@
 package sample.tasks.database_tasks;
 
+import sample.controller.main_home_controller.SettingsController;
 import sample.library.ErrorMessageDialogGenerator;
 import sample.library.SnackBarToastGenerator;
 import sample.model.DebtListModel;
@@ -21,7 +22,7 @@ public class RemoveCompanyTask extends Tasks {
     @Override
     public void execute() {
         try {
-            PreparedStatement delete=connection.prepareStatement("DELETE FROM CreditCompany WHERE COMPANY_NAME="+model.getCompanyName());
+            PreparedStatement delete=connection.prepareStatement("DELETE FROM CreditCompany WHERE COMPANY_NAME='"+model.getCompanyName()+"'");
             delete.execute();
             delete=connection.prepareStatement("DROP TABLE "+DatabaseHandler.generateTableName(model.getCompanyName()));
             delete.execute();
@@ -29,6 +30,8 @@ public class RemoveCompanyTask extends Tasks {
             delete.close();
 
             connection.commit();
+
+            SettingsController.getInstance().removeModel(model);
 
             SnackBarToastGenerator snackBarToastGenerator=new SnackBarToastGenerator("Company Removed SuccessFully",1000);
             snackBarToastGenerator.show();

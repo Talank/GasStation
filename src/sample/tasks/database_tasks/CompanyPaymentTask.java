@@ -18,9 +18,13 @@ public class CompanyPaymentTask extends Tasks {
 
     private float payment;
 
-    public CompanyPaymentTask(DebtListModel model, float payment) {
+    private int mode;
+
+
+    public CompanyPaymentTask(DebtListModel model, float payment,int mode) {
         this.model=model;
         this.payment=payment;
+        this.mode=mode;
     }
 
     @Override
@@ -38,38 +42,77 @@ public class CompanyPaymentTask extends Tasks {
 
         try {
 
-            Statement updatePayment=connection.createStatement();
 
-            ResultSet resultSet=updatePayment.executeQuery("SELECT PREV_TRANSACTION_ID FROM CreditCompany WHERE COMPANY_NAME='"+model.getCompanyName()+"'");
-            resultSet.next();
-            if(resultSet.getInt(1)==1) {
+            float prepaid,due;
+            if(mode==0) {
+                Statement updatePayment=connection.createStatement();
 
-                PreparedStatement creditPayment=connection.prepareStatement("UPDATE CreditCompany SET DUE=DUE-?,PREV_TRANSACTION_ID=0"+",DATE=PREV_EXPIRE_DATE WHERE COMPANY_NAME=?");
-                creditPayment.setFloat(1,payment);
-                creditPayment.setString(2,model.getCompanyName());
-                creditPayment.execute();
+                ResultSet resultSet=updatePayment.executeQuery("SELECT PREV_TRANSACTION_ID,DUE,PRE_PAID FROM CreditCompany WHERE COMPANY_NAME='"+model.getCompanyName()+"'");
+                resultSet.next();
 
-                creditPayment.close();
+                float netAmount=(payment+resultSet.getFloat(3))-resultSet.getFloat(2);
 
-                System.out.println("Company Payment Made SuccessFully");
+                if(resultSet.getInt(1)==1) {
+
+                    if(netAmount<0) {
+                        /**
+                         *The payment and prepaid doesn't pays off the due
+                         * so,we set prepaid =0,as it is totally used and set due=netAmount
+                         */
+                        due=Math.abs(netAmount);
+                        prepaid=0;
+                        PreparedStatement creditPayment=connection.prepareStatement("UPDATE CreditCompany SET DUE=?,PRE_PAID=0,PREV_TRANSACTION_ID=0"+",DATE=PREV_EXPIRE_DATE WHERE COMPANY_NAME=?");
+                        creditPayment.setFloat(1,due);
+                        creditPayment.setString(2,model.getCompanyName());
+                        creditPayment.execute();
+
+                        creditPayment.close();
+                    } else {
+                        due=0;
+                        prepaid=netAmount;
+                        PreparedStatement creditPayment=connection.prepareStatement("UPDATE CreditCompany SET DUE=0,PRE_PAID=?,PREV_TRANSACTION_ID=0"+",DATE=PREV_EXPIRE_DATE WHERE COMPANY_NAME=?");
+                        creditPayment.setFloat(1,netAmount);
+                        creditPayment.setString(2,model.getCompanyName());
+                        creditPayment.execute();
+
+                        creditPayment.close();
+                    }
+
+                    System.out.println("Company Payment Made SuccessFully");
+                } else {
+                    due=resultSet.getFloat(2)-payment;
+                    prepaid=model.getPrePaid();
+                    PreparedStatement creditPayment=connection.prepareStatement("UPDATE CreditCompany SET DUE=DUE-? WHERE COMPANY_NAME=?");
+                    creditPayment.setFloat(1,payment);
+                    creditPayment.setString(2,model.getCompanyName());
+                    creditPayment.execute();
+
+                    creditPayment.close();
+
+                    System.out.println("The Debt of the company has been deducted.");
+                }
+                resultSet.close();
             } else {
-                PreparedStatement creditPayment=connection.prepareStatement("UPDATE CreditCompany SET DUE=DUE-? WHERE COMPANY_NAME=?");
+                /**
+                 *The use only wants to do prepaid
+                 */
+                due=model.getDue();
+                prepaid=model.getPrePaid()+payment;
+                PreparedStatement creditPayment=connection.prepareStatement("UPDATE CreditCompany SET PRE_PAID=PRE_PAID+?"+" WHERE COMPANY_NAME=?");
                 creditPayment.setFloat(1,payment);
                 creditPayment.setString(2,model.getCompanyName());
                 creditPayment.execute();
 
                 creditPayment.close();
-
-                System.out.println("The Debt of the company has been deducted.");
             }
 
-            resultSet.close();
 
             connection.commit();
 
-            model.setDue(model.getDue()-payment);
+            model.setDue(due);
             model.setDate(model.getPrevExpireDate());
             model.setExpired(false);
+            model.setPrePaid(prepaid);
 
             SettingsController.getInstance().refreshList(model);
 

@@ -142,6 +142,9 @@ public class SettingsController {
         return model;
     }
 
+    public void removeModel(DebtListModel model) {
+        listModels.remove(model);
+    }
 
     @FXML
     public void addCompany(MouseEvent e) throws IOException {
@@ -168,14 +171,7 @@ public class SettingsController {
             RemoveCompanyTask task=new RemoveCompanyTask(model);
             TaskManager.executeTask(task);
 
-            /*if(DatabaseHandler.deleteCompany(model)) {
-                SystemLogging.getLogger().fine("Company Deleted SuccessFully.");
-            } else {
-                SystemLogging.getLogger().severe("Error Deleting Companies!");
-            }*/
         }
-
-
     }
 
     /*
@@ -205,15 +201,11 @@ public class SettingsController {
     }
 
     @FXML
-    public void closeCompany(MouseEvent e) throws SQLException {
+    public void closeCompany(MouseEvent e) {
 
         DebtListModel model=debtList.getSelectionModel().getSelectedItem();
-        
-        CreditCompanyClosingBill bill=new CreditCompanyClosingBill(model);
-        if(bill.printBill()) {
-            CompanyCreditClosingTask task=new CompanyCreditClosingTask(model);
-            TaskManager.executeTask(task);
-        }
+        CompanyCreditClosingTask task=new CompanyCreditClosingTask(model);
+        TaskManager.executeTask(task);
     }
 
     @FXML

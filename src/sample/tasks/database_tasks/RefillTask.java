@@ -92,7 +92,7 @@ public class RefillTask extends Tasks {
 
                 float avgValue=((model.getTankerModel().getLoss())+model.getLoss())/((model.getTankerModel().getCount())+1);
                 StringBuilder stringBuilder=new StringBuilder(model.getTankerNumber().substring(0,4));
-                if (avgValue > 0 && avgValue <= 20) {
+                if (avgValue >= 0 && avgValue <= 20) {
                     stringBuilder.append("G");
                 } else if (avgValue >= 21 && avgValue <= 50) {
                     stringBuilder.append("B");
@@ -123,7 +123,7 @@ public class RefillTask extends Tasks {
                 if (resultSet.next()) {
                     float avgValue=(resultSet.getFloat(2)+model.getLoss())/(resultSet.getInt(3)+1);
                     StringBuilder stringBuilder=new StringBuilder(resultSet.getString(1));
-                    if (avgValue > 0 && avgValue <= 20) {
+                    if (avgValue >= 0 && avgValue <= 20) {
                         stringBuilder.append("G");
                     } else if (avgValue >= 21 && avgValue <= 50) {
                         stringBuilder.append("B");
@@ -153,7 +153,7 @@ public class RefillTask extends Tasks {
 
                     float avgValue=model.getLoss();
                     StringBuilder stringBuilder=new StringBuilder(model.getTankerNumber().substring(0,4));
-                    if (avgValue > 0 && avgValue <= 20) {
+                    if (avgValue >= 0 && avgValue <= 20) {
                         stringBuilder.append("G");
                     } else if (avgValue >= 21 && avgValue <= 50) {
                         stringBuilder.append("B");

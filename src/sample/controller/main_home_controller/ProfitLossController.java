@@ -171,18 +171,15 @@ public class ProfitLossController implements BackButtonInterface {
                         super.updateItem(item, empty);
                         if (!isEmpty()) {
 
-                            if(item.contains("G"))
+                            if(item.contains("G")) {
                                 this.setTextFill(Color.GREEN);
-
-                            else if(item.contains("B"))
+                            } else if(item.contains("B")) {
                                 this.setTextFill(Color.BLUE);
-
-                            else if(item.contains("R"))
+                            } else if(item.contains("R")) {
                                 this.setTextFill(Color.RED);
-
-                            else
+                            } else {
                                 this.setTextFill(Color.BLACK);
-
+                            }
                             item=item.substring(0,4);
 
                             setText(item);
@@ -212,17 +209,15 @@ public class ProfitLossController implements BackButtonInterface {
                         if (!isEmpty()) {
                            System.out.println(item);
 
-                            if(item.contains("G"))
+                            if(item.contains("G")) {
                                 this.setTextFill(Color.GREEN);
-
-                            else if(item.contains("B"))
+                            } else if(item.contains("B")) {
                                 this.setTextFill(Color.BLUE);
-
-                            else if(item.contains("R"))
+                            } else if(item.contains("R")) {
                                 this.setTextFill(Color.RED);
-
-                            else
+                            } else {
                                 this.setTextFill(Color.BLACK);
+                            }
 
                             item=item.substring(0,4);
 

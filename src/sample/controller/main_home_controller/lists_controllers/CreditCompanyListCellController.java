@@ -14,7 +14,7 @@ import java.io.IOException;
 public class CreditCompanyListCellController {
 
     @FXML
-    private Label companyName,companyCycle,companyDue,companyTotal,companyLastPaid;
+    private Label companyName,companyCycle,companyDue,companyTotal,companyLastPaid,prePaid;
     PriceFormat priceFormat=new PriceFormat();
 
     private VBox vBox;
@@ -35,10 +35,12 @@ public class CreditCompanyListCellController {
         companyName.setText(model.getCompanyName());
         companyCycle.setText("Cycle:"+model.getDays()+" Days.");
         priceFormat.setFormat(model.getDue()+"");
-        companyDue.setText("Due:Rs"+priceFormat.getResult());
+        companyDue.setText("Due: Rs "+priceFormat.getResult());
         priceFormat.setFormat(model.getTotal()+"");
-        companyTotal.setText("Total:Rs"+priceFormat.getResult());
+        companyTotal.setText("Total: Rs "+priceFormat.getResult());
         companyLastPaid.setText("Current Session:"+model.getDate());
+        priceFormat.setFormat(model.getPrePaid()+"");
+        prePaid.setText("Prepaid: Rs "+priceFormat.getResult());
 
         companyDue.setTextFill(Color.RED);
         companyTotal.setTextFill(Color.GREEN);

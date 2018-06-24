@@ -93,7 +93,7 @@ public class RefillDialogController implements BottomBarInterface {
         });
 
         tankerNumber.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)->{
-            if(!newValue.matches("[0-9]{0,10}([\\.][0-9]{0,4})?")) {
+            if(!newValue.matches("[0-9]{0,4}")) {
                 tankerNumber.setText(oldValue);
             } else {
                 if(newValue.isEmpty()) {
@@ -129,7 +129,7 @@ public class RefillDialogController implements BottomBarInterface {
             status++;
         }
 
-        if(tankerNumber.getText().isEmpty()) {
+        if(tankerNumber.getText().isEmpty()||(tankerNumber.getText().length()<4)) {
             tankerNumber.validate();
             status++;
         }

@@ -1,6 +1,7 @@
 package sample.tasks.database_tasks;
 
 import javafx.application.Platform;
+import sample.controller.SystemLogging;
 import sample.controller.main_home_controller.SettingsController;
 import sample.library.ErrorMessageDialogGenerator;
 import sample.library.SnackBarToastGenerator;
@@ -38,7 +39,7 @@ public class SaveCompanyTask extends Tasks {
             Statement saveCompany=connection.createStatement();
             saveCompany.execute("CREATE TABLE "+DatabaseHandler.generateTableName(companyName)+" (TRANSACTION_ID INT NOT NULL,TYPE VARCHAR(10) NOT NULL,VEHICLE_NO VARCHAR(10) NOT NULL,RATE FLOAT NOT NULL,VOLUME FLOAT NOT NULL,PRICE FLOAT NOT NULL,DATE DATE NOT NULL)");
 
-            PreparedStatement insertCompany=connection.prepareStatement("INSERT INTO CreditCompany VALUES(?,?,?,?,?,?,?,?)");
+            PreparedStatement insertCompany=connection.prepareStatement("INSERT INTO CreditCompany VALUES(?,?,?,?,?,?,?,?,?)");
             insertCompany.setString(1,companyName);
             insertCompany.setInt(2,1);
             insertCompany.setDate(3,SystemStatus.getCurrentDate());
@@ -47,6 +48,7 @@ public class SaveCompanyTask extends Tasks {
             insertCompany.setFloat(6,0);
             insertCompany.setFloat(7,0);
             insertCompany.setDate(8,SystemStatus.getCurrentDate());
+            insertCompany.setFloat(9,0);
 
             insertCompany.execute();
 
@@ -57,7 +59,11 @@ public class SaveCompanyTask extends Tasks {
 
             connection.commit();
 
-            Platform.runLater(()->SettingsController.getInstance().listModels.add(new DebtListModel(companyName,creditCycle,1,1,0f,0f)));
+            final DebtListModel model=new DebtListModel(companyName,creditCycle,1,1,0f,0f);
+            model.setDate(SystemStatus.getNepaliCurrentDate());
+            model.setPrePaid(0);
+
+            Platform.runLater(()->SettingsController.getInstance().listModels.add(model));
 
             SnackBarToastGenerator snackBarToastGenerator=new SnackBarToastGenerator("Company Added SuccessFully",1000);
             snackBarToastGenerator.show();

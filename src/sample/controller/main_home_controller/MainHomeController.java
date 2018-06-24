@@ -144,7 +144,7 @@ public class MainHomeController {
         if (CreditCompanyList.getCompanyList().size() != 0) {
             loadStage((Node)e.getSource(),"../../view/main_home_views/creditBilling.fxml");
         } else {
-            System.out.println("No Company Detected.");
+            AppHomeController.getInstance().showMessage("No Companies Detected.",2000);
         }
     }
 

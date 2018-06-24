@@ -8,7 +8,7 @@ public class DebtListModel {
 
     private Date expireDate;
 
-    private float due,total;
+    private float due,total,prePaid;
 
     private boolean isExpired=false;
 
@@ -99,5 +99,13 @@ public class DebtListModel {
 
     public void setExpireDate(Date expireDate) {
         this.expireDate = expireDate;
+    }
+
+    public float getPrePaid() {
+        return prePaid;
+    }
+
+    public void setPrePaid(float prePaid) {
+        this.prePaid = prePaid;
     }
 }

@@ -67,6 +67,7 @@ public class InitializeSystem extends Tasks {
                 model.setDate(generator.convertDate(resultSet.getDate(8 )));
                 model.setPrevExpireDate(generator.convertDate(resultSet.getDate(3)));
                 model.setExpireDate(resultSet.getDate(3));
+                model.setPrePaid(resultSet.getFloat(9));
 
 
                 initialDate.setNepaliDate(model.getDate());

@@ -2,6 +2,7 @@ package sample.tasks.database_tasks;
 
 import sample.library.ErrorMessageDialogGenerator;
 import sample.library.SnackBarToastGenerator;
+import sample.model.CreditCompanyClosingBill;
 import sample.model.DebtListModel;
 import sample.model.SystemStatus;
 import sample.model.databases.DatabaseHandler;
@@ -107,9 +108,14 @@ public class CompanyCreditClosingTask extends Tasks {
 
             }
 
-
-            SnackBarToastGenerator snackBarToastGenerator=new SnackBarToastGenerator("Company Closing SuccessFull",1000);
-            snackBarToastGenerator.show();
+            CreditCompanyClosingBill bill=new CreditCompanyClosingBill(model);
+            if(bill.printBill()) {
+                SnackBarToastGenerator snackBarToastGenerator=new SnackBarToastGenerator("Company Closed. Printing Bill",1000);
+                snackBarToastGenerator.show();
+            } else {
+                SnackBarToastGenerator snackBarToastGenerator=new SnackBarToastGenerator("Company Closed.But Couldn't Print Bill",1000);
+                snackBarToastGenerator.show();
+            }
 
             if(taskInterface!=null) {
                 taskInterface.onComplete(null);
