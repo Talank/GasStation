@@ -1,5 +1,6 @@
 package sample.tasks.database_tasks;
 
+import sample.controller.SystemLogging;
 import sample.library.ErrorMessageDialogGenerator;
 import sample.library.SnackBarToastGenerator;
 import sample.model.SystemStatus;
@@ -32,17 +33,21 @@ public class SetupCounterStockTask extends Tasks {
             insertStock.close();
 
             connection.commit();
-
+            SystemLogging.getLogger().fine(" SystemStatus counter stock is updated");
             SnackBarToastGenerator snackBarToastGenerator=new SnackBarToastGenerator("Counter Saved",1000);
             snackBarToastGenerator.show();
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+            SystemLogging.getLogger().warning(" SystemStatus counter stock couldn't be updated");
+
             try {
                 connection.rollback();
+                SystemLogging.getLogger().fine(" SystemStatus counter stock rollback successfully to stable stage");
                 System.out.println("Error in Database detected. Rolling back Database to stable stage.");
 
             } catch (SQLException e1) {
+                SystemLogging.getLogger().warning(" SystemStatus failed to rollback counter stock");
                 System.out.println("Unable to undo Changes.It restores when system restarts.");
             }
 

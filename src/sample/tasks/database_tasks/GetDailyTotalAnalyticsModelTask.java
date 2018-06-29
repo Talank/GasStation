@@ -1,5 +1,6 @@
 package sample.tasks.database_tasks;
 
+import sample.controller.SystemLogging;
 import sample.model.SystemStatus;
 import sample.model.transaction_model.DailyTotalAnalyticModel;
 import sample.tasks.Tasks;
@@ -34,6 +35,7 @@ public class GetDailyTotalAnalyticsModelTask extends Tasks {
 
             model.setOilIncome(SystemStatus.getdRate(),SystemStatus.getpRate());
             model.setTotal();
+            SystemLogging.getLogger().fine("DailyAnalytics fetched ");
 
             if(taskInterface!=null) {
                 taskInterface.onComplete(model);
@@ -41,6 +43,7 @@ public class GetDailyTotalAnalyticsModelTask extends Tasks {
 
 
         } catch(SQLException e) {
+            SystemLogging.getLogger().warning("DailyAnalytics couldn't be fetched ");
             System.out.println(e.getMessage());
             taskInterface.onError();
         }

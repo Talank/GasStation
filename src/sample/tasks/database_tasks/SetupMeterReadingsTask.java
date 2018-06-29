@@ -1,5 +1,6 @@
 package sample.tasks.database_tasks;
 
+        import sample.controller.SystemLogging;
         import sample.library.ErrorMessageDialogGenerator;
         import sample.library.SnackBarToastGenerator;
         import sample.model.SystemStatus;
@@ -72,6 +73,8 @@ public class SetupMeterReadingsTask extends Tasks {
             }
 
             connection.commit();
+            SystemLogging.getLogger().fine(" SystemStatus meter reading is successfully updated ");
+
 
             SystemStatus.setiDiesel(Float.parseFloat(dieselReading));
             SystemStatus.setiPetrol(Float.parseFloat(petrolReading));
@@ -81,13 +84,18 @@ public class SetupMeterReadingsTask extends Tasks {
 
         } catch(SQLException e) {
             System.out.println(e.getMessage());
+            SystemLogging.getLogger().warning("SystemStatus failed to update meter reading");
+
 
             try {
                 connection.rollback();
+                SystemLogging.getLogger().fine(" Rollback SystemStatus meter reading to  stable state");
+
                 System.out.println("Error in Database detected. Rolling back Database to stable stage.");
 
             } catch (SQLException e1) {
-                System.out.println("Unable to undo Changes.It restores when system restarts.");
+                SystemLogging.getLogger().warning(" CreditCompany added successfully");
+                System.out.println(" Failed to Rollback SystemStatus meter reading");
             }
 
             String message="Error Setting Up Final Meter Readings.\n"+"Please Retry Again.";

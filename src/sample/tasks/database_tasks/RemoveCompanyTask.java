@@ -1,5 +1,6 @@
 package sample.tasks.database_tasks;
 
+import sample.controller.SystemLogging;
 import sample.controller.main_home_controller.SettingsController;
 import sample.library.ErrorMessageDialogGenerator;
 import sample.library.SnackBarToastGenerator;
@@ -30,6 +31,7 @@ public class RemoveCompanyTask extends Tasks {
             delete.close();
 
             connection.commit();
+            SystemLogging.getLogger().fine("CreditCompany removal done ");
 
             SettingsController.getInstance().removeModel(model);
 
@@ -38,12 +40,15 @@ public class RemoveCompanyTask extends Tasks {
 
         } catch(SQLException e) {
             e.printStackTrace();
+            SystemLogging.getLogger().warning("CreditCompany removal couldn't be done ");
             System.out.println(e.getMessage());
             try {
                 connection.rollback();
+                SystemLogging.getLogger().fine("Rollback CreditCompany removal ");
                 System.out.println("Error in Database detected. Rolling back Database to stable stage.");
 
             } catch (SQLException e1) {
+                SystemLogging.getLogger().warning("Rollback CreditCompany removal couldn't be done");
                 System.out.println("Unable to undo Changes.It restores when system restarts.");
             }
 
