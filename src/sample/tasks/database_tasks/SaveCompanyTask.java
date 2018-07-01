@@ -58,6 +58,7 @@ public class SaveCompanyTask extends Tasks {
             getIDs.close();
 
             connection.commit();
+            SystemLogging.getLogger().fine(" CreditCompany added successfully");
 
             final DebtListModel model=new DebtListModel(companyName,creditCycle,1,1,0f,0f);
             model.setDate(SystemStatus.getNepaliCurrentDate());
@@ -73,11 +74,14 @@ public class SaveCompanyTask extends Tasks {
 
         } catch (SQLException e) {
             retryStatus++;
+            SystemLogging.getLogger().warning("CreditCompany failed to save");
             try {
                 connection.rollback();
-                System.out.println("Error in Database detected. Rolling back Database to stable stage.");
+                SystemLogging.getLogger().fine("Rollback CreditCompany saving name in db successfully done");
+                System.out.println("Error in Database detected. Rolling back Database to stable  stage.");
 
             } catch (SQLException e1) {
+                SystemLogging.getLogger().fine("Rollback CreditCompany failed to  save");
                 System.out.println("Unable to undo Changes.It restores when system restarts.");
             }
 

@@ -1,5 +1,6 @@
 package sample.tasks.database_tasks;
 
+import sample.controller.SystemLogging;
 import sample.controller.main_home_controller.SettingsController;
 import sample.library.ErrorMessageDialogGenerator;
 import sample.library.SnackBarToastGenerator;
@@ -66,6 +67,7 @@ public class SetupPrintersTask extends Tasks {
             }
 
             connection.commit();
+            SystemLogging.getLogger().fine(" SystemStatus printer setup updated");
 
             SystemStatus.setBillPrinter(billPrinterName);
             SystemStatus.setAnalyticsPrinter(analyticsPrinterName);
@@ -83,12 +85,15 @@ public class SetupPrintersTask extends Tasks {
 
         } catch(SQLException e) {
             System.out.println(e.getMessage());
+            SystemLogging.getLogger().warning(" SystemStatus printer setup failed to update");
 
             try {
                 connection.rollback();
+                SystemLogging.getLogger().fine("Rollback SystemStatus printer setup");
                 System.out.println("Error in Database detected. Rolling back Database to stable stage.");
 
             } catch (SQLException e1) {
+                SystemLogging.getLogger().warning(" Failed to Rollback SystemStatus printer setup");
                 System.out.println("Unable to undo Changes.It restores when system restarts.");
             }
 

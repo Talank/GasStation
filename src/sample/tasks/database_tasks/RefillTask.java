@@ -2,6 +2,7 @@ package sample.tasks.database_tasks;
 
 import javafx.application.Platform;
 import sample.controller.AppHomeController;
+import sample.controller.SystemLogging;
 import sample.controller.main_home_controller.ProfitLossController;
 import sample.library.ErrorMessageDialogGenerator;
 import sample.library.SnackBarToastGenerator;
@@ -185,6 +186,7 @@ public class RefillTask extends Tasks {
                     model.getTankerModel().setAvg(avgValue);
                     model.getTankerModel().setCount(1);
                 }
+                SystemLogging.getLogger().fine("Tanker Refill done");
             }
 
             if(mode==0)
@@ -199,12 +201,15 @@ public class RefillTask extends Tasks {
 
         } catch(SQLException e) {
             e.printStackTrace();
+            SystemLogging.getLogger().warning("Tanker Refill couldn't be  done ");
             System.out.println(e.getMessage());
             try {
                 connection.rollback();
+                SystemLogging.getLogger().fine("Rollback Refill  done ");
                 System.out.println("Error in Database detected. Rolling back Database to stable stage.");
 
             } catch (SQLException e1) {
+                SystemLogging.getLogger().warning("Rollback Refill couldn't be done ");
                 System.out.println("Unable to undo Changes.It restores when system restarts.");
             }
 
