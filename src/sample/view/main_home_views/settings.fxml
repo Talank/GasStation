@@ -194,7 +194,7 @@
                         </stylesheets>
                         <styleClass>
                            <String fx:value="generalButton" />
-                           <String fx:value="removeButtonColor" />
+                           <String fx:value="generalButtonColor" />
                         </styleClass>
                      </JFXButton>
                   </children>
@@ -253,7 +253,7 @@
                            <URL value="@../../css/componentStyles.css" />
                         </stylesheets>
                         <styleClass>
-                           <String fx:value="removeButtonColor" />
+                           <String fx:value="generalButtonColor" />
                            <String fx:value="generalButton" />
                         </styleClass>
                      </JFXButton>
@@ -348,7 +348,7 @@
                            <URL value="@../../css/componentStyles.css" />
                         </stylesheets>
                         <styleClass>
-                           <String fx:value="removeButtonColor" />
+                           <String fx:value="generalButtonColor" />
                            <String fx:value="generalButton" />
                         </styleClass>
                      </JFXButton>
@@ -428,7 +428,7 @@
                         </stylesheets>
                         <styleClass>
                            <String fx:value="generalButton" />
-                           <String fx:value="removeButtonColor" />
+                           <String fx:value="generalButtonColor" />
                         </styleClass>
                      </JFXButton>
                   </children>

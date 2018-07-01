@@ -22,7 +22,7 @@ public class CreditTransactionBill {
     public void print() {
         StringBuilder builder=new StringBuilder();
         builder.append("-------Shree Ohm Petrol Pump-------\n");
-        builder.append("    Po-Le 7,Swagatnagar chauthe    \n");
+        builder.append("----Po-Le 7,Swagatnagar,chauthe----\n");
 //        builder.append(date.getDate()+"\n");
         builder.append(Transaction.getName()+"\n");
         builder.append("-----------------------------------\n");

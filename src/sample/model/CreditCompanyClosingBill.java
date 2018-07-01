@@ -35,6 +35,8 @@ public class CreditCompanyClosingBill {
         builder.append(companyData);
 
         builder.append("\nTotal : Rs."+companyClosing.getTotalPrice());
+        builder.append("\tDue : Rs."+companyClosing.getDue());
+        builder.append("\nTotal : Rs."+companyClosing.getGrandTotal());
 
         label.setText(builder.toString());
         if(PrintBill.print(label)) {

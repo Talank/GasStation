@@ -28,6 +28,16 @@ public class CompanyCreditClosingTask extends Tasks {
         try {
 
             String tableName=DatabaseHandler.generateTableName(model.getCompanyName());
+
+            CreditCompanyClosingBill bill=new CreditCompanyClosingBill(model);
+            if(bill.printBill()) {
+                SnackBarToastGenerator snackBarToastGenerator=new SnackBarToastGenerator("Company Closed. Printing Bill",1000);
+                snackBarToastGenerator.show();
+            } else {
+                SnackBarToastGenerator snackBarToastGenerator=new SnackBarToastGenerator("Company Closed.But Couldn't Print Bill",1000);
+                snackBarToastGenerator.show();
+            }
+
             if(model.isExpired()) {
 
                 System.out.println("Model is Expired");
@@ -111,14 +121,14 @@ public class CompanyCreditClosingTask extends Tasks {
 
             }
 
-            CreditCompanyClosingBill bill=new CreditCompanyClosingBill(model);
-            if(bill.printBill()) {
-                SnackBarToastGenerator snackBarToastGenerator=new SnackBarToastGenerator("Company Closed. Printing Bill",1000);
-                snackBarToastGenerator.show();
-            } else {
-                SnackBarToastGenerator snackBarToastGenerator=new SnackBarToastGenerator("Company Closed.But Couldn't Print Bill",1000);
-                snackBarToastGenerator.show();
-            }
+//            CreditCompanyClosingBill bill=new CreditCompanyClosingBill(model);
+//            if(bill.printBill()) {
+//                SnackBarToastGenerator snackBarToastGenerator=new SnackBarToastGenerator("Company Closed. Printing Bill",1000);
+//                snackBarToastGenerator.show();
+//            } else {
+//                SnackBarToastGenerator snackBarToastGenerator=new SnackBarToastGenerator("Company Closed.But Couldn't Print Bill",1000);
+//                snackBarToastGenerator.show();
+//            }
 
             if(taskInterface!=null) {
                 taskInterface.onComplete(null);
