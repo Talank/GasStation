@@ -18,4 +18,8 @@ public class TestingClass {
 
     }
 
+    public void loadFakeCompanyData() {
+
+    }
+
 }
