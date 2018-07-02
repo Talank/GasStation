@@ -9,6 +9,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
@@ -85,6 +86,7 @@ public class AppHomeController {
         controller.setStatus(1);
         controller.setStage((Stage)((Node)e.getSource()).getScene().getWindow());
         Stage stage=new Stage();
+        stage.getIcons().add(new Image(getClass().getResourceAsStream("../resources/logo.png")));
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(new Scene(root));
         stage.show();

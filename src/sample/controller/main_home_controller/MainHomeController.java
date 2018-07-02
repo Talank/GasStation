@@ -79,11 +79,6 @@ public class MainHomeController {
     * */
     @FXML
     public void initialize() {
-        /*RateModel rateModel=DatabaseHandler.getCurrentRate();
-        rDiesel.setText(String.valueOf(rateModel.getrDiesel()));
-        rPetrol.setText(String.valueOf(rateModel.getrPetrol()));
-        SystemStatus.setdRate(rateModel.getrDiesel());
-        SystemStatus.setpRate(rateModel.getrPetrol());*/
 
         rootGrid.getColumnConstraints().get(0).setPercentWidth(50);
         rootGrid.getColumnConstraints().get(1).setPercentWidth(50);
@@ -112,14 +107,6 @@ public class MainHomeController {
         rootGrid.add(settingsRippler,1,2);
         GridPane.setMargin(settingsRippler,new Insets(0,5,5,0));
 
-
-
-
-
-
-
-        /*rDiesel.setText(String.valueOf(SystemStatus.getdRate()));
-        rPetrol.setText(String.valueOf(SystemStatus.getpRate()));*/
 
     }
 
@@ -198,11 +185,6 @@ public class MainHomeController {
 
     @FXML
     public void loadProfitLoss(MouseEvent e) throws IOException {
-        /*Parent root=FXMLLoader.load(getClass().getResource("../../view/main_home_views/profitLoss.fxml"));
-        Stage stage=(Stage)((Node)e.getSource()).getScene().getWindow();
-        stage.setScene(new Scene(root));
-        stage.show();*/
-
         loadStage((Node)e.getSource(),"../../view/main_home_views/profitLoss.fxml");
 
     }
@@ -237,13 +219,6 @@ public class MainHomeController {
     * */
 
     private void loadStage(Node node,String path) throws IOException {
-        /*Parent root=FXMLLoader.load(getClass().getResource(path));
-        Stage stage=(Stage)node.getScene().getWindow();
-        Scene scene=new Scene(root);
-        scene.getStylesheets().add(getClass().getResource("../../css/mainStyle.css").toExternalForm());
-        stage.setScene(scene);
-        stage.show();*/
-
         BorderPane borderPane=FXMLLoader.load(getClass().getResource(path));
         AppHomeController.getInstance().loadStages(borderPane);
     }

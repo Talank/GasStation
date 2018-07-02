@@ -14,6 +14,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -312,6 +313,7 @@ public class ProfitLossController implements BackButtonInterface {
         }
 
         Stage stage=new Stage();
+        stage.getIcons().add(new Image(getClass().getResourceAsStream("../../resources/logo.png")));
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(new Scene(root));
         stage.show();
@@ -326,6 +328,7 @@ public class ProfitLossController implements BackButtonInterface {
             Parent root= loader.load();
 
             Stage stage=new Stage();
+            stage.getIcons().add(new Image(getClass().getResourceAsStream("../../resources/logo.png")));
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setScene(new Scene(root));
             stage.show();

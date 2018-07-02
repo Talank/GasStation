@@ -8,7 +8,7 @@
 
 <VBox alignment="CENTER" styleClass="listItem" stylesheets="@../../../css/listItemStyle.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <HBox alignment="CENTER" spacing="50.0">
+      <HBox alignment="CENTER" spacing="50.0" style="-fx-background-color: #2bceb6;">
          <children>
             <HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
                <children>

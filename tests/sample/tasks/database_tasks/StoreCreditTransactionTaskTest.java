@@ -58,10 +58,6 @@ public class StoreCreditTransactionTaskTest {
                     transactions.add(transaction);
                 }
 
-
-
-
-                localDate = localDate.plusDays(1);
                 SystemStatus.setCurrentDate(Date.valueOf(localDate));
 
                 float pVolume = 0, dVolume = 0, ePrice = 0;
@@ -179,6 +175,7 @@ public class StoreCreditTransactionTaskTest {
 
 
             }
+            localDate = localDate.plusDays(1);
 
         }
 

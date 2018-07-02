@@ -11,6 +11,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.SelectionMode;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -189,6 +190,7 @@ public class SettingsController {
         DebtListModel model=debtList.getSelectionModel().getSelectedItem();
         controller.setEditData(model);
         Stage stage=new Stage();
+        stage.getIcons().add(new Image(getClass().getResourceAsStream("../../resources/logo.png")));
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(new Scene(root));
         stage.show();
@@ -219,6 +221,7 @@ public class SettingsController {
         controller.setModel(model);
 
         Stage stage=new Stage();
+        stage.getIcons().add(new Image(getClass().getResourceAsStream("../../resources/logo.png")));
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(new Scene(root));
         stage.show();
@@ -239,6 +242,7 @@ public class SettingsController {
         controller.setInitialRate(dRateValue.getText(),pRateValue.getText());
 
         Stage stage=new Stage();
+        stage.getIcons().add(new Image(getClass().getResourceAsStream("../../resources/logo.png")));
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(new Scene(root));
         stage.show();
@@ -252,6 +256,7 @@ public class SettingsController {
         CounterStockDialogController controller=loader.getController();
         controller.setInitialStock(counterStockValue.getText());
         Stage stage=new Stage();
+        stage.getIcons().add(new Image(getClass().getResourceAsStream("../../resources/logo.png")));
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(new Scene(root));
         stage.show();
@@ -262,6 +267,7 @@ public class SettingsController {
         Parent root=FXMLLoader.load(getClass().getResource("../../view/dialogs/setupMeterReadings.fxml"));
         Scene scene=new Scene(root);
         Stage stage=new Stage();
+        stage.getIcons().add(new Image(getClass().getResourceAsStream("../../resources/logo.png")));
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(scene);
         stage.show();
@@ -272,6 +278,7 @@ public class SettingsController {
         Parent root=FXMLLoader.load(getClass().getResource("../../view/dialogs/printerDialog.fxml"));
         Scene scene=new Scene(root);
         Stage stage=new Stage();
+        stage.getIcons().add(new Image(getClass().getResourceAsStream("../../resources/logo.png")));
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(scene);
         stage.show();
@@ -286,6 +293,7 @@ public class SettingsController {
         OilStockDialogController controller=loader.getController();
         controller.setInitialStock(dieselStockValue.getText(),petrolStockValue.getText());
         Stage stage=new Stage();
+        stage.getIcons().add(new Image(getClass().getResourceAsStream("../../resources/logo.png")));
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(new Scene(root));
         stage.show();
@@ -307,6 +315,7 @@ public class SettingsController {
         controller.setUserName(usernameValue.getText());
 
         Stage stage=new Stage();
+        stage.getIcons().add(new Image(getClass().getResourceAsStream("../../resources/logo.png")));
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(new Scene(root));
         stage.show();
@@ -339,6 +348,7 @@ public class SettingsController {
         Parent root=loader.load();
 
         Stage stage=new Stage();
+        stage.getIcons().add(new Image(getClass().getResourceAsStream("../../resources/logo.png")));
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(new Scene(root));
         stage.show();

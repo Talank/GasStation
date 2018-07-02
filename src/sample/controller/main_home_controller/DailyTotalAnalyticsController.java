@@ -11,6 +11,7 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
@@ -138,6 +139,7 @@ public class DailyTotalAnalyticsController implements BackButtonInterface {
         Parent root=loader.load();
 
         Stage stage=new Stage();
+        stage.getIcons().add(new Image(getClass().getResourceAsStream("../../resources/logo.png")));
         stage.setScene(new Scene(root));
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.show();

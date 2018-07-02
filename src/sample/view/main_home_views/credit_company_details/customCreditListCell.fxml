@@ -10,7 +10,7 @@
 
 <VBox styleClass="listItem" stylesheets="@../../../css/listItemStyle.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <HBox VBox.vgrow="ALWAYS">
+      <HBox VBox.vgrow="NEVER">
          <children>
             <Label fx:id="transactionDate" text="Transaction Date:">
                <font>
@@ -22,7 +22,7 @@
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </padding>
       </HBox>
-      <TableView fx:id="tableView">
+      <TableView fx:id="tableView" prefHeight="180.0" VBox.vgrow="ALWAYS">
         <columns>
           <TableColumn fx:id="itemName" editable="false" minWidth="100.0" prefWidth="100.0" text="Item Name" />
           <TableColumn fx:id="vehicleNo" editable="false" minWidth="100.0" prefWidth="100.0" text="Vehicle NO" />
@@ -34,7 +34,7 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <HBox>
+      <HBox VBox.vgrow="NEVER">
          <children>
             <Label fx:id="total" text="Total:">
                <font>
