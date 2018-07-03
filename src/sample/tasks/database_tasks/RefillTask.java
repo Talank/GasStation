@@ -20,7 +20,7 @@ public class RefillTask extends Tasks {
     private RefillModel model;
 
     private int mode;
-    private boolean flag=false;
+
 
     public RefillTask(RefillModel model,int mode) {
         this.model=model;
@@ -31,74 +31,45 @@ public class RefillTask extends Tasks {
     public void execute() {
         try {
 
-
             if(mode==0) {
-                int count=0;
-                Statement checkRefill= Tasks.getConnection().createStatement();
-                ResultSet resultSet=checkRefill.executeQuery("SELECT COUNT(*) from PetrolRefill where tanker_no="+Integer.parseInt(model.getTankerNumber().substring(0,4)));
-                resultSet.next();
-                count=resultSet.getInt(1);
-                if(count>0){
-                     flag=true;
-                    ErrorMessageDialogGenerator generator=new ErrorMessageDialogGenerator("Sorry,The tanker no "+model.getTankerNumber().substring(0,4)+" is petrol tanker.","Operation failed");
-                    generator.setTasks(this);
-                    generator.showDialog();
-                }
-                else {
-                    PreparedStatement insertRefill = connection.prepareStatement("INSERT INTO DieselRefill VALUES (?,?,?,?)");
-                    insertRefill.setFloat(1, model.getExpected());
-                    insertRefill.setFloat(2, model.getActual());
-                    insertRefill.setInt(3, Integer.parseInt(model.getTankerNumber().substring(0, 4)));
-                    insertRefill.setDate(4, SystemStatus.getCurrentDate());
 
-                    insertRefill.execute();
+                PreparedStatement insertRefill=connection.prepareStatement("INSERT INTO DieselRefill VALUES (?,?,?,?)");
+                insertRefill.setFloat(1,model.getExpected());
+                insertRefill.setFloat(2,model.getActual());
+                insertRefill.setInt(3,Integer.parseInt(model.getTankerNumber().substring(0,4)));
+                insertRefill.setDate(4,SystemStatus.getCurrentDate());
 
-                    insertRefill = connection.prepareStatement("UPDATE SystemStatus SET VALUE=?,DATE=? WHERE ID=?");
-                    insertRefill.setString(1, String.valueOf(SystemStatus.getDieselStock() + model.getActual()));
-                    insertRefill.setDate(2, SystemStatus.getCurrentDate());
-                    insertRefill.setInt(3, 14);
+                insertRefill.execute();
 
-                    insertRefill.execute();
+                insertRefill=connection.prepareStatement("UPDATE SystemStatus SET VALUE=?,DATE=? WHERE ID=?");
+                insertRefill.setString(1,String.valueOf(SystemStatus.getDieselStock()+model.getActual()));
+                insertRefill.setDate(2,SystemStatus.getCurrentDate());
+                insertRefill.setInt(3,14);
 
-                    insertRefill.close();
+                insertRefill.execute();
 
-                    SystemStatus.setDieselStock(SystemStatus.getDieselStock() + model.getActual());
-                }
-                resultSet.close();
-            }
-            else {
-                int count=0;
-                Statement checkRefill= Tasks.getConnection().createStatement();
-                ResultSet resultSet=checkRefill.executeQuery("SELECT COUNT(*) from DieselRefill where tanker_no="+Integer.parseInt(model.getTankerNumber().substring(0,4)));
-                resultSet.next();
-                count=resultSet.getInt(1);
-                if(count>0){
-                    flag=true;
-                    ErrorMessageDialogGenerator generator=new ErrorMessageDialogGenerator("Sorry,The tanker no "+model.getTankerNumber().substring(0,4)+" is diesel tanker.","Operation failed");
-                    generator.setTasks(this);
-                    generator.showDialog();
-                }
+                insertRefill.close();
 
-                 else {
+                SystemStatus.setDieselStock(SystemStatus.getDieselStock()+model.getActual());
+            } else {
 
-                    PreparedStatement insertRefill = connection.prepareStatement("INSERT INTO PetrolRefill VALUES (?,?,?,?)");
-                    insertRefill.setFloat(1, model.getExpected());
-                    insertRefill.setFloat(2, model.getActual());
-                    insertRefill.setInt(3, Integer.parseInt(model.getTankerNumber().substring(0, 4)));
-                    insertRefill.setDate(4, SystemStatus.getCurrentDate());
+                PreparedStatement insertRefill=connection.prepareStatement("INSERT INTO PetrolRefill VALUES (?,?,?,?)");
+                insertRefill.setFloat(1,model.getExpected());
+                insertRefill.setFloat(2,model.getActual());
+                insertRefill.setInt(3,Integer.parseInt(model.getTankerNumber().substring(0,4)));
+                insertRefill.setDate(4,SystemStatus.getCurrentDate());
 
-                    insertRefill.execute();
+                insertRefill.execute();
 
-                    insertRefill = connection.prepareStatement("UPDATE SystemStatus SET VALUE=?,DATE=? WHERE ID=?");
-                    insertRefill.setString(1, String.valueOf(SystemStatus.getPetrolStock() + model.getActual()));
-                    insertRefill.setDate(2, SystemStatus.getCurrentDate());
-                    insertRefill.setInt(3, 15);
+                insertRefill=connection.prepareStatement("UPDATE SystemStatus SET VALUE=?,DATE=? WHERE ID=?");
+                insertRefill.setString(1,String.valueOf(SystemStatus.getPetrolStock()+model.getActual()));
+                insertRefill.setDate(2,SystemStatus.getCurrentDate());
+                insertRefill.setInt(3,15);
 
-                    insertRefill.execute();
-                    SystemStatus.setPetrolStock(SystemStatus.getPetrolStock() + model.getActual());
+                insertRefill.execute();
+                SystemStatus.setPetrolStock(SystemStatus.getPetrolStock()+model.getActual());
 
-                    insertRefill.close();
-                }
+                insertRefill.close();
             }
 
 
@@ -135,21 +106,18 @@ public class RefillTask extends Tasks {
                 String codeData=stringBuilder.toString();
 
 
-                    if(!flag) {
-                        PreparedStatement updateTanker = connection.prepareStatement("UPDATE TANKERS SET TOTAL_LOSS= TOTAL_LOSS+?,COUNTS=COUNTS+1 WHERE TANKER_NO=?");
-                        updateTanker.setFloat(1, model.getLoss());
-                        updateTanker.setInt(2, Integer.parseInt(codeData.substring(0, 4)));
-                        updateTanker.execute();
+                PreparedStatement updateTanker=connection.prepareStatement("UPDATE TANKERS SET TOTAL_LOSS= TOTAL_LOSS+?,COUNTS=COUNTS+1 WHERE TANKER_NO=?");
+                updateTanker.setFloat(1,model.getLoss());
+                updateTanker.setInt(2,Integer.parseInt(codeData.substring(0,4)));
+                updateTanker.execute();
 
-                        updateTanker.close();
+                updateTanker.close();
 
-                        connection.commit();
+                connection.commit();
 
-                        model.setTankerNumber(codeData);
-                        model.getTankerModel().setAvg(avgValue);
-                        model.getTankerModel().setCount((model.getTankerModel().getCount()) + 1);
-                    }
-
+                model.setTankerNumber(codeData);
+                model.getTankerModel().setAvg(avgValue);
+                model.getTankerModel().setCount((model.getTankerModel().getCount())+1);
             } else {
                 Statement insertRefill=connection.createStatement();
                 ResultSet resultSet=insertRefill.executeQuery("SELECT TANKER_NO,TOTAL_LOSS,COUNTS FROM TANKERS WHERE TANKER_NO= ("+model.getTankerNumber().substring(0,4)+")");
@@ -168,27 +136,24 @@ public class RefillTask extends Tasks {
 
                     String codeData=stringBuilder.toString();
 
-                    if(!flag) {
-                        PreparedStatement updateTanker = connection.prepareStatement("UPDATE TANKERS SET TOTAL_LOSS= TOTAL_LOSS+?,COUNTS=COUNTS+1 WHERE TANKER_NO=?");
-                        updateTanker.setFloat(1, model.getLoss());
+                    PreparedStatement updateTanker=connection.prepareStatement("UPDATE TANKERS SET TOTAL_LOSS= TOTAL_LOSS+?,COUNTS=COUNTS+1 WHERE TANKER_NO=?");
+                    updateTanker.setFloat(1,model.getLoss());
 
-                        updateTanker.setInt(2, Integer.parseInt(codeData.substring(0, 4)));
-                        updateTanker.execute();
+                    updateTanker.setInt(2,Integer.parseInt(codeData.substring(0,4)));
+                    updateTanker.execute();
 
-                        updateTanker.close();
+                    updateTanker.close();
 
-                        connection.commit();
+                    connection.commit();
 
-                        model.setTankerNumber(codeData);
-                        model.getTankerModel().setAvg(avgValue);
-                        model.getTankerModel().setCount(resultSet.getInt(3) + 1);
-                    }
-
+                    model.setTankerNumber(codeData);
+                    model.getTankerModel().setAvg(avgValue);
+                    model.getTankerModel().setCount(resultSet.getInt(3)+1);
 
                 } else {
 
-                    float avgValue = model.getLoss();
-                    StringBuilder stringBuilder = new StringBuilder(model.getTankerNumber().substring(0, 4));
+                    float avgValue=model.getLoss();
+                    StringBuilder stringBuilder=new StringBuilder(model.getTankerNumber().substring(0,4));
                     if (avgValue >= 0 && avgValue <= 20) {
                         stringBuilder.append("G");
                     } else if (avgValue >= 21 && avgValue <= 50) {
@@ -199,28 +164,27 @@ public class RefillTask extends Tasks {
                     } else
                         stringBuilder.append("P");
 
-                    String codeData = stringBuilder.toString();
+                    String codeData=stringBuilder.toString();
 
 
-                    String tankerType = (mode == 0) ? "Diesel" : "Petrol";
-                    if (!flag) {
-                        PreparedStatement insertTanker = connection.prepareStatement("INSERT INTO TANKERS VALUES (?,?,?,?)");
-                        insertTanker.setInt(1, Integer.parseInt(codeData.substring(0, 4)));
-                        insertTanker.setFloat(
-                                2, model.getLoss());
-                        insertTanker.setInt(3, 1);
-                        insertTanker.setString(4, tankerType);
+                    String tankerType=(mode==0)?"Diesel":"Petrol";
 
-                        insertTanker.execute();
+                    PreparedStatement insertTanker=connection.prepareStatement("INSERT INTO TANKERS VALUES (?,?,?,?)");
+                    insertTanker.setInt(1,Integer.parseInt(codeData.substring(0,4)));
+                    insertTanker.setFloat(
+                            2,model.getLoss());
+                    insertTanker.setInt(3,1);
+                    insertTanker.setString(4,tankerType);
 
-                        insertTanker.close();
+                    insertTanker.execute();
 
-                        connection.commit();
+                    insertTanker.close();
 
-                        model.setTankerNumber(codeData);
-                        model.getTankerModel().setAvg(avgValue);
-                        model.getTankerModel().setCount(1);
-                    }
+                    connection.commit();
+
+                    model.setTankerNumber(codeData);
+                    model.getTankerModel().setAvg(avgValue);
+                    model.getTankerModel().setCount(1);
                 }
                 SystemLogging.getLogger().fine("Tanker Refill done");
             }

@@ -40,6 +40,10 @@ public class RefillModel {
 
     }
 
+    public static ArrayList<TankerModel> getTankerModels() {
+        return tankerModels;
+    }
+
     public Float getExpected() {
         return expected;
     }
