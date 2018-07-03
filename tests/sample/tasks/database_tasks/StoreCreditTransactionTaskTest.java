@@ -35,9 +35,9 @@ public class StoreCreditTransactionTaskTest {
 
         int j, k, l, m;
 
-        for (int i = 0; i < 30; i++) {
+        for (int i = 0; i < 1; i++) {
 
-            j = (int) (Math.random() * 15 + 5);
+            j = (int) (Math.random() * 2 + 5);
             for (k = 0; k < j; k++) {
                 l = (int) (Math.random() * 4 + 1);
                 transactions = new ArrayList<>();
@@ -87,7 +87,7 @@ public class StoreCreditTransactionTaskTest {
                             storeCredit.setFloat(5, transactionses.getQuantity());
 
                             ePrice += transactionses.getPrice();
-                            total += ePrice;
+                            total += transactionses.getPrice();
 
                         } else {
 

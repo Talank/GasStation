@@ -73,7 +73,7 @@ public class StoreCreditTransactionTask extends Tasks {
                     storeCredit.setFloat(5,transaction.getQuantity());
 
                     ePrice+=transaction.getPrice();
-                    total+=ePrice;
+                    total+=transaction.getPrice();
 
                 } else {
 
