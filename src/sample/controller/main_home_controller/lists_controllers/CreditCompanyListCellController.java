@@ -7,6 +7,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import sample.model.DebtListModel;
+import sample.model.nepaliPriceFormat.Precision;
 import sample.model.nepaliPriceFormat.PriceFormat;
 
 import java.io.IOException;
@@ -15,12 +16,14 @@ public class CreditCompanyListCellController {
 
     @FXML
     private Label companyName,companyCycle,companyDue,companyTotal,companyLastPaid,prePaid;
-    PriceFormat priceFormat=new PriceFormat();
+    private PriceFormat priceFormat;
+    private Precision precision;
 
     private VBox vBox;
 
     public CreditCompanyListCellController() {
-
+        priceFormat = new PriceFormat();
+        precision = new Precision();
         try {
             FXMLLoader loader=new FXMLLoader(getClass().getResource("../../../view/main_home_views/credit_company_list/creditCompanyListCell.fxml"));
             loader.setController(this);
@@ -33,14 +36,15 @@ public class CreditCompanyListCellController {
 
     public void setModel(DebtListModel model) {
         companyName.setText(model.getCompanyName());
+
         companyCycle.setText("Cycle:"+model.getDays()+" Days.");
-        priceFormat.setFormat(model.getDue()+"");
-        companyDue.setText("Due: Rs "+priceFormat.getResult());
-        priceFormat.setFormat(model.getTotal()+"");
-        companyTotal.setText("Total: Rs "+priceFormat.getResult());
+
+        companyDue.setText("Due: Rs "+priceFormat.format(precision.format(model.getDue())));
+
+        companyTotal.setText("Total: Rs "+ priceFormat.format(precision.format(model.getTotal())));
         companyLastPaid.setText("Current Session:"+model.getDate());
-        priceFormat.setFormat(model.getPrePaid()+"");
-        prePaid.setText("Prepaid: Rs "+priceFormat.getResult());
+
+        prePaid.setText("Prepaid: Rs "+priceFormat.format(precision.format(model.getPrePaid())));
 
         companyDue.setTextFill(Color.RED);
         companyTotal.setTextFill(Color.GREEN);

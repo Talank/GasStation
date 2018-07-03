@@ -29,6 +29,7 @@ import sample.library.toolbar.ToolBar;
 import sample.model.CreditCompanyList;
 import sample.model.DebtListModel;
 import sample.model.SystemStatus;
+import sample.model.nepaliPriceFormat.Precision;
 import sample.model.nepaliPriceFormat.PriceFormat;
 import sample.model.transaction_model.CreditTransactionBill;
 import sample.model.transaction_model.Transaction;
@@ -54,7 +55,7 @@ import java.util.List;
 public class CreditBillingController {
 
     private boolean calcNowV =false,calcNowP=false,calcOldV=false,calcOldP=false, listSelected =false,force=false;
-    private DecimalFormat decimalFormat;
+    private Precision precision;
     private float rate;
     private PriceFormat priceFormat;
 
@@ -198,16 +199,16 @@ public class CreditBillingController {
             } else {
                 if(calcOldV) {
                     if(!volume.getText().isEmpty())
-                        price.setText(decimalFormat.format(Float.parseFloat(volume.getText())*rate));
+                        price.setText(precision.format(Float.parseFloat(volume.getText())*rate));
                 } else if(calcOldP) {
                     if(!price.getText().isEmpty())
-                        volume.setText(decimalFormat.format(Float.parseFloat(price.getText())/rate));
+                        volume.setText(precision.format(Float.parseFloat(price.getText())/rate));
                 }
             }
 
         });
 
-        decimalFormat=new DecimalFormat("#.####");
+        precision=new Precision();
 
         companyName.setItems(FXCollections.observableList(CreditCompanyList.getCompanyList()));
         companyName.setValue(CreditCompanyList.getCompanyList().get(0));
@@ -260,7 +261,7 @@ public class CreditBillingController {
         });
 
         rates.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)->{
-            if(!newValue.matches("[0-9]{0,10}([\\.][0-9]{0,4})?")) {
+            if(!newValue.matches("[0-9]{0,10}([\\.][0-9]{0,2})?")) {
                 rates.setText(oldValue);
             } else {
                 if(newValue.isEmpty()&&!force) {
@@ -303,7 +304,7 @@ public class CreditBillingController {
         });
 
         volume.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)->{
-            if(!newValue.matches("[0-9]{0,10}([\\.][0-9]{0,4})?")) {
+            if(!newValue.matches("[0-9]{0,10}([\\.][0-9]{0,2})?")) {
                 volume.setText(oldValue);
             } else {
                 if(newValue.isEmpty()&&!force) {
@@ -311,7 +312,7 @@ public class CreditBillingController {
                 } else {
                     volume.resetValidation();
                     if(calcNowV) {
-                        price.setText(decimalFormat.format(Float.parseFloat(volume.getText())*rate));
+                        price.setText(precision.format(Float.parseFloat(volume.getText())*rate));
                     }
 
                 }
@@ -328,7 +329,7 @@ public class CreditBillingController {
 
 
         price.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)->{
-            if(!newValue.matches("[0-9]{0,10}([\\.][0-9]{0,4})?"))
+            if(!newValue.matches("[0-9]{0,10}([\\.][0-9]{0,2})?"))
                 price.setText(oldValue);
             else
             if(newValue.isEmpty()&&!force)
@@ -336,7 +337,7 @@ public class CreditBillingController {
             else {
                 price.resetValidation();
                 if(calcNowP) {
-                    volume.setText(decimalFormat.format(Float.parseFloat(price.getText())/rate));
+                    volume.setText(precision.format(Float.parseFloat(price.getText())/rate));
                 }
 
                 if(force) {

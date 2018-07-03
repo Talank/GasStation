@@ -5,11 +5,14 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
+import javafx.util.Callback;
 import sample.model.CreditDetailsModel;
+import sample.model.nepaliPriceFormat.Precision;
 import sample.model.nepaliPriceFormat.PriceFormat;
 
 import java.util.List;
@@ -39,16 +42,82 @@ public class CustomCreditListCellController {
 
     private VBox vBox;
 
+    private PriceFormat priceFormat;
+    private Precision precision;
+
     public CustomCreditListCellController() {
+
+        precision = new Precision();
+        priceFormat = new PriceFormat();
+
         try {
             FXMLLoader loader=new FXMLLoader(getClass().getResource("../../../view/main_home_views/credit_company_details/customCreditListCell.fxml"));
             loader.setController(this);
             vBox=loader.load();
             vehicleNo.setCellValueFactory(new PropertyValueFactory<>("vehicleNo"));
+            vehicleNo.setStyle("-fx-alignment: CENTER;");
             itemName.setCellValueFactory(new PropertyValueFactory<>("itemName"));
+            itemName.setStyle("-fx-alignment: CENTER;");
             rate.setCellValueFactory(new PropertyValueFactory<>("rate"));
+
+            rate.setCellFactory(new Callback<TableColumn<CreditDetailsModel, String>, TableCell<CreditDetailsModel, String>>() {
+                @Override
+                public TableCell<CreditDetailsModel, String> call(TableColumn<CreditDetailsModel, String> param) {
+                    return new TableCell<CreditDetailsModel, String>() {
+                        @Override
+                        protected void updateItem(String item, boolean empty) {
+                            super.updateItem(item, empty);
+                            if(!empty) {
+                                setText(priceFormat.format(precision.format(Float.parseFloat(item))));
+                            }
+
+                        }
+                    };
+                }
+            });
+
+            rate.setStyle("-fx-alignment: CENTER;");
+
             quantity.setCellValueFactory(new PropertyValueFactory<>("volume"));
+
+            quantity.setCellFactory(new Callback<TableColumn<CreditDetailsModel, String>, TableCell<CreditDetailsModel, String>>() {
+                @Override
+                public TableCell<CreditDetailsModel, String> call(TableColumn<CreditDetailsModel, String> param) {
+                    return new TableCell<CreditDetailsModel, String>() {
+                        @Override
+                        protected void updateItem(String item, boolean empty) {
+                            super.updateItem(item, empty);
+                            if(!empty) {
+                                setText(priceFormat.format(precision.format(Float.parseFloat(item))));
+                            }
+
+                        }
+                    };
+                }
+            });
+
+            quantity.setStyle("-fx-alignment: CENTER;");
+
             price.setCellValueFactory(new PropertyValueFactory<>("price"));
+
+            price.setCellFactory(new Callback<TableColumn<CreditDetailsModel, String>, TableCell<CreditDetailsModel, String>>() {
+                @Override
+                public TableCell<CreditDetailsModel, String> call(TableColumn<CreditDetailsModel, String> param) {
+                    return new TableCell<CreditDetailsModel, String>() {
+                        @Override
+                        protected void updateItem(String item, boolean empty) {
+                            super.updateItem(item, empty);
+                            if(!empty) {
+                                setText(priceFormat.format(precision.format(Float.parseFloat(item))));
+                            }
+
+                        }
+                    };
+                }
+            });
+
+            price.setStyle("-fx-alignment: CENTER;");
+
         } catch (Exception e) {
             e.printStackTrace();
         }

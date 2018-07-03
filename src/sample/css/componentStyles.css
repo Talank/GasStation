@@ -25,6 +25,10 @@
     -fx-background-position: center;
 }
 
+.table-column {
+    -fx-alignment: CENTER;
+}
+
 .closeButtonIcon {
     -fx-background-image: url("../resources/closing.png");
 }

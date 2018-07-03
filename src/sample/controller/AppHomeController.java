@@ -18,6 +18,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import sample.controller.dialog_controller.LoginDialogController;
 import sample.model.SystemStatus;
+import sample.model.nepaliPriceFormat.Precision;
 import sample.model.nepaliPriceFormat.PriceFormat;
 
 import java.io.IOException;
@@ -26,6 +27,10 @@ public class AppHomeController {
 
     @FXML
     private StackPane mainHome;
+
+    private Precision precision;
+
+    private PriceFormat priceFormat;
 
     @FXML
     private BorderPane root;
@@ -41,13 +46,16 @@ public class AppHomeController {
     public void initialize() {
         instance=this;
 
+        precision = new Precision();
+        priceFormat = new PriceFormat();
+
         snackBar=new JFXSnackbar(root);
         snackBar.getStylesheets().add(getClass().getResource("../css/appHomeStyle.css").toExternalForm());
 
-        dieselRate.setText("Rs. "+(new PriceFormat(String.valueOf(SystemStatus.getdRate()))).getResult());
-        petrolRate.setText("Rs. "+(new PriceFormat(String.valueOf(SystemStatus.getpRate()))).getResult());
-        dieselStock.setText((new PriceFormat(String.valueOf(SystemStatus.getDieselStock()))).getResult()+" L");
-        petrolStock.setText((new PriceFormat(String.valueOf(SystemStatus.getPetrolStock()))).getResult()+" L");
+        dieselRate.setText("Rs. "+(priceFormat.format(precision.format(SystemStatus.getdRate()))));
+        petrolRate.setText("Rs. "+(priceFormat.format(precision.format(SystemStatus.getpRate()))));
+        dieselStock.setText((priceFormat.format(precision.format(SystemStatus.getDieselStock())))+" L");
+        petrolStock.setText((priceFormat.format(precision.format(SystemStatus.getPetrolStock())))+" L");
 
         try {
 
@@ -69,13 +77,13 @@ public class AppHomeController {
     }
 
     public void setRates() {
-        dieselRate.setText("Rs. "+(new PriceFormat(String.valueOf(SystemStatus.getdRate()))).getResult());
-        petrolRate.setText("Rs. "+(new PriceFormat(String.valueOf(SystemStatus.getpRate()))).getResult());
+        dieselRate.setText("Rs. "+(priceFormat.format(precision.format(SystemStatus.getdRate()))));
+        petrolRate.setText("Rs. "+(priceFormat.format(precision.format(SystemStatus.getpRate()))));
     }
 
     public void setStock() {
-        dieselStock.setText((new PriceFormat(String.valueOf(SystemStatus.getDieselStock()))).getResult()+" L");
-        petrolStock.setText((new PriceFormat(String.valueOf(SystemStatus.getPetrolStock()))).getResult()+" L");
+        dieselStock.setText((priceFormat.format(precision.format(SystemStatus.getDieselStock())))+" L");
+        petrolStock.setText((priceFormat.format(precision.format(SystemStatus.getPetrolStock())))+" L");
     }
 
     @FXML

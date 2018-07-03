@@ -21,6 +21,7 @@ import sample.controller.main_home_controller.lists_controllers.TransactionListC
 import sample.model.databases.DatabaseHandler;
 import sample.model.SystemStatus;
 import sample.library.toolbar.ToolBar;
+import sample.model.nepaliPriceFormat.Precision;
 import sample.model.transaction_model.InstantTransactionBill;
 import sample.model.transaction_model.Transaction;
 import sample.tasks.TaskManager;
@@ -45,7 +46,7 @@ import java.util.List;
 public class InstantBillingController {
 
     private boolean calcNowV =false,calcNowP=false,calcOldV=false,calcOldP=false, listSelected =false,force=false;
-    private DecimalFormat decimalFormat;
+    private Precision precision;
     private float rate;
 
 
@@ -215,10 +216,10 @@ public class InstantBillingController {
             } else {
                 if(calcOldV) {
                     if(!volume.getText().isEmpty())
-                        price.setText(decimalFormat.format(Float.parseFloat(volume.getText())*rate));
+                        price.setText(precision.format(Float.parseFloat(volume.getText())*rate));
                 } else if(calcOldP) {
                     if(!price.getText().isEmpty())
-                        volume.setText(decimalFormat.format(Float.parseFloat(price.getText())/rate));
+                        volume.setText(precision.format(Float.parseFloat(price.getText())/rate));
                 }
             }
 
@@ -227,7 +228,7 @@ public class InstantBillingController {
         });
 
 //      Format to display number with 4 precision label
-        decimalFormat=new DecimalFormat("#.####");
+        precision=new Precision();
 
         initializeOil();
 
@@ -291,7 +292,7 @@ public class InstantBillingController {
         });
 
         rates.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)->{
-            if(!newValue.matches("[0-9]{0,10}([\\.][0-9]{0,4})?")) {
+            if(!newValue.matches("[0-9]{0,10}([\\.][0-9]{0,2})?")) {
                 rates.setText(oldValue);
             } else {
                 if(newValue.isEmpty()&&!force) {
@@ -342,7 +343,7 @@ public class InstantBillingController {
         });
 
         volume.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)->{
-            if(!newValue.matches("[0-9]{0,10}([\\.][0-9]{0,4})?")) {
+            if(!newValue.matches("[0-9]{0,10}([\\.][0-9]{0,2})?")) {
                 volume.setText(oldValue);
             } else if(newValue.isEmpty()&&!force) {
                 volume.validate();
@@ -350,7 +351,7 @@ public class InstantBillingController {
                 volume.resetValidation();
 
                 if(calcNowV) {
-                    price.setText(decimalFormat.format(Float.parseFloat(volume.getText())*rate));
+                    price.setText(precision.format(Float.parseFloat(volume.getText())*rate));
                 }
             }
 
@@ -381,7 +382,7 @@ public class InstantBillingController {
 
 
         price.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)->{
-            if(!newValue.matches("[0-9]{0,10}([\\.][0-9]{0,4})?"))
+            if(!newValue.matches("[0-9]{0,10}([\\.][0-9]{0,2})?"))
                 price.setText(oldValue);
             else
             if(newValue.isEmpty()&&!force)
@@ -394,7 +395,7 @@ public class InstantBillingController {
                 }
 
                 if(calcNowP) {
-                    volume.setText(decimalFormat.format(Float.parseFloat(price.getText())/rate));
+                    volume.setText(precision.format(Float.parseFloat(price.getText())/rate));
                 }
             }
 

@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXRadioButton;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.validation.RequiredFieldValidator;
+import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -12,6 +13,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
@@ -30,6 +32,8 @@ import sample.library.toolbar.BackButtonInterface;
 import sample.library.toolbar.ToolBar;
 import sample.model.SystemStatus;
 import sample.model.RefillModel;
+import sample.model.nepaliPriceFormat.Precision;
+import sample.model.nepaliPriceFormat.PriceFormat;
 import sample.tasks.Tasks;
 
 import java.io.IOException;
@@ -112,6 +116,9 @@ public class ProfitLossController implements BackButtonInterface {
     @FXML
     private OutputTaskLoading progressLayout;
 
+    private PriceFormat priceFormat;
+    private Precision precision;
+
 
     private ObservableList<RefillModel> dieselTableData,petrolTableData;
 
@@ -133,6 +140,9 @@ public class ProfitLossController implements BackButtonInterface {
         toolBar.setTitle("ReFill Management");
         toolBar.setBackPath(SystemStatus.getMainHomePath());
         toolBar.addBackButtonInterface(this);
+
+        precision = new Precision();
+        priceFormat = new PriceFormat();
 
         RequiredFieldValidator tankerValidator=new RequiredFieldValidator();
         tankerValidator.setMessage("Invalid Tanker Number");
@@ -157,11 +167,64 @@ public class ProfitLossController implements BackButtonInterface {
         progressLayout.setProgressProperty(task.progressProperty());
 
 
-        dieselExpected.setCellValueFactory(new PropertyValueFactory<>("expected"));
-        dieselActual.setCellValueFactory(new PropertyValueFactory<>("actual"));
-        dieselLoss.setCellValueFactory(new PropertyValueFactory<>("loss"));
+        dieselExpected.setCellValueFactory(new PropertyValueFactory<>("expectedString"));
+        dieselExpected.setStyle("-fx-alignment: CENTER;");
+
+        dieselExpected.setCellFactory(new Callback<TableColumn<RefillModel, String>, TableCell<RefillModel, String>>() {
+            @Override
+            public TableCell<RefillModel, String> call(TableColumn<RefillModel, String> param) {
+                return new TableCell<RefillModel,String>(){
+                    @Override
+                    public void updateItem(String item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (!isEmpty()) {
+                            setText(priceFormat.format(precision.format(Float.parseFloat(item))));
+                        }
+                    }
+                };
+            }
+        });
+
+        dieselActual.setCellValueFactory(new PropertyValueFactory<>("actualString"));
+        dieselActual.setStyle("-fx-alignment: CENTER;");
+
+        dieselActual.setCellFactory(new Callback<TableColumn<RefillModel, String>, TableCell<RefillModel, String>>() {
+            @Override
+            public TableCell<RefillModel, String> call(TableColumn<RefillModel, String> param) {
+                return new TableCell<RefillModel,String>(){
+                    @Override
+                    public void updateItem(String item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (!isEmpty()) {
+                            setText(priceFormat.format(precision.format(Float.parseFloat(item))));
+                        }
+                    }
+                };
+            }
+        });
+
+        dieselLoss.setCellValueFactory(new PropertyValueFactory<>("lossString"));
+        dieselLoss.setStyle("-fx-alignment: CENTER;");
+
+        dieselLoss.setCellFactory(new Callback<TableColumn<RefillModel, String>, TableCell<RefillModel, String>>() {
+            @Override
+            public TableCell<RefillModel, String> call(TableColumn<RefillModel, String> param) {
+                return new TableCell<RefillModel,String>(){
+                    @Override
+                    public void updateItem(String item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (!isEmpty()) {
+                            setText(priceFormat.format(precision.format(Float.parseFloat(item))));
+                        }
+                    }
+                };
+            }
+        });
+
         dieselDate.setCellValueFactory(new PropertyValueFactory<>("date"));
+        dieselDate.setStyle("-fx-alignment: CENTER;");
         dieselRemarks.setCellValueFactory(new PropertyValueFactory<>("TankerNumber"));
+        dieselRemarks.setStyle("-fx-alignment: CENTER;");
         dieselRemarks.setCellFactory(new Callback<TableColumn<RefillModel, String>, TableCell<RefillModel, String>>() {
             @Override
             public TableCell<RefillModel, String> call(TableColumn<RefillModel, String> param) {
@@ -194,11 +257,64 @@ public class ProfitLossController implements BackButtonInterface {
 
         // dieselRemarks.setStyle("-fx-selection-bar: red; -fx-selection-bar-non-focused: salmon;");
 
-        petrolExpected.setCellValueFactory(new PropertyValueFactory<>("expected"));
-        petrolActual.setCellValueFactory(new PropertyValueFactory<>("actual"));
-        petrolLoss.setCellValueFactory(new PropertyValueFactory<>("loss"));
+        petrolExpected.setCellValueFactory(new PropertyValueFactory<>("expectedString"));
+        petrolExpected.setStyle("-fx-alignment: CENTER;");
+
+        petrolExpected.setCellFactory(new Callback<TableColumn<RefillModel, String>, TableCell<RefillModel, String>>() {
+            @Override
+            public TableCell<RefillModel, String> call(TableColumn<RefillModel, String> param) {
+                return new TableCell<RefillModel,String>(){
+                    @Override
+                    public void updateItem(String item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (!isEmpty()) {
+                            setText(priceFormat.format(precision.format(Float.parseFloat(item))));
+                        }
+                    }
+                };
+            }
+        });
+
+        petrolActual.setCellValueFactory(new PropertyValueFactory<>("actualString"));
+        petrolActual.setStyle("-fx-alignment: CENTER;");
+
+        petrolActual.setCellFactory(new Callback<TableColumn<RefillModel, String>, TableCell<RefillModel, String>>() {
+            @Override
+            public TableCell<RefillModel, String> call(TableColumn<RefillModel, String> param) {
+                return new TableCell<RefillModel,String>(){
+                    @Override
+                    public void updateItem(String item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (!isEmpty()) {
+                            setText(priceFormat.format(precision.format(Float.parseFloat(item))));
+                        }
+                    }
+                };
+            }
+        });
+
+        petrolLoss.setCellValueFactory(new PropertyValueFactory<>("lossString"));
+        petrolLoss.setStyle("-fx-alignment: CENTER;");
+
+        petrolLoss.setCellFactory(new Callback<TableColumn<RefillModel, String>, TableCell<RefillModel, String>>() {
+            @Override
+            public TableCell<RefillModel, String> call(TableColumn<RefillModel, String> param) {
+                return new TableCell<RefillModel,String>(){
+                    @Override
+                    public void updateItem(String item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (!isEmpty()) {
+                            setText(priceFormat.format(precision.format(Float.parseFloat(item))));
+                        }
+                    }
+                };
+            }
+        });
+
         petrolDate.setCellValueFactory(new PropertyValueFactory<>("date"));
+        petrolDate.setStyle("-fx-alignment: CENTER;");
         petrolRemarks.setCellValueFactory(new PropertyValueFactory<>("TankerNumber"));
+        petrolRemarks.setStyle("-fx-alignment: CENTER;");
         petrolRemarks.setCellFactory(new Callback<TableColumn<RefillModel, String>, TableCell<RefillModel, String>>() {
             @Override
             public TableCell<RefillModel, String> call(TableColumn<RefillModel, String> param) {

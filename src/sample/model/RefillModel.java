@@ -44,6 +44,10 @@ public class RefillModel {
         return expected;
     }
 
+    public String getExpectedString() {
+        return String.valueOf(expected);
+    }
+
     public void setExpected(Float expected) {
         this.expected = expected;
     }
@@ -52,12 +56,20 @@ public class RefillModel {
         return actual;
     }
 
+    public String getActualString() {
+        return String.valueOf(actual);
+    }
+
     public void setActual(Float actual) {
         this.actual = actual;
     }
 
     public Float getLoss() {
         return loss;
+    }
+
+    public String getLossString() {
+        return String.valueOf(loss);
     }
 
     public void setLoss(Float loss) {

@@ -86,7 +86,9 @@ public class StoreCreditTransactionTask extends Tasks {
                     if((SystemStatus.getDieselStock()-dVolume)<0||(SystemStatus.getPetrolStock()-pVolume)<0) {
                         System.out.println("The Stock was Negative");
 
-                        storeCredit.cancel();
+                        storeCredit.clearParameters();
+                        storeCredit.clearBatch();
+                        storeCredit.close();
 
                         return;
                     }

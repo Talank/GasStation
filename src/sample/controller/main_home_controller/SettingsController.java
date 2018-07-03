@@ -27,6 +27,8 @@ import sample.model.CreditCompanyList;
 import sample.model.SystemStatus;
 import sample.model.databases.DatabaseHandler;
 import sample.model.DebtListModel;
+import sample.model.nepaliPriceFormat.Precision;
+import sample.model.nepaliPriceFormat.PriceFormat;
 import sample.tasks.TaskInterface;
 import sample.tasks.TaskManager;
 import sample.tasks.database_tasks.*;
@@ -59,6 +61,10 @@ public class SettingsController {
 
     private GetSettingsTask task;
 
+    private Precision precision;
+
+    private PriceFormat priceFormat;
+
 //  singleton reference for referring from dialogs
     private static SettingsController instance;
 
@@ -78,6 +84,9 @@ public class SettingsController {
 
         toolBar.setTitle("Settings");
         toolBar.setBackPath(SystemStatus.getMainHomePath());
+
+        precision = new Precision();
+        priceFormat = new PriceFormat();
 
         debtList.setCellFactory(lv->new DebtListCell());
         debtList.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
@@ -111,25 +120,25 @@ public class SettingsController {
         usernameValue.setText(model[0][0]);
         usernameDate.setText(model[0][1]);
 
-        dRateValue.setText(model[1][0]);
+        dRateValue.setText(priceFormat.format(precision.format(Float.parseFloat(model[1][0]))));
         dRateDate.setText(model[1][1]);
 
-        pRateValue.setText(model[2][0]);
+        pRateValue.setText(priceFormat.format(precision.format(Float.parseFloat(model[2][0]))));
         pRateDate.setText(model[2][1]);
 
-        dMeterValue.setText(model[3][0]);
+        dMeterValue.setText(priceFormat.format(precision.format(Float.parseFloat(model[3][0]))));
         dMeterDate.setText(model[3][1]);
 
-        pMeterValue.setText(model[4][0]);
+        pMeterValue.setText(priceFormat.format(precision.format(Float.parseFloat(model[4][0]))));
         pMeterDate.setText(model[4][1]);
 
-        counterStockValue.setText(model[5][0]);
+        counterStockValue.setText(priceFormat.format(precision.format(Float.parseFloat(model[5][0]))));
         counterStockDate.setText(model[5][1]);
 
-        dieselStockValue.setText(model[6][0]);
+        dieselStockValue.setText(priceFormat.format(precision.format(Float.parseFloat(model[6][0]))));
         dieselStockDate.setText(model[6][1]);
 
-        petrolStockValue.setText(model[7][0]);
+        petrolStockValue.setText(priceFormat.format(precision.format(Float.parseFloat(model[7][0]))));
         petrolStockDate.setText(model[7][1]);
 
         billPrinter.setText(model[8][0]);

@@ -8,6 +8,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -16,13 +17,17 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import sample.OutputTasks.GetDailyTotalAnalyticsTask;
 import sample.controller.dialog_controller.FinalReadingsController;
 import sample.library.output_task_loading.OutputTaskLoading;
 import sample.library.toolbar.BackButtonInterface;
 import sample.library.toolbar.ToolBar;
+import sample.model.RefillModel;
 import sample.model.SystemStatus;
 import sample.model.databases.DatabaseHandler;
+import sample.model.nepaliPriceFormat.Precision;
+import sample.model.nepaliPriceFormat.PriceFormat;
 import sample.model.transaction_model.DailyTotalAnalyticModel;
 
 import java.io.IOException;
@@ -80,6 +85,9 @@ public class DailyTotalAnalyticsController implements BackButtonInterface {
 
     private GetDailyTotalAnalyticsTask task=null;
 
+    private PriceFormat priceFormat;
+    private Precision precision;
+
 
 
     @FXML
@@ -89,18 +97,141 @@ public class DailyTotalAnalyticsController implements BackButtonInterface {
         toolBar.setBackPath(SystemStatus.getMainHomePath());
         toolBar.addBackButtonInterface(this);
 
+        priceFormat = new PriceFormat();
+        precision = new Precision();
+
         dailyTotalAnalyticsLayout.setVisible(false);
         progressLayout.setVisible(true);
 
 
         iDieselVol.setCellValueFactory(new PropertyValueFactory<>("iDieselVol"));
+        iDieselVol.setStyle("-fx-alignment: CENTER;");
+
+        iDieselVol.setCellFactory(new Callback<TableColumn<DailyTotalAnalyticModel, String>, TableCell<DailyTotalAnalyticModel, String>>() {
+            @Override
+            public TableCell<DailyTotalAnalyticModel, String> call(TableColumn<DailyTotalAnalyticModel, String> param) {
+                return new TableCell<DailyTotalAnalyticModel, String>() {
+                    @Override
+                    protected void updateItem(String item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if(!empty) {
+                            setText(priceFormat.format(precision.format(Float.parseFloat(item))));
+                        }
+                    }
+                };
+            }
+        });
+
         iPetrolVol.setCellValueFactory(new PropertyValueFactory<>("iPetrolVol"));
+        iPetrolVol.setStyle("-fx-alignment: CENTER;");
+
+        iPetrolVol.setCellFactory(new Callback<TableColumn<DailyTotalAnalyticModel, String>, TableCell<DailyTotalAnalyticModel, String>>() {
+            @Override
+            public TableCell<DailyTotalAnalyticModel, String> call(TableColumn<DailyTotalAnalyticModel, String> param) {
+                return new TableCell<DailyTotalAnalyticModel, String>() {
+                    @Override
+                    protected void updateItem(String item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if(!empty) {
+                            setText(priceFormat.format(precision.format(Float.parseFloat(item))));
+                        }
+                    }
+                };
+            }
+        });
+
         cDieselVol.setCellValueFactory(new PropertyValueFactory<>("cDieselVol"));
+        cDieselVol.setStyle("-fx-alignment: CENTER;");
+
+        cDieselVol.setCellFactory(new Callback<TableColumn<DailyTotalAnalyticModel, String>, TableCell<DailyTotalAnalyticModel, String>>() {
+            @Override
+            public TableCell<DailyTotalAnalyticModel, String> call(TableColumn<DailyTotalAnalyticModel, String> param) {
+                return new TableCell<DailyTotalAnalyticModel, String>() {
+                    @Override
+                    protected void updateItem(String item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if(!empty) {
+                            setText(priceFormat.format(precision.format(Float.parseFloat(item))));
+                        }
+                    }
+                };
+            }
+        });
+
         cPetrolVol.setCellValueFactory(new PropertyValueFactory<>("cPetrolVol"));
+        cPetrolVol.setStyle("-fx-alignment: CENTER;");
+
+        cPetrolVol.setCellFactory(new Callback<TableColumn<DailyTotalAnalyticModel, String>, TableCell<DailyTotalAnalyticModel, String>>() {
+            @Override
+            public TableCell<DailyTotalAnalyticModel, String> call(TableColumn<DailyTotalAnalyticModel, String> param) {
+                return new TableCell<DailyTotalAnalyticModel, String>() {
+                    @Override
+                    protected void updateItem(String item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if(!empty) {
+                            setText(priceFormat.format(precision.format(Float.parseFloat(item))));
+                        }
+                    }
+                };
+            }
+        });
+
         extraIncome.setCellValueFactory(new PropertyValueFactory<>("extraIncome"));
+        extraIncome.setStyle("-fx-alignment: CENTER;");
+
+        extraIncome.setCellFactory(new Callback<TableColumn<DailyTotalAnalyticModel, String>, TableCell<DailyTotalAnalyticModel, String>>() {
+            @Override
+            public TableCell<DailyTotalAnalyticModel, String> call(TableColumn<DailyTotalAnalyticModel, String> param) {
+                return new TableCell<DailyTotalAnalyticModel, String>() {
+                    @Override
+                    protected void updateItem(String item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if(!empty) {
+                            setText(priceFormat.format(precision.format(Float.parseFloat(item))));
+                        }
+                    }
+                };
+            }
+        });
+
         oilIncome.setCellValueFactory(new PropertyValueFactory<>("oilIncome"));
+        oilIncome.setStyle("-fx-alignment: CENTER;");
+
+        oilIncome.setCellFactory(new Callback<TableColumn<DailyTotalAnalyticModel, String>, TableCell<DailyTotalAnalyticModel, String>>() {
+            @Override
+            public TableCell<DailyTotalAnalyticModel, String> call(TableColumn<DailyTotalAnalyticModel, String> param) {
+                return new TableCell<DailyTotalAnalyticModel, String>() {
+                    @Override
+                    protected void updateItem(String item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if(!empty) {
+                            setText(priceFormat.format(precision.format(Float.parseFloat(item))));
+                        }
+                    }
+                };
+            }
+        });
+
         total.setCellValueFactory(new PropertyValueFactory<>("total"));
+        total.setStyle("-fx-alignment: CENTER;");
+
+        total.setCellFactory(new Callback<TableColumn<DailyTotalAnalyticModel, String>, TableCell<DailyTotalAnalyticModel, String>>() {
+            @Override
+            public TableCell<DailyTotalAnalyticModel, String> call(TableColumn<DailyTotalAnalyticModel, String> param) {
+                return new TableCell<DailyTotalAnalyticModel, String>() {
+                    @Override
+                    protected void updateItem(String item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if(!empty) {
+                            setText(priceFormat.format(precision.format(Float.parseFloat(item))));
+                        }
+                    }
+                };
+            }
+        });
+
         date.setCellValueFactory(new PropertyValueFactory<>("date"));
+        date.setStyle("-fx-alignment: CENTER;");
 
         task=new GetDailyTotalAnalyticsTask();
 
