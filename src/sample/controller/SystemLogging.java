@@ -5,18 +5,18 @@ import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/*
-* To Handle the Logging From the application
-*
-*Static class is used instead of instantiate the class
-*We can also create a logger using class name,but using global logger name is preferred approach
-*
-* */
+/**
+ * Class to help logging
+ */
 
 public class SystemLogging {
 
 
     private static Logger logger=Logger.getLogger(Logger.GLOBAL_LOGGER_NAME); //Get the Global Logger For the Application
+
+    /**
+     * Initializes the logger
+     */
 
     public static void initializeLogger() {
         try {
@@ -29,11 +29,19 @@ public class SystemLogging {
         }
     }
 
-    //Get the global logger
+    /**
+     *
+     * @return gets the global logger
+     */
     public static Logger getLogger() {
         return logger;
     }
 
+
+    /**
+     * Logs the message to the log
+     * @param message the message to log
+     */
 
     public static void log(String message) {
         System.out.println(message);

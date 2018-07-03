@@ -16,6 +16,10 @@ import sample.model.SystemStatus;
 
 import java.io.IOException;
 
+/**
+ * @deprecated
+ */
+
 public class SplashController {
     /*
     * This Screen Accepts The Initial Values For The Diesel Meter Readings

@@ -7,6 +7,11 @@ import java.util.Scanner;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 
+/**+
+ * This class verifies the application status, so that the application cannot be pirated
+ *
+ */
+
 public class SystemValidation {
 
     private String serialNumber="";

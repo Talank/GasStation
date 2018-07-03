@@ -23,6 +23,11 @@ import sample.model.nepaliPriceFormat.PriceFormat;
 
 import java.io.IOException;
 
+/**
+ * This is the controller for the main screen
+ * We keep this scene alive, and swap others scene within this scene
+ */
+
 public class AppHomeController {
 
     @FXML
@@ -41,6 +46,10 @@ public class AppHomeController {
     private static AppHomeController instance;
 
     private JFXSnackbar snackBar;
+
+    /**
+     * initializes the View
+     */
 
     @FXML
     public void initialize() {
@@ -68,6 +77,12 @@ public class AppHomeController {
 
     }
 
+
+    /**
+     * Loads new layout in the application
+     * @param borderPane the layout to display
+     */
+
     public void loadStages(BorderPane borderPane) {
 
         mainHome.getChildren().clear();
@@ -76,15 +91,29 @@ public class AppHomeController {
 
     }
 
+    /**
+     * Refresh the diesel and petrol rate displays
+     */
+
     public void setRates() {
         dieselRate.setText("Rs. "+(priceFormat.format(precision.format(SystemStatus.getdRate()))));
         petrolRate.setText("Rs. "+(priceFormat.format(precision.format(SystemStatus.getpRate()))));
     }
 
+    /**
+     * Refresh petrol stock and diesel stock
+     */
+
     public void setStock() {
         dieselStock.setText((priceFormat.format(precision.format(SystemStatus.getDieselStock())))+" L");
         petrolStock.setText((priceFormat.format(precision.format(SystemStatus.getPetrolStock())))+" L");
     }
+
+    /**
+     * Loads the login dialog, to make entry point to settings
+     * @param e
+     * @throws IOException
+     */
 
     @FXML
     public void loadSettings(MouseEvent e) throws IOException {
@@ -100,9 +129,20 @@ public class AppHomeController {
         stage.show();
     }
 
+    /**
+     * Displays the message in the snackBar
+     * @param message the message to display
+     * @param timeOut time in milliseconds to display the message for
+     */
+
     public void showMessage(String message,int timeOut) {
         snackBar.show(message,timeOut);
     }
+
+    /**
+     * Gets the current instance of the class
+     * @return the current instance
+     */
 
     public static AppHomeController getInstance() {
         return instance;

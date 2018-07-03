@@ -37,12 +37,23 @@ import java.util.Date;
 import java.util.Locale;
 
 
+/**+
+ * This is the starting point for the javafx application
+ * It initializes the system
+ */
+
 public class Main extends Application {
 
     private FXMLLoader loader;
     private Parent root;
     private boolean startup=false;
     private String msg="";
+
+    /**+
+     * This is called when the app initializes, during this period the preLoader will be displayed, so we are doing all the initialization
+     * here, so that, no much work needs to be done in start() function, and the app loads the stage immediately
+     * @throws Exception Thrown if something goes wrong
+     */
 
     @Override
     public void init() throws Exception {
@@ -61,6 +72,12 @@ public class Main extends Application {
         root = loader.load();
 
     }
+
+    /**+
+     * This is called when it is time to load the screen, the preLoader now is disabled, and the primary stage is loaded with the scene.
+     * @param primaryStage The main stage for the application provided by the javafx
+     * @throws Exception Throws exception (IO exception) when the fxml cannot be inflated
+     */
 
     @Override
     public void start(Stage primaryStage) throws Exception{
@@ -96,6 +113,10 @@ public class Main extends Application {
         }
 
     }
+
+    /**+
+     * Called when the app is closed, performs realising of resources like, database connections
+     */
 
     @Override
     public void stop() {

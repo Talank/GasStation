@@ -2,6 +2,10 @@ package sample.tasks;
 
 import javafx.scene.Parent;
 
+/**
+ * This class manages all the tasks performed by the system
+ */
+
 public class TaskManager {
 
 
@@ -11,6 +15,11 @@ public class TaskManager {
     private static final int TIMEOUT=20000;
 
     private static final int MAX_RETRY=5;
+
+    /**
+     * Initializes the {@link TaskQueue} and creates a thread to poll the queue
+     * @param threadSize the no of threads to create
+     */
 
     public static void init(int threadSize) {
         maxThread=threadSize;
@@ -42,10 +51,21 @@ public class TaskManager {
         mainThread.start();
     }
 
+    /**
+     * Executes the task by interrupting the thread
+     * @param tasks the task to be performed
+     */
+
     public static void executeTask(Tasks tasks) {
         taskQueue.enQueue(tasks);
         mainThread.interrupt();
     }
+
+    /**
+     * @deprecated
+     * @param tasks
+     * @param delay
+     */
 
     public static void scheduleTask(Tasks tasks,long delay) {
         new Thread(()->{

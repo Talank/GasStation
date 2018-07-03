@@ -44,13 +44,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-/*
-* This Class is similar to Instant Billing Controller
-*
-* Refer Instant Billing Controller for comments
-*
-*
-* */
+/**
+ * This is the controller for the credit billing
+ */
 
 public class CreditBillingController {
 
@@ -106,6 +102,9 @@ public class CreditBillingController {
     public Date date;
 
 
+    /**
+     * Initialize the view
+     */
 
     @FXML
     public void initialize() {
@@ -218,6 +217,10 @@ public class CreditBillingController {
 
     }
 
+    /**
+     * Initialize view linked to extras
+     */
+
     private void initializeExtra() {
 
 
@@ -274,6 +277,10 @@ public class CreditBillingController {
 
     }
 
+
+    /**
+     * Initializes the views related to oil transaction
+     */
 
     private void initializeOil() {
 
@@ -354,10 +361,18 @@ public class CreditBillingController {
         });
     }
 
+    /**
+     *
+     * @return true if items in list is selected
+     */
+
     private boolean isListSelected() {
         return !transactionListView.getSelectionModel().isEmpty();
     }
 
+    /**
+     * Clears all the fields related to oil transaction
+     */
 
     private void clearOil() {
         force=true;
@@ -366,12 +381,20 @@ public class CreditBillingController {
         price.setText("");
     }
 
+    /**
+     * Clears all the field related to extra transaction
+     */
+
     private void clearExtra() {
         force=true;
         itemName.setText("");
         rates.setText("");
         quantity.setText("");
     }
+
+    /**
+     * Clears all the fields in the credit billing vies
+     */
 
     private void masterClear() {
         force=true;
@@ -393,6 +416,11 @@ public class CreditBillingController {
 
 
     }
+
+    /**
+     * Checks the oil input fields for validity
+     * @return the status of the check, 0 if all the fields are valid
+     */
 
     private int checkOilInput() {
         int status=0;
@@ -416,6 +444,11 @@ public class CreditBillingController {
         }
         return status;
     }
+
+    /**
+     * Checks the extra fields inputs
+     * @return 0 if all the fields are valid
+     */
 
     private int checkExtraInput() {
         int status=0;
@@ -441,13 +474,31 @@ public class CreditBillingController {
         return status;
     }
 
+    /**
+     *
+     * @return true if the list is empty
+     */
+
     private boolean isListEmpty() {
         return transactionListView.getItems().isEmpty();
     }
 
+    /**
+     *
+     * @return the current instance
+     */
+
     public static CreditBillingController getInstance() {
         return instance;
     }
+
+
+    /**
+     * Sets the admin mode for this transaction
+     * @param dRate the supplied new diesel rate
+     * @param pRate the supplied new petrol rate
+     * @param date the supplied date
+     */
 
     public void setAdmin(float dRate,float pRate,Date date) {
         transactionListView.getItems().clear();
@@ -466,7 +517,11 @@ public class CreditBillingController {
     }
 
 
-
+    /**
+     * loads the posting view
+     * @param e
+     * @throws IOException
+     */
 
     @FXML
     public void loadAdmin(MouseEvent e) throws IOException {
@@ -482,6 +537,10 @@ public class CreditBillingController {
 
     }
 
+    /**
+     * Removes item from the list
+     * @param e
+     */
 
     @FXML
     public void deleteItem(MouseEvent e) {
@@ -508,6 +567,11 @@ public class CreditBillingController {
 
     }
 
+    /**
+     * Clears the selections of the list
+     * @param e
+     */
+
     @FXML
     public void clearSelection(MouseEvent e) {
         transactionListView.getSelectionModel().clearSelection();
@@ -517,6 +581,11 @@ public class CreditBillingController {
             clearExtra();
         }
     }
+
+    /**
+     * Adds new item to the list
+     * @param e
+     */
 
     @FXML
     public void addNewItem(MouseEvent e) {
@@ -597,6 +666,11 @@ public class CreditBillingController {
     }
 
 
+    /**
+     * Prints the bill, and also stores the transactions to the database
+     * @param e
+     * @throws IOException
+     */
 
     @FXML
     public void printBill(MouseEvent e)throws IOException {

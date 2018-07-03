@@ -14,11 +14,22 @@ import sample.tasks.Tasks;
 import java.sql.*;
 import java.util.ArrayList;
 
+/**+
+ * This class initializes the system from database
+ * First task to be executed by the system
+ *
+ */
 
 public class InitializeSystem extends Tasks {
 
 
     private String errorMessage;
+
+    /**+
+     * This function initializes the {@link SystemStatus}, {@link CreditCompanyList}.
+     * It also check for the company expiry, and notifies if it has
+     * @return true if the initialization completed without errors
+     */
 
     public boolean customExecute() {
 
@@ -220,6 +231,11 @@ public class InitializeSystem extends Tasks {
         return false;
 
     }
+
+    /**
+     * provides the error message associated with the initialization
+     * @return the description of error
+     */
 
     public String getErrorMessage() {
         return errorMessage;

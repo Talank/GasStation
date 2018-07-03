@@ -5,6 +5,11 @@ import sample.Reference;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
+/**
+ * This is the super class of all the tasks that are performed by the system.
+ * It stores all database connections and other information about the interfaces that are listening for the task completion.
+ */
+
 public class Tasks {
 
     protected static final String DRIVER="org.apache.derby.jdbc.ClientDriver";
@@ -14,6 +19,11 @@ public class Tasks {
     protected int retryStatus=0;
 
     protected TaskInterface taskInterface;
+
+    /**
+     * Tries to establish connection with derby database
+     * @return true if connection is established
+     */
 
     public static boolean setupConnection() {
         try {
@@ -31,17 +41,36 @@ public class Tasks {
         return false;
     }
 
+    /**
+     *
+     * @return the current database connection
+     */
+
     public static Connection getConnection() {
         return connection;
     }
+
+    /**
+     * Adds the listener for the tasks
+     * @param taskInterface the interested interface
+     */
 
     public void addTaskInterfaceListener(TaskInterface taskInterface) {
         this.taskInterface=taskInterface;
     }
 
+    /**
+     * @deprecated
+     * @return
+     */
+
     public int getRetryStatus() {
         return retryStatus;
     }
+
+    /**
+     * implemented by the sub classes
+     */
 
     public void execute() {
 
