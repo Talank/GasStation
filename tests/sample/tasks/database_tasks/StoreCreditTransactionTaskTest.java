@@ -24,7 +24,7 @@ public class StoreCreditTransactionTaskTest {
         ArrayList<Transaction> transactions;
         StoreCreditTransactionTask task;
 
-        DebtListModel model = new DebtListModel("Sujal Dairy", "0", 1, 0, 0, 0);
+        DebtListModel model = new DebtListModel("Gyanu Baba", "0", 1, 0, 0, 0);
         LocalDate localDate;
 
         Tasks.setupConnection();

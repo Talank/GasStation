@@ -18,7 +18,8 @@ public class InstantTransactionBill {
 
     public void print() {
         StringBuilder builder=new StringBuilder();
-        builder.append("----------Om Petrol Pump-------------\n");
+        builder.append("-----------Shree Om Petrol Pump------------\n");
+        builder.append("       Po-Le 7,Swagatnagar,chauthe       \n");
         builder.append("Customer - "+Transaction.getName()+"\n");
         builder.append("-----------------------------------------\n");
         builder.append("Type     V.n           Qty       Rate      Total\n");
