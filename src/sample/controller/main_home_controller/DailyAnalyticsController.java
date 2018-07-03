@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import sample.library.toolbar.ToolBar;
 import sample.model.SystemStatus;
+import sample.model.nepaliPriceFormat.Precision;
 import sample.model.nepaliPriceFormat.PriceFormat;
 import sample.model.transaction_model.DailyTotalAnalyticModel;
 import sample.tasks.TaskInterface;
@@ -29,6 +30,9 @@ public class DailyAnalyticsController {
 
     private DailyTotalAnalyticModel model;
 
+    private Precision precision;
+    private PriceFormat priceFormat;
+
     public static DailyAnalyticsController instance;
     public DailyAnalyticsController() {
         instance=this;
@@ -40,6 +44,9 @@ public class DailyAnalyticsController {
 
         toolBar.setTitle("Today Analytics");//title
         toolBar.setBackPath("../../view/main_home_views/dailyTotalAnalytics.fxml");
+
+        precision = new Precision();
+        priceFormat = new PriceFormat();
 
         GetDailyTotalAnalyticsModelTask task=new GetDailyTotalAnalyticsModelTask();
         task.addTaskInterfaceListener(new TaskInterface() {
@@ -63,20 +70,21 @@ public class DailyAnalyticsController {
 
     public void setModel(DailyTotalAnalyticModel model) {
         this.model=model;
-        pInitial.setText(new PriceFormat(model.getIPetrolVol()).getResult()+" L");
 
-        pFinal.setText(new PriceFormat(model.getCPetrolVol()).getResult()+" L");
-        pNet.setText("Rs."+new PriceFormat((SystemStatus.getfDiesel()-SystemStatus.getiPetrol())*SystemStatus.getpRate()+"").getResult()+"/-");
+        pInitial.setText(priceFormat.format(precision.format(Float.parseFloat(model.getIPetrolVol())))+" L");
 
-        dInitial.setText(new PriceFormat(model.getIDieselVol()).getResult()+" L");
-        dFinal.setText(new PriceFormat(model.getCDieselVol()).getResult()+" L");
-        dNet.setText("Rs."+new PriceFormat((SystemStatus.getfPetrol()-SystemStatus.getiDiesel())*SystemStatus.getdRate()+"").getResult()+"/-");
+        pFinal.setText(priceFormat.format(precision.format(Float.parseFloat(model.getCPetrolVol())))+" L");
+        pNet.setText("Rs. "+priceFormat.format(precision.format((SystemStatus.getfDiesel()-SystemStatus.getiPetrol())*SystemStatus.getpRate()))+"/-");
+
+        dInitial.setText(priceFormat.format(precision.format(Float.parseFloat(model.getIDieselVol())))+" L");
+        dFinal.setText(priceFormat.format(precision.format(Float.parseFloat(model.getCDieselVol())))+" L");
+        dNet.setText("Rs. "+priceFormat.format(precision.format((SystemStatus.getfPetrol()-SystemStatus.getiDiesel())*SystemStatus.getdRate()))+"/-");
 
         cInitial.setText("Rs./-");
-        cFinal.setText("Rs."+model.getCExtra()+"/-");
+        cFinal.setText("Rs. "+priceFormat.format(precision.format(Float.parseFloat(model.getCExtra())))+"/-");
 
-        netOil.setText("Rs."+new PriceFormat(model.getOilIncome()).getResult()+"/-");
-        netExtra.setText("Rs."+new PriceFormat(model.getCExtra()).getResult()+"/-");
+        netOil.setText("Rs. "+priceFormat.format(precision.format(Float.parseFloat(model.getOilIncome())))+"/-");
+        netExtra.setText("Rs. "+priceFormat.format(precision.format(Float.parseFloat(model.getCExtra())))+"/-");
 
         TodayClosingTask tasks=new TodayClosingTask(model);
         TaskManager.executeTask(tasks);

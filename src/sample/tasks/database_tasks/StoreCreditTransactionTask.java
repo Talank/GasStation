@@ -86,6 +86,12 @@ public class StoreCreditTransactionTask extends Tasks {
                     if((SystemStatus.getDieselStock()-dVolume)<0||(SystemStatus.getPetrolStock()-pVolume)<0) {
                         System.out.println("The Stock was Negative");
 
+                        String message="The Stock Value is Negative. Please Adjust the Stock and try again.";
+                        String title="Stock Error";
+                        ErrorMessageDialogGenerator generator=new ErrorMessageDialogGenerator(message,title);
+                        generator.setTasks(this);
+                        generator.showDialog();
+
                         storeCredit.clearParameters();
                         storeCredit.clearBatch();
                         storeCredit.close();

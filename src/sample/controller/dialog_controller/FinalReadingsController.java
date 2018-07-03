@@ -99,13 +99,17 @@ public class FinalReadingsController implements BottomBarInterface {
 
         if(status==0) {
 
-            SystemStatus.setfDiesel(Float.parseFloat(fDiesel.getText()));
-            SystemStatus.setfPetrol(Float.parseFloat(fPetrol.getText()));
+            if((Float.parseFloat(fDiesel.getText()) - SystemStatus.getiDiesel()) < 0 || (Float.parseFloat(fPetrol.getText()) - SystemStatus.getiPetrol()) < 0) {
+                bottomBar.setErrorText("Negative Meter Readings Encountered");
+            } else {
+                SystemStatus.setfDiesel(Float.parseFloat(fDiesel.getText()));
+                SystemStatus.setfPetrol(Float.parseFloat(fPetrol.getText()));
 
-            BorderPane borderPane=FXMLLoader.load(getClass().getResource("../../view/main_home_views/dailyAnalytics.fxml"));
-            AppHomeController.getInstance().loadStages(borderPane);
+                BorderPane borderPane=FXMLLoader.load(getClass().getResource("../../view/main_home_views/dailyAnalytics.fxml"));
+                AppHomeController.getInstance().loadStages(borderPane);
 
-            ((Node)e.getSource()).getScene().getWindow().hide();
+                ((Node)e.getSource()).getScene().getWindow().hide();
+            }
 
         }
     }

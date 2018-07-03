@@ -13,6 +13,7 @@ import sample.library.toolbar.BackButtonInterface;
 import sample.library.toolbar.ToolBar;
 import sample.model.ExpenditureModel;
 import sample.model.SystemStatus;
+import sample.model.nepaliPriceFormat.Precision;
 import sample.model.nepaliPriceFormat.PriceFormat;
 
 public class SystemStatusController implements BackButtonInterface {
@@ -44,6 +45,9 @@ public class SystemStatusController implements BackButtonInterface {
     @FXML
     private OutputTaskLoading progressLayout;
 
+    private Precision precision;
+    private PriceFormat priceFormat;
+
     private GetExpenditureTask task;
 
 
@@ -64,37 +68,30 @@ public class SystemStatusController implements BackButtonInterface {
         task.setOnSucceeded((WorkerStateEvent e)->{
             expenditureList.setItems(FXCollections.observableList(task.getValue()));
 
-            int sum=0;
-            String totalSum;
-
+            float sum=0;
             for (ExpenditureModel model:task.getValue()) {
                 sum+=Integer.parseInt(model.getAmount());
             }
-            PriceFormat priceFormat=new PriceFormat();
-            priceFormat.setFormat(sum+"");
 
-            totalSum=priceFormat.getResult();
-
-            total.setText("Total Expenditure:Rs "+totalSum+"/-");
+            total.setText("Total Expenditure:Rs "+priceFormat.format(precision.format(sum))+"/-");
 
             expenditureList.setVisible(true);
             progressLayout.setVisible(false);
         });
-        PriceFormat priceFormat=new PriceFormat();
 
         progressLayout.setProgressProperty(task.progressProperty());
 
         systemDate.setText(SystemStatus.getNepaliCurrentDate());
         transactionDate.setText(SystemStatus.getNepaliTransactionDate());
 
-        priceFormat.setFormat(String.valueOf(SystemStatus.getDieselStock()));
-        currentDieselStock.setText(priceFormat.getResult()+" Litres");
-        priceFormat.setFormat(String.valueOf(SystemStatus.getPetrolStock()));
-        currentPetrolStock.setText(priceFormat.getResult()+" Litres");
-        priceFormat.setFormat(String.valueOf(SystemStatus.getiDiesel()));
-        initialDieselReadings.setText(priceFormat.getResult()+" Litres");
-        priceFormat.setFormat(String.valueOf(SystemStatus.getiPetrol()));
-        initialPetrolReadings.setText(priceFormat.getResult()+" Litres");
+
+        currentDieselStock.setText(" " + priceFormat.format(precision.format(SystemStatus.getDieselStock())) +" Litres");
+
+        currentPetrolStock.setText(" " + priceFormat.format(precision.format(SystemStatus.getPetrolStock())) +" Litres");
+
+        initialDieselReadings.setText("" + priceFormat.format(precision.format(SystemStatus.getiDiesel())) + " Litres");
+
+        initialPetrolReadings.setText("" + priceFormat.format(precision.format(SystemStatus.getiPetrol())) + " Litres");
 
         Thread mainThread=new Thread(task);
         mainThread.setDaemon(true);
