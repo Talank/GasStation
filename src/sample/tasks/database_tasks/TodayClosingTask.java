@@ -27,6 +27,11 @@ public class TodayClosingTask extends Tasks {
 
     private DailyTotalAnalyticModel model;
 
+    /**
+     *
+     * @param model the closing model
+     */
+
     public TodayClosingTask(DailyTotalAnalyticModel model) {
         this.model=model;
     }
@@ -124,21 +129,11 @@ public class TodayClosingTask extends Tasks {
         } catch (SQLException e) {
             SystemLogging.getLogger().warning("Couldn't perform The closing operation.");
 
-            try {
-                connection.rollback();
-                SystemLogging.getLogger().fine("Rollback the today closing to stable state.");
-                System.out.println("Error in Database detected. Rolling back Database to stable stage.");
-
-            } catch (SQLException e1) {
-                SystemLogging.getLogger().warning("Failed to Rollback the today closing.");
-                System.out.println("Unable to undo Changes.It restores when system restarts.");
-            }
+            rollBack();
 
             String message="Error Closing.\n"+"Please Retry Again.";
             String title="System Error";
-            ErrorMessageDialogGenerator generator=new ErrorMessageDialogGenerator(message,title);
-            generator.setTasks(this);
-            generator.showDialog();
+            reportError(title, message, this);
 
             System.out.println(e.getNextException().getMessage());
         }

@@ -22,11 +22,20 @@ public class SaveCompanyTask extends Tasks {
 
     private String companyName,creditCycle;
 
+    /**
+     *
+     * @param companyName the name of the company to be saved
+     * @param creditCycle the cycle time of the company
+     */
+
     public SaveCompanyTask(String companyName,String creditCycle) {
         this.companyName=companyName;
         this.creditCycle=creditCycle;
     }
 
+    /**
+     * If first searches if the company already exists, if not then the company table is created along with its default value
+     */
 
     @Override
     public void execute() {
@@ -77,23 +86,13 @@ public class SaveCompanyTask extends Tasks {
 
 
         } catch (SQLException e) {
-            retryStatus++;
             SystemLogging.getLogger().warning("CreditCompany failed to save");
-            try {
-                connection.rollback();
-                SystemLogging.getLogger().fine("Rollback CreditCompany saving name in db successfully done");
-                System.out.println("Error in Database detected. Rolling back Database to stable  stage.");
 
-            } catch (SQLException e1) {
-                SystemLogging.getLogger().fine("Rollback CreditCompany failed to  save");
-                System.out.println("Unable to undo Changes.It restores when system restarts.");
-            }
+            rollBack();
 
             String message="Error Saving Company'"+companyName+"'.\n"+"Please Retry Again.";
             String title="Company Error";
-            ErrorMessageDialogGenerator generator=new ErrorMessageDialogGenerator(message,title);
-            generator.setTasks(this);
-            generator.showDialog();
+            reportError(title, message, this);
 
             e.printStackTrace();
             System.out.println(e.getNextException().getMessage());

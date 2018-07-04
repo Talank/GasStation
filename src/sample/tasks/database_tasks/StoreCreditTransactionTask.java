@@ -34,10 +34,22 @@ public class StoreCreditTransactionTask extends Tasks {
 
     private Date date;
 
+    /**
+     *
+     * @param instantTransaction the list of transaction to be stored in the same transaction session
+     * @param model the model of the compnany
+     */
+
     public StoreCreditTransactionTask(List<Transaction> instantTransaction, DebtListModel model) {
         this.instantTransaction = instantTransaction;
         this.model=model;
     }
+
+    /**
+     *
+     * @param isAdmin true if Admin mode is on
+     * @param date the date to be set
+     */
 
     public void setAdminDate(boolean isAdmin,Date date) {
         this.isAdmin=isAdmin;
@@ -190,24 +202,12 @@ public class StoreCreditTransactionTask extends Tasks {
         }  catch(SQLException e) {
             e.printStackTrace();
             System.out.println(e.getMessage());
-            SystemLogging.getLogger().warning(" Credit Transaction failed to store in db");
-            System.out.println("Error Inserting Credit Transaction.ReScheduling Task Again. Retry:"+retryStatus);
 
-            try {
-                connection.rollback();
-                SystemLogging.getLogger().fine("Rollback Credit Transaction storing to stable state");
-                System.out.println("Error in Database detected. Rolling back Database to stable stage.");
-
-            } catch (SQLException e1) {
-                SystemLogging.getLogger().warning(" Failed to rollback CreditTransaction storing");
-                System.out.println("Unable to undo Changes.It restores when system restarts.");
-            }
+            rollBack();
 
             String message="Error Storing Transaction For Company '"+model.getCompanyName()+"'.\n"+"Please Retry Again.";
             String title="Transaction Error";
-            ErrorMessageDialogGenerator generator=new ErrorMessageDialogGenerator(message,title);
-            generator.setTasks(this);
-            generator.showDialog();
+            reportError(title, message, this);
 
             SystemLogging.getLogger().warning("Error Storing Transaction in Database");
         }

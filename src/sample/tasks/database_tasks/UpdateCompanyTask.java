@@ -19,6 +19,11 @@ public class UpdateCompanyTask extends Tasks {
 
     private DebtListModel model;
 
+    /**
+     *
+     * @param model the company to be updated
+     */
+
     public UpdateCompanyTask(DebtListModel model) {
         this.model=model;
     }
@@ -50,20 +55,12 @@ public class UpdateCompanyTask extends Tasks {
             e.printStackTrace();
             System.out.println(e.getMessage());
             SystemLogging.getLogger().warning("Company Update failed to do.");
-            try {
-                connection.rollback();
-                SystemLogging.getLogger().fine("Rollback company update to stable state.");
-                System.out.println("Error in Database detected. Rolling back Database to stable stage.");
 
-            } catch (SQLException e1) {
-                SystemLogging.getLogger().warning("Failed to rollback Company Update.");
-                System.out.println("Unable to undo Changes.It restores when system restarts.");
-            }
+            rollBack();
+
             String message="Error Updating Company '"+model.getCompanyName()+"'.\n"+"Please Retry Again.";
             String title="Company Error";
-            ErrorMessageDialogGenerator generator=new ErrorMessageDialogGenerator(message,title);
-            generator.setTasks(this);
-            generator.showDialog();
+            reportError(title, message, this);
         }
 
     }

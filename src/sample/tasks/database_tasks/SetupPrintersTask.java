@@ -19,6 +19,12 @@ public class SetupPrintersTask extends Tasks {
 
     private String billPrinterName,analyticsPrinterName;
 
+    /**
+     *
+     * @param billPrinterName the bill printer name
+     * @param analyticsPrinterName the analytics printer name
+     */
+
     public SetupPrintersTask(String billPrinterName, String analyticsPrinterName) {
         this.billPrinterName = billPrinterName;
         this.analyticsPrinterName = analyticsPrinterName;
@@ -91,21 +97,11 @@ public class SetupPrintersTask extends Tasks {
             System.out.println(e.getMessage());
             SystemLogging.getLogger().warning(" SystemStatus printer setup failed to update");
 
-            try {
-                connection.rollback();
-                SystemLogging.getLogger().fine("Rollback SystemStatus printer setup");
-                System.out.println("Error in Database detected. Rolling back Database to stable stage.");
-
-            } catch (SQLException e1) {
-                SystemLogging.getLogger().warning(" Failed to Rollback SystemStatus printer setup");
-                System.out.println("Unable to undo Changes.It restores when system restarts.");
-            }
+            rollBack();
 
             String message="Error Setting Up Printers.\n"+"Please Retry Again.";
             String title="Printer Setup Error";
-            ErrorMessageDialogGenerator generator=new ErrorMessageDialogGenerator(message,title);
-            generator.setTasks(this);
-            generator.showDialog();
+            reportError(title, message, this);
         }
     }
 }

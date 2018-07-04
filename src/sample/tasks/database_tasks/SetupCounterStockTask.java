@@ -20,6 +20,11 @@ public class SetupCounterStockTask extends Tasks {
 
     private String counterStock;
 
+    /**
+     *
+     * @param counterStock the counter stock to be saved
+     */
+
     public SetupCounterStockTask(String counterStock) {
         this.counterStock=counterStock;
     }
@@ -45,21 +50,11 @@ public class SetupCounterStockTask extends Tasks {
             System.out.println(e.getMessage());
             SystemLogging.getLogger().warning(" SystemStatus counter stock couldn't be updated");
 
-            try {
-                connection.rollback();
-                SystemLogging.getLogger().fine(" SystemStatus counter stock rollback successfully to stable stage");
-                System.out.println("Error in Database detected. Rolling back Database to stable stage.");
-
-            } catch (SQLException e1) {
-                SystemLogging.getLogger().warning(" SystemStatus failed to rollback counter stock");
-                System.out.println("Unable to undo Changes.It restores when system restarts.");
-            }
+            rollBack();
 
             String message="Error Setting Up Counter Value.\n"+"Please Retry Again.";
             String title="Counter Setup Error";
-            ErrorMessageDialogGenerator generator=new ErrorMessageDialogGenerator(message,title);
-            generator.setTasks(this);
-            generator.showDialog();
+            reportError(title, message, this);
         }
     }
 }

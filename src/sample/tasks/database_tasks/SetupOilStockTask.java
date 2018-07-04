@@ -23,6 +23,12 @@ public class SetupOilStockTask extends Tasks {
 
     private String dieselStock,petrolStock;
 
+    /**
+     *
+     * @param dieselStock the diesel stock
+     * @param petrolStock the petrol stock
+     */
+
     public SetupOilStockTask(String dieselStock,String petrolStock) {
         this.dieselStock=dieselStock;
         this.petrolStock=petrolStock;
@@ -32,7 +38,6 @@ public class SetupOilStockTask extends Tasks {
     @Override
     public void execute() {
         try {
-
 
             if(SystemStatus.getDieselStock()!=Float.parseFloat(dieselStock)&&SystemStatus.getPetrolStock()!=Float.parseFloat(petrolStock)) {
 
@@ -92,21 +97,11 @@ public class SetupOilStockTask extends Tasks {
             System.out.println(e.getMessage());
             SystemLogging.getLogger().warning("  SystemStatus oil stock failed to update");
 
-            try {
-                connection.rollback();
-                SystemLogging.getLogger().fine(" Rollback SystemStatus oil stock to stable state");
-                System.out.println("Error in Database detected. Rolling back Database to stable stage.");
-
-            } catch (SQLException e1) {
-                SystemLogging.getLogger().warning(" Rollback SystemStatus oil stock failed");
-                System.out.println("Unable to undo Changes.It restores when system restarts.");
-            }
+            rollBack();
 
             String message="Error Setting up Oil Stock.\n"+"Please Retry Again.";
             String title="Oil Stock Error";
-            ErrorMessageDialogGenerator generator=new ErrorMessageDialogGenerator(message,title);
-            generator.setTasks(this);
-            generator.showDialog();
+            reportError(title, message, this);
         }
 
     }

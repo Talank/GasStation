@@ -22,6 +22,12 @@ public class SetupMeterReadingsTask extends Tasks {
 
     private String dieselReading, petrolReading;
 
+    /**
+     *
+     * @param dieselReading the diesel readings
+     * @param petrolReading the petrol readings
+     */
+
     public SetupMeterReadingsTask(String dieselReading, String petrolReading) {
         this.dieselReading = dieselReading;
         this.petrolReading = petrolReading;
@@ -91,23 +97,11 @@ public class SetupMeterReadingsTask extends Tasks {
             System.out.println(e.getMessage());
             SystemLogging.getLogger().warning("SystemStatus failed to update meter reading");
 
-
-            try {
-                connection.rollback();
-                SystemLogging.getLogger().fine(" Rollback SystemStatus meter reading to  stable state");
-
-                System.out.println("Error in Database detected. Rolling back Database to stable stage.");
-
-            } catch (SQLException e1) {
-                SystemLogging.getLogger().warning(" CreditCompany added successfully");
-                System.out.println(" Failed to Rollback SystemStatus meter reading");
-            }
+            rollBack();
 
             String message = "Error Setting Up Final Meter Readings.\n" + "Please Retry Again.";
             String title = "Meter Readings Error";
-            ErrorMessageDialogGenerator generator = new ErrorMessageDialogGenerator(message, title);
-            generator.setTasks(this);
-            generator.showDialog();
+            reportError(title, message, this);
         }
 
     }
