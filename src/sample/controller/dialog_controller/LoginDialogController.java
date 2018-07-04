@@ -26,6 +26,7 @@ import sample.library.dialog_bottombar.BottomBarInterface;
 import sample.library.dialog_bottombar.DialogBottomBar;
 import sample.library.dialog_toolbar.DialogToolBar;
 import sample.model.AdminUser;
+import sample.tasks.TaskManager;
 
 import java.io.IOException;
 
@@ -131,9 +132,8 @@ public class LoginDialogController implements BottomBarInterface {
                 }
 
             });
-            Thread mainThread=new Thread(task);
-            mainThread.setDaemon(true);
-            mainThread.start();
+
+            TaskManager.executeInstantTask(task);
 
         }
     }

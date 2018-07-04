@@ -15,6 +15,7 @@ import sample.model.ExpenditureModel;
 import sample.model.SystemStatus;
 import sample.model.nepaliPriceFormat.Precision;
 import sample.model.nepaliPriceFormat.PriceFormat;
+import sample.tasks.TaskManager;
 
 public class SystemStatusController implements BackButtonInterface {
 
@@ -97,9 +98,7 @@ public class SystemStatusController implements BackButtonInterface {
 
         initialPetrolReadings.setText("" + priceFormat.format(precision.format(SystemStatus.getiPetrol())) + " Litres");
 
-        Thread mainThread=new Thread(task);
-        mainThread.setDaemon(true);
-        mainThread.start();
+        TaskManager.executeInstantTask(task);
 
     }
 

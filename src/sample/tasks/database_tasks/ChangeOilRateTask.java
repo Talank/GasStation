@@ -30,9 +30,18 @@ public class ChangeOilRateTask extends Tasks {
 
 
 
+    /**
+     *Checks if there is any changes to the oil rate and updates them accordingly. Also, notifies the {@link AppHomeController} about the changes
+     */
+
     @Override
     public void execute() {
         try {
+
+            /*
+             *Check if there is any changes to the data, if so update otherwise don't update the data
+             */
+
             if(SystemStatus.getdRate()!=model.getrDiesel()&&SystemStatus.getpRate()!=model.getrPetrol()) {
 
                 PreparedStatement setRate=connection.prepareStatement("UPDATE SystemStatus SET VALUE=?,DATE=? WHERE ID=?");
@@ -90,21 +99,13 @@ public class ChangeOilRateTask extends Tasks {
         } catch(SQLException e) {
             System.out.println(e.getNextException().getMessage());
             SystemLogging.getLogger().warning("SystemStatus failed to change oil rates");
-            try {
-                connection.rollback();
-                SystemLogging.getLogger().fine("Rollback to stable stage in SystemStatus");
-                System.out.println("Error in Database detected. Rolling back Database to stable stage.");
 
-            } catch (SQLException e1) {
-                SystemLogging.getLogger().warning("Rollback failed in SystemStatus");
-                System.out.println("Unable to undo Changes.It restores when system restarts.");
-            }
+            rollBack();
 
             String message="Error Changing Oil Rates.\n"+"Please Retry Again.";
             String title="Oil Rate Update Error";
-            ErrorMessageDialogGenerator generator=new ErrorMessageDialogGenerator(message,title);
-            generator.setTasks(this);
-            generator.showDialog();
+
+            reportError(title, message, this);
 
 
         }

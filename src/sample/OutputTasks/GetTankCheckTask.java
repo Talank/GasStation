@@ -10,6 +10,10 @@ import java.sql.Statement;
 import java.util.ArrayList;
 /*** This class is not currently used ****/
 
+/**
+ * @deprecated
+ */
+
 public class GetTankCheckTask extends Task<ArrayList<TankCheckModel>> {
 
 

@@ -14,6 +14,11 @@ public class TaskManager {
     private static Thread mainThread;
     private static final int TIMEOUT=20000;
 
+    private static Runnable instantTask;
+
+    private static boolean isThreadFree = true;
+    private static boolean isInstantTaskAvailable = false;
+
     private static final int MAX_RETRY=5;
 
     /**
@@ -28,21 +33,23 @@ public class TaskManager {
         mainThread=new Thread(()->{
             while(true) {
                 if(taskQueue.isEmpty()) {
+                    isThreadFree = true;
                     try {
                         System.out.println("No Task Detected.Sleep:"+TIMEOUT+" ms");
                          Thread.sleep(TIMEOUT);
                     } catch (InterruptedException e) {
                         System.out.println("Interrupted:Checking For Tasks.");
-                     //   e.printStackTrace();
+                        if (isInstantTaskAvailable) {
+                            isInstantTaskAvailable = false;
+                            System.out.println("Instant Task Available.Performing Instant Task.");
+                            instantTask.run();
+                        }
                     }
                 } else {
+                    isThreadFree = false;
                     System.out.println("Task Detected, Executing Task.");
                     Tasks task=taskQueue.deQueue();
-                    if(task.getRetryStatus()<=MAX_RETRY) {
-                        task.execute();
-                    } else {
-                        System.out.println("Task Failed Many Times. Stopping Task.");
-                    }
+                    task.execute();
                 }
             }
 
@@ -59,6 +66,24 @@ public class TaskManager {
     public static void executeTask(Tasks tasks) {
         taskQueue.enQueue(tasks);
         mainThread.interrupt();
+    }
+
+    public static void executeInstantTask(Runnable instantTasks) {
+
+        /*
+        * Check if the thread is free, if so run on the free thread, otherwise run on new thread
+        * */
+
+        if (isThreadFree) {
+            instantTask = instantTasks;
+            isInstantTaskAvailable = true;
+            mainThread.interrupt();
+        } else {
+            Thread mainThread=new Thread(instantTasks);
+            mainThread.setDaemon(true);
+            mainThread.start();
+        }
+
     }
 
     /**

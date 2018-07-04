@@ -22,11 +22,21 @@ public class ChangeUserParameterTask extends Tasks {
 
     private String userName,password;
 
+
+    /**
+     *
+     * @param userName the new username
+     * @param password the new password
+     */
     public ChangeUserParameterTask(String userName,String password) {
         this.userName=userName;
         this.password=password;
     }
 
+
+    /**
+     *Changes the current user name and password
+     */
 
     @Override
     public void execute() {
@@ -58,21 +68,12 @@ public class ChangeUserParameterTask extends Tasks {
             e.printStackTrace();
             System.out.println(e.getNextException().getMessage());
             SystemLogging.getLogger().warning("SystemStatus failed to change in user parameters");
-            try {
-                connection.rollback();
-                SystemLogging.getLogger().fine("Rollback SystemStatus to stable state in user parameters");
-                System.out.println("Error in Database detected. Rolling back Database to stable stage.");
 
-            } catch (SQLException e1) {
-                SystemLogging.getLogger().warning("SystemStatus failed to rollback in user parameters");
-                System.out.println("Unable to undo Changes.It restores when system restarts.");
-            }
+            rollBack();
 
             String message="Error Changing User Parameters.\n"+"Please Retry Again.";
             String title="User Parameter Error";
-            ErrorMessageDialogGenerator generator=new ErrorMessageDialogGenerator(message,title);
-            generator.setTasks(this);
-            generator.showDialog();
+            reportError(title, message, this);
 
         }
 

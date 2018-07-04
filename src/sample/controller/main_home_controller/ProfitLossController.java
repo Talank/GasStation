@@ -34,6 +34,7 @@ import sample.model.SystemStatus;
 import sample.model.RefillModel;
 import sample.model.nepaliPriceFormat.Precision;
 import sample.model.nepaliPriceFormat.PriceFormat;
+import sample.tasks.TaskManager;
 import sample.tasks.Tasks;
 
 import java.io.IOException;
@@ -357,14 +358,11 @@ public class ProfitLossController implements BackButtonInterface {
             dieselTable.setItems(dieselTableData);
             petrolTable.setItems(petrolTableData);
 
-
             progressLayout.setVisible(false);
             profitLossLayout.setVisible(true);
         });
 
-        Thread mainThread=new Thread(task);
-        mainThread.setDaemon(true);
-        mainThread.start();
+        TaskManager.executeInstantTask(task);
 
         selection.selectedToggleProperty().addListener((ObservableValue<? extends Toggle > ov, Toggle old_toggle, Toggle new_toggle)->{
             if(((JFXRadioButton)new_toggle).getText().equals("Diesel")) {

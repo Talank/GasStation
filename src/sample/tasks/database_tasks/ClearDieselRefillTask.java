@@ -43,21 +43,11 @@ public class ClearDieselRefillTask extends Tasks {
             SystemLogging.getLogger().warning("DieselRefill failed to clear");
             System.out.println(e.getMessage());
 
-            try {
-                connection.rollback();
-                SystemLogging.getLogger().fine("Rollback successfully done in DieselRefill");
-                System.out.println("Error in Database detected. Rolling back Database to stable stage.");
-
-            } catch (SQLException e1) {
-                SystemLogging.getLogger().warning("Rollback failed in DieselRefill");
-                System.out.println("Unable to undo Changes.It restores when system restarts.");
-            }
+            rollBack();
 
             String message="Error Clearing Diesel Refill.\n"+"Please Retry Again.";
             String title="Diesel Refill Error";
-            ErrorMessageDialogGenerator generator=new ErrorMessageDialogGenerator(message,title);
-            generator.setTasks(this);
-            generator.showDialog();
+            reportError(title, message, this);
         }
     }
 }

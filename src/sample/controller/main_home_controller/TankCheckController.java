@@ -16,6 +16,10 @@ import sample.model.TankCheckModel;
 import java.util.Collections;
 import java.util.concurrent.ExecutionException;
 
+/**
+ * @deprecated
+ */
+
 public class TankCheckController  {
 
 
@@ -45,13 +49,13 @@ public class TankCheckController  {
     private int mode=0;
 
 
-    private static TankCheckController instance;
+  //  private static TankCheckController instance;
 
     private GetTankCheckTask task=null;
 
 
     public TankCheckController() {
-        instance=this;
+       // instance=this;
     }
 
     @FXML
@@ -104,9 +108,9 @@ public class TankCheckController  {
     }
 
 
-    public static TankCheckController getInstance() {
+/*    public static TankCheckController getInstance() {
         return instance;
-    }
+    }*/
 
 
 

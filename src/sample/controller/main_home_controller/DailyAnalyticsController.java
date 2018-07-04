@@ -1,6 +1,7 @@
 package sample.controller.main_home_controller;
 
 import javafx.application.Platform;
+import javafx.concurrent.WorkerStateEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import sample.library.toolbar.ToolBar;
@@ -10,8 +11,7 @@ import sample.model.nepaliPriceFormat.PriceFormat;
 import sample.model.transaction_model.DailyTotalAnalyticModel;
 import sample.tasks.TaskInterface;
 import sample.tasks.TaskManager;
-import sample.tasks.database_tasks.GetDailyTotalAnalyticsModelTask;
-import sample.tasks.database_tasks.SetupMeterReadingsTask;
+import sample.OutputTasks.GetDailyTotalAnalyticsModelTask;
 import sample.tasks.database_tasks.TodayClosingTask;
 
 
@@ -49,22 +49,9 @@ public class DailyAnalyticsController {
         priceFormat = new PriceFormat();
 
         GetDailyTotalAnalyticsModelTask task=new GetDailyTotalAnalyticsModelTask();
-        task.addTaskInterfaceListener(new TaskInterface() {
-            @Override
-            public void onComplete(Object data) {
-                Platform.runLater(()->{
-                    setModel((DailyTotalAnalyticModel)data);
-                    System.out.println("Model is set.");
-                });
-            }
+        task.setOnSucceeded((WorkerStateEvent e)->setModel(task.getValue()));
 
-            @Override
-            public void onError() {
-                System.out.println("Error");
-            }
-        });
-
-        TaskManager.executeTask(task);
+        TaskManager.executeInstantTask(task);
 
     }
 

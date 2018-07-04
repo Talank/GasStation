@@ -18,6 +18,7 @@ import java.sql.SQLException;
 public class ClearDailyAnalyticsTask extends Tasks {
 
 
+
     @Override
     public void execute() {
         try {
@@ -44,21 +45,11 @@ public class ClearDailyAnalyticsTask extends Tasks {
             System.out.println(e.getMessage());
             SystemLogging.getLogger().warning("DailyAnalytics failed to clear the records");
 
-            try {
-                connection.rollback();
-                SystemLogging.getLogger().fine("Rollback successfully done in DailyAnalytics");
-                System.out.println("Error in Database detected. Rolling back Database to stable stage.");
-
-            } catch (SQLException e1) {
-                SystemLogging.getLogger().warning("Rollback failed in DailyAnalytics");
-                System.out.println("Unable to undo Changes.It restores when system restarts.");
-            }
+            rollBack();
 
             String message="Error Clearing Daily Analytics.\n"+"Please Retry Again.";
             String title="Daily Analytics Error";
-            ErrorMessageDialogGenerator generator=new ErrorMessageDialogGenerator(message,title);
-            generator.setTasks(this);
-            generator.showDialog();
+            reportError(title, message, this);
         }
     }
 }

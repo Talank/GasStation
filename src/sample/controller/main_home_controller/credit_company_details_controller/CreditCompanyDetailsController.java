@@ -12,6 +12,7 @@ import sample.library.output_task_loading.OutputTaskLoading;
 import sample.library.toolbar.BackButtonInterface;
 import sample.library.toolbar.ToolBar;
 import sample.model.CreditDetailsModel;
+import sample.tasks.TaskManager;
 
 import java.util.List;
 
@@ -64,9 +65,7 @@ public class CreditCompanyDetailsController implements BackButtonInterface {
             progressLayout.setVisible(false);
             detailsListView.setVisible(true);
         });
-        Thread mainThread=new Thread(task);
-        mainThread.setDaemon(true);
-        mainThread.start();
+        TaskManager.executeInstantTask(task);
 
     }
 }

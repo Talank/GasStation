@@ -23,9 +23,19 @@ public class CompanyCreditClosingTask extends Tasks {
 
     private DebtListModel model;
 
+    /**
+     * @see DebtListModel
+     * @param model the Company model which is to be closed
+     */
+
     public CompanyCreditClosingTask(DebtListModel model) {
         this.model=model;
     }
+
+    /**
+     * First it is checked if the company is expired, if it is then all the data up to the expiry period is
+     * deleted and parameters are updated in "CreditCompany' table.
+     */
 
     @Override
     public void execute() {
@@ -44,18 +54,23 @@ public class CompanyCreditClosingTask extends Tasks {
 
             if(model.isExpired()) {
 
-                System.out.println("Model is Expired");
+                //Delete all the data up to the expiry period
 
                 PreparedStatement deleteCredit=connection.prepareStatement("DELETE FROM "+tableName+" WHERE DATE<?");
                 deleteCredit.setDate(1,model.getExpireDate());
-
                 deleteCredit.execute();
+
+                //Configure the cursor to be updatable
 
                 Statement getResults=connection.createStatement(ResultSet.TYPE_FORWARD_ONLY,ResultSet.CONCUR_UPDATABLE);
                 ResultSet totalResult=getResults.executeQuery("SELECT TRANSACTION_ID,PRICE FROM "+tableName);
 
+                //new parameters to be applied to the data existing in the table after expiry period
+
                 int lastTransaction=1,prevID=0,currentID;
                 float total=0;
+
+                //read the first data row to initialize and apply to the next while loop
 
                 if(totalResult.next()) {
                     prevID=totalResult.getInt(1);
@@ -64,8 +79,16 @@ public class CompanyCreditClosingTask extends Tasks {
                     totalResult.updateRow();
                 }
 
+
+
                 while(totalResult.next()) {
+
+                    //get the current transaction id of the row
+
                     currentID=totalResult.getInt(1);
+
+                    // if prevID and currentID are equal, then all the transactions are the part of the same session, so we need not update the currentID
+                    //Otherwise we update the lastTransaction
 
                     if(prevID!=currentID) {
                         prevID=currentID;
@@ -76,6 +99,8 @@ public class CompanyCreditClosingTask extends Tasks {
                     totalResult.updateInt(1,lastTransaction);
                     totalResult.updateRow();
                 }
+
+                //Update the lastTransaction and store it in Transaction_ID of creditCompany table so, next transactions can start from there
 
                 lastTransaction++;
 
@@ -95,13 +120,17 @@ public class CompanyCreditClosingTask extends Tasks {
                 connection.commit();
                 SystemLogging.getLogger().fine("CreditCompany successfully updated ");
 
+                //update the model, the changes will be reflected through observable list
+
                 model.setDue(model.getDue()+(model.getTotal()-total));
                 model.setTotal(total);
                 model.setTransactionID(lastTransaction);
 
             } else {
 
-                System.out.println("Model is not Expired");
+                /*
+                * Since, the company is not expired, so we delete all the data in the table, and update credit company and reset the model
+                * */
 
                 Statement delete=connection.createStatement();
                 delete.execute("DELETE FROM "+tableName);
@@ -116,47 +145,25 @@ public class CompanyCreditClosingTask extends Tasks {
                 updateCreditCompany.close();
 
                 connection.commit();
+
                 SystemLogging.getLogger().fine("CreditCompany successfully updated ");
 
                 model.setDue(model.getDue()+model.getTotal());
                 model.setTotal(0f);
-
                 model.setTransactionID(1);
 
-            }
-
-//            CreditCompanyClosingBill bill=new CreditCompanyClosingBill(model);
-//            if(bill.printBill()) {
-//                SnackBarToastGenerator snackBarToastGenerator=new SnackBarToastGenerator("Company Closed. Printing Bill",1000);
-//                snackBarToastGenerator.show();
-//            } else {
-//                SnackBarToastGenerator snackBarToastGenerator=new SnackBarToastGenerator("Company Closed.But Couldn't Print Bill",1000);
-//                snackBarToastGenerator.show();
-//            }
-
-            if(taskInterface!=null) {
-                taskInterface.onComplete(null);
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
             SystemLogging.getLogger().warning("CreditCompany failed to update");
             System.out.println(e.getMessage());
-            try {
-                connection.rollback();
-                SystemLogging.getLogger().fine("Rollback CreditCompany");
-                System.out.println("Error in Database detected. Rolling back Database to stable stage.");
 
-            } catch (SQLException e1) {
-                SystemLogging.getLogger().warning("failed to rollback CreditCompany");
-                System.out.println("Unable to undo Changes.It restores when system restarts.");
-            }
+            rollBack();
 
             String message="Error Closing Company '"+model.getCompanyName()+"'.\n"+"Please Retry Again.";
             String title="Company Error";
-            ErrorMessageDialogGenerator generator=new ErrorMessageDialogGenerator(message,title);
-            generator.setTasks(this);
-            generator.showDialog();
+            reportError(title, message, this);
         }
     }
 }

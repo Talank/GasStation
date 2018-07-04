@@ -29,6 +29,7 @@ import sample.model.databases.DatabaseHandler;
 import sample.model.nepaliPriceFormat.Precision;
 import sample.model.nepaliPriceFormat.PriceFormat;
 import sample.model.transaction_model.DailyTotalAnalyticModel;
+import sample.tasks.TaskManager;
 
 import java.io.IOException;
 
@@ -243,9 +244,7 @@ public class DailyTotalAnalyticsController implements BackButtonInterface {
             dailyTotalAnalyticsLayout.setVisible(true);
         });
 
-        Thread mainThread=new Thread(task);
-        mainThread.setDaemon(true);
-        mainThread.start();
+        TaskManager.executeInstantTask(task);
 
     }
 

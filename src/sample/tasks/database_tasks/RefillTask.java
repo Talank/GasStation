@@ -27,6 +27,12 @@ public class RefillTask extends Tasks {
     private int mode;
 
 
+    /**
+     *
+     * @param model the model to be stored in database
+     * @param mode mode = 0 (For Diesel) and mode = 1 (For Petrol)
+     */
+
     public RefillTask(RefillModel model,int mode) {
         this.model=model;
         this.mode=mode;
@@ -36,7 +42,23 @@ public class RefillTask extends Tasks {
     public void execute() {
         try {
 
+
             if(mode==0) {
+
+                Statement getTanker = connection.createStatement();
+                ResultSet getTankerDetails = getTanker.executeQuery("SELECT TANKER_NO, TYPE FROM TANKERS");
+
+                while (getTankerDetails.next()) {
+                    if (model.getTankerNumber().equals(String.valueOf(getTankerDetails.getInt(1))) && !model.getTankerModel().getType().equals(getTankerDetails.getString(2))) {
+                        if(taskInterface!=null) {
+                            taskInterface.onError();
+                            getTankerDetails.close();
+                            getTanker.close();
+                            return;
+                        }
+                    }
+                }
+
 
                 PreparedStatement insertRefill=connection.prepareStatement("INSERT INTO DieselRefill VALUES (?,?,?,?)");
                 insertRefill.setFloat(1,model.getExpected());
@@ -57,6 +79,20 @@ public class RefillTask extends Tasks {
 
                 SystemStatus.setDieselStock(SystemStatus.getDieselStock()+model.getActual());
             } else {
+
+                Statement getTanker = connection.createStatement();
+                ResultSet getTankerDetails = getTanker.executeQuery("SELECT TANKER_NO, TYPE FROM TANKERS");
+
+                while (getTankerDetails.next()) {
+                    if (model.getTankerNumber().equals(String.valueOf(getTankerDetails.getInt(1))) && !model.getTankerModel().getType().equals(getTankerDetails.getString(2))) {
+                        if(taskInterface!=null) {
+                            taskInterface.onError();
+                            getTankerDetails.close();
+                            getTanker.close();
+                            return;
+                        }
+                    }
+                }
 
                 PreparedStatement insertRefill=connection.prepareStatement("INSERT INTO PetrolRefill VALUES (?,?,?,?)");
                 insertRefill.setFloat(1,model.getExpected());
@@ -96,8 +132,13 @@ public class RefillTask extends Tasks {
 
             if(model.isAvailable()) {
 
+                //The tanker is available int the Model (no need to read from database) so, compute the data and update both the model and the database table
+
                 float avgValue=((model.getTankerModel().getLoss())+model.getLoss())/((model.getTankerModel().getCount())+1);
                 StringBuilder stringBuilder=new StringBuilder(model.getTankerNumber().substring(0,4));
+
+                //Assign the code to the tanker
+
                 if (avgValue >= 0 && avgValue <= 20) {
                     stringBuilder.append("G");
                 } else if (avgValue >= 21 && avgValue <= 50) {
@@ -120,10 +161,15 @@ public class RefillTask extends Tasks {
 
                 connection.commit();
 
+                //update the model
+
                 model.setTankerNumber(codeData);
                 model.getTankerModel().setAvg(avgValue);
                 model.getTankerModel().setCount((model.getTankerModel().getCount())+1);
             } else {
+
+                //This tanker may be new or it may not have been loaded to memory
+
                 Statement insertRefill=connection.createStatement();
                 ResultSet resultSet=insertRefill.executeQuery("SELECT TANKER_NO,TOTAL_LOSS,COUNTS FROM TANKERS WHERE TANKER_NO= ("+model.getTankerNumber().substring(0,4)+")");
                 if (resultSet.next()) {

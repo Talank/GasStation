@@ -101,9 +101,7 @@ public class SettingsController {
             model=task.getValue();
             loadSettings(model);
         });
-        Thread mainThread=new Thread(task);
-        mainThread.setDaemon(true);
-        mainThread.start();
+        TaskManager.executeInstantTask(task);
 
     }
 

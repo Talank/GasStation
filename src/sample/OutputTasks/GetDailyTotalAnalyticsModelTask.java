@@ -1,8 +1,10 @@
-package sample.tasks.database_tasks;
+package sample.OutputTasks;
 
 import sample.controller.SystemLogging;
 import sample.model.SystemStatus;
 import sample.model.transaction_model.DailyTotalAnalyticModel;
+import sample.tasks.TaskInterface;
+import javafx.concurrent.Task;
 import sample.tasks.Tasks;
 
 import java.sql.ResultSet;
@@ -13,16 +15,15 @@ import java.sql.Statement;
  *Computes and returns the {@link DailyTotalAnalyticModel} from the database
  */
 
-public class GetDailyTotalAnalyticsModelTask extends Tasks {
-
+public class GetDailyTotalAnalyticsModelTask extends Task<DailyTotalAnalyticModel> {
 
 
     @Override
-    public void execute() {
+    protected DailyTotalAnalyticModel call() throws Exception {
         DailyTotalAnalyticModel model=new DailyTotalAnalyticModel();
         try {
 
-            Statement getAnalytics=connection.createStatement();
+            Statement getAnalytics= Tasks.getConnection().createStatement();
             ResultSet resultSet=getAnalytics.executeQuery("SELECT VALUE FROM SystemStatus WHERE ID>3 AND ID<7");
             resultSet.next();
             model.setCDieselVol(resultSet.getString(1));
@@ -41,15 +42,17 @@ public class GetDailyTotalAnalyticsModelTask extends Tasks {
             model.setTotal();
             SystemLogging.getLogger().fine("DailyAnalytics fetched ");
 
-            if(taskInterface!=null) {
-                taskInterface.onComplete(model);
-            }
-
 
         } catch(SQLException e) {
             SystemLogging.getLogger().warning("DailyAnalytics couldn't be fetched ");
             System.out.println(e.getMessage());
-            taskInterface.onError();
         }
+
+        return model;
     }
+
+    /**
+     *Gets the information from SystemStatus table, makes the model and passes to the caller.
+     */
+
 }

@@ -1,5 +1,6 @@
 package sample.tasks.database_tasks;
 
+import sample.controller.AppHomeController;
 import sample.controller.SystemLogging;
 import sample.library.ErrorMessageDialogGenerator;
 import sample.library.SnackBarToastGenerator;
@@ -27,6 +28,9 @@ public class AddExpenditureTask extends Tasks {
         this.expenditureRemarks= expenditureRemarks;
     }
 
+    /**
+     *Gets the expenditure data and stores it into 'Expenditure' Table.
+     */
 
     @Override
     public void execute() {
@@ -54,23 +58,11 @@ public class AddExpenditureTask extends Tasks {
             System.out.println(e.getMessage());
             SystemLogging.getLogger().warning("Expenditure error stored in database");
 
-
-
-            try {
-                connection.rollback();
-                SystemLogging.getLogger().fine("Rollback database to  stable done");
-                System.out.println("Error in Database detected. Rolling back Database to stable stage.");
-
-            } catch (SQLException e1) {
-                SystemLogging.getLogger().warning("Unable to rollback ");
-                System.out.println("Unable to undo Changes.It restores when system restarts.");
-            }
+            rollBack();
 
             String message="Error Storing Expenditure For User '"+memberName+"'.\n"+"Please Retry Again.";
             String title="Expenditure Error";
-            ErrorMessageDialogGenerator generator=new ErrorMessageDialogGenerator(message,title);
-            generator.setTasks(this);
-            generator.showDialog();
+            reportError(title, message, this);
 
 
         }

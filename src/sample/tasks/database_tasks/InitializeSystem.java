@@ -171,9 +171,13 @@ public class InitializeSystem extends Tasks {
             connection.commit();
             SystemLogging.getLogger().fine("Initialize System done");
 
+            //initialize the credit companies and add it to the CreditCompanyList
+
             CreditCompanyList.setCompanyList(arrayList);
             CreditCompanyList.setExpiredCompanyList(expiredList);
             Statement getValues = connection.createStatement();
+
+            //Initialize all the parameters of the SystemStatus class from the databases
 
             resultSet = getValues.executeQuery("SELECT VALUE FROM SystemStatus WHERE ID>10 AND ID<19");
 
@@ -192,6 +196,8 @@ public class InitializeSystem extends Tasks {
             resultSet.next();
             SystemStatus.setAnalyticsPrinter(resultSet.getString(1));
             resultSet.next();
+
+            //Perform System Validation
 
             SystemValidation validation=new SystemValidation();
             if(!validation.validate(resultSet.getString(1))) {
@@ -218,15 +224,8 @@ public class InitializeSystem extends Tasks {
             e.printStackTrace();
             SystemLogging.getLogger().warning("Failed to initialize the system ");
 
-            try {
-                connection.rollback();
-                SystemLogging.getLogger().fine("Rollback done in initializing system ");
-                System.out.println("Error in Database detected. Rolling back Database to stable stage.");
+            rollBack();
 
-            } catch (SQLException e1) {
-                SystemLogging.getLogger().warning("failed to rollback initialize system ");
-                System.out.println("Unable to undo Changes.It restores when system restarts.");
-            }
             errorMessage="Database Error Detected.Could not Initialize System.Please Contact The Company Officials.";
         }
 

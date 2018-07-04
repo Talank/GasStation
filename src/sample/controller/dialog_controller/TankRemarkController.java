@@ -1,6 +1,6 @@
 package sample.controller.dialog_controller;
 
-import javafx.application.Platform;
+import javafx.concurrent.WorkerStateEvent;
 import javafx.fxml.FXML;
 
 import javafx.scene.Node;
@@ -13,6 +13,8 @@ import sample.library.dialog_toolbar.DialogToolBar;
 import sample.model.RefillModel;
 import sample.model.TankerModel;
 import sample.tasks.TaskInterface;
+import sample.tasks.TaskManager;
+import sample.OutputTasks.GetTankRemarkTask;
 
 import java.io.IOException;
 
@@ -57,6 +59,10 @@ public class TankRemarkController implements BottomBarInterface {
 
     public void setData(int vehicleNumber) {
 
+        /*
+        * Check if the tanker is present in the memory, if present load from memory otherwise read from the database
+        * */
+
         boolean isFound = false;
         TankerModel tankerModel = null;
         for (TankerModel model: RefillModel.getTankerModels()) {
@@ -69,10 +75,12 @@ public class TankRemarkController implements BottomBarInterface {
 
         if (isFound) {
 
+            //Tanker present in memory
+
             if(tankerModel.getTankerNumber().contains("G")) {
                 remarkLabel.setText("The tanker is good!");
             } else if (tankerModel.getTankerNumber().contains("B")) {
-                remarkLabel.setText("Normal tanker");
+                remarkLabel.setText("The tanker is good!");
             } else if (tankerModel.getTankerNumber().contains("R")) {
                 remarkLabel.setText("Not good tanker");
             } else {
@@ -82,10 +90,36 @@ public class TankRemarkController implements BottomBarInterface {
             typeLabel.setText("Type: "+tankerModel.getType());
 
         } else {
-            bottomBar.setErrorText("tanker not found");
-            remarkLabel.setText("Sorry! The tanker is not found");
-            typeLabel.setText("");
-            avgLossLabel.setText("");
+
+            //Read tanker from database
+
+            GetTankRemarkTask tasks = new GetTankRemarkTask(vehicleNumber);
+            tasks.setOnSucceeded((WorkerStateEvent e)->{
+                TankerModel model = tasks.getValue();
+                float avgValue = model.getAvg();
+
+                if (avgValue >= 0 && avgValue <= 20) {
+                    remarkLabel.setText("The tanker is good!");
+                } else if (avgValue >= 21 && avgValue <= 50) {
+                    remarkLabel.setText("The tanker is good!");
+                } else if (avgValue > 50) {
+                    remarkLabel.setText("Not good tanker");
+                } else {
+                    remarkLabel.setText("Tanker Status UnKnown");
+                }
+                avgLossLabel.setText("Total Loss: "+ avgValue*model.getCount()+  "  Count: "+model.getCount());
+                typeLabel.setText("Type: "+model.getType());
+            });
+
+            tasks.setOnFailed((WorkerStateEvent e)->{
+                bottomBar.setErrorText("tanker not found");
+                remarkLabel.setText("Sorry! The tanker is not found");
+                typeLabel.setText("");
+                avgLossLabel.setText("");
+            });
+
+            TaskManager.executeInstantTask(tasks);
+
         }
     }
 }

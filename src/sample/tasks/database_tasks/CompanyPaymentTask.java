@@ -14,7 +14,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 /**
- *Payment to company by deducting in due.
+ *Payment to company by deducting in due. The task is completed and the settings controller is updated
  */
 
 public class CompanyPaymentTask extends Tasks {
@@ -26,6 +26,13 @@ public class CompanyPaymentTask extends Tasks {
     private int mode;
 
 
+    /**
+     *
+     * @param model the company whose payment is to be done
+     * @param payment the amount to be paid
+     * @param mode mode = 0 (Normal payment) and mode = 1 (Prepaid payment)
+     */
+
     public CompanyPaymentTask(DebtListModel model, float payment,int mode) {
         this.model=model;
         this.payment=payment;
@@ -35,7 +42,7 @@ public class CompanyPaymentTask extends Tasks {
     @Override
     public void execute() {
 
-        /**
+        /*
          * Here we first get the PREV_TRANSACTION_ID
          * if PREV_TRANSACTION_ID=1,the we know that the company credit has already been closed.
          * So we update the DUE of the company and also the DATE and make it equal to PREV_EXPIRE_DATE so,that the system doesn't list the company as expired anymore
@@ -59,8 +66,10 @@ public class CompanyPaymentTask extends Tasks {
 
                 if(resultSet.getInt(1)==1) {
 
+                    //The company is closed
+
                     if(netAmount<0) {
-                        /**
+                        /*
                          *The payment and prepaid doesn't pays off the due
                          * so,we set prepaid =0,as it is totally used and set due=netAmount
                          */
@@ -69,15 +78,20 @@ public class CompanyPaymentTask extends Tasks {
                         PreparedStatement creditPayment=connection.prepareStatement("UPDATE CreditCompany SET DUE=?,PRE_PAID=0,PREV_TRANSACTION_ID=0"+",DATE=PREV_EXPIRE_DATE WHERE COMPANY_NAME=?");
                         creditPayment.setFloat(1,due);
                         creditPayment.setString(2,model.getCompanyName());
+
                         creditPayment.execute();
 
                         creditPayment.close();
                     } else {
+
+                        //The due is completely paid off and the extra amount is assigned to 'prepaid'
+
                         due=0;
                         prepaid=netAmount;
                         PreparedStatement creditPayment=connection.prepareStatement("UPDATE CreditCompany SET DUE=0,PRE_PAID=?,PREV_TRANSACTION_ID=0"+",DATE=PREV_EXPIRE_DATE WHERE COMPANY_NAME=?");
                         creditPayment.setFloat(1,netAmount);
                         creditPayment.setString(2,model.getCompanyName());
+
                         creditPayment.execute();
 
                         creditPayment.close();
@@ -85,6 +99,9 @@ public class CompanyPaymentTask extends Tasks {
 
                     System.out.println("Company Payment Made SuccessFully");
                 } else {
+
+                    //The company is not closed so, we only deduct the due of the company
+
                     due=resultSet.getFloat(2)-payment;
                     prepaid=model.getPrePaid();
                     PreparedStatement creditPayment=connection.prepareStatement("UPDATE CreditCompany SET DUE=DUE-? WHERE COMPANY_NAME=?");
@@ -98,8 +115,8 @@ public class CompanyPaymentTask extends Tasks {
                 }
                 resultSet.close();
             } else {
-                /**
-                 *The use only wants to do prepaid
+                /*
+                 *The use only wants to do prepaid so, update the prepaid
                  */
                 due=model.getDue();
                 prepaid=model.getPrePaid()+payment;
@@ -114,6 +131,8 @@ public class CompanyPaymentTask extends Tasks {
 
             connection.commit();
             SystemLogging.getLogger().fine("CreditCompany payment successfully done ");
+
+            //update the model
 
             model.setDue(due);
             model.setDate(model.getPrevExpireDate());
@@ -131,21 +150,11 @@ public class CompanyPaymentTask extends Tasks {
             SystemLogging.getLogger().warning("CreditCompany payment failed ");
             System.out.println("Error making company payment");
 
-            try {
-                connection.rollback();
-                SystemLogging.getLogger().fine("Rollback CreditCompany payment done ");
-                System.out.println("Error in Database detected. Rolling back Database to stable stage.");
-
-            } catch (SQLException e1) {
-                SystemLogging.getLogger().warning("failed to rollback CreditCompany payment");
-                System.out.println("Unable to undo Changes.It restores when system restarts.");
-            }
+            rollBack();
 
             String message="Error in Company Payment of '"+model.getCompanyName()+".\n"+"Please Retry Again.";
             String title="Company Error";
-            ErrorMessageDialogGenerator generator=new ErrorMessageDialogGenerator(message,title);
-            generator.setTasks(this);
-            generator.showDialog();
+            reportError(title, message, this);
         }
     }
 }

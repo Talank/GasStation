@@ -1,9 +1,12 @@
 package sample.tasks;
 
 import sample.Reference;
+import sample.controller.SystemLogging;
+import sample.library.ErrorMessageDialogGenerator;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 
 /**
  * This is the super class of all the tasks that are performed by the system.
@@ -75,5 +78,24 @@ public class Tasks {
     public void execute() {
 
     }
+
+    protected void reportError(String title, String message, Tasks tasks) {
+        ErrorMessageDialogGenerator generator=new ErrorMessageDialogGenerator(message,title);
+        generator.setTasks(this);
+        generator.showDialog();
+    }
+
+    protected void rollBack() {
+        try {
+            connection.rollback();
+            SystemLogging.getLogger().fine("Rollback to stable stage in SystemStatus");
+            System.out.println("Error in Database detected. Rolling back Database to stable stage.");
+
+        } catch (SQLException e1) {
+            SystemLogging.getLogger().warning("Rollback failed in SystemStatus");
+            System.out.println("Unable to undo Changes.It restores when system restarts.");
+        }
+    }
+
 
 }

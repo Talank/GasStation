@@ -15,6 +15,7 @@ import sample.model.SystemStatus;
 import sample.model.RefillModel;
 import sample.model.TankerModel;
 import sample.model.databases.DatabaseHandler;
+import sample.tasks.TaskInterface;
 import sample.tasks.TaskManager;
 import sample.tasks.Tasks;
 import sample.tasks.database_tasks.RefillTask;
@@ -154,6 +155,8 @@ public class RefillDialogController implements BottomBarInterface {
 
                     //Check if diesel tanker is carrying petrol
 
+                    //First search in memory
+
                     boolean isPetrol = false;
                     for (TankerModel tankerModel:RefillModel.getTankerModels()) {
                         if(tankerModel.getTankerNumber().substring(0,4).equals(tankerNumber.getText()) && tankerModel.getType().equals("Petrol")) {
@@ -163,15 +166,28 @@ public class RefillDialogController implements BottomBarInterface {
                     }
 
                     if(!isPetrol) {
+
+                        //Search in database
+
                         model=new RefillModel(Float.parseFloat(expected.getText()),actualValue,SystemStatus.getNepaliCurrentDate(),
                                 new TankerModel(-1f,-1,"Diesel",tankerNumber.getText()));
                         task=new RefillTask(model,mode);
+                        task.addTaskInterfaceListener(new TaskInterface() {
+                            @Override
+                            public void onComplete(Object data) {
+
+                            }
+
+                            @Override
+                            public void onError() {
+                                bottomBar.setErrorText("Petrol Tanker Provided.");
+                            }
+                        });
                         TaskManager.executeTask(task);
                         ((Node)e.getSource()).getScene().getWindow().hide();
                     } else {
                         bottomBar.setErrorText("Petrol Tanker Provided.");
                     }
-
 
                 } else {
 
@@ -201,6 +217,17 @@ public class RefillDialogController implements BottomBarInterface {
                         model=new RefillModel(Float.parseFloat(expected.getText()),actualValue,SystemStatus.getNepaliCurrentDate(),
                                 new TankerModel(-1f,-1,"Petrol",tankerNumber.getText()));
                         task=new RefillTask(model,mode);
+                        task.addTaskInterfaceListener(new TaskInterface() {
+                            @Override
+                            public void onComplete(Object data) {
+
+                            }
+
+                            @Override
+                            public void onError() {
+                                bottomBar.setErrorText("Diesel Tanker Provided.");
+                            }
+                        });
                         TaskManager.executeTask(task);
                         ((Node)e.getSource()).getScene().getWindow().hide();
                     } else {
