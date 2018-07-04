@@ -10,6 +10,11 @@ import sample.tasks.Tasks;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+
+/**
+ *Clears petrol refill up to 1st day of current month.
+ */
+
 public class ClearPetrolRefillTask extends Tasks {
 
     @Override

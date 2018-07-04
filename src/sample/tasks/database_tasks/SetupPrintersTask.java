@@ -11,6 +11,10 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+/**
+ *Changes the default printer for bill and other purposes.
+ */
+
 public class SetupPrintersTask extends Tasks {
 
     private String billPrinterName,analyticsPrinterName;

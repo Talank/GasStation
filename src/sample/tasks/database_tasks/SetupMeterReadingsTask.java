@@ -1,25 +1,30 @@
 package sample.tasks.database_tasks;
 
-        import sample.controller.SystemLogging;
-        import sample.library.ErrorMessageDialogGenerator;
-        import sample.library.SnackBarToastGenerator;
-        import sample.model.SystemStatus;
-        import sample.model.databases.DatabaseHandler;
-        import sample.nepali_date.NepaliDateGenerator;
-        import sample.tasks.Tasks;
+import sample.controller.SystemLogging;
+import sample.library.ErrorMessageDialogGenerator;
+import sample.library.SnackBarToastGenerator;
+import sample.model.SystemStatus;
+import sample.model.databases.DatabaseHandler;
+import sample.nepali_date.NepaliDateGenerator;
+import sample.tasks.Tasks;
 
-        import java.sql.Date;
-        import java.sql.PreparedStatement;
-        import java.sql.SQLException;
-        import java.sql.Statement;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+
+/**
+ *Changes the initial meter readings for diesel and petrol.
+ */
 
 public class SetupMeterReadingsTask extends Tasks {
 
-    private String dieselReading,petrolReading;
+    private String dieselReading, petrolReading;
 
-    public SetupMeterReadingsTask(String dieselReading,String petrolReading) {
-        this.dieselReading=dieselReading;
-        this.petrolReading=petrolReading;
+    public SetupMeterReadingsTask(String dieselReading, String petrolReading) {
+        this.dieselReading = dieselReading;
+        this.petrolReading = petrolReading;
     }
 
 
@@ -28,17 +33,17 @@ public class SetupMeterReadingsTask extends Tasks {
         try {
 
 
-            if(SystemStatus.getiDiesel()!=Float.parseFloat(dieselReading)&&SystemStatus.getiPetrol()!=Float.parseFloat(petrolReading)) {
+            if (SystemStatus.getiDiesel() != Float.parseFloat(dieselReading) && SystemStatus.getiPetrol() != Float.parseFloat(petrolReading)) {
 
-                PreparedStatement updateStock=connection.prepareStatement("UPDATE SystemStatus SET VALUE=?,DATE=? WHERE ID=?");
-                updateStock.setString(1,dieselReading);
-                updateStock.setDate(2,SystemStatus.getCurrentDate());
-                updateStock.setInt(3,11);
+                PreparedStatement updateStock = connection.prepareStatement("UPDATE SystemStatus SET VALUE=?,DATE=? WHERE ID=?");
+                updateStock.setString(1, dieselReading);
+                updateStock.setDate(2, SystemStatus.getCurrentDate());
+                updateStock.setInt(3, 11);
 
                 updateStock.addBatch();
 
-                updateStock.setString(1,petrolReading);
-                updateStock.setInt(3,12);
+                updateStock.setString(1, petrolReading);
+                updateStock.setInt(3, 12);
 
                 updateStock.addBatch();
 
@@ -48,22 +53,22 @@ public class SetupMeterReadingsTask extends Tasks {
 
             } else {
 
-                if(SystemStatus.getiDiesel()!=Float.parseFloat(dieselReading)) {
+                if (SystemStatus.getiDiesel() != Float.parseFloat(dieselReading)) {
 
-                    PreparedStatement updateStock=connection.prepareStatement("UPDATE SystemStatus SET VALUE=?, DATE=? WHERE ID=?");
-                    updateStock.setString(1,dieselReading);
-                    updateStock.setDate(2,SystemStatus.getCurrentDate());
-                    updateStock.setInt(3,11);
+                    PreparedStatement updateStock = connection.prepareStatement("UPDATE SystemStatus SET VALUE=?, DATE=? WHERE ID=?");
+                    updateStock.setString(1, dieselReading);
+                    updateStock.setDate(2, SystemStatus.getCurrentDate());
+                    updateStock.setInt(3, 11);
                     updateStock.execute();
 
                     updateStock.close();
                 }
 
-                if(SystemStatus.getiPetrol()!=Float.parseFloat(petrolReading)) {
-                    PreparedStatement updateStock=connection.prepareStatement("UPDATE SystemStatus SET VALUE=?, DATE=? WHERE ID=?");
-                    updateStock.setString(1,petrolReading);
-                    updateStock.setDate(2,SystemStatus.getCurrentDate());
-                    updateStock.setInt(3,12);
+                if (SystemStatus.getiPetrol() != Float.parseFloat(petrolReading)) {
+                    PreparedStatement updateStock = connection.prepareStatement("UPDATE SystemStatus SET VALUE=?, DATE=? WHERE ID=?");
+                    updateStock.setString(1, petrolReading);
+                    updateStock.setDate(2, SystemStatus.getCurrentDate());
+                    updateStock.setInt(3, 12);
 
                     updateStock.execute();
 
@@ -79,10 +84,10 @@ public class SetupMeterReadingsTask extends Tasks {
             SystemStatus.setiDiesel(Float.parseFloat(dieselReading));
             SystemStatus.setiPetrol(Float.parseFloat(petrolReading));
 
-            SnackBarToastGenerator snackBarToastGenerator=new SnackBarToastGenerator("Meter Reading Saved",1000);
+            SnackBarToastGenerator snackBarToastGenerator = new SnackBarToastGenerator("Meter Reading Saved", 1000);
             snackBarToastGenerator.show();
 
-        } catch(SQLException e) {
+        } catch (SQLException e) {
             System.out.println(e.getMessage());
             SystemLogging.getLogger().warning("SystemStatus failed to update meter reading");
 
@@ -98,9 +103,9 @@ public class SetupMeterReadingsTask extends Tasks {
                 System.out.println(" Failed to Rollback SystemStatus meter reading");
             }
 
-            String message="Error Setting Up Final Meter Readings.\n"+"Please Retry Again.";
-            String title="Meter Readings Error";
-            ErrorMessageDialogGenerator generator=new ErrorMessageDialogGenerator(message,title);
+            String message = "Error Setting Up Final Meter Readings.\n" + "Please Retry Again.";
+            String title = "Meter Readings Error";
+            ErrorMessageDialogGenerator generator = new ErrorMessageDialogGenerator(message, title);
             generator.setTasks(this);
             generator.showDialog();
         }

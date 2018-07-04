@@ -90,6 +90,12 @@ public class PostingDialogController implements BottomBarInterface {
             }
         });
 
+        /*
+         * Since, we are only providing posting for current month and previous month
+         * We have two cases, if the current month is 1st month, then we should also provide previous year field, other wise, we can
+         * only provide the current month and previous month field
+         *
+         */
 
         NepaliDateGenerator generator=new NepaliDateGenerator();
         NepaliDateFormat dateFormat=generator.getDateFormat();
@@ -99,12 +105,18 @@ public class PostingDialogController implements BottomBarInterface {
         ArrayList<Integer> monthList=new ArrayList<>();
 
         if(dateFormat.getnMonth()==1) {
+
+            //the current month is 1st, then add previous year, since user can also add this transaction to previous year
+
             yearList.add(dateFormat.getnYear());
             yearList.add(dateFormat.getnYear()-1);
 
             monthList.add(1);
 
         } else {
+
+            //the current month is other than 1, so add the previous month to the list
+
             yearList.add(dateFormat.getnYear());
 
             monthList.add(dateFormat.getnMonth());
@@ -116,6 +128,8 @@ public class PostingDialogController implements BottomBarInterface {
 
         customMonth.setItems(FXCollections.observableList(monthList));
         customMonth.setValue(dateFormat.getnMonth());
+
+        //We are adding days only of the current month, as it is selected by default, and we are adding up to current days, i.e if today is 15, add only 15 days
 
         ArrayList<Integer> dayList=new ArrayList<>();
         for(int i=1;i<=dateFormat.getnDay();i++) {
@@ -129,8 +143,14 @@ public class PostingDialogController implements BottomBarInterface {
         customYear.valueProperty().addListener((ObservableValue<? extends Integer> observable, Integer oldValue, Integer newValue)->{
             monthList.clear();
             if(newValue==(dateFormat.getnYear()-1)) {
+
+                //The year has changed so, add month 12 to the list
+
                 monthList.add(12);
             } else {
+
+                //There is only one year, so add the previous month
+
                 monthList.add(dateFormat.getnMonth());
                 monthList.add(dateFormat.getnMonth()-1);
             }
@@ -142,10 +162,16 @@ public class PostingDialogController implements BottomBarInterface {
             list.clear();
 
             if(dateFormat.getnMonth()==newValue) {
+
+                //the default month is selected, so add up to the current day
+
                 for(int i=1;i<=dateFormat.getnDay();i++) {
                     list.add(i);
                 }
             } else {
+
+                //previous month selected, so get the no of days of the previous month and add it to the list
+
                 for(int i=1;i<=date.getDaysOfYearMonth(customYear.getValue(),newValue);i++) {
                     list.add(i);
                 }

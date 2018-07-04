@@ -141,13 +141,18 @@ public class RefillDialogController implements BottomBarInterface {
             RefillTask task;
 
             if(mode==0) {
-                /**
+                /*
                  * This is for diesel,get the diesel actual value and its losses
+                 * the 'actualValue' is calculated by getting the actual reading from the device i.e 'actual.getText()' and subtracting from the current diesel stock
+                 * it will give the actual value that was inserted
+                 * for this to work properly, the stock should be in sync with the actual petrol pump stock
                  */
 
                 actualValue=Float.parseFloat(actual.getText())-SystemStatus.getDieselStock();
 
                 if((Float.parseFloat(expected.getText())-actualValue)>=0) {
+
+                    //Check if diesel tanker is carrying petrol
 
                     boolean isPetrol = false;
                     for (TankerModel tankerModel:RefillModel.getTankerModels()) {
@@ -169,13 +174,16 @@ public class RefillDialogController implements BottomBarInterface {
 
 
                 } else {
+
+                    //the actual value cannot be greater than expected value
+
                     bottomBar.setErrorText("-Ve Loss Encountered.");
                 }
 
             }  else {
 
-                /**
-                 * This is for petrol,get the petrol actual value and its losses
+                /*
+                 * Same logic as above
                  */
                 actualValue=Float.parseFloat(actual.getText())-SystemStatus.getPetrolStock();
 

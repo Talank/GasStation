@@ -14,6 +14,10 @@ import sample.tasks.Tasks;
 
 import java.sql.*;
 
+/**
+ *Saves the company in the system, and creates all the necessary database tables and entries.
+ */
+
 public class SaveCompanyTask extends Tasks {
 
     private String companyName,creditCycle;

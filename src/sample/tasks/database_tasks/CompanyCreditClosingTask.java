@@ -14,6 +14,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+/**
+ *Closes the company, prints the company bill and removes all the data up to the expired date.
+ */
+
 public class CompanyCreditClosingTask extends Tasks {
 
 

@@ -12,6 +12,10 @@ import sample.library.dialog_toolbar.DialogToolBar;
 import java.io.IOException;
 
 
+/**
+ * @deprecated
+ */
+
 public class ClosingCalculationController implements BottomBarInterface {
 
     @FXML

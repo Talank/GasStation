@@ -11,6 +11,10 @@ import sample.tasks.Tasks;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+/**
+ *Removes the company from the system. All the data associated with the company is removed, including the database tables.
+ */
+
 public class RemoveCompanyTask extends Tasks {
 
 

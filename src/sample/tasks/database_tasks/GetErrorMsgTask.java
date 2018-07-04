@@ -4,6 +4,10 @@ import sample.tasks.Tasks;
 
 import java.sql.SQLException;
 
+/**
+ * @deprecated 
+ */
+
 public class GetErrorMsgTask extends Tasks {
 
     private String msg;

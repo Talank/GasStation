@@ -11,6 +11,10 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+/**
+ *Clears the diesel refill up to 1st day of current month.
+ */
+
 public class ClearDieselRefillTask extends Tasks {
 
     @Override

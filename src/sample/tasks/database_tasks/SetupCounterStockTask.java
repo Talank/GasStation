@@ -12,6 +12,10 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+/**
+ *Changes the default counter value.
+ */
+
 public class SetupCounterStockTask extends Tasks {
 
     private String counterStock;

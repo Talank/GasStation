@@ -83,14 +83,16 @@ public class InitializeSystem extends Tasks {
 
                 initialDate.setNepaliDate(model.getDate());
 
-                /**
-                 *We have generally two cases
-                 * 1st when the last time the company credited was in 12th month,then the year may change,so we check if the year has changed,if so we expire the company in new year day
-                 * other wise we check if the year is same,then it might be the case that the 15 days credit cycle company may expire,so we check that
-                 *
-                 * 2nd case is when the year is same and month is different,then the case is similar to 1st
-                 */
-
+                /*
+                * Our Case: Two types of company, company that expires in 15 days and other in 30 (i.e. 1st day of next month)
+                * So, the main idea is, both these company expires in 1st day, however only 15 days company expires twice a month
+                *
+                * We check if the year has changed, if it has, then the companies are expired, no matter which one, otherwise the only chances of expiry is for 15 days company (as 30 day will expire next year)
+                *
+                * Otherwise, we check if the month has changed since the company registered, if so, then both the companies are expired, otherwise we now check if the day is > 15 as the 15 days
+                * company may have expired.
+                *
+                * */
 
                 if(initialDate.getnMonth()==12) {
                     if(initialDate.getnYear()<nYear) {
@@ -121,11 +123,11 @@ public class InitializeSystem extends Tasks {
 
                 if (model.isExpired()) {
 
-                    /**
+                    /*
                      *Here we check the value of PREV_TRANSACTION_ID
                      * if it is 0 means that the company is not expired,if it is 1 then the company credit closing is done but payment is remaining
                      *
-                     * We check if it is 0,then since the Company has just expired,we note the current date
+                     * We check if it is 0,then since the Company has just expired,we note the date, the company has expired i.e. either 15 or 1
                      */
 
                     if (resultSet.getInt(4) == 0) {

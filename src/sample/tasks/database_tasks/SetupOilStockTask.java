@@ -15,6 +15,10 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+/**
+ *Changes the oil stock for diesel and petrol.
+ */
+
 public class SetupOilStockTask extends Tasks {
 
     private String dieselStock,petrolStock;

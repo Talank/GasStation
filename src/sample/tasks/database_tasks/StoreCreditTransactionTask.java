@@ -19,6 +19,11 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.util.List;
 
+/**
+ *Stores the credit transaction into the specified database tables.
+ * The stock is checked in every time, and if the stock is -ve the current task is aborted and the user is notified.
+ */
+
 public class StoreCreditTransactionTask extends Tasks {
 
     private List<Transaction> instantTransaction;

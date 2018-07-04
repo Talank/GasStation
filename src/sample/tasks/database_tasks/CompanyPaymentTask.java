@@ -13,6 +13,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+/**
+ *Payment to company by deducting in due.
+ */
+
 public class CompanyPaymentTask extends Tasks {
 
     private DebtListModel model;

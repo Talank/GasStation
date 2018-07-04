@@ -11,6 +11,10 @@ import sample.tasks.Tasks;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+/**
+ *Changes the company parameters like name and cycle time.
+ */
+
 public class UpdateCompanyTask extends Tasks {
 
     private DebtListModel model;

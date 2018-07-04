@@ -16,6 +16,10 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+/**
+ * Changes the rates of diesel and petrol.
+ */
+
 public class ChangeOilRateTask extends Tasks {
 
     private RateModel model;

@@ -14,6 +14,10 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+/**
+ * Changes username and password
+ */
+
 public class ChangeUserParameterTask extends Tasks {
 
     private String userName,password;

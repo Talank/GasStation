@@ -99,6 +99,8 @@ public class FinalReadingsController implements BottomBarInterface {
 
         if(status==0) {
 
+            //Check if the finalMeterReading - initialMeterReading is < 0, if it is, then there is error
+
             if((Float.parseFloat(fDiesel.getText()) - SystemStatus.getiDiesel()) < 0 || (Float.parseFloat(fPetrol.getText()) - SystemStatus.getiPetrol()) < 0) {
                 bottomBar.setErrorText("Negative Meter Readings Encountered");
             } else {

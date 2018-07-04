@@ -17,6 +17,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
 
+/**
+ *Closes the current session of transactions.
+ * Stores the data in the databases, and changes the system date to next day.
+ */
 
 public class TodayClosingTask extends Tasks {
 

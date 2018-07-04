@@ -12,6 +12,10 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+/**
+ * Adds the expenditure to the database.
+ */
+
 public class AddExpenditureTask extends Tasks {
 
     private String memberName,expenditureRemarks;

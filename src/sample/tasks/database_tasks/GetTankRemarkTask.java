@@ -10,6 +10,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+/**
+ * @deprecated
+ */
+
 public class GetTankRemarkTask extends Tasks {
 
     private int tankerNumber;

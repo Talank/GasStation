@@ -11,7 +11,12 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+/**
+ *Clears the daily analytics up to current month 1st day
+ */
+
 public class ClearDailyAnalyticsTask extends Tasks {
+
 
     @Override
     public void execute() {

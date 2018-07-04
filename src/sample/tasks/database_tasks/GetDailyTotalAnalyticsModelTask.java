@@ -9,6 +9,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+/**
+ *Computes and returns the {@link DailyTotalAnalyticModel} from the database
+ */
+
 public class GetDailyTotalAnalyticsModelTask extends Tasks {
 
 

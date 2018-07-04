@@ -13,6 +13,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
+/**
+ * @deprecated 
+ */
+
 public class StoreInstantTransactionTask extends Tasks {
 
     private List<Transaction> instantTransaction;

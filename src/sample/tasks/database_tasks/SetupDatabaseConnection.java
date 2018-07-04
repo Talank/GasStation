@@ -6,6 +6,10 @@ import sample.tasks.Tasks;
 
 import java.sql.DriverManager;
 
+/**
+ * @deprecated 
+ */
+
 public class SetupDatabaseConnection extends Tasks {
 
 

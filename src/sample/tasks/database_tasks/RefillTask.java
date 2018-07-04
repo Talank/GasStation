@@ -15,6 +15,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+/**
+ *Adds the refill data to the specified table.
+ * Also, checks for the tanker, if it is already used, then its updated, otherwise it's new entry is created and stored.
+ */
+
 public class RefillTask extends Tasks {
 
     private RefillModel model;
