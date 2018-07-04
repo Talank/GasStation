@@ -61,6 +61,10 @@ public class SystemStatusController implements BackButtonInterface {
         toolBar.setBackPath(SystemStatus.getMainHomePath());
         toolBar.addBackButtonInterface(this);
 
+        precision = new Precision();
+
+        priceFormat = new PriceFormat();
+
         expenditureList.setCellFactory(lv->new ExpenditureListCell());
         expenditureList.setSelectionModel(new NoSelectionModel<>());
 
