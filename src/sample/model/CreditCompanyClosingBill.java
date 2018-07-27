@@ -1,10 +1,13 @@
 package sample.model;
 
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
 import sample.OutputTasks.GetCompanyClosing;
 import sample.controller.AppHomeController;
 import sample.controller.SystemLogging;
@@ -35,7 +38,10 @@ public class CreditCompanyClosingBill {
         imageView.setImage(image);
         imageView.setFitWidth(60);
         imageView.setFitHeight(60);
-        imageView.preserveRatioProperty();
+        imageView.setTranslateX(50);
+        imageView.setTranslateY(-75);
+
+        //imageView.preserveRatioProperty();
 
         /**Unicode of the string for bold,mini-word etc
          * font serif
@@ -66,10 +72,14 @@ public class CreditCompanyClosingBill {
         builder.append("\tDue : Rs."+companyClosing.getDue());
         builder.append("\nTotal : Rs."+companyClosing.getGrandTotal());
 
-        imageView.setTranslateX(60);
-        imageView.setTranslateY(-75);
+
         label.setGraphic(imageView);
         label.setText(builder.toString());
+        label.setStyle("-fx-font-size: 13; -fx-wrap-text:true;");
+        label.setPadding(new Insets(5));
+        label.setAlignment(Pos.CENTER);
+        label.setMaxWidth(Double.MAX_VALUE);
+        //label.setTextAlignment(TextAlignment.CENTER);
         if(PrintBill.print(label)) {
             SystemLogging.getLogger().fine("Credit Company Successfully closed");
             return true;
