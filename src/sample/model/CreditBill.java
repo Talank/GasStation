@@ -23,7 +23,12 @@ public class CreditBill extends Bill {
 
         javafx.scene.control.Label label=new Label();
         StringBuilder builder=new StringBuilder();
+        String authorizedDealer = "NOC Authorized Dealer";
+        String panNoAndPhone = "Pan no:300207255\t Tel:501041";
+
+        builder.append(authorizedDealer);
         builder.append("Ohm Oil Pump\n");
+        builder.append(panNoAndPhone);
         builder.append("Company Name:"+companyName+"\n");
         builder.append("Vehicle No:"+vehicleNo+"\n");
         builder.append("Oil Type:"+type+"\n");

@@ -53,7 +53,7 @@
                                  <URL value="@../../css/componentStyles.css" />
                               </stylesheets>
                               <styleClass>
-                                 <String fx:value="removeButtonColor" />
+                                 <String fx:value="generalButtonColor" />
                                  <String fx:value="billingRoundButton" />
                                  <String fx:value="payButtonIcon" />
                               </styleClass>

@@ -17,7 +17,12 @@ public class InstantBill extends Bill {
     public void printBill() {
         Label label=new Label();
         StringBuilder builder=new StringBuilder();
+        String authorizedDealer = "NOC Authorized Dealer";
+        String panNoAndPhone = "Pan no:300207255\t Tel:501041";
+
+        builder.append(authorizedDealer);
         builder.append("Ohm Oil Pump\n");
+        builder.append(panNoAndPhone);
         builder.append("Name:"+name+"\n");
         builder.append("Vehicle No:"+vehicleNo+"\n");
         builder.append("Oil Type:"+type+"\n");
