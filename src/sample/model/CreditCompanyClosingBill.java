@@ -2,10 +2,12 @@ package sample.model;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import sample.OutputTasks.GetCompanyClosing;
@@ -13,7 +15,11 @@ import sample.controller.AppHomeController;
 import sample.controller.SystemLogging;
 
 import javax.swing.*;
+import javax.swing.GroupLayout.Alignment;
 import java.sql.SQLException;
+
+import static javafx.geometry.Pos.TOP_LEFT;
+import static javafx.scene.layout.StackPane.setAlignment;
 
 public class CreditCompanyClosingBill {
     private DebtListModel model;
@@ -38,10 +44,9 @@ public class CreditCompanyClosingBill {
         imageView.setImage(image);
         imageView.setFitWidth(60);
         imageView.setFitHeight(60);
-        imageView.setTranslateX(50);
-        imageView.setTranslateY(-75);
+//        imageView.setTranslateX(50);
+//        imageView.setTranslateY(-50);
 
-        //imageView.preserveRatioProperty();
 
         /**Unicode of the string for bold,mini-word etc
          * font serif
@@ -52,16 +57,16 @@ public class CreditCompanyClosingBill {
         String authorizedDealer = "NOC Authorized Dealer";
 
         StringBuilder builder=new StringBuilder();
-        builder.append("\t\t\t"+authorizedDealer+"\n");
-        builder.append("\t\t\t"+PetrolPumpName+"\n");
-        builder.append("\t\t\tPokhara-14, Swagatnagar, Chauthe\n");
-        builder.append("\t\t\tPhone: 501041\n\n");
+        builder.append("\t\t\t\t\t\t\t\t"+authorizedDealer+"\n");
+        builder.append("\t\t\t\t\t\t\t\t"+PetrolPumpName+"\n");
+        builder.append("\t\t\t\t\t\t\t\tPokhara-14, Swagatnagar, Chauthe");
+        builder.append("\tPhone: 501041\n\n");
         builder.append("Company Name: "+tableName+"\n\n");
-        builder.append("Type     \t");
-        builder.append("Vehicle No. \t");
-        builder.append("Rate     \t");
-        builder.append("Volume   \t");
-        builder.append("Price    \t");
+        builder.append("Type     \t\t");
+        builder.append("Vehicle No. \t\t");
+        builder.append("Rate     \t\t");
+        builder.append("Volume   \t\t");
+        builder.append("Price    \t\t");
         builder.append("Date\n");
 
         GetCompanyClosing companyClosing= new GetCompanyClosing(model);
@@ -70,16 +75,26 @@ public class CreditCompanyClosingBill {
 
         builder.append("\nTotal : Rs."+companyClosing.getTotalPrice());
         builder.append("\tDue : Rs."+companyClosing.getDue());
-        builder.append("\nTotal : Rs."+companyClosing.getGrandTotal());
+        builder.append("\nGrand Total : Rs."+companyClosing.getGrandTotal());
 
 
         label.setGraphic(imageView);
+        label.setContentDisplay(ContentDisplay.LEFT);
+        label.setAlignment(Pos.TOP_CENTER);
+        label.setPadding(new Insets(0,100,100,0));
+
+        //label.setContentDisplay(ContentDisplay.LEFT);
         label.setText(builder.toString());
-        label.setStyle("-fx-font-size: 13; -fx-wrap-text:true;");
+        label.setContentDisplay(ContentDisplay.TOP);
         label.setPadding(new Insets(5));
-        label.setAlignment(Pos.CENTER);
+        //label.setAlignment(Pos.TOP_LEFT);
+
+        label.setStyle("-fx-font-size: 8; -fx-wrap-text:true;");
+        //label.setPadding(new Insets(5));
+        label.setAlignment(Pos.CENTER_LEFT);
         label.setMaxWidth(Double.MAX_VALUE);
         //label.setTextAlignment(TextAlignment.CENTER);
+
         if(PrintBill.print(label)) {
             SystemLogging.getLogger().fine("Credit Company Successfully closed");
             return true;
