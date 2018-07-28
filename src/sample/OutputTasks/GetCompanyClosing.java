@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DecimalFormat;
 
 public class GetCompanyClosing extends Tasks {
     private DebtListModel model;
@@ -51,8 +52,8 @@ public class GetCompanyClosing extends Tasks {
             }
 
             builder.append(resultSet.getString(4)+"   \t\t");
-            builder.append(resultSet.getString(5)+"     \t\t");
-            builder.append(resultSet.getString(6)+"  \t\t");
+            builder.append(new DecimalFormat("##.##").format(Double.parseDouble(resultSet.getString(5)))+"     \t\t");
+            builder.append(new DecimalFormat("##.##").format(Double.parseDouble(resultSet.getString(6)))+"  \t\t");
             builder.append(resultSet.getString(7)+"\n");
         }
 

@@ -17,6 +17,7 @@ import sample.controller.SystemLogging;
 import javax.swing.*;
 import javax.swing.GroupLayout.Alignment;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 
 import static javafx.geometry.Pos.TOP_LEFT;
 import static javafx.scene.layout.StackPane.setAlignment;
@@ -73,9 +74,9 @@ public class CreditCompanyClosingBill {
         StringBuilder companyData = companyClosing.call();
         builder.append(companyData);
 
-        builder.append("\nTotal : Rs."+companyClosing.getTotalPrice());
-        builder.append("\tDue : Rs."+companyClosing.getDue());
-        builder.append("\nGrand Total : Rs."+companyClosing.getGrandTotal());
+        builder.append("\nTotal : Rs."+new DecimalFormat("##.##").format(Double.parseDouble(companyClosing.getTotalPrice())));
+        builder.append("\tDue : Rs."+new DecimalFormat("##.##").format(Double.parseDouble(companyClosing.getDue())));
+        builder.append("\nGrand Total : Rs."+new DecimalFormat("##.##").format(Double.parseDouble(companyClosing.getGrandTotal())));
 
 
         label.setGraphic(imageView);
