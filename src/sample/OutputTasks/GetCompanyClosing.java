@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DecimalFormat;
 
 public class GetCompanyClosing extends Tasks {
     private DebtListModel model;
@@ -36,13 +37,23 @@ public class GetCompanyClosing extends Tasks {
 
         Statement getData = Tasks.getConnection().createStatement();
         ResultSet resultSet = getData.executeQuery("SELECT * FROM "+tableName);
+        String type;
         while (resultSet.next()){
             //builder.append(resultSet.getString(1)+"\t\t");
-            builder.append(resultSet.getString(2)+"  \t");
-            builder.append(resultSet.getString(3)+"         \t");
-            builder.append(resultSet.getString(4)+"   \t");
-            builder.append(resultSet.getString(5)+"     \t");
-            builder.append(resultSet.getString(6)+"  \t");
+            type = resultSet.getString(2);
+            builder.append(type+"  \t\t");
+
+            if ((type.equals("Petrol") || (type.equals("Diesel")))) {
+                builder.append(resultSet.getString(3) + "         \t\t");
+            }
+
+            else {
+                builder.append("X" + "       \t\t");
+            }
+
+            builder.append(resultSet.getString(4)+"   \t\t");
+            builder.append(new DecimalFormat("##.##").format(Double.parseDouble(resultSet.getString(5)))+"     \t\t");
+            builder.append(new DecimalFormat("##.##").format(Double.parseDouble(resultSet.getString(6)))+"  \t\t");
             builder.append(resultSet.getString(7)+"\n");
         }
 
