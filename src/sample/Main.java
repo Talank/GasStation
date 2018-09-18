@@ -59,7 +59,7 @@ public class Main extends Application {
     public void init() throws Exception {
         InitializeSystem initializeSystem=new InitializeSystem();
         if(Tasks.setupConnection()&&initializeSystem.customExecute()) {
-            TaskManager.init(1);
+            TaskManager.getInstance();
             startup=true;
 
 //            loader=new FXMLLoader(getClass().getResource("view/main_home_views/mainHome.fxml"));

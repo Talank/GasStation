@@ -1,7 +1,5 @@
 package sample.tasks;
 
-import javafx.scene.Parent;
-
 /**
  * This class manages all the tasks performed by the system
  */
@@ -9,24 +7,68 @@ import javafx.scene.Parent;
 public class TaskManager {
 
 
-    private static TaskQueue taskQueue;
-    private static int maxThread=0;
-    private static Thread mainThread;
-    private static final int TIMEOUT=20000;
+    private TaskQueue taskQueue;
 
     private static Runnable instantTask;
 
-    private static boolean isThreadFree = true;
+    private boolean isThreadFree = true;
     private static boolean isInstantTaskAvailable = false;
 
-    private static final int MAX_RETRY=5;
+    private static TaskManager instance;
+    private Thread mainThread;
+
+
+
+    private TaskManager() {
+        taskQueue = new TaskQueue(10);
+        mainThread = new Thread(()->{
+            performTask();
+        });
+        mainThread.setDaemon(true);
+        mainThread.start();
+
+    }
+
+    public static TaskManager getInstance() {
+        if (instance == null) {
+            instance = new TaskManager();
+        }
+        return instance;
+    }
+
+    private synchronized void performTask() {
+        while (true) {
+            if (taskQueue.isEmpty()) {
+                isThreadFree = true;
+                System.out.println("No Task Detected, Entering Blocked state");
+                try {
+                    wait();
+                } catch(InterruptedException e) {
+                    System.out.println("Task Thread wakeup, Checking Instant Tasks");
+                }
+
+                if (isInstantTaskAvailable) {
+                    isInstantTaskAvailable = false;
+                    System.out.println("Instant Task Available.Performing Instant Task.");
+                    instantTask.run();
+                }
+            } else {
+                isThreadFree = false;
+                System.out.println("Task Detected, Executing Task");
+                taskQueue.deQueue().execute();
+            }
+        }
+    }
+
+
+
 
     /**
      * Initializes the {@link TaskQueue} and creates a thread to poll the queue
      * @param threadSize the no of threads to create
      */
 
-    public static void init(int threadSize) {
+/*    public static void init(int threadSize) {
         maxThread=threadSize;
         taskQueue=new TaskQueue(10);
 
@@ -56,19 +98,19 @@ public class TaskManager {
         });
         mainThread.setDaemon(true);
         mainThread.start();
-    }
+    }*/
 
     /**
      * Executes the task by interrupting the thread
      * @param tasks the task to be performed
      */
 
-    public static void executeTask(Tasks tasks) {
+    public void executeTask(Tasks tasks) {
         taskQueue.enQueue(tasks);
         mainThread.interrupt();
     }
 
-    public static void executeInstantTask(Runnable instantTasks) {
+    public synchronized void executeInstantTask(Runnable instantTasks) {
 
         /*
         * Check if the thread is free, if so run on the free thread, otherwise run on new thread
@@ -77,7 +119,7 @@ public class TaskManager {
         if (isThreadFree) {
             instantTask = instantTasks;
             isInstantTaskAvailable = true;
-            mainThread.interrupt();
+            notify();
         } else {
             Thread mainThread=new Thread(instantTasks);
             mainThread.setDaemon(true);
@@ -85,23 +127,5 @@ public class TaskManager {
         }
 
     }
-
-    /**
-     * @deprecated
-     * @param tasks
-     * @param delay
-     */
-
-    public static void scheduleTask(Tasks tasks,long delay) {
-        new Thread(()->{
-            try {
-                Thread.sleep(delay);
-                executeTask(tasks);
-            } catch(InterruptedException e) {
-                e.printStackTrace();
-            }
-        }).start();
-    }
-
 
 }

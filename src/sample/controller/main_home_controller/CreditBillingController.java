@@ -34,6 +34,7 @@ import sample.model.nepaliPriceFormat.PriceFormat;
 import sample.model.transaction_model.CreditTransactionBill;
 import sample.model.transaction_model.Transaction;
 import sample.tasks.TaskManager;
+import sample.tasks.TaskSync;
 import sample.tasks.database_tasks.StoreCreditTransactionTask;
 
 import java.awt.*;
@@ -685,7 +686,8 @@ public class CreditBillingController {
             if(admin) {
                 task.setAdminDate(true,date);
             }
-            TaskManager.executeTask(task);
+            TaskSync.getInstance().executeTask(task);
+           // TaskManager.executeTask(task);
 
             transactionListView.getItems().clear();
             masterClear();

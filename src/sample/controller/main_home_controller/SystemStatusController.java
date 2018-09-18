@@ -98,7 +98,7 @@ public class SystemStatusController implements BackButtonInterface {
 
         initialPetrolReadings.setText("" + priceFormat.format(precision.format(SystemStatus.getiPetrol())) + " Litres");
 
-        TaskManager.executeInstantTask(task);
+        TaskManager.getInstance().executeInstantTask(task);
 
     }
 

@@ -15,6 +15,7 @@ import java.sql.Statement;
 
 
 /**
+ * @deprecated
  *Changes the initial meter readings for diesel and petrol.
  */
 

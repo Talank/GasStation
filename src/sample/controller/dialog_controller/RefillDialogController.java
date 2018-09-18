@@ -183,7 +183,7 @@ public class RefillDialogController implements BottomBarInterface {
                                 bottomBar.setErrorText("Petrol Tanker Provided.");
                             }
                         });
-                        TaskManager.executeTask(task);
+                        TaskManager.getInstance().executeTask(task);
                         ((Node)e.getSource()).getScene().getWindow().hide();
                     } else {
                         bottomBar.setErrorText("Petrol Tanker Provided.");
@@ -228,7 +228,7 @@ public class RefillDialogController implements BottomBarInterface {
                                 bottomBar.setErrorText("Diesel Tanker Provided.");
                             }
                         });
-                        TaskManager.executeTask(task);
+                        TaskManager.getInstance().executeTask(task);
                         ((Node)e.getSource()).getScene().getWindow().hide();
                     } else {
                         bottomBar.setErrorText("Diesel Tanker Provided.");

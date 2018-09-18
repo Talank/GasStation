@@ -118,14 +118,13 @@ public class InitializeSystem extends Tasks {
                     }
                 }
 
-                System.out.println("Current Expired English Date:"+date.toString());
-
 
                 if (model.isExpired()) {
 
                     /*
                      *Here we check the value of PREV_TRANSACTION_ID
                      * if it is 0 means that the company is not expired,if it is 1 then the company credit closing is done but payment is remaining
+                     * and other value indicate that the company closing is not done
                      *
                      * We check if it is 0,then since the Company has just expired,we note the date, the company has expired i.e. either 15 or 1
                      */
@@ -133,7 +132,7 @@ public class InitializeSystem extends Tasks {
                     if (resultSet.getInt(4) == 0) {
 
                         System.out.println("Company previous due was cleared!");
-
+                        //Get the Transaction ID of the last Transaction performed, i.e transactionID
                         Statement getCounts = connection.createStatement();
                         ResultSet countResult = getCounts.executeQuery("SELECT COUNT(*) FROM " + DatabaseHandler.generateTableName(model.getCompanyName()));
                         countResult.next();
@@ -143,6 +142,8 @@ public class InitializeSystem extends Tasks {
 
                         int transactionID = countResult.getInt(1);
 
+                        //Store the transactionID in prev_transaction field, it is only used to indicate that the company has expired and not closed
+                        //To adjust the id of other transactions when the company is closed, date is used instead
                         PreparedStatement updateExpireID = connection.prepareStatement("UPDATE CreditCompany SET PREV_TRANSACTION_ID=?,PREV_EXPIRE_DATE=? WHERE COMPANY_NAME=?");
                         updateExpireID.setInt(1,transactionID);
                         updateExpireID.setDate(2,date);

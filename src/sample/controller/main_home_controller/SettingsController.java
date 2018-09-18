@@ -21,6 +21,7 @@ import sample.controller.main_home_controller.credit_company_details_controller.
 import sample.controller.main_home_controller.lists_controllers.CustomListCellController;
 import sample.controller.main_home_controller.lists_controllers.DebtListCell;
 import sample.controller.SystemLogging;
+import sample.library.SettingsConstants;
 import sample.library.toolbar.ToolBar;
 import sample.model.CreditCompanyClosingBill;
 import sample.model.CreditCompanyList;
@@ -31,6 +32,7 @@ import sample.model.nepaliPriceFormat.Precision;
 import sample.model.nepaliPriceFormat.PriceFormat;
 import sample.tasks.TaskInterface;
 import sample.tasks.TaskManager;
+import sample.tasks.Tasks;
 import sample.tasks.database_tasks.*;
 
 import java.io.IOException;
@@ -101,7 +103,7 @@ public class SettingsController {
             model=task.getValue();
             loadSettings(model);
         });
-        TaskManager.executeInstantTask(task);
+        TaskManager.getInstance().executeInstantTask(task);
 
     }
 
@@ -176,9 +178,7 @@ public class SettingsController {
         DebtListModel model=debtList.getSelectionModel().getSelectedItem();
         if(model!=null) {
             listModels.remove(model);
-            RemoveCompanyTask task=new RemoveCompanyTask(model);
-            TaskManager.executeTask(task);
-
+            performTask(new RemoveCompanyTask(model));
         }
     }
 
@@ -213,8 +213,7 @@ public class SettingsController {
     public void closeCompany(MouseEvent e) {
 
         DebtListModel model=debtList.getSelectionModel().getSelectedItem();
-        CompanyCreditClosingTask task=new CompanyCreditClosingTask(model);
-        TaskManager.executeTask(task);
+        performTask(new CompanyCreditClosingTask(model));
     }
 
     @FXML
@@ -246,7 +245,7 @@ public class SettingsController {
 
         Parent root=loader.load();
         ChangeRateController controller=loader.getController();
-        controller.setInitialRate(dRateValue.getText(),pRateValue.getText());
+        controller.setInitialRate(model[1][0],model[2][0]);
 
         Stage stage=new Stage();
         stage.getIcons().add(new Image(getClass().getResourceAsStream("../../resources/logo.png")));
@@ -261,7 +260,7 @@ public class SettingsController {
 
         Parent root=loader.load();
         CounterStockDialogController controller=loader.getController();
-        controller.setInitialStock(counterStockValue.getText());
+        controller.setInitialStock(model[5][0]);
         Stage stage=new Stage();
         stage.getIcons().add(new Image(getClass().getResourceAsStream("../../resources/logo.png")));
         stage.initModality(Modality.APPLICATION_MODAL);
@@ -298,7 +297,7 @@ public class SettingsController {
 
         Parent root=loader.load();
         OilStockDialogController controller=loader.getController();
-        controller.setInitialStock(dieselStockValue.getText(),petrolStockValue.getText());
+        controller.setInitialStock(model[6][0], model[7][0]);
         Stage stage=new Stage();
         stage.getIcons().add(new Image(getClass().getResourceAsStream("../../resources/logo.png")));
         stage.initModality(Modality.APPLICATION_MODAL);
@@ -330,20 +329,17 @@ public class SettingsController {
 
     @FXML
     void clearDailyAnalytics(MouseEvent event) {
-        ClearDailyAnalyticsTask task=new ClearDailyAnalyticsTask();
-        TaskManager.executeTask(task);
+        performTask(new ClearTableTask(SettingsConstants.DAILY_ANALYTICS_TABLE, SettingsConstants.CLEAR_DAILY_ANALYTICS));
     }
 
     @FXML
     void clearDieselRefill(MouseEvent event) {
-        ClearDieselRefillTask task=new ClearDieselRefillTask();
-        TaskManager.executeTask(task);
+        performTask(new ClearTableTask(SettingsConstants.DIESEL_REFILL_TABLE, SettingsConstants.CLEAR_DIESEL_REFILL));
     }
 
     @FXML
     void clearPetrolRefill(MouseEvent event) {
-        ClearPetrolRefillTask task=new ClearPetrolRefillTask();
-        TaskManager.executeTask(task);
+        performTask(new ClearTableTask(SettingsConstants.PETROL_REFILL_TABLE, SettingsConstants.CLEAR_PETROL_REFILL));
     }
 
     @FXML
@@ -363,8 +359,7 @@ public class SettingsController {
 
     @FXML
     public void clearExpenditure(MouseEvent e) {
-        ClearExpenditureTask task=new ClearExpenditureTask();
-        TaskManager.executeTask(task);
+        performTask(new ClearTableTask(SettingsConstants.EXPENDITURE_TABLE, SettingsConstants.CLEAR_EXPENDITURE));
     }
 
 
@@ -372,6 +367,11 @@ public class SettingsController {
         listModels.remove(modelIndex);
         listModels.add(modelIndex,model);
     }
+
+    private void performTask(Tasks tasks) {
+        TaskManager.getInstance().executeTask(tasks);
+    }
+
 
 
 

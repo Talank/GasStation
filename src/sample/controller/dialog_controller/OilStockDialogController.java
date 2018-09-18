@@ -2,18 +2,22 @@ package sample.controller.dialog_controller;
 
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.validation.RequiredFieldValidator;
+import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import sample.controller.AppHomeController;
 import sample.controller.main_home_controller.SettingsController;
+import sample.library.SettingsConstants;
 import sample.library.dialog_bottombar.BottomBarInterface;
 import sample.library.dialog_bottombar.DialogBottomBar;
 import sample.library.dialog_toolbar.DialogToolBar;
 import sample.model.SystemStatus;
 import sample.model.databases.DatabaseHandler;
+import sample.tasks.TaskInterface;
 import sample.tasks.TaskManager;
+import sample.tasks.database_tasks.SettingsTask;
 import sample.tasks.database_tasks.SetupOilStockTask;
 
 import java.io.IOException;
@@ -85,8 +89,34 @@ public class OilStockDialogController implements BottomBarInterface {
         }
 
         if(status==0) {
-            SetupOilStockTask task=new SetupOilStockTask(dieselStockValue.getText(),petrolStockValue.getText());
-            TaskManager.executeTask(task);
+
+            SettingsTask task = new SettingsTask(new String[] {dieselStockValue.getText(),petrolStockValue.getText()}, new int[] {SettingsConstants.DIESEL_STOCK, SettingsConstants.PETROL_STOCK}, SettingsConstants.CHANGE_OIL_STOCK);
+            task.addTaskInterfaceListener(new TaskInterface() {
+                @Override
+                public void onComplete(Object data) {
+                    Platform.runLater(()->{
+                        String[][] model=SettingsController.getInstance().getModel();
+
+                        model[6][0]=dieselStockValue.getText();
+                        model[6][1]=SystemStatus.getNepaliCurrentDate();
+
+                        model[7][0]=petrolStockValue.getText();
+                        model[7][1]=SystemStatus.getNepaliCurrentDate();
+
+                        SettingsController.getInstance().loadSettings(model);
+                        ((Node)e.getSource()).getScene().getWindow().hide();
+                    });
+                }
+
+                @Override
+                public void onError() {
+
+                }
+            });
+            TaskManager.getInstance().executeTask(task);
+
+            /*SetupOilStockTask task=new SetupOilStockTask(dieselStockValue.getText(),petrolStockValue.getText());
+            TaskManager.getInstance().executeTask(task);
 
 
 
@@ -100,7 +130,7 @@ public class OilStockDialogController implements BottomBarInterface {
 
 
             SettingsController.getInstance().loadSettings(model);
-            ((Node)e.getSource()).getScene().getWindow().hide();
+            ((Node)e.getSource()).getScene().getWindow().hide();*/
 
 
             /*if(DatabaseHandler.setupOilStock(dieselStockValue.getText(),petrolStockValue.getText())) {

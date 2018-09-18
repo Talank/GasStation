@@ -244,7 +244,7 @@ public class DailyTotalAnalyticsController implements BackButtonInterface {
             dailyTotalAnalyticsLayout.setVisible(true);
         });
 
-        TaskManager.executeInstantTask(task);
+        TaskManager.getInstance().executeInstantTask(task);
 
     }
 

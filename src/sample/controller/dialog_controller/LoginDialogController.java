@@ -133,7 +133,7 @@ public class LoginDialogController implements BottomBarInterface {
 
             });
 
-            TaskManager.executeInstantTask(task);
+            TaskManager.getInstance().executeInstantTask(task);
 
         }
     }

@@ -17,6 +17,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 /**
+ * @deprecated
  * Changes the rates of diesel and petrol.
  */
 

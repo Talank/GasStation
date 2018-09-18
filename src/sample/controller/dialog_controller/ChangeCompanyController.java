@@ -115,14 +115,14 @@ public class ChangeCompanyController implements BottomBarInterface {
 
                     }
                 });
-                TaskManager.executeTask(task);
+                TaskManager.getInstance().executeTask(task);
                 ((Node)e.getSource()).getScene().getWindow().hide();
 
             } else {
                 model.setCompanyName(companyName.getText().trim());
                 model.setDays(creditCycle.getText());
                 UpdateCompanyTask task=new UpdateCompanyTask(model);
-                TaskManager.executeTask(task);
+                TaskManager.getInstance().executeTask(task);
 
                 ((Node)e.getSource()).getScene().getWindow().hide();
 

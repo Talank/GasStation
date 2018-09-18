@@ -16,6 +16,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 /**
+ * @deprecated
  *Changes the oil stock for diesel and petrol.
  */
 

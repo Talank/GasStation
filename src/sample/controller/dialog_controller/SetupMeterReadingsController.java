@@ -2,17 +2,21 @@ package sample.controller.dialog_controller;
 
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.validation.RequiredFieldValidator;
+import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 import sample.controller.main_home_controller.SettingsController;
+import sample.library.SettingsConstants;
 import sample.library.dialog_bottombar.BottomBarInterface;
 import sample.library.dialog_bottombar.DialogBottomBar;
 import sample.library.dialog_toolbar.DialogToolBar;
 import sample.model.SystemStatus;
+import sample.tasks.TaskInterface;
 import sample.tasks.TaskManager;
+import sample.tasks.database_tasks.SettingsTask;
 import sample.tasks.database_tasks.SetupMeterReadingsTask;
 
 import java.io.IOException;
@@ -35,7 +39,7 @@ public class SetupMeterReadingsController implements BottomBarInterface {
 
         toolBar.setDialogTitle("Final Meter Readings");
 
-        bottomBar.setButtonText("START");
+        bottomBar.setButtonText("SAVE");
         bottomBar.setBottomBarInterface(this);
 
         RequiredFieldValidator dieselValidator=new RequiredFieldValidator();
@@ -89,7 +93,31 @@ public class SetupMeterReadingsController implements BottomBarInterface {
 
         if(status==0) {
 
-            String[][] model=SettingsController.getInstance().getModel();
+            SettingsTask task = new SettingsTask(new String[] {fDiesel.getText(),fPetrol.getText()}, new int[] {SettingsConstants.DIESEL_METER_READING, SettingsConstants.PETROL_METER_READING}, SettingsConstants.CHANGE_METER_READING);
+            task.addTaskInterfaceListener(new TaskInterface() {
+                @Override
+                public void onComplete(Object data) {
+                    Platform.runLater(()->{
+                        String[][] model=SettingsController.getInstance().getModel();
+                        model[3][0]=fDiesel.getText();
+                        model[3][1]=SystemStatus.getNepaliCurrentDate();
+
+                        model[4][0]=fPetrol.getText();
+                        model[4][1]=SystemStatus.getNepaliCurrentDate();
+
+                        SettingsController.getInstance().loadSettings(model);
+                        ((Node)e.getSource()).getScene().getWindow().hide();
+                    });
+                }
+
+                @Override
+                public void onError() {
+
+                }
+            });
+            TaskManager.getInstance().executeTask(task);
+
+            /*String[][] model=SettingsController.getInstance().getModel();
             model[3][0]=fDiesel.getText();
             model[3][1]=SystemStatus.getNepaliCurrentDate();
 
@@ -99,9 +127,9 @@ public class SetupMeterReadingsController implements BottomBarInterface {
             SettingsController.getInstance().loadSettings(model);
 
             SetupMeterReadingsTask task=new SetupMeterReadingsTask(fDiesel.getText(),fPetrol.getText());
-            TaskManager.executeTask(task);
+            TaskManager.getInstance().executeTask(task);
 
-            ((Node)e.getSource()).getScene().getWindow().hide();
+            ((Node)e.getSource()).getScene().getWindow().hide();*/
 
         }
     }

@@ -12,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 /**
+ * @deprecated
  *Clears the diesel refill up to 1st day of current month.
  */
 

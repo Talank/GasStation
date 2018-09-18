@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 /**
+ * @deprecated
  *Changes the default printer for bill and other purposes.
  */
 

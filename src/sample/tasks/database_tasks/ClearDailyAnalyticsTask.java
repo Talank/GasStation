@@ -12,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 /**
+ * @deprecated
  *Clears the daily analytics up to current month 1st day
  */
 

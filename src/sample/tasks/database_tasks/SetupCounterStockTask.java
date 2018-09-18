@@ -13,6 +13,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 /**
+ * @deprecated
  *Changes the default counter value.
  */
 

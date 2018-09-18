@@ -118,7 +118,7 @@ public class TankRemarkController implements BottomBarInterface {
                 avgLossLabel.setText("");
             });
 
-            TaskManager.executeInstantTask(tasks);
+            TaskManager.getInstance().executeInstantTask(tasks);
 
         }
     }

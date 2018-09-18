@@ -86,14 +86,14 @@ public class PaymentDialogController implements BottomBarInterface {
             if(((JFXRadioButton)selection.getSelectedToggle()).getText().equals("Normal")) {
                 if(Float.parseFloat(payment.getText())<=model.getDue()) {
                     CompanyPaymentTask task=new CompanyPaymentTask(model,Float.parseFloat(payment.getText()),0);
-                    TaskManager.executeTask(task);
+                    TaskManager.getInstance().executeTask(task);
                     ((Node)e.getSource()).getScene().getWindow().hide();
                 } else {
                     bottomBar.setErrorText("Payment Greater Than Due Amount.");
                 }
             } else {
                 CompanyPaymentTask task=new CompanyPaymentTask(model,Float.parseFloat(payment.getText()),1);
-                TaskManager.executeTask(task);
+                TaskManager.getInstance().executeTask(task);
                 ((Node)e.getSource()).getScene().getWindow().hide();
             }
 

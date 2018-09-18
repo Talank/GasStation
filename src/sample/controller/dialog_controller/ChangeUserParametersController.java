@@ -3,19 +3,24 @@ package sample.controller.dialog_controller;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.validation.RequiredFieldValidator;
+import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import sample.controller.SystemLogging;
 import sample.controller.main_home_controller.SettingsController;
+import sample.library.SettingsConstants;
 import sample.library.dialog_bottombar.BottomBarInterface;
 import sample.library.dialog_bottombar.DialogBottomBar;
 import sample.library.dialog_toolbar.DialogToolBar;
+import sample.model.AdminUser;
 import sample.model.SystemStatus;
 import sample.model.databases.DatabaseHandler;
+import sample.tasks.TaskInterface;
 import sample.tasks.TaskManager;
 import sample.tasks.database_tasks.ChangeUserParameterTask;
+import sample.tasks.database_tasks.SettingsTask;
 
 import java.io.IOException;
 
@@ -102,8 +107,33 @@ public class ChangeUserParametersController implements BottomBarInterface {
 
         if(status==0) {
 
-            ChangeUserParameterTask task=new ChangeUserParameterTask(userName.getText().trim(),password.getText().trim());
-            TaskManager.executeTask(task);
+
+            SettingsTask task = new SettingsTask(new String[] {userName.getText().trim(),(new AdminUser()).generatePasswordHash(password.getText().trim())}, new int[] {SettingsConstants.USER_NAME,SettingsConstants.PASSWORD}, SettingsConstants.CHANGE_USER_PARAMS);
+            task.addTaskInterfaceListener(new TaskInterface() {
+                @Override
+                public void onComplete(Object data) {
+                    Platform.runLater(()->{
+                        TaskManager.getInstance().executeTask(task);
+
+                        String[][] model=SettingsController.getInstance().getModel();
+
+                        model[0][0]=userName.getText();
+                        model[0][1]=SystemStatus.getNepaliCurrentDate();
+
+                        SettingsController.getInstance().loadSettings(model);
+                        ((Node)e.getSource()).getScene().getWindow().hide();
+                    });
+                }
+
+                @Override
+                public void onError() {
+
+                }
+            });
+            TaskManager.getInstance().executeTask(task);
+
+            /*ChangeUserParameterTask task=new ChangeUserParameterTask(userName.getText().trim(),password.getText().trim());
+            TaskManager.getInstance().executeTask(task);
 
             String[][] model=SettingsController.getInstance().getModel();
 
@@ -112,7 +142,7 @@ public class ChangeUserParametersController implements BottomBarInterface {
 
 
             SettingsController.getInstance().loadSettings(model);
-            ((Node)e.getSource()).getScene().getWindow().hide();
+            ((Node)e.getSource()).getScene().getWindow().hide();*/
 
         }
     }

@@ -9,7 +9,7 @@ public class SystemValidationTest {
     @Test
     public void testSystem() {
         SystemValidation validation=new SystemValidation();
-        validation.generateHash();
+        validation.testing();
 
     }
 

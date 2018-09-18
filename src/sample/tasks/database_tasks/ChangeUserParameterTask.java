@@ -15,6 +15,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 /**
+ * @deprecated
  * Changes username and password
  */
 

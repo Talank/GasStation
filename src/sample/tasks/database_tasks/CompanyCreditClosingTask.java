@@ -54,7 +54,7 @@ public class CompanyCreditClosingTask extends Tasks {
 
             if(model.isExpired()) {
 
-                //Delete all the data up to the expiry period
+                //Delete all the data up to the expiry period, we don't use prev_transactionID as and index to delete the data due to "POSTING" requirement
 
                 PreparedStatement deleteCredit=connection.prepareStatement("DELETE FROM "+tableName+" WHERE DATE<?");
                 deleteCredit.setDate(1,model.getExpireDate());
@@ -66,6 +66,7 @@ public class CompanyCreditClosingTask extends Tasks {
                 ResultSet totalResult=getResults.executeQuery("SELECT TRANSACTION_ID,PRICE FROM "+tableName);
 
                 //new parameters to be applied to the data existing in the table after expiry period
+                //i.e we start from 0 and transactions having same id are given same number(i.e 0) and the number is incremented when the transaction id differs (i.e another transaction)
 
                 int lastTransaction=1,prevID=0,currentID;
                 float total=0;
@@ -75,7 +76,7 @@ public class CompanyCreditClosingTask extends Tasks {
                 if(totalResult.next()) {
                     prevID=totalResult.getInt(1);
                     total+=totalResult.getFloat(2);
-                    totalResult.updateInt(1,lastTransaction);
+                    totalResult.updateInt(1,lastTransaction);//begin from remaining the transaction from 1 and then increment afterward for others transaction not in the same session
                     totalResult.updateRow();
                 }
 

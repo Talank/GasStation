@@ -104,7 +104,7 @@ public class AddExpenditureController implements BottomBarInterface {
         if(status==0) {
 
             AddExpenditureTask task=new AddExpenditureTask(memberName.getText().trim(),expenditureAmount.getText().trim(),expenditureRemarks.getText().trim());
-            TaskManager.executeTask(task);
+            TaskManager.getInstance().executeTask(task);
 
             ((Node)e.getSource()).getScene().getWindow().hide();
 

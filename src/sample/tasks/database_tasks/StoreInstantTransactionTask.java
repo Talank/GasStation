@@ -109,7 +109,6 @@ public class StoreInstantTransactionTask extends Tasks {
 
             retryStatus++;
             System.out.println("Error Inserting Instant Transaction.ReScheduling Task Again. Retry:"+retryStatus);
-            TaskManager.scheduleTask(this,4000);
 
             SystemLogging.getLogger().severe("Couldn't Store The Transaction,Scheduling Again.");
 

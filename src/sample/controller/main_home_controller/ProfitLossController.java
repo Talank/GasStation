@@ -362,7 +362,7 @@ public class ProfitLossController implements BackButtonInterface {
             profitLossLayout.setVisible(true);
         });
 
-        TaskManager.executeInstantTask(task);
+        TaskManager.getInstance().executeInstantTask(task);
 
         selection.selectedToggleProperty().addListener((ObservableValue<? extends Toggle > ov, Toggle old_toggle, Toggle new_toggle)->{
             if(((JFXRadioButton)new_toggle).getText().equals("Diesel")) {

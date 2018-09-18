@@ -65,7 +65,7 @@ public class CreditCompanyDetailsController implements BackButtonInterface {
             progressLayout.setVisible(false);
             detailsListView.setVisible(true);
         });
-        TaskManager.executeInstantTask(task);
+        TaskManager.getInstance().executeInstantTask(task);
 
     }
 }

@@ -37,7 +37,7 @@ public class ErrorDialogController implements BottomBarInterface {
     public void performAction(MouseEvent e) throws IOException {
 
         if(task!=null) {
-            TaskManager.executeTask(task);
+            TaskManager.getInstance().executeTask(task);
         }
         ((Node)e.getSource()).getScene().getWindow().hide();
     }

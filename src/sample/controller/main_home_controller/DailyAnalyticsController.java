@@ -51,7 +51,7 @@ public class DailyAnalyticsController {
         GetDailyTotalAnalyticsModelTask task=new GetDailyTotalAnalyticsModelTask();
         task.setOnSucceeded((WorkerStateEvent e)->setModel(task.getValue()));
 
-        TaskManager.executeInstantTask(task);
+        TaskManager.getInstance().executeInstantTask(task);
 
     }
 
@@ -74,7 +74,7 @@ public class DailyAnalyticsController {
         netExtra.setText("Rs. "+priceFormat.format(precision.format(Float.parseFloat(model.getCExtra())))+"/-");
 
         TodayClosingTask tasks=new TodayClosingTask(model);
-        TaskManager.executeTask(tasks);
+        TaskManager.getInstance().executeTask(tasks);
 
     }
 

@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 /**
+ * @deprecated
  *Clears the expenditure upto 1st day of current month.
  */
 
