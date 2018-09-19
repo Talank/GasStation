@@ -15,17 +15,17 @@ public class TaskManager {
     private static boolean isInstantTaskAvailable = false;
 
     private static TaskManager instance;
-    private Thread mainThread;
+    private Thread taskThread;
 
 
 
     private TaskManager() {
         taskQueue = new TaskQueue(10);
-        mainThread = new Thread(()->{
+        taskThread = new Thread(()->{
             performTask();
         });
-        mainThread.setDaemon(true);
-        mainThread.start();
+        taskThread.setDaemon(true);
+        taskThread.start();
 
     }
 
@@ -72,7 +72,7 @@ public class TaskManager {
         maxThread=threadSize;
         taskQueue=new TaskQueue(10);
 
-        mainThread=new Thread(()->{
+        taskThread=new Thread(()->{
             while(true) {
                 if(taskQueue.isEmpty()) {
                     isThreadFree = true;
@@ -96,8 +96,8 @@ public class TaskManager {
             }
 
         });
-        mainThread.setDaemon(true);
-        mainThread.start();
+        taskThread.setDaemon(true);
+        taskThread.start();
     }*/
 
     /**
@@ -107,10 +107,10 @@ public class TaskManager {
 
     public void executeTask(Tasks tasks) {
         taskQueue.enQueue(tasks);
-        mainThread.interrupt();
+        taskThread.interrupt();
     }
 
-    public synchronized void executeInstantTask(Runnable instantTasks) {
+    public void executeInstantTask(Runnable instantTasks) {
 
         /*
         * Check if the thread is free, if so run on the free thread, otherwise run on new thread
@@ -119,7 +119,7 @@ public class TaskManager {
         if (isThreadFree) {
             instantTask = instantTasks;
             isInstantTaskAvailable = true;
-            notify();
+            taskThread.interrupt();
         } else {
             Thread mainThread=new Thread(instantTasks);
             mainThread.setDaemon(true);
