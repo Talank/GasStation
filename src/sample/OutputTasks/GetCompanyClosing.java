@@ -5,16 +5,16 @@ import sample.model.DebtListModel;
 import sample.model.databases.DatabaseHandler;
 import sample.tasks.Tasks;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.text.DecimalFormat;
+import java.time.LocalDate;
 
 public class GetCompanyClosing extends Tasks {
     private DebtListModel model;
     private double total,due,grandTotal;
     //private double due;
+    private Date expiry_date;
+
 
     public GetCompanyClosing(DebtListModel model){
         this.model = model;
@@ -35,8 +35,10 @@ public class GetCompanyClosing extends Tasks {
     public StringBuilder call() throws SQLException {
         String tableName = DatabaseHandler.generateTableName(model.getCompanyName());
 
+        expiry_date = model.getExpireDate();
+
         Statement getData = connection.createStatement();
-        ResultSet resultSet = getData.executeQuery("SELECT * FROM "+tableName);
+        ResultSet resultSet = getData.executeQuery("SELECT * FROM "+tableName+" WHERE DATE<'"+expiry_date+"'");
         String type;
         while (resultSet.next()){
             //builder.append(resultSet.getString(1)+"\t\t");
@@ -57,8 +59,14 @@ public class GetCompanyClosing extends Tasks {
             builder.append(resultSet.getString(7)+"\n");
         }
 
+
+        /*
+        Getting the previous expiry date of the company
+         */
+
+
         Statement getTotal = Tasks.getConnection().createStatement();
-        ResultSet rs = getTotal.executeQuery("SELECT SUM(PRICE) FROM "+tableName);
+        ResultSet rs = getTotal.executeQuery("SELECT SUM(PRICE) FROM "+tableName+" WHERE DATE<'"+expiry_date+"'");
 
         rs.next();
         total = (rs.getString(1) != null)? Double.parseDouble(rs.getString(1)): 0;
