@@ -2,6 +2,7 @@ package sample.OutputTasks;
 
 import sample.model.CreditCompanyClosingBill;
 import sample.model.DebtListModel;
+import sample.model.databases.DatabaseHandler;
 import sample.tasks.Tasks;
 
 import java.sql.PreparedStatement;
@@ -32,10 +33,9 @@ public class GetCompanyClosing extends Tasks {
     StringBuilder builder=new StringBuilder();
 
     public StringBuilder call() throws SQLException {
-        String tableName = model.getCompanyName();
-        tableName = tableName.replace(" ","_");
+        String tableName = DatabaseHandler.generateTableName(model.getCompanyName());
 
-        Statement getData = Tasks.getConnection().createStatement();
+        Statement getData = connection.createStatement();
         ResultSet resultSet = getData.executeQuery("SELECT * FROM "+tableName);
         String type;
         while (resultSet.next()){
@@ -63,7 +63,6 @@ public class GetCompanyClosing extends Tasks {
         rs.next();
         total = (rs.getString(1) != null)? Double.parseDouble(rs.getString(1)): 0;
 
-        tableName = tableName.replace("_"," ");
         ResultSet rs1 = getTotal.executeQuery("SELECT DUE FROM CREDITCOMPANY WHERE COMPANY_NAME='"+tableName+"'");
 
         if(rs1.next()) {

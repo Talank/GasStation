@@ -1,5 +1,6 @@
 package sample.model;
 
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.ContentDisplay;
@@ -101,7 +102,9 @@ public class CreditCompanyClosingBill {
             return true;
         } else {
             SystemLogging.getLogger().fine("Credit Company failed to close");
-            AppHomeController.getInstance().showMessage("Error Printing Bill",1000);
+            Platform.runLater(()->{
+                AppHomeController.getInstance().showMessage("Error Printing Bill",1000);
+            });
         }
         return false;
     }

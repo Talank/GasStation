@@ -22,6 +22,7 @@ import sample.controller.main_home_controller.lists_controllers.CustomListCellCo
 import sample.controller.main_home_controller.lists_controllers.DebtListCell;
 import sample.controller.SystemLogging;
 import sample.library.SettingsConstants;
+import sample.library.SnackBarToastGenerator;
 import sample.library.toolbar.ToolBar;
 import sample.model.CreditCompanyClosingBill;
 import sample.model.CreditCompanyList;
@@ -213,7 +214,23 @@ public class SettingsController {
     public void closeCompany(MouseEvent e) {
 
         DebtListModel model=debtList.getSelectionModel().getSelectedItem();
-        performTask(new CompanyCreditClosingTask(model));
+
+        CreditCompanyClosingBill bill=new CreditCompanyClosingBill(model);
+        try {
+            if (bill.printBill()) {
+                SnackBarToastGenerator snackBarToastGenerator=new SnackBarToastGenerator("Company Closed. Printing Bill",1000);
+                snackBarToastGenerator.show();
+                performTask(new CompanyCreditClosingTask(model));
+            } else {
+                SnackBarToastGenerator snackBarToastGenerator=new SnackBarToastGenerator("Company Closed.But Couldn't Print Bill",1000);
+                snackBarToastGenerator.show();
+            }
+        } catch(SQLException e1) {
+            e1.printStackTrace();
+        }
+
+
+
     }
 
     @FXML
