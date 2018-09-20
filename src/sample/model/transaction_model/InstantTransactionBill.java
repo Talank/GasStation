@@ -35,7 +35,7 @@ public class InstantTransactionBill {
                  builder.append(data);
                 //builder.append(transaction.getType()+"   "+transaction.getVehicleNo()+"   "+ String.format("%-2s",new DecimalFormat("##.##").format(transaction.getVolume()))+"   "+String.format("%s",new DecimalFormat("##.###").format(transaction.getPrice()/transaction.getVolume()))+"  "+String.format("%2s",priceFormat.getResult())+"\n");
             } else {
-                String data=String.format("%s  %s    %8s  %8s    %8s",transaction.getType(),"xxxx",new DecimalFormat("##.##").format(transaction.getQuantity()),new DecimalFormat("##.##").format(transaction.getRate()),priceFormat.getResult()+"\n");
+                String data=String.format("%s  %s    %8s   %8s    %8s",transaction.getType(),"xxxx",new DecimalFormat("##.##").format(transaction.getQuantity()),new DecimalFormat("##.##").format(transaction.getRate()),priceFormat.getResult()+"\n");
                 builder.append(data);
 //                builder.append(transaction.getType()+" "+ " xxxx    "+  String.format("%-2s",new DecimalFormat("##.##").format(transaction.getQuantity()))
 //                +"     "+String.format("%s",new DecimalFormat("##.##").format(transaction.getRate()))+"  "+ String.format("%2s",priceFormat.getResult())+"\n");

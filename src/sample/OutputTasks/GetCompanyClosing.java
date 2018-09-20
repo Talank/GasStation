@@ -48,10 +48,10 @@ public class GetCompanyClosing extends Tasks {
             }
 
             else {
-                builder.append("X" + "       \t\t");
+                builder.append("xxxx" + "       \t\t");
             }
 
-            builder.append(resultSet.getString(4)+"   \t\t");
+            builder.append(new DecimalFormat("##.##").format(Double.parseDouble(resultSet.getString(4)))+"   \t\t");
             builder.append(new DecimalFormat("##.##").format(Double.parseDouble(resultSet.getString(5)))+"     \t\t");
             builder.append(new DecimalFormat("##.##").format(Double.parseDouble(resultSet.getString(6)))+"  \t\t");
             builder.append(resultSet.getString(7)+"\n");

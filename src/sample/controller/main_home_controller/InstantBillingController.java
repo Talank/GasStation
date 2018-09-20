@@ -328,7 +328,7 @@ public class InstantBillingController {
 
         customerName.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)->{
 
-            if(!newValue.matches("[a-zA-Z ]{0,15}")) {
+            if(!newValue.matches("[a-zA-Z ]{0,30}")) {
                 customerName.setText(oldValue);
             }
 

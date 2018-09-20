@@ -96,19 +96,28 @@ public class TankRemarkController implements BottomBarInterface {
             GetTankRemarkTask tasks = new GetTankRemarkTask(vehicleNumber);
             tasks.setOnSucceeded((WorkerStateEvent e)->{
                 TankerModel model = tasks.getValue();
-                float avgValue = model.getAvg();
 
-                if (avgValue >= 0 && avgValue <= 20) {
-                    remarkLabel.setText("The tanker is good!");
-                } else if (avgValue >= 21 && avgValue <= 50) {
-                    remarkLabel.setText("The tanker is good!");
-                } else if (avgValue > 50) {
-                    remarkLabel.setText("Not good tanker");
-                } else {
-                    remarkLabel.setText("Tanker Status UnKnown");
+                if(model!=null) {
+                    float avgValue = model.getAvg();
+
+                    if (avgValue >= 0 && avgValue <= 20) {
+                        remarkLabel.setText("The tanker is good!");
+                    } else if (avgValue >= 21 && avgValue <= 50) {
+                        remarkLabel.setText("The tanker is good!");
+                    } else if (avgValue > 50) {
+                        remarkLabel.setText("Not good tanker");
+                    } else {
+                        remarkLabel.setText("Tanker Status UnKnown");
+                    }
+                    avgLossLabel.setText("Total Loss: " + avgValue * model.getCount() + "  Count: " + model.getCount());
+                    typeLabel.setText("Type: " + model.getType());
                 }
-                avgLossLabel.setText("Total Loss: "+ avgValue*model.getCount()+  "  Count: "+model.getCount());
-                typeLabel.setText("Type: "+model.getType());
+                else{
+                    bottomBar.setErrorText("tanker not found");
+                    remarkLabel.setText("Sorry! The tanker is not found");
+                    typeLabel.setText("");
+                    avgLossLabel.setText("");
+                }
             });
 
             tasks.setOnFailed((WorkerStateEvent e)->{
