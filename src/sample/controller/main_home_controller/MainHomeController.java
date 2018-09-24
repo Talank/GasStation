@@ -1,6 +1,6 @@
 package sample.controller.main_home_controller;
 
-import com.jfoenix.controls.JFXButton;
+
 import com.jfoenix.controls.JFXRippler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,17 +12,16 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import org.omg.CORBA.NO_IMPLEMENT;
+
 import sample.controller.AppHomeController;
-import sample.controller.SystemLogging;
-import sample.controller.dialog_controller.FinalReadingsController;
+
+
 import sample.controller.dialog_controller.LoginDialogController;
 import sample.model.CreditCompanyList;
-import sample.model.databases.DatabaseHandler;
-import sample.model.RateModel;
+
 
 import javafx.scene.input.MouseEvent;
-import sample.model.SystemStatus;
+
 
 import java.io.IOException;
 
@@ -118,7 +117,7 @@ public class MainHomeController {
 
     @FXML
     public void loadInstantBilling(MouseEvent e) throws IOException {
-        loadStage((Node)e.getSource(),"../../view/main_home_views/instantBilling.fxml");
+        loadStage((Node)e.getSource(),"sample/view/main_home_views/instantBilling.fxml");
     }
 
 
@@ -129,7 +128,7 @@ public class MainHomeController {
     @FXML
     public void loadCreditBilling(MouseEvent e) throws IOException {
         if (CreditCompanyList.getCompanyList().size() != 0) {
-            loadStage((Node)e.getSource(),"../../view/main_home_views/creditBilling.fxml");
+            loadStage((Node)e.getSource(),"sample/view/main_home_views/creditBilling.fxml");
         } else {
             AppHomeController.getInstance().showMessage("No Companies Detected.",2000);
         }
@@ -143,7 +142,7 @@ public class MainHomeController {
     @FXML
     public void loadDebt(MouseEvent e) throws IOException {
 
-        loadStage((Node)e.getSource(),"../../view/main_home_views/credit_company_list/debt.fxml");
+        loadStage((Node)e.getSource(),"sample/view/main_home_views/credit_company_list/debt.fxml");
     }
 
     /*
@@ -154,7 +153,7 @@ public class MainHomeController {
     @FXML
     public void loadSettings(MouseEvent e) throws IOException {
 
-        FXMLLoader loader=new FXMLLoader(getClass().getResource("../../view/dialogs/loginDialog.fxml"));
+        FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("sample/view/dialogs/loginDialog.fxml"));
         Parent root=loader.load();
         LoginDialogController controller=loader.getController();
         controller.setStatus(1);
@@ -167,7 +166,7 @@ public class MainHomeController {
 
     @FXML
     public void loadSystemStatus(MouseEvent e) throws IOException {
-        loadStage((Node)e.getSource(),"../../view/main_home_views/systemStatus.fxml");
+        loadStage((Node)e.getSource(),"sample/view/main_home_views/systemStatus.fxml");
     }
 
     /*
@@ -176,7 +175,7 @@ public class MainHomeController {
 
     @FXML
     public void loadDailyAnalytics(MouseEvent e) throws IOException {
-        loadStage((Node)e.getSource(),"../../view/main_home_views/dailyTotalAnalytics.fxml");
+        loadStage((Node)e.getSource(),"sample/view/main_home_views/dailyTotalAnalytics.fxml");
     }
 
     /*
@@ -185,7 +184,7 @@ public class MainHomeController {
 
     @FXML
     public void loadProfitLoss(MouseEvent e) throws IOException {
-        loadStage((Node)e.getSource(),"../../view/main_home_views/profitLoss.fxml");
+        loadStage((Node)e.getSource(),"sample/view/main_home_views/profitLoss.fxml");
 
     }
 
@@ -195,9 +194,9 @@ public class MainHomeController {
 
 
     public void showSettings(Stage stage) throws IOException {
-        Parent root=FXMLLoader.load(getClass().getResource("../../view/main_home_views/settings.fxml"));
+        Parent root=FXMLLoader.load(getClass().getClassLoader().getResource("sample/view/main_home_views/settings.fxml"));
         Scene scene=new Scene(root);
-        scene.getStylesheets().add(getClass().getResource("../../css/mainStyle.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getClassLoader().getResource("sample/css/mainStyle.css").toExternalForm());
         stage.setScene(scene);
         stage.show();
     }
@@ -219,7 +218,7 @@ public class MainHomeController {
     * */
 
     private void loadStage(Node node,String path) throws IOException {
-        BorderPane borderPane=FXMLLoader.load(getClass().getResource(path));
+        BorderPane borderPane=FXMLLoader.load(getClass().getClassLoader().getResource(path));
         AppHomeController.getInstance().loadStages(borderPane);
     }
 

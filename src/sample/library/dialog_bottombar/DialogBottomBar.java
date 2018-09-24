@@ -23,7 +23,7 @@ public class DialogBottomBar extends HBox {
     private BottomBarInterface bottomBarInterface;
 
     public DialogBottomBar() {
-        FXMLLoader loader=new FXMLLoader(getClass().getResource("dialogBottomBar.fxml"));
+        FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("sample/library/dialog_bottombar/dialogBottomBar.fxml"));
         loader.setRoot(this);
         loader.setController(this);
         try {

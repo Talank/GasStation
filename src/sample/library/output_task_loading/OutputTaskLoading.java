@@ -1,6 +1,6 @@
 package sample.library.output_task_loading;
 
-import javafx.beans.property.DoubleProperty;
+
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,7 +16,7 @@ public class OutputTaskLoading extends VBox {
 
     public OutputTaskLoading() {
 
-        FXMLLoader loader=new FXMLLoader(getClass().getResource("outputTaskLoading.fxml"));
+        FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("sample/library/output_task_loading/outputTaskLoading.fxml"));
         loader.setRoot(this);
         loader.setController(this);
         try {

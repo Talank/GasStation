@@ -9,7 +9,7 @@ import javafx.fxml.FXML;
 
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
-import javafx.scene.Node;
+
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -22,7 +22,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import sample.controller.AppHomeController;
-import sample.controller.dialog_controller.LoginDialogController;
+
 import sample.controller.main_home_controller.lists_controllers.TransactionListCell;
 import sample.library.toolbar.ToolBar;
 
@@ -33,14 +33,14 @@ import sample.model.nepaliPriceFormat.Precision;
 import sample.model.nepaliPriceFormat.PriceFormat;
 import sample.model.transaction_model.CreditTransactionBill;
 import sample.model.transaction_model.Transaction;
+
 import sample.tasks.TaskManager;
-import sample.tasks.TaskSync;
 import sample.tasks.database_tasks.StoreCreditTransactionTask;
 
-import java.awt.*;
+
 import java.io.IOException;
 import java.sql.Date;
-import java.text.DecimalFormat;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -527,10 +527,10 @@ public class CreditBillingController {
     @FXML
     public void loadAdmin(MouseEvent e) throws IOException {
 
-        FXMLLoader loader=new FXMLLoader(getClass().getResource("../../view/dialogs/postingDialog.fxml"));
+        FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("sample/view/dialogs/postingDialog.fxml"));
         Parent root=loader.load();
         Stage stage=new Stage();
-        stage.getIcons().add(new Image(getClass().getResourceAsStream("../../resources/logo.png")));
+        stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("sample/resources/logo.png")));
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(new Scene(root));
         stage.show();
@@ -686,8 +686,7 @@ public class CreditBillingController {
             if(admin) {
                 task.setAdminDate(true,date);
             }
-            TaskSync.getInstance().executeTask(task);
-           // TaskManager.executeTask(task);
+            TaskManager.getInstance().executeTask(task);
 
             transactionListView.getItems().clear();
             masterClear();

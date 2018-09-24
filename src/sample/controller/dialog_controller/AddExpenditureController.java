@@ -1,22 +1,21 @@
 package sample.controller.dialog_controller;
 
-import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.validation.RequiredFieldValidator;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
-import sample.controller.SystemLogging;
-import sample.controller.main_home_controller.SettingsController;
+
+
 import sample.library.dialog_bottombar.BottomBarInterface;
 import sample.library.dialog_bottombar.DialogBottomBar;
 import sample.library.dialog_toolbar.DialogToolBar;
-import sample.model.SystemStatus;
-import sample.model.databases.DatabaseHandler;
+
+
 import sample.tasks.TaskManager;
 import sample.tasks.database_tasks.AddExpenditureTask;
-import sample.tasks.database_tasks.ChangeUserParameterTask;
+
 
 import java.io.IOException;
 

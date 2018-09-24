@@ -7,19 +7,17 @@ import javafx.collections.ObservableSet;
 import javafx.fxml.FXML;
 import javafx.print.Printer;
 import javafx.scene.Node;
-import javafx.scene.input.MouseEvent;
+
 import sample.controller.main_home_controller.SettingsController;
 import sample.library.SettingsConstants;
-import sample.library.dialog_bottombar.BottomBarInterface;
+
 import sample.library.dialog_bottombar.DialogBottomBar;
 import sample.library.dialog_toolbar.DialogToolBar;
 import sample.model.SystemStatus;
 import sample.tasks.TaskInterface;
 import sample.tasks.TaskManager;
 import sample.tasks.database_tasks.SettingsTask;
-import sample.tasks.database_tasks.SetupPrintersTask;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class PrinterDialogController {
@@ -71,10 +69,6 @@ public class PrinterDialogController {
             });
             TaskManager.getInstance().executeTask(task);
 
-
-            /*SetupPrintersTask task=new SetupPrintersTask(billPrinterName.getValue(),analyticsPrinterName.getValue());
-            TaskManager.getInstance().executeTask(task);
-            ((Node)e.getSource()).getScene().getWindow().hide();*/
         });
 
         ObservableSet<Printer> printers=Printer.getAllPrinters();

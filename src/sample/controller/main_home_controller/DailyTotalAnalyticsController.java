@@ -4,10 +4,10 @@ import javafx.collections.FXCollections;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
+
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.ProgressBar;
+
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -19,13 +19,13 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import sample.OutputTasks.GetDailyTotalAnalyticsTask;
-import sample.controller.dialog_controller.FinalReadingsController;
+
 import sample.library.output_task_loading.OutputTaskLoading;
 import sample.library.toolbar.BackButtonInterface;
 import sample.library.toolbar.ToolBar;
-import sample.model.RefillModel;
+
 import sample.model.SystemStatus;
-import sample.model.databases.DatabaseHandler;
+
 import sample.model.nepaliPriceFormat.Precision;
 import sample.model.nepaliPriceFormat.PriceFormat;
 import sample.model.transaction_model.DailyTotalAnalyticModel;
@@ -265,11 +265,11 @@ public class DailyTotalAnalyticsController implements BackButtonInterface {
     @FXML
     public void showTodayAnalytics(MouseEvent e) throws IOException {
 
-        FXMLLoader loader=new FXMLLoader(getClass().getResource("../../view/dialogs/finalReadings.fxml"));
+        FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("sample/view/dialogs/finalReadings.fxml"));
         Parent root=loader.load();
 
         Stage stage=new Stage();
-        stage.getIcons().add(new Image(getClass().getResourceAsStream("../../resources/logo.png")));
+        stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("sample/resources/logo.png")));
         stage.setScene(new Scene(root));
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.show();

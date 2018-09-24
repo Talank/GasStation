@@ -4,7 +4,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXRadioButton;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.validation.RequiredFieldValidator;
-import javafx.beans.property.ReadOnlyObjectWrapper;
+
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -23,7 +23,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
+
 import sample.OutputTasks.GetRefillTask;
 import sample.controller.dialog_controller.RefillDialogController;
 import sample.controller.dialog_controller.TankRemarkController;
@@ -35,12 +35,10 @@ import sample.model.RefillModel;
 import sample.model.nepaliPriceFormat.Precision;
 import sample.model.nepaliPriceFormat.PriceFormat;
 import sample.tasks.TaskManager;
-import sample.tasks.Tasks;
+
 
 import java.io.IOException;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+
 
 
 /*
@@ -413,7 +411,7 @@ public class ProfitLossController implements BackButtonInterface {
     @FXML
     public void loadRefillChange(MouseEvent e) throws IOException {
 
-        FXMLLoader loader=new FXMLLoader(getClass().getResource("../../view/dialogs/refillDialog.fxml"));
+        FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("sample/view/dialogs/refillDialog.fxml"));
 
         Parent root=loader.load();
         RefillDialogController controller=loader.getController();
@@ -427,7 +425,7 @@ public class ProfitLossController implements BackButtonInterface {
         }
 
         Stage stage=new Stage();
-        stage.getIcons().add(new Image(getClass().getResourceAsStream("../../resources/logo.png")));
+        stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("sample/resources/logo.png")));
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(new Scene(root));
         stage.show();
@@ -438,11 +436,11 @@ public class ProfitLossController implements BackButtonInterface {
 
 
         if(!searchTanker.getText().isEmpty()) {
-            FXMLLoader loader=new FXMLLoader(getClass().getResource("../../view/dialogs/tankRemark.fxml"));
+            FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("sample/view/dialogs/tankRemark.fxml"));
             Parent root= loader.load();
 
             Stage stage=new Stage();
-            stage.getIcons().add(new Image(getClass().getResourceAsStream("../../resources/logo.png")));
+            stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("sample/resources/logo.png")));
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setScene(new Scene(root));
             stage.show();

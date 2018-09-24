@@ -7,18 +7,18 @@ import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
-import sample.controller.AppHomeController;
+
 import sample.controller.main_home_controller.SettingsController;
 import sample.library.SettingsConstants;
 import sample.library.dialog_bottombar.BottomBarInterface;
 import sample.library.dialog_bottombar.DialogBottomBar;
 import sample.library.dialog_toolbar.DialogToolBar;
 import sample.model.SystemStatus;
-import sample.model.databases.DatabaseHandler;
+
 import sample.tasks.TaskInterface;
 import sample.tasks.TaskManager;
 import sample.tasks.database_tasks.SettingsTask;
-import sample.tasks.database_tasks.SetupOilStockTask;
+
 
 import java.io.IOException;
 
@@ -114,30 +114,6 @@ public class OilStockDialogController implements BottomBarInterface {
                 }
             });
             TaskManager.getInstance().executeTask(task);
-
-            /*SetupOilStockTask task=new SetupOilStockTask(dieselStockValue.getText(),petrolStockValue.getText());
-            TaskManager.getInstance().executeTask(task);
-
-
-
-            String[][] model=SettingsController.getInstance().getModel();
-
-            model[6][0]=dieselStockValue.getText();
-            model[6][1]=SystemStatus.getNepaliCurrentDate();
-
-            model[7][0]=petrolStockValue.getText();
-            model[7][1]=SystemStatus.getNepaliCurrentDate();
-
-
-            SettingsController.getInstance().loadSettings(model);
-            ((Node)e.getSource()).getScene().getWindow().hide();*/
-
-
-            /*if(DatabaseHandler.setupOilStock(dieselStockValue.getText(),petrolStockValue.getText())) {
-                ((Node)e.getSource()).getScene().getWindow().hide();
-            } else {
-                System.out.println("Error Updating Oil Stock");
-            }*/
         }
 
 

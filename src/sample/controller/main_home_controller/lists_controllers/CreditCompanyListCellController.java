@@ -31,7 +31,7 @@ public class CreditCompanyListCellController {
         priceFormat = new PriceFormat();
         precision = new Precision();
         try {
-            FXMLLoader loader=new FXMLLoader(getClass().getResource("../../../view/main_home_views/credit_company_list/creditCompanyListCell.fxml"));
+            FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("sample/view/main_home_views/credit_company_list/creditCompanyListCell.fxml"));
             loader.setController(this);
             vBox=loader.load();
         } catch(IOException e) {
@@ -57,9 +57,9 @@ public class CreditCompanyListCellController {
 
         if(model.isExpired()) {
             companyLastPaid.setTextFill(Color.RED);
-            imageView.setImage(new Image(getClass().getResourceAsStream("../../../resources/warn.png")));
+            imageView.setImage(new Image(getClass().getClassLoader().getResourceAsStream("sample/resources/warn.png")));
         } else {
-            imageView.setImage(new Image(getClass().getResourceAsStream("../../../resources/true.png")));
+            imageView.setImage(new Image(getClass().getClassLoader().getResourceAsStream("sample/resources/true.png")));
         }
 
     }

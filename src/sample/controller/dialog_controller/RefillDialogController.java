@@ -6,32 +6,24 @@ import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
-import sample.controller.SystemLogging;
-import sample.controller.main_home_controller.ProfitLossController;
+
 import sample.library.dialog_bottombar.BottomBarInterface;
 import sample.library.dialog_bottombar.DialogBottomBar;
 import sample.library.dialog_toolbar.DialogToolBar;
 import sample.model.SystemStatus;
 import sample.model.RefillModel;
 import sample.model.TankerModel;
-import sample.model.databases.DatabaseHandler;
+
 import sample.tasks.TaskInterface;
 import sample.tasks.TaskManager;
-import sample.tasks.Tasks;
-import sample.tasks.database_tasks.RefillTask;
-import sample.tasks.database_tasks.SetupOilStockTask;
 
-import javax.xml.transform.Result;
+import sample.tasks.database_tasks.RefillTask;
+
+
 import java.io.IOException;
-import java.sql.Date;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
 
 public class RefillDialogController implements BottomBarInterface {
 
-   // public JFXTextField tankerNumber;
     @FXML
     private JFXTextField expected, actual, tankerNumber;
 

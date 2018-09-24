@@ -6,22 +6,21 @@ import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.input.MouseEvent;
-import javafx.stage.Stage;
+
 import sample.controller.AppHomeController;
-import sample.controller.main_home_controller.MainHomeController;
-import sample.controller.SystemLogging;
+
 import sample.controller.main_home_controller.SettingsController;
 import sample.library.SettingsConstants;
-import sample.library.SnackBarToastGenerator;
+
 import sample.library.dialog_bottombar.BottomBarInterface;
 import sample.library.dialog_bottombar.DialogBottomBar;
 import sample.library.dialog_toolbar.DialogToolBar;
-import sample.model.RateModel;
+
 import javafx.scene.Node;
 import sample.model.SystemStatus;
 import sample.tasks.TaskInterface;
 import sample.tasks.TaskManager;
-import sample.tasks.database_tasks.ChangeOilRateTask;
+
 import sample.tasks.database_tasks.SettingsTask;
 
 import java.io.IOException;
@@ -116,30 +115,6 @@ public class ChangeRateController implements BottomBarInterface {
                 ((Node)e.getSource()).getScene().getWindow().hide();
             }
 
-
-
-          /*  RateModel rateModel=new RateModel(Float.parseFloat(rDiesel.getText()),Float.parseFloat(rPetrol.getText()));
-
-            ChangeOilRateTask task=new ChangeOilRateTask(rateModel);
-            TaskManager.getInstance().executeTask(task);*/
-
-            /*if(rateModel.storeRate())
-                SystemLogging.getLogger().fine("Diesel And Petrol Rate Successfully Changed");
-            else
-                SystemLogging.getLogger().warning("Failed to Store Rate,Using Current Rate Temporarily!");*/
-
-        /*    String[][] model=SettingsController.getInstance().getModel();
-
-            model[1][0]=rDiesel.getText();
-            model[1][1]=SystemStatus.getNepaliCurrentDate();
-
-            model[2][0]=rPetrol.getText();
-            model[2][1]=SystemStatus.getNepaliCurrentDate();
-
-            SettingsController.getInstance().loadSettings(model);*/
-
-     /*       Stage stage=(Stage)((Node)e.getSource()).getScene().getWindow();
-            stage.close();*/
         }
     }
 

@@ -5,17 +5,16 @@ import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+
 import javafx.scene.control.SelectionMode;
 
 import javafx.scene.layout.BorderPane;
-import javafx.stage.Stage;
+
 import sample.controller.AppHomeController;
-import sample.controller.dialog_controller.PaymentDialogController;
-import sample.controller.main_home_controller.lists_controllers.CreditCompanyDetailsController;
+
+
 import sample.controller.main_home_controller.lists_controllers.CreditCompanyListCell;
-import sample.controller.main_home_controller.lists_controllers.DebtListCell;
+
 import sample.library.toolbar.ToolBar;
 import sample.model.CreditCompanyList;
 import sample.model.DebtListModel;
@@ -57,7 +56,7 @@ public class DebtController {
         debtList.getItems().addAll(CreditCompanyList.getDetailCompanyList());
 
         debtList.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends DebtListModel> observable, DebtListModel oldValue, DebtListModel newValue)->{
-            FXMLLoader loader=new FXMLLoader(getClass().getResource("../../view/main_home_views/credit_company_details/creditCompanyDetails.fxml"));
+            FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("sample/view/main_home_views/credit_company_details/creditCompanyDetails.fxml"));
 
 
 

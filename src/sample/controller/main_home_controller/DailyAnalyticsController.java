@@ -1,6 +1,6 @@
 package sample.controller.main_home_controller;
 
-import javafx.application.Platform;
+
 import javafx.concurrent.WorkerStateEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -9,7 +9,7 @@ import sample.model.SystemStatus;
 import sample.model.nepaliPriceFormat.Precision;
 import sample.model.nepaliPriceFormat.PriceFormat;
 import sample.model.transaction_model.DailyTotalAnalyticModel;
-import sample.tasks.TaskInterface;
+
 import sample.tasks.TaskManager;
 import sample.OutputTasks.GetDailyTotalAnalyticsModelTask;
 import sample.tasks.database_tasks.TodayClosingTask;
@@ -43,7 +43,7 @@ public class DailyAnalyticsController {
     public void initialize() {
 
         toolBar.setTitle("Today Analytics");//title
-        toolBar.setBackPath("../../view/main_home_views/dailyTotalAnalytics.fxml");
+        toolBar.setBackPath("sample/view/main_home_views/dailyTotalAnalytics.fxml");
 
         precision = new Precision();
         priceFormat = new PriceFormat();

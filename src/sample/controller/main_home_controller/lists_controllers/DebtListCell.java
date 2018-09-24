@@ -2,7 +2,7 @@ package sample.controller.main_home_controller.lists_controllers;
 
 import javafx.scene.Node;
 import javafx.scene.control.ListCell;
-import sample.controller.main_home_controller.lists_controllers.CustomListCellController;
+
 import sample.model.DebtListModel;
 
 public class DebtListCell extends ListCell<DebtListModel> {

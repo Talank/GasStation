@@ -3,7 +3,6 @@ package sample.controller.main_home_controller.credit_company_details_controller
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.MultipleSelectionModel;
-import javafx.scene.control.SingleSelectionModel;
 
 public class NoSelectionModel<T> extends MultipleSelectionModel<T> {
 

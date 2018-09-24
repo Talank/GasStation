@@ -61,8 +61,6 @@ public class Main extends Application {
         if(Tasks.setupConnection()&&initializeSystem.customExecute()) {
             TaskManager.getInstance();
             startup=true;
-
-//            loader=new FXMLLoader(getClass().getResource("view/main_home_views/mainHome.fxml"));
             loader=new FXMLLoader(getClass().getResource("view/appHome.fxml"));
         } else {
             msg=initializeSystem.getErrorMessage();
@@ -86,7 +84,7 @@ public class Main extends Application {
         SystemStatus.setStage(primaryStage);
 
         if(startup) {
-            primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("resources/logo.png")));
+            primaryStage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("sample/resources/logo.png")));
 
             primaryStage.setTitle("Ohm Gas Station");
             primaryStage.setScene(new Scene(root));
@@ -94,7 +92,7 @@ public class Main extends Application {
             primaryStage.show();
 
             if(CreditCompanyList.getExpiredCompanyList().size()!=0) {
-                FXMLLoader loader=new FXMLLoader(getClass().getResource("view/dialogs/dialog_list_views/expireCompanyDialog.fxml"));
+                FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("sample/view/dialogs/dialog_list_views/expireCompanyDialog.fxml"));
                 Parent root=loader.load();
                 Stage stage=new Stage();
                 stage.initModality(Modality.APPLICATION_MODAL);
@@ -145,8 +143,4 @@ public class Main extends Application {
 
     }
 
-
-/*    public static void main(String[] args) {
-        launch(args);
-    }*/
 }

@@ -34,7 +34,7 @@ public class InitializeSystem extends Tasks {
     public boolean customExecute() {
 
         SystemLogging.initializeLogger();//Initialize The Logger
-        SystemStatus.setMainHomePath("../../view/main_home_views/mainHome.fxml");
+        SystemStatus.setMainHomePath("sample/view/main_home_views/mainHome.fxml");
 
 
         NepaliDateGenerator generator = new NepaliDateGenerator();

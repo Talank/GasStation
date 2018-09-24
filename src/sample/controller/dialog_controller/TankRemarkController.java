@@ -12,7 +12,7 @@ import sample.library.dialog_bottombar.DialogBottomBar;
 import sample.library.dialog_toolbar.DialogToolBar;
 import sample.model.RefillModel;
 import sample.model.TankerModel;
-import sample.tasks.TaskInterface;
+
 import sample.tasks.TaskManager;
 import sample.OutputTasks.GetTankRemarkTask;
 

@@ -15,7 +15,7 @@ public class TransactionListCellController {
 
     public TransactionListCellController() {
         try {
-            FXMLLoader loader=new FXMLLoader(getClass().getResource("../../../view/main_home_views/credit_company_list/transactionListCell.fxml"));
+            FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("sample/view/main_home_views/credit_company_list/transactionListCell.fxml"));
             loader.setController(this);
             hBox=loader.load();
         } catch (Exception e) {

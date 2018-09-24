@@ -17,21 +17,21 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import sample.OutputTasks.GetSettingsTask;
 import sample.controller.dialog_controller.*;
-import sample.controller.main_home_controller.credit_company_details_controller.NoSelectionModel;
-import sample.controller.main_home_controller.lists_controllers.CustomListCellController;
+
+
 import sample.controller.main_home_controller.lists_controllers.DebtListCell;
-import sample.controller.SystemLogging;
+
 import sample.library.SettingsConstants;
 import sample.library.SnackBarToastGenerator;
 import sample.library.toolbar.ToolBar;
 import sample.model.CreditCompanyClosingBill;
 import sample.model.CreditCompanyList;
 import sample.model.SystemStatus;
-import sample.model.databases.DatabaseHandler;
+
 import sample.model.DebtListModel;
 import sample.model.nepaliPriceFormat.Precision;
 import sample.model.nepaliPriceFormat.PriceFormat;
-import sample.tasks.TaskInterface;
+
 import sample.tasks.TaskManager;
 import sample.tasks.Tasks;
 import sample.tasks.database_tasks.*;
@@ -159,7 +159,7 @@ public class SettingsController {
 
     @FXML
     public void addCompany(MouseEvent e) throws IOException {
-        Parent root=FXMLLoader.load(getClass().getResource("../../view/dialogs/changeCompany.fxml"));
+        Parent root=FXMLLoader.load(getClass().getClassLoader().getResource("sample/view/dialogs/changeCompany.fxml"));
         Scene scene=new Scene(root);
         Stage stage=new Stage();
         stage.initModality(Modality.APPLICATION_MODAL);
@@ -191,14 +191,14 @@ public class SettingsController {
 
     @FXML
     public void editCompany(MouseEvent e) throws IOException {
-        FXMLLoader loader=new FXMLLoader(getClass().getResource("../../view/dialogs/changeCompany.fxml"));
+        FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("sample/view/dialogs/changeCompany.fxml"));
         Parent root=loader.load();
         ChangeCompanyController controller=loader.getController();
         modelIndex=debtList.getSelectionModel().getSelectedIndex();
         DebtListModel model=debtList.getSelectionModel().getSelectedItem();
         controller.setEditData(model);
         Stage stage=new Stage();
-        stage.getIcons().add(new Image(getClass().getResourceAsStream("../../resources/logo.png")));
+        stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("sample/resources/logo.png")));
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(new Scene(root));
         stage.show();
@@ -236,7 +236,7 @@ public class SettingsController {
     @FXML
     public void payCompany(MouseEvent e) throws IOException {
         DebtListModel model=debtList.getSelectionModel().getSelectedItem();
-        FXMLLoader loader=new FXMLLoader(getClass().getResource("../../view/dialogs/paymentDialog.fxml"));
+        FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("sample/view/dialogs/paymentDialog.fxml"));
 
         Parent root=loader.load();
 
@@ -244,7 +244,7 @@ public class SettingsController {
         controller.setModel(model);
 
         Stage stage=new Stage();
-        stage.getIcons().add(new Image(getClass().getResourceAsStream("../../resources/logo.png")));
+        stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("sample/resources/logo.png")));
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(new Scene(root));
         stage.show();
@@ -258,14 +258,14 @@ public class SettingsController {
 
     @FXML
     public void changeOilRates(MouseEvent e) throws IOException {
-        FXMLLoader loader=new FXMLLoader(getClass().getResource("../../view/dialogs/changeRateDialog.fxml"));
+        FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("sample/view/dialogs/changeRateDialog.fxml"));
 
         Parent root=loader.load();
         ChangeRateController controller=loader.getController();
         controller.setInitialRate(model[1][0],model[2][0]);
 
         Stage stage=new Stage();
-        stage.getIcons().add(new Image(getClass().getResourceAsStream("../../resources/logo.png")));
+        stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("sample/resources/logo.png")));
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(new Scene(root));
         stage.show();
@@ -273,13 +273,13 @@ public class SettingsController {
 
     @FXML
     public void setupCounterStock(MouseEvent e) throws IOException {
-        FXMLLoader loader=new FXMLLoader(getClass().getResource("../../view/dialogs/counterStockDialog.fxml"));
+        FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("sample/view/dialogs/counterStockDialog.fxml"));
 
         Parent root=loader.load();
         CounterStockDialogController controller=loader.getController();
         controller.setInitialStock(model[5][0]);
         Stage stage=new Stage();
-        stage.getIcons().add(new Image(getClass().getResourceAsStream("../../resources/logo.png")));
+        stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("sample/resources/logo.png")));
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(new Scene(root));
         stage.show();
@@ -287,10 +287,10 @@ public class SettingsController {
 
     @FXML
     public void setupMeterReadings(MouseEvent e) throws IOException {
-        Parent root=FXMLLoader.load(getClass().getResource("../../view/dialogs/setupMeterReadings.fxml"));
+        Parent root=FXMLLoader.load(getClass().getClassLoader().getResource("sample/view/dialogs/setupMeterReadings.fxml"));
         Scene scene=new Scene(root);
         Stage stage=new Stage();
-        stage.getIcons().add(new Image(getClass().getResourceAsStream("../../resources/logo.png")));
+        stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("sample/resources/logo.png")));
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(scene);
         stage.show();
@@ -298,10 +298,10 @@ public class SettingsController {
 
     @FXML
     public void setupPrinters(MouseEvent e) throws IOException  {
-        Parent root=FXMLLoader.load(getClass().getResource("../../view/dialogs/printerDialog.fxml"));
+        Parent root=FXMLLoader.load(getClass().getClassLoader().getResource("sample/view/dialogs/printerDialog.fxml"));
         Scene scene=new Scene(root);
         Stage stage=new Stage();
-        stage.getIcons().add(new Image(getClass().getResourceAsStream("../../resources/logo.png")));
+        stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("sample/resources/logo.png")));
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(scene);
         stage.show();
@@ -310,13 +310,13 @@ public class SettingsController {
 
     @FXML
     public void setupOilStock(MouseEvent e) throws IOException {
-        FXMLLoader loader=new FXMLLoader(getClass().getResource("../../view/dialogs/oilStockDialog.fxml"));
+        FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("sample/view/dialogs/oilStockDialog.fxml"));
 
         Parent root=loader.load();
         OilStockDialogController controller=loader.getController();
         controller.setInitialStock(model[6][0], model[7][0]);
         Stage stage=new Stage();
-        stage.getIcons().add(new Image(getClass().getResourceAsStream("../../resources/logo.png")));
+        stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("sample/resources/logo.png")));
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(new Scene(root));
         stage.show();
@@ -331,14 +331,14 @@ public class SettingsController {
 
     @FXML
     public void changeUserNameAndPassword(MouseEvent e) throws IOException {
-        FXMLLoader loader=new FXMLLoader(getClass().getResource("../../view/dialogs/changeUserParameters.fxml"));
+        FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("sample/view/dialogs/changeUserParameters.fxml"));
         Parent root=loader.load();
 
         ChangeUserParametersController controller=loader.getController();
         controller.setUserName(usernameValue.getText());
 
         Stage stage=new Stage();
-        stage.getIcons().add(new Image(getClass().getResourceAsStream("../../resources/logo.png")));
+        stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("sample/resources/logo.png")));
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(new Scene(root));
         stage.show();
@@ -364,11 +364,11 @@ public class SettingsController {
         /**
          * Petrol Pump expenditure code goes here
          */
-        FXMLLoader loader=new FXMLLoader(getClass().getResource("../../view/dialogs/addExpenditure.fxml"));
+        FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("sample/view/dialogs/addExpenditure.fxml"));
         Parent root=loader.load();
 
         Stage stage=new Stage();
-        stage.getIcons().add(new Image(getClass().getResourceAsStream("../../resources/logo.png")));
+        stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("sample/resources/logo.png")));
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(new Scene(root));
         stage.show();

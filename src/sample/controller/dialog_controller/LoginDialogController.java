@@ -1,6 +1,6 @@
 package sample.controller.dialog_controller;
 
-import com.jfoenix.controls.JFXButton;
+
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.validation.RequiredFieldValidator;
@@ -12,16 +12,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.ToolBar;
-import javafx.scene.image.Image;
+
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import sample.OutputTasks.GetAdminUser;
 import sample.controller.AppHomeController;
-import sample.controller.main_home_controller.MainHomeController;
+
 import sample.library.dialog_bottombar.BottomBarInterface;
 import sample.library.dialog_bottombar.DialogBottomBar;
 import sample.library.dialog_toolbar.DialogToolBar;
@@ -107,17 +105,15 @@ public class LoginDialogController implements BottomBarInterface {
                         switch (this.status) {
                             case 1:
 
-                                BorderPane borderPane=FXMLLoader.load(getClass().getResource("../../view/main_home_views/settings.fxml"));
+                                BorderPane borderPane=FXMLLoader.load(getClass().getClassLoader().getResource("sample/view/main_home_views/settings.fxml"));
                                 AppHomeController.getInstance().loadStages(borderPane);
-
-//                                MainHomeController.getInstance().showSettings(stage);
                                 break;
                         }
                         Stage loginWindow=(Stage)((Node)e.getSource()).getScene().getWindow();
                         loginWindow.close();
 
                     } else {
-                        FXMLLoader loader=new FXMLLoader(getClass().getResource("../../view/dialogs/errorDialog.fxml"));
+                        FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("sample/view/dialogs/errorDialog.fxml"));
                         Parent root=loader.load();
                         ErrorDialogController controller=loader.getController();
                         controller.setTitle("Login Error");

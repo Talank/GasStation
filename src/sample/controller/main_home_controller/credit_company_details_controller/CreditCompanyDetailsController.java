@@ -1,7 +1,7 @@
 package sample.controller.main_home_controller.credit_company_details_controller;
 
 import javafx.collections.FXCollections;
-import javafx.concurrent.Task;
+
 import javafx.concurrent.WorkerStateEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
@@ -37,7 +37,7 @@ public class CreditCompanyDetailsController implements BackButtonInterface {
         task=null;
 
         toolBar.setTitle("Credit Company Details");
-        toolBar.setBackPath("../../view/main_home_views/credit_company_list/debt.fxml");
+        toolBar.setBackPath("sample/view/main_home_views/credit_company_list/debt.fxml");
         toolBar.addBackButtonInterface(this);
 
         progressLayout.setVisible(true);

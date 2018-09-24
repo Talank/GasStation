@@ -1,8 +1,7 @@
 package sample.controller;
 
 import com.jfoenix.controls.JFXSnackbar;
-import com.sun.deploy.util.FXLoader;
-import javafx.beans.property.DoubleProperty;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -11,7 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Border;
+
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
@@ -59,7 +58,8 @@ public class AppHomeController {
         priceFormat = new PriceFormat();
 
         snackBar=new JFXSnackbar(root);
-        snackBar.getStylesheets().add(getClass().getResource("../css/appHomeStyle.css").toExternalForm());
+        //Note we are not using relative paths now, because JAR file doesn't know .., as it is a file system property
+        snackBar.getStylesheets().add(getClass().getClassLoader().getResource("sample/css/appHomeStyle.css").toExternalForm());
 
         dieselRate.setText("Rs. "+(priceFormat.format(precision.format(SystemStatus.getdRate()))));
         petrolRate.setText("Rs. "+(priceFormat.format(precision.format(SystemStatus.getpRate()))));
@@ -69,7 +69,7 @@ public class AppHomeController {
         try {
 
             mainHome.getChildren().clear();
-            BorderPane borderPane=FXMLLoader.load(getClass().getResource("../view/main_home_views/mainHome.fxml"));
+            BorderPane borderPane=FXMLLoader.load(getClass().getClassLoader().getResource("sample/view/main_home_views/mainHome.fxml"));
             mainHome.getChildren().add(borderPane);
         } catch(IOException e) {
             e.printStackTrace();
@@ -117,13 +117,13 @@ public class AppHomeController {
 
     @FXML
     public void loadSettings(MouseEvent e) throws IOException {
-        FXMLLoader loader=new FXMLLoader(getClass().getResource("../view/dialogs/loginDialog.fxml"));
+        FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("sample/view/dialogs/loginDialog.fxml"));
         Parent root=loader.load();
         LoginDialogController controller=loader.getController();
         controller.setStatus(1);
         controller.setStage((Stage)((Node)e.getSource()).getScene().getWindow());
         Stage stage=new Stage();
-        stage.getIcons().add(new Image(getClass().getResourceAsStream("../resources/logo.png")));
+        stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("sample/resources/logo.png")));
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(new Scene(root));
         stage.show();

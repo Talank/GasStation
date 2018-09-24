@@ -9,12 +9,12 @@ import javafx.scene.Node;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
-import sample.controller.main_home_controller.SettingsController;
+
 import sample.library.dialog_bottombar.BottomBarInterface;
 import sample.library.dialog_bottombar.DialogBottomBar;
 import sample.library.dialog_toolbar.DialogToolBar;
 import sample.model.DebtListModel;
-import sample.tasks.TaskInterface;
+
 import sample.tasks.TaskManager;
 import sample.tasks.database_tasks.CompanyPaymentTask;
 

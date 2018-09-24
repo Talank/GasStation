@@ -8,7 +8,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
-import sample.controller.SystemLogging;
+
 import sample.controller.main_home_controller.SettingsController;
 import sample.library.SettingsConstants;
 import sample.library.dialog_bottombar.BottomBarInterface;
@@ -16,10 +16,10 @@ import sample.library.dialog_bottombar.DialogBottomBar;
 import sample.library.dialog_toolbar.DialogToolBar;
 import sample.model.AdminUser;
 import sample.model.SystemStatus;
-import sample.model.databases.DatabaseHandler;
+
 import sample.tasks.TaskInterface;
 import sample.tasks.TaskManager;
-import sample.tasks.database_tasks.ChangeUserParameterTask;
+
 import sample.tasks.database_tasks.SettingsTask;
 
 import java.io.IOException;
@@ -131,18 +131,6 @@ public class ChangeUserParametersController implements BottomBarInterface {
                 }
             });
             TaskManager.getInstance().executeTask(task);
-
-            /*ChangeUserParameterTask task=new ChangeUserParameterTask(userName.getText().trim(),password.getText().trim());
-            TaskManager.getInstance().executeTask(task);
-
-            String[][] model=SettingsController.getInstance().getModel();
-
-            model[0][0]=userName.getText();
-            model[0][1]=SystemStatus.getNepaliCurrentDate();
-
-
-            SettingsController.getInstance().loadSettings(model);
-            ((Node)e.getSource()).getScene().getWindow().hide();*/
 
         }
     }

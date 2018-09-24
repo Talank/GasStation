@@ -5,24 +5,22 @@ import com.jfoenix.validation.RequiredFieldValidator;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Label;
+
 import javafx.scene.input.MouseEvent;
-import sample.OutputTasks.GetSettingsTask;
-import sample.controller.main_home_controller.SettingsController;
+
 import sample.controller.SystemLogging;
 import sample.library.dialog_bottombar.BottomBarInterface;
 import sample.library.dialog_bottombar.DialogBottomBar;
 import sample.library.dialog_toolbar.DialogToolBar;
-import sample.model.databases.DatabaseHandler;
+
 import sample.model.DebtListModel;
-import sample.model.databases.SetupDatabase;
+
 import sample.tasks.TaskInterface;
 import sample.tasks.TaskManager;
 import sample.tasks.database_tasks.SaveCompanyTask;
 import sample.tasks.database_tasks.UpdateCompanyTask;
 
 import java.io.IOException;
-import java.sql.Date;
 
 
 public class ChangeCompanyController implements BottomBarInterface {

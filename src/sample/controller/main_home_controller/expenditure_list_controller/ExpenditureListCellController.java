@@ -17,7 +17,7 @@ public class ExpenditureListCellController {
     public ExpenditureListCellController() {
 
         try {
-            FXMLLoader loader=new FXMLLoader(getClass().getResource("../../../view/main_home_views/expenditure_list_view/expenditure_list_cell.fxml"));
+            FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("sample/view/main_home_views/expenditure_list_view/expenditure_list_cell.fxml"));
             loader.setController(this);
             vBox=loader.load();
         } catch (Exception e) {

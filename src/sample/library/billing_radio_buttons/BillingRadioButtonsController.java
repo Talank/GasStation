@@ -17,7 +17,7 @@ public class BillingRadioButtonsController extends HBox {
     private ToggleGroup selection;
 
     public BillingRadioButtonsController() {
-        FXMLLoader loader=new FXMLLoader(getClass().getResource("billingRadioButtons.fxml"));
+        FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("sample/library/billing_radio_buttons/billingRadioButtons.fxml"));
         loader.setRoot(this);
         loader.setController(this);
         try {

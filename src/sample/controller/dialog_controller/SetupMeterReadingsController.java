@@ -7,7 +7,6 @@ import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 import sample.controller.main_home_controller.SettingsController;
 import sample.library.SettingsConstants;
 import sample.library.dialog_bottombar.BottomBarInterface;
@@ -17,7 +16,6 @@ import sample.model.SystemStatus;
 import sample.tasks.TaskInterface;
 import sample.tasks.TaskManager;
 import sample.tasks.database_tasks.SettingsTask;
-import sample.tasks.database_tasks.SetupMeterReadingsTask;
 
 import java.io.IOException;
 
@@ -117,19 +115,6 @@ public class SetupMeterReadingsController implements BottomBarInterface {
             });
             TaskManager.getInstance().executeTask(task);
 
-            /*String[][] model=SettingsController.getInstance().getModel();
-            model[3][0]=fDiesel.getText();
-            model[3][1]=SystemStatus.getNepaliCurrentDate();
-
-            model[4][0]=fPetrol.getText();
-            model[4][1]=SystemStatus.getNepaliCurrentDate();
-
-            SettingsController.getInstance().loadSettings(model);
-
-            SetupMeterReadingsTask task=new SetupMeterReadingsTask(fDiesel.getText(),fPetrol.getText());
-            TaskManager.getInstance().executeTask(task);
-
-            ((Node)e.getSource()).getScene().getWindow().hide();*/
 
         }
     }

@@ -16,7 +16,7 @@ public class CustomListCellController {
 
     public CustomListCellController() {
         try {
-            FXMLLoader loader=new FXMLLoader(getClass().getResource("../../../view/dialogs/dialog_list_views/customListCell.fxml"));
+            FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("sample/view/dialogs/dialog_list_views/customListCell.fxml"));
             loader.setController(this);
             hBox=loader.load();
         } catch (Exception e) {

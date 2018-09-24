@@ -51,7 +51,7 @@ public class CustomCreditListCellController {
         priceFormat = new PriceFormat();
 
         try {
-            FXMLLoader loader=new FXMLLoader(getClass().getResource("../../../view/main_home_views/credit_company_details/customCreditListCell.fxml"));
+            FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("sample/view/main_home_views/credit_company_details/customCreditListCell.fxml"));
             loader.setController(this);
             vBox=loader.load();
             vehicleNo.setCellValueFactory(new PropertyValueFactory<>("vehicleNo"));

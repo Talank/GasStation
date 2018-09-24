@@ -3,14 +3,12 @@ package sample.library.toolbar;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.stage.Stage;
+
 import sample.controller.AppHomeController;
 
 
@@ -27,7 +25,7 @@ public class ToolBar extends GridPane {
 
     public ToolBar() {
         backButtonInterface=null;
-        FXMLLoader loader=new FXMLLoader(getClass().getResource("toolbar.fxml"));
+        FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("sample/library/toolbar/toolbar.fxml"));
         loader.setRoot(this);
         loader.setController(this);
         try {
@@ -55,13 +53,9 @@ public class ToolBar extends GridPane {
         if(backButtonInterface!=null)
             backButtonInterface.cleanUp();
 
-        BorderPane borderPane=FXMLLoader.load(getClass().getResource(backPath));
+        BorderPane borderPane=FXMLLoader.load(getClass().getClassLoader().getResource(backPath));
         AppHomeController.getInstance().loadStages(borderPane);
 
-        /*Parent root=FXMLLoader.load(getClass().getResource(backPath));
-        Stage stage=(Stage)((Node)e.getSource()).getScene().getWindow();
-        stage.setScene(new Scene(root));
-        stage.show();*/
     }
 
 }

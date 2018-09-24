@@ -13,11 +13,11 @@ import sample.library.dialog_bottombar.BottomBarInterface;
 import sample.library.dialog_bottombar.DialogBottomBar;
 import sample.library.dialog_toolbar.DialogToolBar;
 import sample.model.SystemStatus;
-import sample.model.databases.DatabaseHandler;
+
 import sample.tasks.TaskInterface;
 import sample.tasks.TaskManager;
 import sample.tasks.database_tasks.SettingsTask;
-import sample.tasks.database_tasks.SetupCounterStockTask;
+
 
 import java.io.IOException;
 
@@ -85,16 +85,6 @@ public class CounterStockDialogController implements BottomBarInterface {
             });
             TaskManager.getInstance().executeTask(task);
 
-           /*
-            SetupCounterStockTask task=new SetupCounterStockTask(counterStock.getText());
-            TaskManager.getInstance().executeTask(task);
-            ((Node)e.getSource()).getScene().getWindow().hide();
-
-            String[][] model=SettingsController.getInstance().getModel();
-            model[5][0]=counterStock.getText();
-            model[5][1]=SystemStatus.getNepaliCurrentDate();
-
-            SettingsController.getInstance().loadSettings(model);*/
 
         }
     }

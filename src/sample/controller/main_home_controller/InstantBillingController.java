@@ -16,21 +16,21 @@ import javafx.beans.value.ObservableValue;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import sample.controller.AppHomeController;
-import sample.controller.SystemLogging;
+
 import sample.controller.main_home_controller.lists_controllers.TransactionListCell;
-import sample.model.databases.DatabaseHandler;
+
 import sample.model.SystemStatus;
 import sample.library.toolbar.ToolBar;
 import sample.model.nepaliPriceFormat.Precision;
 import sample.model.transaction_model.InstantTransactionBill;
 import sample.model.transaction_model.Transaction;
-import sample.tasks.TaskManager;
-import sample.tasks.database_tasks.StoreInstantTransactionTask;
+
+
 
 import java.io.IOException;
-import java.text.DecimalFormat;
+
 import java.util.ArrayList;
-import java.util.Collections;
+
 import java.util.List;
 
 

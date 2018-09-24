@@ -6,7 +6,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import sample.library.toolbar.ToolBar;
 import sample.model.CreditDetailsModel;
-import sample.model.databases.DatabaseHandler;
+
 
 public class CreditCompanyDetailsController {
 

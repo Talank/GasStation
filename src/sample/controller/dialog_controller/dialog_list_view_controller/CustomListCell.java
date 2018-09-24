@@ -3,7 +3,7 @@ package sample.controller.dialog_controller.dialog_list_view_controller;
 
 import javafx.scene.Node;
 import javafx.scene.control.ListCell;
-import javafx.scene.layout.HBox;
+
 import sample.model.DebtListModel;
 
 
