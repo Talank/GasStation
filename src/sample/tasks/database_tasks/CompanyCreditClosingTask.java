@@ -49,6 +49,7 @@ public class CompanyCreditClosingTask extends Tasks {
 
                 PreparedStatement deleteCredit=connection.prepareStatement("DELETE FROM "+tableName+" WHERE DATE<?");
                 deleteCredit.setDate(1,model.getExpireDate());
+
                 deleteCredit.execute();
 
                 //Configure the cursor to be updatable
