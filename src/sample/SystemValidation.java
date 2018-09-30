@@ -122,14 +122,14 @@ public class SystemValidation {
             process.getOutputStream().close();
             Scanner sc=new Scanner(process.getInputStream());
             sc.next();
-            //processorID = sc.next();
-            processorID = "BFEBFBFF000506E3";
+            processorID = sc.next();
+            //processorID = "BFEBFBFF0001067A";
             process = Runtime.getRuntime().exec(new String[] {"wmic","diskdrive", "get", "serialnumber"});
             process.getOutputStream().close();
             sc = new Scanner(process.getInputStream());
             sc.next();
-            //diskSerialNumber = sc.next();
-            diskSerialNumber = "161633443794";
+            diskSerialNumber = sc.next();
+            //diskSerialNumber= "31535233394a5a42303539313637202020202020";;
 
             System.out.println("ProcessorID:" + processorID);
             System.out.println("DiskDrive: " + diskSerialNumber);

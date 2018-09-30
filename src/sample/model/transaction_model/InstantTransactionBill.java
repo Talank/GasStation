@@ -1,5 +1,8 @@
 package sample.model.transaction_model;
 
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.text.Font;
 import sample.model.PrintBill;
@@ -15,6 +18,9 @@ import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+
+import com.sun.javafx.tk.FontMetrics;
+import com.sun.javafx.tk.Toolkit;
 
 public class InstantTransactionBill {
 
@@ -62,14 +68,23 @@ public class InstantTransactionBill {
         builder.append("---------------------------------------------------\n");
         priceFormat.setFormat(Transaction.getTotal()+"");
         builder.append(String.format("%50s","Total:Rs."+priceFormat.getResult()+"\n"));
+        label.setContentDisplay(ContentDisplay.LEFT);
         label.setText(builder.toString());
-        label.setFont(new Font("Arial",13));
+        //label.setAlignment(Pos.TOP_LEFT);
+        //label.setPadding(new Insets(0,0,0,-10));
+//        label.setStyle("-fx-padding: 0 0 0 0;");
+        //label.setStyle("-fx-margin: null null null 0;");
+
+//        FontMetrics metrics = Toolkit.getToolkit().getFontLoader().getFontMetrics(label.getFont());
+//        label.setPadding(new Insets(-metrics.getDescent(), 0, 0, 0));
+
+
+        label.setFont(new Font("Arial",10));
         PrintBill.print(label);
         Transaction.setTotal(0);
 
 
     }
-
 
 
 }

@@ -118,7 +118,6 @@ public class GetCompanyClosing extends Tasks {
 
             rs.next();
             total = (rs.getString(1) != null)? Double.parseDouble(rs.getString(1)): 0;
-
         }
 
 
