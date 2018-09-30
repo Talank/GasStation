@@ -1,11 +1,19 @@
 package sample.model.transaction_model;
 
 import javafx.scene.control.Label;
+import javafx.scene.text.Font;
 import sample.model.PrintBill;
 import sample.model.nepaliPriceFormat.PriceFormat;
+import sample.nepali_date.NepaliDateGenerator;
+import sun.util.calendar.BaseCalendar;
 
 
+import javax.xml.soap.Text;
+import java.awt.*;
+import java.sql.Date;
 import java.text.DecimalFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class InstantTransactionBill {
@@ -17,13 +25,23 @@ public class InstantTransactionBill {
     }
 
     public void print() {
+        Label label=new Label();
+
         StringBuilder builder=new StringBuilder();
-        builder.append("-----------Shree Om Petrol Pump------------\n");
-        builder.append("       Po-Le 7,Swagatnagar,chauthe       \n");
+        String details="𝗣𝗼𝗸𝗵𝗮𝗿𝗮 𝟭𝟰,𝗦𝘄𝗮𝗴𝗮𝘁𝗻𝗮𝗴𝗮𝗿,𝗖𝗵𝗮𝘂𝘁𝗵𝗲 𝗣𝗵 : 𝟱𝟬𝟭𝟬𝟰𝟭";
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+
+
+        LocalDate localDate = LocalDate.now();
+        NepaliDateGenerator generator = new NepaliDateGenerator(localDate);
+        builder.append("-----------𝗦𝗵𝗿𝗲𝗲 𝗢𝗺 𝗣𝗲𝘁𝗿𝗼𝗹 𝗣𝘂𝗺𝗽------------\n");
+        builder.append("   "+details+"\n");
+        builder.append("Pan no : 300207299   , "+  "Date :"+ generator.toString() +" \n");
+
         builder.append("Customer - "+Transaction.getName()+"\n");
-        builder.append("-----------------------------------------\n");
+        builder.append("---------------------------------------------------\n");
         builder.append("Type     V.n           Qty       Rate      Total\n");
-        builder.append("-----------------------------------------\n");
+        builder.append("---------------------------------------------------\n");
         PriceFormat priceFormat=new PriceFormat();
 
         priceFormat.getResult();
@@ -41,11 +59,11 @@ public class InstantTransactionBill {
 //                +"     "+String.format("%s",new DecimalFormat("##.##").format(transaction.getRate()))+"  "+ String.format("%2s",priceFormat.getResult())+"\n");
             }
         }
-        builder.append("----------------------------------------\n");
+        builder.append("---------------------------------------------------\n");
         priceFormat.setFormat(Transaction.getTotal()+"");
         builder.append(String.format("%50s","Total:Rs."+priceFormat.getResult()+"\n"));
-
-        Label label=new Label(builder.toString());
+        label.setText(builder.toString());
+        label.setFont(new Font("Arial",13));
         PrintBill.print(label);
         Transaction.setTotal(0);
 
