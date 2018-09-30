@@ -46,7 +46,7 @@ public class SystemValidation {
                     processorKey.append("X");
                 }
             } else {
-                processorKey=processorKey.delete(16,length-1);
+                processorKey=processorKey.delete(15,length-1);
             }
 
             StringBuilder driveKey = new StringBuilder(diskSerialNumber);
@@ -58,7 +58,7 @@ public class SystemValidation {
                     driveKey.append("X");
                 }
             } else {
-                driveKey=driveKey.delete(16,length-1);
+                driveKey=driveKey.delete(15,length-1);
             }
 
             processorID = processorKey.toString();
@@ -144,7 +144,7 @@ public class SystemValidation {
                         processorKey.append("X");
                     }
                 } else {
-                    processorKey=processorKey.delete(16,length-1);
+                    processorKey=processorKey.delete(15,length-1);
                 }
 
                 StringBuilder driveKey = new StringBuilder(diskSerialNumber);
@@ -156,7 +156,7 @@ public class SystemValidation {
                         driveKey.append("X");
                     }
                 } else {
-                    driveKey=driveKey.delete(16,length-1);
+                    driveKey=driveKey.delete(15,length-1);
                 }
 
                 processorID = processorKey.toString();
