@@ -72,6 +72,7 @@ public class CompanyPaymentTask extends Tasks {
                         /*
                          *The payment and prepaid doesn't pays off the due
                          * so,we set prepaid =0,as it is totally used and set due=netAmount
+                         * we also set the Date of the company to prev_transaction_date which is the date that the company expired, and is either 1st day of month or 15th of month
                          */
                         due=Math.abs(netAmount);
                         prepaid=0;

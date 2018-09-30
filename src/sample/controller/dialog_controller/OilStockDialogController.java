@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 
+import sample.controller.AppHomeController;
 import sample.controller.main_home_controller.SettingsController;
 import sample.library.SettingsConstants;
 import sample.library.dialog_bottombar.BottomBarInterface;
@@ -103,7 +104,11 @@ public class OilStockDialogController implements BottomBarInterface {
                         model[7][0]=petrolStockValue.getText();
                         model[7][1]=SystemStatus.getNepaliCurrentDate();
 
+                        SystemStatus.setPetrolStock(Float.parseFloat(petrolStockValue.getText()));
+                        SystemStatus.setDieselStock(Float.parseFloat(dieselStockValue.getText()));
+
                         SettingsController.getInstance().loadSettings(model);
+                        AppHomeController.getInstance().setStock();
                         ((Node)e.getSource()).getScene().getWindow().hide();
                     });
                 }

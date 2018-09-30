@@ -123,7 +123,7 @@ public class InitializeSystem extends Tasks {
 
                     /*
                      *Here we check the value of PREV_TRANSACTION_ID
-                     * if it is 0 means that the company is not expired,if it is 1 then the company credit closing is done but payment is remaining
+                     * if it is 0 means that the company is not expired (initially),if it is 1 then the company credit closing is done but payment is remaining
                      * and other value indicate that the company closing is not done
                      *
                      * We check if it is 0,then since the Company has just expired,we note the date, the company has expired i.e. either 15 or 1
