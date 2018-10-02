@@ -129,7 +129,7 @@ public class SystemValidation {
             sc = new Scanner(process.getInputStream());
             sc.next();
             diskSerialNumber = sc.next();
-            //diskSerialNumber= "31535233394a5a42303539313637202020202020";;
+            //diskSerialNumber= "31535233394a5a42303539313637202020202020";
 
             System.out.println("ProcessorID:" + processorID);
             System.out.println("DiskDrive: " + diskSerialNumber);

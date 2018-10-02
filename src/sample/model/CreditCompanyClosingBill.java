@@ -53,8 +53,7 @@ public class CreditCompanyClosingBill {
         /**Unicode of the string for bold,mini-word etc
          * font serif
          * https://yaytext.com/bold-italic/*/
-
-        String PetrolPumpName = "𝐒𝐡𝐫𝐞𝐞 𝐎𝐡𝐦 𝐎𝐢𝐥 𝐏𝐮𝐦𝐩";
+        String PetrolPumpName="𝐒𝐡𝐫𝐞𝐞 𝐎𝐦 𝐏𝐞𝐭𝐫𝐨𝐥𝐞𝐮𝐦 𝐓𝐫𝐚𝐝𝐞𝐫𝐬";
 
         String authorizedDealer = "NOC Authorized Dealer";
 

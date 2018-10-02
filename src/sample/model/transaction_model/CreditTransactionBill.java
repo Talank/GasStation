@@ -31,10 +31,11 @@ public class CreditTransactionBill {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
         LocalDate localDate = LocalDate.now();
         NepaliDateGenerator generator = new NepaliDateGenerator(localDate);
-        String details="𝗣𝗼𝗸𝗵𝗮𝗿𝗮 𝟭𝟰,𝗦𝘄𝗮𝗴𝗮𝘁𝗻𝗮𝗴𝗮𝗿,𝗖𝗵𝗮𝘂𝘁𝗵𝗲 𝗣𝗵 : 𝟱𝟬𝟭𝟬𝟰𝟭";
-        builder.append("-----------𝗦𝗵𝗿𝗲𝗲 𝗢𝗺 𝗣𝗲𝘁𝗿𝗼𝗹 𝗣𝘂𝗺𝗽------------\n");
-        builder.append("   "+details+"\n");
-        builder.append("Pan no : 300207299   , "+  "Date :"+ generator.toString() +" \n");
+        String details="Pokhara 14,Chauthe";
+        builder.append("Shree Om Petroleum Traders.\n");
+        builder.append(details+"\n");
+        builder.append("Date :"+ generator.toString() +" \n");
+        builder.append("Pan no : 300207299  ph : 501041\n");
         builder.append("Company Name - "+Transaction.getName()+"\n");
         builder.append("---------------------------------------------------\n");
         builder.append("Type     V.n           Qty       Rate      Total\n");
@@ -58,7 +59,7 @@ public class CreditTransactionBill {
         builder.append(String.format("%50s","Total:Rs."+priceFormat.getResult()+"\n"));
 
         label.setText(builder.toString());
-        label.setFont(new Font("Arial",13));
+        label.setFont(new Font("Arial",7));
         PrintBill.print(label);
         Transaction.setTotal(0);
 

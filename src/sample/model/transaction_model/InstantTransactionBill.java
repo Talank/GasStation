@@ -34,15 +34,17 @@ public class InstantTransactionBill {
         Label label=new Label();
 
         StringBuilder builder=new StringBuilder();
-        String details="𝗣𝗼𝗸𝗵𝗮𝗿𝗮 𝟭𝟰,𝗦𝘄𝗮𝗴𝗮𝘁𝗻𝗮𝗴𝗮𝗿,𝗖𝗵𝗮𝘂𝘁𝗵𝗲 𝗣𝗵 : 𝟱𝟬𝟭𝟬𝟰𝟭";
+        String details="Pokhara 14,Chauthe";
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 
 
         LocalDate localDate = LocalDate.now();
         NepaliDateGenerator generator = new NepaliDateGenerator(localDate);
-        builder.append("-----------𝗦𝗵𝗿𝗲𝗲 𝗢𝗺 𝗣𝗲𝘁𝗿𝗼𝗹 𝗣𝘂𝗺𝗽------------\n");
-        builder.append("   "+details+"\n");
-        builder.append("Pan no : 300207299   , "+  "Date :"+ generator.toString() +" \n");
+        builder.append("Shree Om Petroleum Traders.\n");
+        //builder.append("-----------𝗦𝗵𝗿𝗲𝗲 𝗢𝗺 𝗣𝗲𝘁𝗿𝗼𝗹 𝗣𝘂𝗺𝗽------------\n");
+        builder.append(details+"\n");
+        builder.append("Date :"+ generator.toString() +" \n");
+        builder.append("Pan no : 300207299  ph : 501041\n");
 
         builder.append("Customer - "+Transaction.getName()+"\n");
         builder.append("---------------------------------------------------\n");
@@ -69,7 +71,12 @@ public class InstantTransactionBill {
         priceFormat.setFormat(Transaction.getTotal()+"");
         builder.append(String.format("%50s","Total:Rs."+priceFormat.getResult()+"\n"));
         label.setContentDisplay(ContentDisplay.LEFT);
+
         label.setText(builder.toString());
+
+        //label.setPrefSize(250, 250);
+        //it adds ... to uncovered portion of label
+
         //label.setAlignment(Pos.TOP_LEFT);
         //label.setPadding(new Insets(0,0,0,-10));
 //        label.setStyle("-fx-padding: 0 0 0 0;");
@@ -78,8 +85,10 @@ public class InstantTransactionBill {
 //        FontMetrics metrics = Toolkit.getToolkit().getFontLoader().getFontMetrics(label.getFont());
 //        label.setPadding(new Insets(-metrics.getDescent(), 0, 0, 0));
 
-
-        label.setFont(new Font("Arial",10));
+        //label.setTranslateX(-50);
+        //label.setStyle("-fx-margin-left: -50;");
+        //label.setPadding(new Insets(0,0,0,-50));
+        label.setFont(new Font("Arial",7));
         PrintBill.print(label);
         Transaction.setTotal(0);
 
