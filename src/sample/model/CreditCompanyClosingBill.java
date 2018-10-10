@@ -15,8 +15,7 @@ import sample.OutputTasks.GetCompanyClosing;
 import sample.controller.AppHomeController;
 import sample.controller.SystemLogging;
 
-import javax.swing.*;
-import javax.swing.GroupLayout.Alignment;
+
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 

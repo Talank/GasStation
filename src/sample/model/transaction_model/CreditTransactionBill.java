@@ -3,6 +3,7 @@ package sample.model.transaction_model;
 import javafx.scene.control.Label;
 import javafx.scene.text.Font;
 import sample.model.PrintBill;
+import sample.model.SystemStatus;
 import sample.model.nepaliPriceFormat.PriceFormat;
 import sample.nepali_date.NepaliDateGenerator;
 
@@ -10,7 +11,7 @@ import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 import static com.sun.org.apache.xalan.internal.lib.ExsltDatetime.date;
@@ -18,23 +19,32 @@ import static com.sun.org.apache.xalan.internal.lib.ExsltDatetime.date;
 public class CreditTransactionBill {
 
     private List<Transaction> transactions;
-//    private Date date;
+    private Date postingDate = null;
 
     public CreditTransactionBill(List<Transaction> transactions) {
         this.transactions=transactions;
+    }
+
+    public void setPostingDate(Date postingDate) {
+        this.postingDate = postingDate;
     }
 
 
     public void print() {
         StringBuilder builder=new StringBuilder();
         Label label=new Label();
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-        LocalDate localDate = LocalDate.now();
-        NepaliDateGenerator generator = new NepaliDateGenerator(localDate);
         String details="Pokhara 14,Chauthe";
         builder.append("Shree Om Petroleum Traders.\n");
         builder.append(details+"\n");
-        builder.append("Date :"+ generator.toString() +" \n");
+
+        if (postingDate != null) {//posting date is provided, so use that date instead
+            NepaliDateGenerator generator = new NepaliDateGenerator(postingDate.toLocalDate());
+            builder.append("Date :"+ generator.toString() +" \n");
+        } else {//posting date is null, meaning the posting is not done, so use default nepali date
+            builder.append("Date :"+ SystemStatus.getNepaliCurrentDate() +" \n");
+        }
+
+
         builder.append("Pan no : 300207299  ph : 501041\n");
         builder.append("Company Name - "+Transaction.getName()+"\n");
         builder.append("---------------------------------------------------\n");

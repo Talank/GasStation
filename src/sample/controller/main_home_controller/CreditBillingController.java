@@ -702,6 +702,7 @@ public class CreditBillingController {
             }
 
             CreditTransactionBill transactionBill=new CreditTransactionBill(newList);
+            transactionBill.setPostingDate(date);
             transactionBill.print();
 
         } else {

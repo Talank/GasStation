@@ -53,7 +53,7 @@ public class GetCompanyClosing extends Tasks {
          */
 
         if(model.isExpired()){
-            ResultSet resultSet = getData.executeQuery("SELECT * FROM "+tableName+" WHERE DATE<'"+expiry_date+"'");
+            ResultSet resultSet = getData.executeQuery("SELECT * FROM "+tableName+" WHERE DATE<'"+expiry_date+"' ORDER BY DATE ASC");
 
             String type;
             while (resultSet.next()){
