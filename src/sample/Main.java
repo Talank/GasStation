@@ -129,7 +129,11 @@ public class Main extends Application {
          *Production Code
          */
 
-        /*try {
+        //uncomment the following code to enable the backup
+
+        try {
+            //store the current database mirror to the disk
+            //this call will take time, and will run after the window is closed
             CallableStatement callableStatement= Tasks.getConnection().prepareCall("CALL SYSCS_UTIL.SYSCS_BACKUP_DATABASE(?)");
             callableStatement.setString(1,Reference.DATABASE_BACKUP_PATH);
             callableStatement.execute();
@@ -138,7 +142,7 @@ public class Main extends Application {
         } catch(SQLException e) {
             e.printStackTrace();
             System.out.println("Error Creating Database Backup!");
-        }*/
+        }
         DatabaseHandler.closeConnection();
 
     }
