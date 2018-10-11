@@ -1,6 +1,8 @@
 package sample.model;
 
 import javafx.collections.ObservableSet;
+import javafx.print.PageOrientation;
+import javafx.print.Paper;
 import javafx.print.Printer;
 import javafx.print.PrinterJob;
 import javafx.scene.Node;
@@ -21,14 +23,16 @@ public class PrintBill {
             }
         }
 
-    if(currentPrinter!=null) {
-        PrinterJob printerJob=PrinterJob.createPrinterJob(currentPrinter);
-        if(printerJob.printPage(node)) {
-            printerJob.endJob();
-            SystemLogging.getLogger().fine("Printing Operation successfully done");
-            return true;
+
+
+        if(currentPrinter!=null) {
+            PrinterJob printerJob=PrinterJob.createPrinterJob(currentPrinter);
+            if(printerJob.printPage(node)) {
+                printerJob.endJob();
+                SystemLogging.getLogger().fine("Printing Operation successfully done");
+                return true;
+            }
         }
-    }
 
         /*if(printerJob.showPrintDialog(stage)) {
             if(printerJob.printPage(node)) {

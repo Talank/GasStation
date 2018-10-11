@@ -2,6 +2,10 @@ package sample.model.transaction_model;
 
 import java.util.ArrayList;
 
+/**
+ * @deprecated
+ */
+
 public class TransactionBill {
 
     protected ArrayList<Transaction> transactions;

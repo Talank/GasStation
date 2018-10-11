@@ -4,7 +4,9 @@ package sample.model;
 import javafx.scene.control.Label;
 import sample.controller.AppHomeController;
 import sample.controller.SystemLogging;
-
+/**
+ * @deprecated
+ */
 public class InstantBill extends Bill {
     private String name;
 

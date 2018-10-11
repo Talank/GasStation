@@ -1,5 +1,7 @@
 package sample.model;
 
+
+
 import javafx.scene.control.Label;
 import sample.controller.AppHomeController;
 import sample.controller.SystemLogging;
@@ -7,6 +9,9 @@ import sample.model.databases.DatabaseHandler;
 
 import java.sql.Date;
 
+/**
+ * @deprecated
+ */
 public class CreditBill extends Bill {
 
     private String companyName;

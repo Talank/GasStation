@@ -1,5 +1,7 @@
 package sample.model;
-
+/**
+ * @deprecated
+ */
 public abstract class Bill {
     protected String price,volume,vehicleNo,type;
     protected boolean isDiesel;
