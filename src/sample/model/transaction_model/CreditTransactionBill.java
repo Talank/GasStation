@@ -186,7 +186,8 @@ public class CreditTransactionBill {
         vBox.getChildren().add(grandTotal);
 
 
-        PrintBill.print(vBox);
+        PrintBill printBill = new PrintBill();
+        printBill.print(vBox);
         Transaction.setTotal(0);
 
     }

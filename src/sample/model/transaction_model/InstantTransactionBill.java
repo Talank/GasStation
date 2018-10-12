@@ -2,12 +2,12 @@ package sample.model.transaction_model;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.print.PrinterJob;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.text.Font;
+import javafx.scene.transform.Scale;
 import sample.model.PrintBill;
 import sample.model.SystemStatus;
 import sample.model.nepaliPriceFormat.Precision;
@@ -17,7 +17,6 @@ import sun.util.calendar.BaseCalendar;
 
 
 import javax.xml.soap.Text;
-import java.awt.*;
 import java.sql.Date;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
@@ -105,18 +104,30 @@ public class InstantTransactionBill {
     public void newPrint() {
 
 
+
+
         //for comments refer to CreditTransactionBill.java
 
         VBox vBox = new VBox();
         vBox.setAlignment(Pos.TOP_LEFT);
         vBox.setSpacing(10);
+
+        //set the background to know the actual margin in pdf
+        vBox.setStyle("-fx-background-color: #555555");
+
+
+
+
+
+
+
         HBox hBox = new HBox();
-        hBox.setAlignment(Pos.CENTER);
+   //     hBox.setAlignment(Pos.CENTER);
         hBox.getChildren().add(new Label("Shree Om Petroleum Traders"));
         vBox.getChildren().add(hBox);
 
         HBox hBox1 = new HBox();
-        hBox1.setAlignment(Pos.CENTER);
+ //       hBox1.setAlignment(Pos.CENTER);
         hBox1.getChildren().add(new Label("Pokhara 14,Chauthe"));
         vBox.getChildren().add(hBox1);
 
@@ -188,7 +199,12 @@ public class InstantTransactionBill {
         vBox.getChildren().add(grandTotal);
 
 
-        PrintBill.print(vBox);
+        //create PrintBill to print the bill
+        PrintBill printBill = new PrintBill();
+        printBill.print(vBox);
+
+
+        //This may cause some errors
         Transaction.setTotal(0);
     }
 

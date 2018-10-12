@@ -1,33 +1,56 @@
 package sample.model;
 
+import com.sun.javafx.print.PrintHelper;
+import com.sun.javafx.print.Units;
 import javafx.collections.ObservableSet;
 import javafx.print.PageOrientation;
 import javafx.print.Paper;
 import javafx.print.Printer;
 import javafx.print.PrinterJob;
 import javafx.scene.Node;
+import javafx.scene.layout.VBox;
+import javafx.scene.transform.Scale;
 import javafx.stage.Stage;
 import sample.controller.SystemLogging;
 
 
 public class PrintBill {
 
-    public static boolean print(Node node) {
+    private PrinterJob printerJob;
 
+    private Printer currentPrinter;
+
+
+    public PrintBill() {
         ObservableSet<Printer> printers=Printer.getAllPrinters();
 
-        Printer currentPrinter=null;
+        currentPrinter=null;
         for(Printer printer:printers) {
             if(printer.getName().equals(SystemStatus.getBillPrinter())) {
                 currentPrinter=printer;
             }
         }
 
-
-
         if(currentPrinter!=null) {
-            PrinterJob printerJob=PrinterJob.createPrinterJob(currentPrinter);
-            if(printerJob.printPage(node)) {
+            printerJob = PrinterJob.createPrinterJob(currentPrinter);
+        }
+    }
+
+    public PrinterJob getPrinterJob() {
+        return printerJob;
+    }
+
+    public boolean print(Node node) {
+
+
+
+        if(printerJob!=null) {
+
+            //create custom paper size for the printer
+            Paper ohmPaper = PrintHelper.createPaper("Chinese Printer", 80, 150, Units.MM);
+
+            //set the margin to hardware minimum
+            if(printerJob.printPage(currentPrinter.createPageLayout(ohmPaper, PageOrientation.PORTRAIT, Printer.MarginType.HARDWARE_MINIMUM),node)) {
                 printerJob.endJob();
                 SystemLogging.getLogger().fine("Printing Operation successfully done");
                 return true;

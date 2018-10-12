@@ -95,7 +95,9 @@ public class CreditCompanyClosingBill {
         label.setMaxWidth(Double.MAX_VALUE);
         //label.setTextAlignment(TextAlignment.CENTER);
 
-        if(PrintBill.print(label)) {
+        PrintBill printBill = new PrintBill();
+
+        if(printBill.print(label)) {
             SystemLogging.getLogger().fine("Credit Company Successfully closed");
             return true;
         } else {

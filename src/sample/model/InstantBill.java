@@ -31,12 +31,12 @@ public class InstantBill extends Bill {
         builder.append("Volume:"+volume+" Litres\n");
         builder.append("Price:Rs"+price);
         label.setText(builder.toString());
-        if(PrintBill.print(label)) {
+        /*if(PrintBill.print(label)) {
             SystemLogging.getLogger().fine("Bill Printed Successfully.");
         } else {
             SystemLogging.getLogger().warning("Error Printing Bill!");
             AppHomeController.getInstance().showMessage("Error Printing Bill",1000);
-        }
+        }*/
 
     }
 
