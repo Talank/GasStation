@@ -7,6 +7,7 @@ import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.transform.Scale;
 import sample.model.PrintBill;
 import sample.model.SystemStatus;
@@ -113,7 +114,7 @@ public class InstantTransactionBill {
         vBox.setSpacing(10);
 
         //set the background to know the actual margin in pdf
-        vBox.setStyle("-fx-background-color: #555555");
+        vBox.setStyle("-fx-background-color: #ffffff");
 
 
 
@@ -123,19 +124,31 @@ public class InstantTransactionBill {
 
         HBox hBox = new HBox();
    //     hBox.setAlignment(Pos.CENTER);
-        hBox.getChildren().add(new Label("Shree Om Petroleum Traders"));
+        Label label=new Label("Shree Om petroleum Td");
+        label.setFont(Font.font("Verdana", FontWeight.SEMI_BOLD,9.2));
+        hBox.getChildren().add(label);
         vBox.getChildren().add(hBox);
 
         HBox hBox1 = new HBox();
  //       hBox1.setAlignment(Pos.CENTER);
-        hBox1.getChildren().add(new Label("Pokhara 14,Chauthe"));
-        vBox.getChildren().add(hBox1);
+        label=new Label("Pokhara 14,Chauthe");
+        label.setFont(Font.font("Verdana", FontWeight.SEMI_BOLD,7.2));
 
-        vBox.getChildren().add(new Label("Date: " + SystemStatus.getNepaliCurrentDate()));
-        vBox.getChildren().add(new Label("Pan no : 300207299  ph : 501041"));
-        vBox.getChildren().add(new Label("Customer Name: " + Transaction.getName()));
+        hBox1.getChildren().add(label);
+        vBox.getChildren().add(hBox1);
+        label=new Label("Date: " + SystemStatus.getNepaliCurrentDate());
+        label.setFont(Font.font("Verdana", FontWeight.SEMI_BOLD,6.5));
+
+        vBox.getChildren().add(label);
+        label=new Label("Pan no : 300207299  \n\nPhone : 501041");
+        label.setFont(Font.font("Verdana", FontWeight.SEMI_BOLD,7.2));
+        vBox.getChildren().add(label);
+        label=new Label("Name: " + Transaction.getName());
+        label.setFont(Font.font("Verdana", FontWeight.SEMI_BOLD,7.2));
+        vBox.getChildren().add(label);
 
         Label separator = new Label("-----------------------------------------------------------------------------------------------");
+        separator.setFont(Font.font("Verdana", FontWeight.SEMI_BOLD,7.2));
         separator.setWrapText(false);
         vBox.getChildren().add(separator);
 
@@ -144,23 +157,28 @@ public class InstantTransactionBill {
         gridPane.setHgap(10);
 
         Label type = new Label("Type");
+        type.setFont(Font.font("Verdana", FontWeight.SEMI_BOLD,7.2));
         type.setUnderline(true);
         gridPane.add(type, 0, 0);
 
         Label vN = new Label("V.N");
         vN.setUnderline(true);
+        vN.setFont(Font.font("Verdana", FontWeight.SEMI_BOLD,7.2));
         gridPane.add(vN, 1,0);
 
         Label qty = new Label("Qty");
         qty.setUnderline(true);
+        qty.setFont(Font.font("Verdana", FontWeight.SEMI_BOLD,7.2));
         gridPane.add(qty, 2, 0);
 
         Label rate = new Label("Rate");
         rate.setUnderline(true);
+        rate.setFont(Font.font("Verdana", FontWeight.SEMI_BOLD,7.2));
         gridPane.add(rate, 3, 0);
 
         Label total = new Label("Total");
         total.setUnderline(true);
+        total.setFont(Font.font("Verdana", FontWeight.SEMI_BOLD,7.2));
         gridPane.add(total, 4, 0);
 
 
@@ -172,11 +190,25 @@ public class InstantTransactionBill {
 
             if(transaction.getType().equals("Diesel")||transaction.getType().equals("Petrol")) {
 
-                gridPane.add(new Label(transaction.getType()), 0, i);
-                gridPane.add(new Label(transaction.getVehicleNo()), 1, i);
-                gridPane.add(new Label(priceFormat.format(precision.format(transaction.getVolume()))), 2, i);
-                gridPane.add(new Label(priceFormat.format(precision.format(transaction.getRate()))), 3, i);
-                gridPane.add(new Label(priceFormat.format(precision.format(transaction.getPrice()))), 4, i);
+                label=new Label(transaction.getType());
+                label.setFont(Font.font("Verdana", FontWeight.SEMI_BOLD,7.2));
+                gridPane.add(label, 0, i);
+
+                label = new Label(transaction.getVehicleNo());
+                label.setFont(Font.font("Verdana", FontWeight.SEMI_BOLD,7.2));
+                gridPane.add(label, 1, i);
+
+                label = new Label(priceFormat.format(precision.format(transaction.getVolume())));
+                label.setFont(Font.font("Verdana", FontWeight.SEMI_BOLD,7.2));
+                gridPane.add(label, 2, i);
+
+                label = new Label(priceFormat.format(precision.format(transaction.getRate())));
+                label.setFont(Font.font("Verdana", FontWeight.SEMI_BOLD,7.2));
+                gridPane.add(label, 3, i);
+
+                label = new Label(priceFormat.format(precision.format(transaction.getPrice())));
+                label.setFont(Font.font("Verdana", FontWeight.SEMI_BOLD,7.2));
+                gridPane.add(label, 4, i);
 
             } else {
                 gridPane.add(new Label(transaction.getType()), 0, i);
@@ -192,9 +224,11 @@ public class InstantTransactionBill {
 
         Label separator1 = new Label("----------------------------------------------------------------------------------------------");
         separator1.setWrapText(false);
+        separator1.setFont(Font.font("Verdana", FontWeight.SEMI_BOLD,7.2));
         vBox.getChildren().add(separator1);
 
         Label grandTotal = new Label("Total: " + priceFormat.format(precision.format(Transaction.getTotal())));
+        grandTotal.setFont(Font.font("Verdana", FontWeight.SEMI_BOLD,7.7));
         grandTotal.setUnderline(true);
         vBox.getChildren().add(grandTotal);
 

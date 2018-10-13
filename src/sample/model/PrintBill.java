@@ -10,6 +10,7 @@ import javafx.print.PrinterJob;
 import javafx.scene.Node;
 import javafx.scene.layout.VBox;
 import javafx.scene.transform.Scale;
+import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
 import sample.controller.SystemLogging;
 
@@ -85,8 +86,10 @@ public class PrintBill {
         if(currentPrinter!=null) {
             printerJob = PrinterJob.createPrinterJob(currentPrinter);
             //create custom paper size for the printer
-            Paper ohmPaper = PrintHelper.createPaper("Chinese Printer", 80, 150, Units.MM);
-
+            Paper ohmPaper = PrintHelper.createPaper("Chinese Printer", 58, 150, Units.MM);
+//            Scale SCL = new Scale(58, 150);
+//            node.getTransforms().add(SCL);
+            //node.setStyle("-fx-margin-left:-20;");
             //set the margin to hardware minimum
             if(printerJob.printPage(currentPrinter.createPageLayout(ohmPaper, PageOrientation.PORTRAIT, Printer.MarginType.HARDWARE_MINIMUM),node)) {
                 printerJob.endJob();
