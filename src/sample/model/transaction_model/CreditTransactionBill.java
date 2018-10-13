@@ -187,7 +187,7 @@ public class CreditTransactionBill {
 
 
         PrintBill printBill = new PrintBill();
-        printBill.print(vBox);
+        printBill.printTransactionBill(vBox);
         Transaction.setTotal(0);
 
     }

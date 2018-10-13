@@ -201,7 +201,7 @@ public class InstantTransactionBill {
 
         //create PrintBill to print the bill
         PrintBill printBill = new PrintBill();
-        printBill.print(vBox);
+        printBill.printTransactionBill(vBox);
 
 
         //This may cause some errors

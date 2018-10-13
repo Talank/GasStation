@@ -97,7 +97,7 @@ public class CreditCompanyClosingBill {
 
         PrintBill printBill = new PrintBill();
 
-        if(printBill.print(label)) {
+        if(printBill.printClosingBill(label)) {
             SystemLogging.getLogger().fine("Credit Company Successfully closed");
             return true;
         } else {

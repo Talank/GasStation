@@ -40,12 +40,50 @@ public class PrintBill {
         return printerJob;
     }
 
-    public boolean print(Node node) {
+
+    public boolean printClosingBill(Node node) {
+
+        PrinterJob printerJob;
+        Printer currentPrinter = getCurrentPrinter(SystemStatus.getAnalyticsPrinter());//use the analytics printer
 
 
+        //check if the printer is available
+        if(currentPrinter!=null) {
+            printerJob = PrinterJob.createPrinterJob(currentPrinter);//create a printer job to print
 
-        if(printerJob!=null) {
+            if(printerJob.printPage(node)) {
+                printerJob.endJob();
+                SystemLogging.getLogger().fine("Printing Operation successfully done");
+                return true;
+            }
+        }
 
+
+        return false;
+    }
+
+    private Printer getCurrentPrinter(String printerName) {
+        ObservableSet<Printer> printers=Printer.getAllPrinters();
+        Printer currentPrinter = null;
+
+        for(Printer printer:printers) {
+            if(printer.getName().equals(printerName)) {
+                currentPrinter=printer;
+                break;
+            }
+        }
+
+        return currentPrinter;
+    }
+
+
+    public boolean printTransactionBill(Node node) {
+
+        PrinterJob printerJob;
+        Printer currentPrinter = getCurrentPrinter(SystemStatus.getBillPrinter());//use the bill printer
+
+        if(currentPrinter!=null) {
+            printerJob = PrinterJob.createPrinterJob(currentPrinter);
             //create custom paper size for the printer
             Paper ohmPaper = PrintHelper.createPaper("Chinese Printer", 80, 150, Units.MM);
 
@@ -56,6 +94,7 @@ public class PrintBill {
                 return true;
             }
         }
+
 
         /*if(printerJob.showPrintDialog(stage)) {
             if(printerJob.printPage(node)) {
