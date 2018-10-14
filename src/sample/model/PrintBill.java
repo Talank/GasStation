@@ -2,11 +2,9 @@ package sample.model;
 
 import com.sun.javafx.print.PrintHelper;
 import com.sun.javafx.print.Units;
+import com.sun.javafx.scene.layout.region.Margins;
 import javafx.collections.ObservableSet;
-import javafx.print.PageOrientation;
-import javafx.print.Paper;
-import javafx.print.Printer;
-import javafx.print.PrinterJob;
+import javafx.print.*;
 import javafx.scene.Node;
 import javafx.scene.layout.VBox;
 import javafx.scene.transform.Scale;
@@ -84,14 +82,22 @@ public class PrintBill {
         Printer currentPrinter = getCurrentPrinter(SystemStatus.getBillPrinter());//use the bill printer
 
         if(currentPrinter!=null) {
+
+
+
             printerJob = PrinterJob.createPrinterJob(currentPrinter);
-            //create custom paper size for the printer
-            Paper ohmPaper = PrintHelper.createPaper("Chinese Printer", 58, 150, Units.MM);
-//            Scale SCL = new Scale(58, 150);
-//            node.getTransforms().add(SCL);
-            //node.setStyle("-fx-margin-left:-20;");
-            //set the margin to hardware minimum
-            if(printerJob.printPage(currentPrinter.createPageLayout(ohmPaper, PageOrientation.PORTRAIT, Printer.MarginType.HARDWARE_MINIMUM),node)) {
+
+
+            //we are using the default printer setup with custom margin
+            PageLayout pageLayout = currentPrinter.createPageLayout(currentPrinter.getPrinterAttributes().getDefaultPaper(), currentPrinter.getPrinterAttributes().getDefaultPageOrientation(), 20,1.44,54,54);
+
+            printerJob.getJobSettings().setPageLayout(pageLayout);
+
+
+
+            if(printerJob.printPage(node)) {
+
+
                 printerJob.endJob();
                 SystemLogging.getLogger().fine("Printing Operation successfully done");
                 return true;
