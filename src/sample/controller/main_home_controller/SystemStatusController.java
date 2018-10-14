@@ -26,12 +26,6 @@ public class SystemStatusController implements BackButtonInterface {
     private Label transactionDate;
 
     @FXML
-    private Label currentDieselStock;
-
-    @FXML
-    private Label currentPetrolStock;
-
-    @FXML
     private Label initialDieselReadings;
 
     @FXML
@@ -88,11 +82,6 @@ public class SystemStatusController implements BackButtonInterface {
 
         systemDate.setText(SystemStatus.getNepaliCurrentDate());
         transactionDate.setText(SystemStatus.getNepaliTransactionDate());
-
-
-        currentDieselStock.setText(" " + priceFormat.format(precision.format(SystemStatus.getDieselStock())) +" Litres");
-
-        currentPetrolStock.setText(" " + priceFormat.format(precision.format(SystemStatus.getPetrolStock())) +" Litres");
 
         initialDieselReadings.setText("" + priceFormat.format(precision.format(SystemStatus.getiDiesel())) + " Litres");
 

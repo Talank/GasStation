@@ -25,7 +25,7 @@
                      <children>
                         <StackPane>
                            <children>
-                              <JFXListView fx:id="expenditureList" styleClass="list-view" stylesheets="@../../css/listItemStyle.css" prefHeight="400.0" visible="false" />
+                              <JFXListView fx:id="expenditureList" prefHeight="400.0" styleClass="list-view" stylesheets="@../../css/listItemStyle.css" visible="false" />
                               <OutputTaskLoading fx:id="progressLayout" />
                            </children>
                         </StackPane>
@@ -49,8 +49,6 @@
                         <RowConstraints minHeight="10.0" valignment="CENTER" vgrow="ALWAYS" />
                         <RowConstraints minHeight="10.0" vgrow="ALWAYS" />
                         <RowConstraints minHeight="10.0" vgrow="ALWAYS" />
-                        <RowConstraints minHeight="10.0" vgrow="ALWAYS" />
-                        <RowConstraints minHeight="10.0" vgrow="ALWAYS" />
                      </rowConstraints>
                      <children>
                         <Label text="System Date:">
@@ -66,22 +64,12 @@
                               <Font name="System Bold Italic" size="30.0" />
                            </font>
                         </Label>
-                        <Label fx:id="currentDieselStock" text="0 Litres" underline="true" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                        <Label fx:id="initialDieselReadings" text="0 Litres" underline="true" GridPane.columnIndex="1" GridPane.rowIndex="2">
                            <font>
                               <Font name="System Bold Italic" size="30.0" />
                            </font>
                         </Label>
-                        <Label fx:id="currentPetrolStock" text="0 Litres" underline="true" GridPane.columnIndex="1" GridPane.rowIndex="3">
-                           <font>
-                              <Font name="System Bold Italic" size="30.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="initialDieselReadings" text="0 Litres" underline="true" GridPane.columnIndex="1" GridPane.rowIndex="4">
-                           <font>
-                              <Font name="System Bold Italic" size="30.0" />
-                           </font>
-                        </Label>
-                        <Label text="Current Diesel Stock:" GridPane.rowIndex="2">
+                        <Label text="Initial Diesel Readings:" GridPane.rowIndex="2">
                            <font>
                               <Font name="System Bold" size="25.0" />
                            </font>
@@ -89,7 +77,7 @@
                               <Insets left="10.0" />
                            </padding>
                         </Label>
-                        <Label text="Current Petrol Stock:" GridPane.rowIndex="3">
+                        <Label text="Initial Petrol Readings:" GridPane.rowIndex="3">
                            <font>
                               <Font name="System Bold" size="25.0" />
                            </font>
@@ -97,23 +85,7 @@
                               <Insets left="10.0" />
                            </padding>
                         </Label>
-                        <Label text="Initial Diesel Readings:" GridPane.rowIndex="4">
-                           <font>
-                              <Font name="System Bold" size="25.0" />
-                           </font>
-                           <padding>
-                              <Insets left="10.0" />
-                           </padding>
-                        </Label>
-                        <Label text="Initial Petrol Readings:" GridPane.rowIndex="5">
-                           <font>
-                              <Font name="System Bold" size="25.0" />
-                           </font>
-                           <padding>
-                              <Insets left="10.0" />
-                           </padding>
-                        </Label>
-                        <Label fx:id="initialPetrolReadings" text="0 Litres" underline="true" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                        <Label fx:id="initialPetrolReadings" text="0 Litres" underline="true" GridPane.columnIndex="1" GridPane.rowIndex="3">
                            <font>
                               <Font name="System Bold Italic" size="30.0" />
                            </font>

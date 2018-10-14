@@ -1,140 +1,126 @@
 package sample.OutputTasks;
 
+import javafx.concurrent.Task;
 import sample.model.CreditCompanyClosingBill;
+import sample.model.CreditDetailsModel;
 import sample.model.DebtListModel;
 import sample.model.databases.DatabaseHandler;
+import sample.nepali_date.NepaliDateGenerator;
 import sample.tasks.Tasks;
 
+import javax.xml.crypto.Data;
 import java.sql.*;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
-public class GetCompanyClosing extends Tasks {
+public class GetCompanyClosing {
     private DebtListModel model;
-    private double total,due,grandTotal;
-    //private double due;
-    private Date expiry_date;
-
+    private float total,due,grandTotal;
 
     public GetCompanyClosing(DebtListModel model){
         this.model = model;
     }
 
-    public String getTotalPrice(){
-        return String.valueOf(total);
-    }
-
-    public String getDue(){
-        return String.valueOf(due);
-    }
-
-    public String getGrandTotal() { return String.valueOf(grandTotal); }
-
-    StringBuilder builder=new StringBuilder();
-
-    public StringBuilder call() throws SQLException {
-        //String tableName = DatabaseHandler.generateTableName(model.getCompanyName());
-
-        String tableName = model.getCompanyName();
-        tableName = tableName.replace(" ","_");
-
-        expiry_date = model.getExpireDate();
-        System.out.print(expiry_date);
-
-        Statement getData = connection.createStatement();
+    public List<List<CreditDetailsModel>> call() {
+        List<List<CreditDetailsModel>> mainList=new ArrayList<>();
+        //get the total no of rows in the company table
 
 
-        /*
-        Since we have deleted the data based on whether the company is expired or not,
-        so, we should print the data on bill under the same condition
+        try {
+            Statement getDetails= Tasks.getConnection().createStatement();
 
-        if the company is expired while closing, then print the data less than previous expiry date
-        else (if forced closing?) then print all data of that company
-         */
+            ResultSet resultSet;
+            if (model.isExpired()) {
+                resultSet = getDetails.executeQuery("SELECT SUM(PRICE) FROM " + DatabaseHandler.generateTableName(model.getCompanyName()) + " WHERE DATE<'" + model.getExpireDate() + "'");
+                resultSet.next();
+                total = (resultSet.getString(1) != null)? Float.parseFloat(resultSet.getString(1)): 0;
 
-        if(model.isExpired()){
-            ResultSet resultSet = getData.executeQuery("SELECT * FROM "+tableName+" WHERE DATE<'"+expiry_date+"' ORDER BY DATE ASC");
+                resultSet=getDetails.executeQuery("SELECT * FROM " + DatabaseHandler.generateTableName(model.getCompanyName()) + " WHERE DATE<'" + model.getExpireDate() + "' ORDER BY DATE ASC");
+            } else {
+                resultSet = getDetails.executeQuery("SELECT SUM(PRICE) FROM " + DatabaseHandler.generateTableName(model.getCompanyName()));
+                resultSet.next();
+                total = (resultSet.getString(1) != null)? Float.parseFloat(resultSet.getString(1)): 0;
 
-            String type;
-            while (resultSet.next()){
-                System.out.print("Inside While loop");
-                //builder.append(resultSet.getString(1)+"\t\t");
-                type = resultSet.getString(2);
-                builder.append(type+"  \t\t");
-
-                if ((type.equals("Petrol") || (type.equals("Diesel")))) {
-                    builder.append(resultSet.getString(3) + "         \t\t");
-                }
-
-                else {
-                    builder.append("xxxx" + "       \t\t");
-                }
-
-                builder.append(new DecimalFormat("##.##").format(Double.parseDouble(resultSet.getString(4)))+"   \t\t");
-                builder.append(new DecimalFormat("##.##").format(Double.parseDouble(resultSet.getString(5)))+"     \t\t");
-                builder.append(new DecimalFormat("##.##").format(Double.parseDouble(resultSet.getString(6)))+"  \t\t");
-                builder.append(resultSet.getString(7)+"\n");
+                resultSet=getDetails.executeQuery("SELECT * FROM "+DatabaseHandler.generateTableName(model.getCompanyName()));
             }
 
-            //Statement getTotal = Tasks.getConnection().createStatement();
-            ResultSet rs = getData.executeQuery("SELECT SUM(PRICE) FROM "+tableName+" WHERE DATE<'"+expiry_date+"'");
+            List<CreditDetailsModel> smallList=new ArrayList<>();
+            int  i=1;//index used to group the transactions having same TransactionID
+            boolean create=false;
 
-            rs.next();
-            total = (rs.getString(1) != null)? Double.parseDouble(rs.getString(1)): 0;
+            NepaliDateGenerator generator=new NepaliDateGenerator();
 
-        }
+            //iterate through all the rows in the table
+            while(resultSet.next()) {
 
+                if(i==resultSet.getInt(1)) {
 
+                    if(resultSet.getString(2).startsWith("D")||resultSet.getString(2).startsWith("P")) {//the row is for oil transaction
 
-        else{
-            /*
-            else during forced closing case
-             */
-            ResultSet resultSet = getData.executeQuery("SELECT * FROM "+tableName);
+                        //add the data to smallList
+                        smallList.add(new CreditDetailsModel(resultSet.getString(3),resultSet.getString(2),generator.convertDate(resultSet.getDate(7)),resultSet.getString(5),resultSet.getString(6),resultSet.getString(4)));
+                    } else {
 
-            String type;
-            while (resultSet.next()){
-                System.out.print("Inside While loop");
-                //builder.append(resultSet.getString(1)+"\t\t");
-                type = resultSet.getString(2);
-                builder.append(type+"  \t\t");
+                        //add the data to smallList
+                        smallList.add(new CreditDetailsModel("XXXX",resultSet.getString(2),generator.convertDate(resultSet.getDate(7)),String.valueOf(resultSet.getInt(5)),resultSet.getString(6),resultSet.getString(4)));
+                    }
 
-                if ((type.equals("Petrol") || (type.equals("Diesel")))) {
-                    builder.append(resultSet.getString(3) + "         \t\t");
+                } else {//the index is different from the initial index, i.e this is the next transaction
+                    mainList.add(smallList); //add the list to the mainList
+                    create=true; //to indicate to create another object for storing the next transaction set
+                    i++; //increment the index
+                }
+                if(create) {
+
+                    smallList=new ArrayList<>(); //create a new ArrayList()
+
+                    //we are adding the result to the smallList, because we are in the iteration and , there is data in the current iteration
+                    if(resultSet.getString(2).startsWith("D")||resultSet.getString(2).startsWith("P")) {
+
+                        smallList.add(new CreditDetailsModel(resultSet.getString(3),resultSet.getString(2),generator.convertDate(resultSet.getDate(7)),resultSet.getString(5),resultSet.getString(6),resultSet.getString(4)));
+                    } else {
+
+                        smallList.add(new CreditDetailsModel("XXXX",resultSet.getString(2),generator.convertDate(resultSet.getDate(7)),String.valueOf(resultSet.getInt(5)),resultSet.getString(6),resultSet.getString(4)));
+                    }
+                    create=false;
                 }
 
-                else {
-                    builder.append("xxxx" + "       \t\t");
-                }
-
-                builder.append(new DecimalFormat("##.##").format(Double.parseDouble(resultSet.getString(4)))+"   \t\t");
-                builder.append(new DecimalFormat("##.##").format(Double.parseDouble(resultSet.getString(5)))+"     \t\t");
-                builder.append(new DecimalFormat("##.##").format(Double.parseDouble(resultSet.getString(6)))+"  \t\t");
-                builder.append(resultSet.getString(7)+"\n");
             }
 
-            //Statement getTotal = Tasks.getConnection().createStatement();
-            ResultSet rs = getData.executeQuery("SELECT SUM(PRICE) FROM "+tableName);
+            //add the last transaction arrayList to the main list
+            mainList.add(smallList);
 
-            rs.next();
-            total = (rs.getString(1) != null)? Double.parseDouble(rs.getString(1)): 0;
+
+
+            resultSet = getDetails.executeQuery("SELECT DUE FROM CREDITCOMPANY WHERE UPPER(COMPANY_NAME)= UPPER('"+DatabaseHandler.generateTableName(model.getCompanyName())+"')");
+
+            if(resultSet.next()) {
+                due = Float.parseFloat(resultSet.getString(1));
+            }
+
+            grandTotal = due+total;
+
+            //cleanup
+            resultSet.close();
+            getDetails.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
 
-
-
-        /*
-        In our database the company name in CreditCompany table is SPACE seperated NOT Underscore seperated so, our table name should be re-formatted
-        And to avoid the risk of case sensitive in future, the tablename is converted to uppercase during comparision.
-         */
-        tableName = tableName.replace("_"," ");
-        ResultSet rs1 = getData.executeQuery("SELECT DUE FROM CREDITCOMPANY WHERE UPPER(COMPANY_NAME)= UPPER('"+tableName+"')");
-
-        if(rs1.next()) {
-            due = Double.parseDouble(rs1.getString(1));
-            System.out.print("Due amount = "+ due);
-        }
-
-        grandTotal = due+total;
-        return builder;
+        return mainList;
     }
+
+    public float getTotalPrice(){
+        return total;
+    }
+
+    public float getDue(){
+        return due;
+    }
+
+    public float getGrandTotal() { return grandTotal; }
 }

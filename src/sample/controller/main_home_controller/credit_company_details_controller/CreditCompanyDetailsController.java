@@ -59,12 +59,13 @@ public class CreditCompanyDetailsController implements BackButtonInterface {
 
     public void setParameters(String companyName) {
 
+
         toolBar.setTitle(companyName + " Transactions");
 
         task=new GetCompanyDetailsTask(DatabaseHandler.generateTableName(companyName));
         progressLayout.setProgressProperty(task.progressProperty());
 
-        task.setOnSucceeded((WorkerStateEvent e)->{
+        task.setOnSucceeded((WorkerStateEvent e)->{//this is called on UI thread, so safe to use live scene objects
             detailsListView.getItems().addAll(FXCollections.observableList(task.getValue()));
             progressLayout.setVisible(false);
             detailsListView.setVisible(true);

@@ -124,9 +124,6 @@ public class CustomCreditListCellController {
     }
 
     public void setData(List<CreditDetailsModel> modelLists) {
-
-        System.out.println("List Data in Rendering: Length: " + modelLists.size());
-
         tableView.refresh();//refresh the table view, as javafx might cache the value, resulting in mixed data from many tables (took a whole day to figure out)
 
 

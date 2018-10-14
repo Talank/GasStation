@@ -217,17 +217,13 @@ public class SettingsController {
 
         if (model != null) {
             CreditCompanyClosingBill bill=new CreditCompanyClosingBill(model);
-            try {
-                if (bill.printBill()) {
-                    SnackBarToastGenerator snackBarToastGenerator=new SnackBarToastGenerator("Company Closed. Printing Bill",1000);
-                    snackBarToastGenerator.show();
-                    performTask(new CompanyCreditClosingTask(model));
-                } else {
-                    SnackBarToastGenerator snackBarToastGenerator=new SnackBarToastGenerator("Company Closed.But Couldn't Print Bill",1000);
-                    snackBarToastGenerator.show();
-                }
-            } catch(SQLException e1) {
-                e1.printStackTrace();
+            if (bill.printBill()) {
+                SnackBarToastGenerator snackBarToastGenerator=new SnackBarToastGenerator("Company Closed. Printing Bill",1000);
+                snackBarToastGenerator.show();
+                performTask(new CompanyCreditClosingTask(model));
+            } else {
+                SnackBarToastGenerator snackBarToastGenerator=new SnackBarToastGenerator("Company Closed.But Couldn't Print Bill",1000);
+                snackBarToastGenerator.show();
             }
         }
 
