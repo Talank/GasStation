@@ -66,7 +66,7 @@ public class DebtController {
 
                 AppHomeController.getInstance().loadStages(borderPane);
                 sample.controller.main_home_controller.credit_company_details_controller.CreditCompanyDetailsController controller=loader.getController();
-                controller.setParameters(DatabaseHandler.generateTableName(newValue.getCompanyName()));
+                controller.setParameters(newValue.getCompanyName());
 
             } catch (IOException e) {
                 e.printStackTrace();

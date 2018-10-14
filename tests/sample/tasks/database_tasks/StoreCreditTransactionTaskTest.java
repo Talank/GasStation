@@ -24,7 +24,7 @@ public class StoreCreditTransactionTaskTest {
         ArrayList<Transaction> transactions;
         StoreCreditTransactionTask task;
 
-        DebtListModel model = new DebtListModel("Kumdini Homes", "0", 1, 0, 0, 0);
+        DebtListModel model = new DebtListModel("Testing Company", "0", 1, 0, 0, 0);
         LocalDate localDate;
 
         Tasks.setupConnection();
@@ -37,9 +37,9 @@ public class StoreCreditTransactionTaskTest {
 
         for (int i = 0; i < 1; i++) {
 
-            j = (int) (Math.random() * 2 + 5);
+            j = (int) (Math.random() * 2 + 15);//select the no of rows to be added to the company table
             for (k = 0; k < j; k++) {
-                l = (int) (Math.random() * 4 + 1);
+                l = (int) (Math.random() * 4 + 1);//set the no of transaction within the Transaction
                 transactions = new ArrayList<>();
                 for (m = 0; m < l; m++) {
                     transaction = new Transaction();
@@ -116,7 +116,7 @@ public class StoreCreditTransactionTaskTest {
                     storeCredit.setString(3, model.getCompanyName());
 
                     storeCredit.execute();
-
+/*
                     float petrolStock = pVolume;
                     float dieselStock = dVolume;
 
@@ -157,13 +157,13 @@ public class StoreCreditTransactionTaskTest {
                     storeCredit.setInt(2, 15);
                     storeCredit.addBatch();
 
-                    storeCredit.executeBatch();
+                    storeCredit.executeBatch();*/
 
-                    resultSet.close();
+        //            resultSet.close();
 
                     storeCredit.close();
 
-                    getInstant.close();
+       //             getInstant.close();
 
                     Tasks.getConnection().commit();
 

@@ -124,7 +124,16 @@ public class CustomCreditListCellController {
     }
 
     public void setData(List<CreditDetailsModel> modelLists) {
+
+        System.out.println("List Data in Rendering: Length: " + modelLists.size());
+
+        tableView.refresh();//refresh the table view, as javafx might cache the value, resulting in mixed data from many tables (took a whole day to figure out)
+
+
+        //set the data to the table as observable list
         tableView.setItems(FXCollections.observableList(modelLists));
+
+        //Compute the total of the transaction
         if(modelLists.size()!=0) {
             transactionDate.setText("Transaction Date:"+modelLists.get(0).getDate());
             float total=0;

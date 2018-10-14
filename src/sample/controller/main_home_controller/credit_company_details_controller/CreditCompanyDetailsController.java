@@ -12,6 +12,7 @@ import sample.library.output_task_loading.OutputTaskLoading;
 import sample.library.toolbar.BackButtonInterface;
 import sample.library.toolbar.ToolBar;
 import sample.model.CreditDetailsModel;
+import sample.model.databases.DatabaseHandler;
 import sample.tasks.TaskManager;
 
 import java.util.List;
@@ -36,7 +37,7 @@ public class CreditCompanyDetailsController implements BackButtonInterface {
 
         task=null;
 
-        toolBar.setTitle("Credit Company Details");
+        toolBar.setTitle("Company Transactions");
         toolBar.setBackPath("sample/view/main_home_views/credit_company_list/debt.fxml");
         toolBar.addBackButtonInterface(this);
 
@@ -56,8 +57,11 @@ public class CreditCompanyDetailsController implements BackButtonInterface {
             task.cancel();
     }
 
-    public void setParameters(String tableName) {
-        task=new GetCompanyDetailsTask(tableName);
+    public void setParameters(String companyName) {
+
+        toolBar.setTitle(companyName + " Transactions");
+
+        task=new GetCompanyDetailsTask(DatabaseHandler.generateTableName(companyName));
         progressLayout.setProgressProperty(task.progressProperty());
 
         task.setOnSucceeded((WorkerStateEvent e)->{
