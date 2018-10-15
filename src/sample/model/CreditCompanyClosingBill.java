@@ -114,7 +114,7 @@ public class CreditCompanyClosingBill {
         Label type = new Label("Type");
         mainContent.add(type, 0,0);
 
-        Label vehicleNo = new Label("Vehicle No");
+        Label vehicleNo = new Label("Veh no");
         mainContent.add(vehicleNo, 1, 0);
 
         Label rate = new Label("Rate");
@@ -287,6 +287,7 @@ public class CreditCompanyClosingBill {
                 mainContent.add(new Label(priceFormat.format(precision.format(task.getTotalPrice()))), 3, count);
                 mainContent.add(new Label("Grand Total: Rs"), 4, count);
                 mainContent.add(new Label(priceFormat.format(precision.format(task.getGrandTotal()))), 5, count);
+
 
                 pageNo.setText("--" + String.valueOf(page) + "--");
 
