@@ -20,6 +20,7 @@ import sample.tasks.TaskManager;
 import sample.tasks.database_tasks.SaveCompanyTask;
 import sample.tasks.database_tasks.UpdateCompanyTask;
 
+import java.beans.Visibility;
 import java.io.IOException;
 
 
@@ -158,6 +159,7 @@ public class ChangeCompanyController implements BottomBarInterface {
         toolBar.setDialogTitle("Edit Company");
         isEditable=true;
         this.companyName.setText(model.getCompanyName());
+        this.companyName.setVisible(false);
         this.creditCycle.setText(model.getDays());
         this.phone.setText(model.getPhone());
         this.model=model;
