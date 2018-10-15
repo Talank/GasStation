@@ -1,5 +1,9 @@
 package sample.nepali_date;
 
+
+/**
+ *This class converts the numeric date representation to text based representation
+ */
 public class NepaliDateFormat {
 
 
@@ -7,23 +11,25 @@ public class NepaliDateFormat {
 
     private int nYear,nMonth,nDay,totalDaysOfMonth;
 
-    public static final String BAISHAK="BAISHAK";
-    public static final String JESTHA="JESTHA";
-    public static final String ASHAR="ASHAR";
-    public static final String SHRAWAN="SHRAWAN";
-    public static final String BHADRA="BHADRA";
-    public static final String ASHOJ="ASHOJ";
-    public static final String KARTIK="KARTIK";
-    public static final String MANGSIR="MANGSIR";
-    public static final String POUSH="POUSH";
-    public static final String MAGH="MAGH";
-    public static final String FALGUN="FALGUN";
-    public static final String CHAITRA="CHAITRA";
+    public static final String BAISHAK="Baishak";
+    public static final String JESTHA="Jestha";
+    public static final String ASHAR="Ashar";
+    public static final String SHRAWAN="Shrawan";
+    public static final String BHADRA="Bhadra";
+    public static final String ASHOJ="Ashoj";
+    public static final String KARTIK="Kartik";
+    public static final String MANGSIR="Mangsir";
+    public static final String POUSH="Poush";
+    public static final String MAGH="Magh";
+    public static final String FALGUN="Falgun";
+    public static final String CHAITRA="Chaitra";
 
 
 
 
-
+    /**
+     *Convert the given date into text format
+     */
     public NepaliDateFormat(int nYear, int nMonth, int nDay,int totalDaysOfMonth,String dayOfWeek) {
 
         this.nYear=nYear;
@@ -31,7 +37,7 @@ public class NepaliDateFormat {
         this.nDay=nDay;
         this.totalDaysOfMonth=totalDaysOfMonth;
 
-        formattedDate=dayOfWeek+",";
+        formattedDate=dayOfWeek.substring(0,1).toUpperCase() + dayOfWeek.substring(1).toLowerCase() +",";
 
         switch (nMonth) {
 
