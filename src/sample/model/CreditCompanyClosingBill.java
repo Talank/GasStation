@@ -125,7 +125,7 @@ public class CreditCompanyClosingBill {
 
         mainContent.add(type, 0,0);
 
-        Label vehicleNo = new Label("Veh no");
+        Label vehicleNo = new Label("V.N");
         vehicleNo.setFont(Font.font("Verdana", FontWeight.BOLD,7.7));
         mainContent.add(vehicleNo, 1, 0);
 

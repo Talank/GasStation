@@ -37,13 +37,13 @@ public class GetCompanyClosing {
                 resultSet.next();
                 total = (resultSet.getString(1) != null)? Float.parseFloat(resultSet.getString(1)): 0;
 
-                resultSet=getDetails.executeQuery("SELECT * FROM " + DatabaseHandler.generateTableName(model.getCompanyName()) + " WHERE DATE<'" + model.getExpireDate() + "' ORDER BY DATE ASC");
+                resultSet=getDetails.executeQuery("SELECT * FROM " + DatabaseHandler.generateTableName(model.getCompanyName()) + " WHERE DATE<'" + model.getExpireDate() + "'");
             } else {
                 resultSet = getDetails.executeQuery("SELECT SUM(PRICE) FROM " + DatabaseHandler.generateTableName(model.getCompanyName()));
                 resultSet.next();
                 total = (resultSet.getString(1) != null)? Float.parseFloat(resultSet.getString(1)): 0;
 
-                resultSet=getDetails.executeQuery("SELECT * FROM "+DatabaseHandler.generateTableName(model.getCompanyName()));
+                resultSet=getDetails.executeQuery("SELECT * FROM "+DatabaseHandler.generateTableName(model.getCompanyName()) + " ORDER BY DATE ASC");
             }
 
             List<CreditDetailsModel> smallList=new ArrayList<>();
