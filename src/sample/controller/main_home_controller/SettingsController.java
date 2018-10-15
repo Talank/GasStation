@@ -204,9 +204,9 @@ public class SettingsController {
 
         //check if the model is null, if a dialog was shown before the selection might get cleared
         if (model != null) {
-            FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("sample/view/dialogs/changeCompany.fxml"));
+            FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("sample/view/dialogs/editCompany.fxml"));
             Parent root=loader.load();
-            ChangeCompanyController controller=loader.getController();
+            EditCompanyController controller=loader.getController();
             controller.setEditData(model);
             Stage stage=new Stage();
             stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("sample/resources/logo.png")));
