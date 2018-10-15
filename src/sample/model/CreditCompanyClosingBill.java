@@ -53,7 +53,7 @@ public class CreditCompanyClosingBill {
         task=new GetCompanyClosing(model);
 
 
-        //the company details data from the task
+        //the company details data from the tasks
         companyData = task.call();
 
 
