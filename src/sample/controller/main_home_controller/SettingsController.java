@@ -157,6 +157,11 @@ public class SettingsController {
         listModels.remove(model);
     }
 
+    private void showSnackMessage(String msg) {
+        SnackBarToastGenerator snackBarToastGenerator=new SnackBarToastGenerator(msg,1500);
+        snackBarToastGenerator.show();
+    }
+
     @FXML
     public void addCompany(MouseEvent e) throws IOException {
         Parent root=FXMLLoader.load(getClass().getClassLoader().getResource("sample/view/dialogs/changeCompany.fxml"));
@@ -180,6 +185,8 @@ public class SettingsController {
         if(model!=null) {
             listModels.remove(model);
             performTask(new RemoveCompanyTask(model));
+        } else {
+            showSnackMessage("No Company Selected!");
         }
     }
 
@@ -191,17 +198,26 @@ public class SettingsController {
 
     @FXML
     public void editCompany(MouseEvent e) throws IOException {
-        FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("sample/view/dialogs/changeCompany.fxml"));
-        Parent root=loader.load();
-        ChangeCompanyController controller=loader.getController();
+
         modelIndex=debtList.getSelectionModel().getSelectedIndex();
         DebtListModel model=debtList.getSelectionModel().getSelectedItem();
-        controller.setEditData(model);
-        Stage stage=new Stage();
-        stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("sample/resources/logo.png")));
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.setScene(new Scene(root));
-        stage.show();
+
+        //check if the model is null, if a dialog was shown before the selection might get cleared
+        if (model != null) {
+            FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("sample/view/dialogs/changeCompany.fxml"));
+            Parent root=loader.load();
+            ChangeCompanyController controller=loader.getController();
+            controller.setEditData(model);
+            Stage stage=new Stage();
+            stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("sample/resources/logo.png")));
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setScene(new Scene(root));
+            stage.show();
+        } else {
+            showSnackMessage("No Company Selected!");
+        }
+
+
 
     }
 
@@ -218,12 +234,10 @@ public class SettingsController {
         if (model != null) {
             CreditCompanyClosingBill bill=new CreditCompanyClosingBill(model);
             if (bill.printBill()) {
-                SnackBarToastGenerator snackBarToastGenerator=new SnackBarToastGenerator("Company Closed. Printing Bill",1000);
-                snackBarToastGenerator.show();
+                showSnackMessage("Company Closed. Printing Bill!");
                 performTask(new CompanyCreditClosingTask(model));
             } else {
-                SnackBarToastGenerator snackBarToastGenerator=new SnackBarToastGenerator("Company Closed.But Couldn't Print Bill",1000);
-                snackBarToastGenerator.show();
+                showSnackMessage("Couldn't Close Company Transaction!!");
             }
         }
 
@@ -236,18 +250,24 @@ public class SettingsController {
     @FXML
     public void payCompany(MouseEvent e) throws IOException {
         DebtListModel model=debtList.getSelectionModel().getSelectedItem();
-        FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("sample/view/dialogs/paymentDialog.fxml"));
 
-        Parent root=loader.load();
+        if (model != null) {
+            FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("sample/view/dialogs/paymentDialog.fxml"));
+            Parent root=loader.load();
 
-        PaymentDialogController controller=loader.getController();
-        controller.setModel(model);
+            PaymentDialogController controller=loader.getController();
+            controller.setModel(model);
 
-        Stage stage=new Stage();
-        stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("sample/resources/logo.png")));
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.setScene(new Scene(root));
-        stage.show();
+            Stage stage=new Stage();
+            stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("sample/resources/logo.png")));
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setScene(new Scene(root));
+            stage.show();
+        } else {
+            showSnackMessage("No Company Selected!");
+        }
+
+
     }
 
 

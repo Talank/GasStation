@@ -34,9 +34,9 @@ public class UpdateCompanyTask extends Tasks {
         try {
 
 
-            PreparedStatement update=connection.prepareStatement("UPDATE CreditCompany SET COMPANY_NAME=?,DAY=? WHERE COMPANY_NAME=?");
-            update.setString(1,model.getCompanyName());
-            update.setString(2,model.getDays());
+            PreparedStatement update=connection.prepareStatement("UPDATE CreditCompany SET DAY=?,PHONE=? WHERE COMPANY_NAME=?");
+            update.setString(1,model.getDays());
+            update.setString(2,model.getPhone());
             update.setString(3,model.getCompanyName());
 
             update.execute();
