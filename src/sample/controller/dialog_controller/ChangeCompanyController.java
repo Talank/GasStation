@@ -26,7 +26,7 @@ import java.io.IOException;
 public class ChangeCompanyController implements BottomBarInterface {
 
     @FXML
-    private JFXTextField companyName,creditCycle;
+    private JFXTextField companyName,creditCycle,phone;
 
     @FXML
     private DialogBottomBar bottomBar;
@@ -54,6 +54,10 @@ public class ChangeCompanyController implements BottomBarInterface {
         cycleValidator.setMessage("Cycle Time Cannot Be Empty");
         creditCycle.getValidators().add(cycleValidator);
 
+        RequiredFieldValidator phoneValidator=new RequiredFieldValidator();
+        phoneValidator.setMessage("Phone numbers cannot be Empty");
+        phone.getValidators().add(phoneValidator);
+
         companyName.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)->{
             if(!newValue.matches("[a-zA-Z ]*")) {
                 companyName.setText(oldValue);
@@ -78,6 +82,19 @@ public class ChangeCompanyController implements BottomBarInterface {
             }
         });
 
+
+        phone.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)->{
+            if(!newValue.matches("[0-9]{0,10}")) {
+                phone.setText(oldValue);
+            } else {
+                if(newValue.isEmpty()) {
+                    phone.validate();
+                } else {
+                    phone.resetValidation();
+                }
+            }
+        });
+
     }
 
     @Override
@@ -94,10 +111,16 @@ public class ChangeCompanyController implements BottomBarInterface {
             status++;
         }
 
+
+        if(phone.getText().trim().isEmpty()){
+            phone.validate();
+            status++;
+        }
+
         if(status==0) {
             if(!isEditable) {
 
-                SaveCompanyTask task=new SaveCompanyTask(companyName.getText().trim(),creditCycle.getText());
+                SaveCompanyTask task=new SaveCompanyTask(companyName.getText().trim(),creditCycle.getText(),phone.getText());
                 task.addTaskInterfaceListener(new TaskInterface<Integer>() {
                     @Override
                     public void onComplete(Integer id) {
@@ -119,6 +142,7 @@ public class ChangeCompanyController implements BottomBarInterface {
             } else {
                 model.setCompanyName(companyName.getText().trim());
                 model.setDays(creditCycle.getText());
+                model.setPhone(phone.getText());
                 UpdateCompanyTask task=new UpdateCompanyTask(model);
                 TaskManager.getInstance().executeTask(task);
 
@@ -135,6 +159,7 @@ public class ChangeCompanyController implements BottomBarInterface {
         isEditable=true;
         this.companyName.setText(model.getCompanyName());
         this.creditCycle.setText(model.getDays());
+        this.phone.setText(model.getPhone());
         this.model=model;
     }
 

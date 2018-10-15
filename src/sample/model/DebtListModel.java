@@ -3,7 +3,7 @@ package sample.model;
 import java.sql.Date;
 
 public class DebtListModel {
-    private String companyName,date,days,prevExpireDate;
+    private String companyName,date,days,prevExpireDate,phone;
     private int transactionID,prevTransactionID;
 
     private Date expireDate;
@@ -12,13 +12,14 @@ public class DebtListModel {
 
     private boolean isExpired=false;
 
-    public DebtListModel(String companyName,String days,int transactionID,int prevTransactionID,float due,float total) {
+    public DebtListModel(String companyName,String days,int transactionID,int prevTransactionID,float due,float total,String phone) {
         this.companyName = companyName;
         this.days=days;
         this.transactionID=transactionID;
         this.prevTransactionID=prevTransactionID;
         this.due=due;
         this.total=total;
+        this.phone=phone;
     }
 
     public String getCompanyName() {
@@ -107,5 +108,13 @@ public class DebtListModel {
 
     public void setPrePaid(float prePaid) {
         this.prePaid = prePaid;
+    }
+
+    public void setPhone(String phone){
+        this.phone=phone;
+    }
+
+    public String getPhone() {
+        return phone;
     }
 }

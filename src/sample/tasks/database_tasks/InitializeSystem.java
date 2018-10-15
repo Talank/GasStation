@@ -73,12 +73,13 @@ public class InitializeSystem extends Tasks {
             ResultSet resultSet = getDebitList.executeQuery("SELECT * FROM CreditCompany");
             while (resultSet.next()) {
 
-                model = new DebtListModel(resultSet.getString(1), resultSet.getString(5), resultSet.getInt(2), resultSet.getInt(4), resultSet.getFloat(6), resultSet.getFloat(7));
+                model = new DebtListModel(resultSet.getString(1), resultSet.getString(5), resultSet.getInt(2), resultSet.getInt(4), resultSet.getFloat(6), resultSet.getFloat(7),resultSet.getString(8));
 
                 model.setDate(generator.convertDate(resultSet.getDate(8 )));
                 model.setPrevExpireDate(generator.convertDate(resultSet.getDate(3)));
                 model.setExpireDate(resultSet.getDate(3));
                 model.setPrePaid(resultSet.getFloat(9));
+                model.setPhone(resultSet.getString(10));
 
 
                 initialDate.setNepaliDate(model.getDate());

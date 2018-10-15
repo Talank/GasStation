@@ -111,8 +111,16 @@ public class CreditTransactionBill {
         vBox.getChildren().add(hBox1);
 
         //add the labels to the VBox
-        label = new Label("Date: " + SystemStatus.getNepaliCurrentDate());
+
+        if (postingDate != null) {//posting date is provided, so use that date instead
+            NepaliDateGenerator generator = new NepaliDateGenerator(postingDate.toLocalDate());
+            label = new Label("Date: " + generator.toString());
+
+        } else {//posting date is null, meaning the posting is not done, so use default nepali date
+            label = new Label("Date: " + SystemStatus.getNepaliCurrentDate());
+        }
         label.setFont(Font.font("Verdana", FontWeight.SEMI_BOLD,6.5));
+
         vBox.getChildren().add(label);
 
         label=new Label("Pan no : 300207299");
@@ -235,6 +243,7 @@ public class CreditTransactionBill {
 
         Label separator1 = new Label("----------------------------------------------------------------------------------------------");
         separator1.setWrapText(false);
+        separator1.setFont(Font.font("Verdana", FontWeight.SEMI_BOLD,7.2));
         vBox.getChildren().add(separator1);
 
 

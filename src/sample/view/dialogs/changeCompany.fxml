@@ -34,6 +34,15 @@
                   </JFXTextField>
                </children>
             </HBox>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <JFXTextField fx:id="phone" labelFloat="true" promptText="Company phone" unFocusColor="#74ff02">
+                     <font>
+                        <Font size="25.0" />
+                     </font>
+                  </JFXTextField>
+               </children>
+            </HBox>
          </children>
       </VBox>
    </center>
