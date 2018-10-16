@@ -159,6 +159,14 @@
                                  <HBox.margin>
                                     <Insets />
                                  </HBox.margin>
+                                 <stylesheets>
+                                    <URL value="@../../css/componentStyles.css" />
+                                    <URL value="@../../css/appColorPalette.css" />
+                                 </stylesheets>
+                                 <styleClass>
+                                    <String fx:value="inputTextField" />
+                                    <String fx:value="inputTextFieldColor" />
+                                 </styleClass>
                               </JFXTextField>
                            </children>
                            <VBox.margin>
@@ -174,6 +182,14 @@
                                  <font>
                                     <Font size="25.0" />
                                  </font>
+                                 <stylesheets>
+                                    <URL value="@../../css/componentStyles.css" />
+                                    <URL value="@../../css/appColorPalette.css" />
+                                 </stylesheets>
+                                 <styleClass>
+                                    <String fx:value="inputTextField" />
+                                    <String fx:value="inputTextFieldColor" />
+                                 </styleClass>
                               </JFXTextField>
                            </children>
                            <VBox.margin>
@@ -189,6 +205,14 @@
                                  <font>
                                     <Font size="25.0" />
                                  </font>
+                                 <stylesheets>
+                                    <URL value="@../../css/componentStyles.css" />
+                                    <URL value="@../../css/appColorPalette.css" />
+                                 </stylesheets>
+                                 <styleClass>
+                                    <String fx:value="inputTextField" />
+                                    <String fx:value="inputTextFieldColor" />
+                                 </styleClass>
                               </JFXTextField>
                            </children>
                            <VBox.margin>

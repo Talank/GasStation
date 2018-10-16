@@ -47,7 +47,7 @@ public class Main extends Application {
     private FXMLLoader loader;
     private Parent root;
     private boolean startup=false;
-    private String msg="";
+    private String msg="Error Connecting to Database. Please Contact SpirroTech Officials";
 
     /**+
      * This is called when the app initializes, during this period the preLoader will be displayed, so we are doing all the initialization
