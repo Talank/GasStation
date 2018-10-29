@@ -1,9 +1,7 @@
 package sample.model.transaction_model;
 
-import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
-import javafx.scene.control.Separator;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -44,26 +42,21 @@ public class CreditTransactionBill {
         String details="Pokhara 14,Chauthe";
         builder.append("Shree Om Petroleum Traders.\n");
         builder.append(details+"\n");
-
         if (postingDate != null) {//posting date is provided, so use that date instead
             NepaliDateGenerator generator = new NepaliDateGenerator(postingDate.toLocalDate());
             builder.append("Date :"+ generator.toString() +" \n");
         } else {//posting date is null, meaning the posting is not done, so use default nepali date
             builder.append("Date :"+ SystemStatus.getNepaliCurrentDate() +" \n");
         }
-
-
         builder.append("Pan no : 300207299  ph : 501041\n");
         builder.append("Company Name - "+Transaction.getName()+"\n");
         builder.append("---------------------------------------------------\n");
         builder.append("Type     V.n           Qty       Rate      Total\n");
         builder.append("---------------------------------------------------\n");
         PriceFormat priceFormat=new PriceFormat();
-
         priceFormat.getResult();
         for (Transaction transaction:transactions) {
             priceFormat.setFormat(transaction.getPrice()+"");
-
             if(transaction.getType().equals("Diesel")||transaction.getType().equals("Petrol")) {
                 String data= String.format("%s   %s    %8s  %8s    %8s",transaction.getType(),transaction.getVehicleNo(),new DecimalFormat("##.##").format(transaction.getVolume()),new DecimalFormat("##.##").format(transaction.getPrice()/transaction.getVolume()),priceFormat.getResult()+"\n");
                 builder.append(data);
@@ -75,7 +68,6 @@ public class CreditTransactionBill {
         builder.append("---------------------------------------------------\n");
         priceFormat.setFormat(Transaction.getTotal()+"");
         builder.append(String.format("%50s","Total:Rs."+priceFormat.getResult()+"\n"));
-
         label.setText(builder.toString());
         label.setFont(new Font("Arial",7));
         PrintBill.print(label);
@@ -94,19 +86,15 @@ public class CreditTransactionBill {
         vBox.setAlignment(Pos.TOP_LEFT);
 
         //the vertical spacing between nodes
-        vBox.setSpacing(5);
-
-
-        VBox topInfo = new VBox();
-        topInfo.setSpacing(3);
+        vBox.setSpacing(10);
 
         //The hbox for the title of the bill
         HBox hBox = new HBox();
         //hBox.setAlignment(Pos.CENTER);
         Label label=new Label("Shree Om Petroleum Traders");
-        label.setFont(Font.font("Verdana", FontWeight.BOLD,9.15));
+        label.setFont(Font.font("Verdana", FontWeight.SEMI_BOLD,9.13));
         hBox.getChildren().add(label);
-        topInfo.getChildren().add(hBox);
+        vBox.getChildren().add(hBox);
 
         //Hbox for details
         HBox hBox1 = new HBox();
@@ -114,10 +102,10 @@ public class CreditTransactionBill {
         label=new Label("Pokhara 14,Chauthe");
         label.setFont(Font.font("Verdana", FontWeight.SEMI_BOLD,7.2));
         hBox1.getChildren().add(label);
-        topInfo.getChildren().add(hBox1);
+        vBox.getChildren().add(hBox1);
 
-        vBox.getChildren().add(topInfo);
-
+        //add the labels to the VBox
+        //label = new Label("Date: " + SystemStatus.getNepaliCurrentDate());
 
         //check for posting
         if (postingDate != null) {//posting date is provided, so use that date instead
@@ -129,70 +117,56 @@ public class CreditTransactionBill {
         }
 
 
+
         label.setFont(Font.font("Verdana", FontWeight.SEMI_BOLD,6.5));
         vBox.getChildren().add(label);
 
-        VBox contactInfo = new VBox();
-        vBox.setSpacing(3);
-
         label=new Label("Pan no : 300207299");
         label.setFont(Font.font("Verdana", FontWeight.SEMI_BOLD,7.2));
-        contactInfo.getChildren().add(label);
+        vBox.getChildren().add(label);
 
         label=new Label("Phone : 501041");
         label.setFont(Font.font("Verdana", FontWeight.SEMI_BOLD,7.2));
-        contactInfo.getChildren().add(label);
-
-        vBox.getChildren().add(contactInfo);
-
-        label = new Label("Company Name: " + Transaction.getName());
-        label.setFont(Font.font("Verdana", FontWeight.BOLD,7.2));
         vBox.getChildren().add(label);
 
-        //add the separator
-        Separator separator = new Separator(Orientation.HORIZONTAL);
-        vBox.getChildren().add(separator);
+        label = new Label("Name: " + Transaction.getName());
+        label.setFont(Font.font("Verdana", FontWeight.SEMI_BOLD,7.2));
+        vBox.getChildren().add(label);
 
-
-        /*Label separator = new Label("-----------------------------------------------------------------------------------------------");
+        //the line separator
+        Label separator = new Label("-----------------------------------------------------------------------------------------------");
         separator.setFont(Font.font("Verdana", FontWeight.SEMI_BOLD,7.2));
         separator.setWrapText(false);//set the text wrap to false, so that only single line of separator is printed
-        vBox.getChildren().add(separator);*/
+        vBox.getChildren().add(separator);
 
 
         //using GridPane, as it automatically handles nodes layout and placement
         GridPane gridPane = new GridPane();
 
         //the horizontal and vertical gap
-        gridPane.setVgap(5);
-        gridPane.setHgap(5);
+        gridPane.setVgap(10);
+        gridPane.setHgap(10);
 
         //add the headers and under line them
         Label type = new Label("Type");
         type.setUnderline(true);
-        type.setFont(Font.font("Verdana", FontWeight.BOLD,7.2));
+        type.setFont(Font.font("Verdana", FontWeight.SEMI_BOLD,7.2));
         gridPane.add(type, 0, 0);
 
         Label vN = new Label("V.N");
         vN.setUnderline(true);
-        vN.setFont(Font.font("Verdana", FontWeight.BOLD,7.2));
+        vN.setFont(Font.font("Verdana", FontWeight.SEMI_BOLD,7.2));
         gridPane.add(vN, 1,0);
 
         Label qty = new Label("Qty");
         qty.setUnderline(true);
-        qty.setFont(Font.font("Verdana", FontWeight.BOLD,7.2));
+        qty.setFont(Font.font("Verdana", FontWeight.SEMI_BOLD,7.2));
         gridPane.add(qty, 2, 0);
 
         Label rate = new Label("Rate");
         rate.setUnderline(true);
-        rate.setFont(Font.font("Verdana", FontWeight.BOLD,7.2));
+        rate.setFont(Font.font("Verdana", FontWeight.SEMI_BOLD,7.2));
         gridPane.add(rate, 3, 0);
-
-        separator = new Separator(Orientation.HORIZONTAL);
-        GridPane.setConstraints(separator, 0,1);
-        GridPane.setColumnSpan(separator, 4);
-
-        gridPane.getChildren().add(separator);
 
         /*
         Label total = new Label("Total");
@@ -205,7 +179,7 @@ public class CreditTransactionBill {
         PriceFormat priceFormat=new PriceFormat();
         Precision precision = new Precision();
 
-        int i = 2;//variable to help add the rows to the gridPane i.e rowIndex, start with 1 , as 0 is for the headers set in the above code
+        int i = 1;//variable to help add the rows to the gridPane i.e rowIndex, start with 1 , as 0 is for the headers set in the above code
         for (Transaction transaction:transactions) {
 
             //add the data to the grid rows
@@ -265,16 +239,15 @@ public class CreditTransactionBill {
         //add the gridPane to the root VBox
         vBox.getChildren().add(gridPane);
 
-       /* Label separator1 = new Label("----------------------------------------------------------------------------------------------");
+        Label separator1 = new Label("-----------------------------------------------------------------------------------------------");
+        separator.setFont(Font.font("Verdana", FontWeight.SEMI_BOLD,7.2));
         separator1.setWrapText(false);
-        vBox.getChildren().add(separator1);*/
+        vBox.getChildren().add(separator1);
 
-        separator = new Separator(Orientation.HORIZONTAL);
-        vBox.getChildren().add(separator);
 
         //add the line separator
         Label grandTotal = new Label("Total: " + priceFormat.format(precision.format(Transaction.getTotal())));
-        grandTotal.setFont(Font.font("Verdana", FontWeight.BOLD,7.7));
+        grandTotal.setFont(Font.font("Verdana", FontWeight.SEMI_BOLD,7.7));
         grandTotal.setUnderline(true);
         vBox.getChildren().add(grandTotal);
 

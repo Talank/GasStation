@@ -115,7 +115,6 @@ public class PrintBill {
                 printerJob.endJob();
                 return true;
             }
-
         }*/
         return false;
     }

@@ -399,7 +399,7 @@ public class CreditCompanyClosingBill {
 
 
         //change to false for debugging, this doesn't delete the table data, for deployment change to true
-        return false;
+        return true;
     }
 
 }
