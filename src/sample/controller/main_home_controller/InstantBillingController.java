@@ -336,7 +336,7 @@ public class InstantBillingController {
 
         vehicleNumber.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)->{
 
-            if(!newValue.matches("[0-9]{0,4}")) {
+            if(!newValue.matches("[a-zA-Z0-9]{0,10}")) {
                 vehicleNumber.setText(oldValue);
             }
 
@@ -358,6 +358,9 @@ public class InstantBillingController {
         });
 
         /*
+
+
+
          * Get who received focus first
          *
          * Used when user switches between diesel and petrol
