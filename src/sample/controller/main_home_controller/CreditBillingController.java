@@ -299,7 +299,7 @@ public class CreditBillingController {
 
 
         vehicleNumber.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)->{
-            if(!newValue.matches("[0-9]{0,4}")) {
+            if(!newValue.matches("[a-zA-Z0-9]{0,10}")) {
                 vehicleNumber.setText(oldValue);
             } else {
                 if(newValue.isEmpty()&&!force) {
