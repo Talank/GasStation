@@ -439,7 +439,7 @@ public class CreditBillingController {
             status++;
         }
 
-        if(vehicleNumber.getText().isEmpty()||(vehicleNumber.getText().length()<4)) {
+        if(vehicleNumber.getText().isEmpty()||(vehicleNumber.getText().length()<1)) {
             vehicleNumber.validate();
             status++;
         }

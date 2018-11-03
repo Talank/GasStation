@@ -240,7 +240,7 @@ public class CreditTransactionBill {
         vBox.getChildren().add(gridPane);
 
         Label separator1 = new Label("-----------------------------------------------------------------------------------------------");
-        separator.setFont(Font.font("Verdana", FontWeight.SEMI_BOLD,7.2));
+        separator1.setFont(Font.font("Verdana", FontWeight.SEMI_BOLD,7.2));
         separator1.setWrapText(false);
         vBox.getChildren().add(separator1);
 
