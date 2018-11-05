@@ -125,7 +125,7 @@ public class CreditTransactionBill {
         label.setFont(Font.font("Verdana", FontWeight.SEMI_BOLD,7.2));
         vBox.getChildren().add(label);
 
-        label=new Label("Phone : 501041");
+        label=new Label("Phone : 061-501041");
         label.setFont(Font.font("Verdana", FontWeight.SEMI_BOLD,7.2));
         vBox.getChildren().add(label);
 
@@ -252,7 +252,7 @@ public class CreditTransactionBill {
         vBox.getChildren().add(grandTotal);
 
 
-        Label greeting = new Label("Thank you! Visit again");
+        Label greeting = new Label("        Thank you! Visit again");
         greeting.setFont(Font.font("Verdana", FontWeight.SEMI_BOLD,7));
         greeting.setAlignment(Pos.CENTER);
         vBox.getChildren().add(greeting);

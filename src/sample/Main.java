@@ -86,7 +86,7 @@ public class Main extends Application {
         if(startup) {
             primaryStage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("sample/resources/logo.png")));
 
-            primaryStage.setTitle("Ohm Gas Station");
+            primaryStage.setTitle("Shree Om Petroleum Traders");
             primaryStage.setScene(new Scene(root));
             primaryStage.setMaximized(true);
             primaryStage.show();
