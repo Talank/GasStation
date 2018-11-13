@@ -30,6 +30,7 @@ import sample.model.DebtListModel;
 import sample.model.SystemStatus;
 import sample.model.databases.DatabaseHandler;
 
+import javax.swing.text.html.FormSubmitEvent;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.security.Key;
@@ -127,6 +128,10 @@ public class DebtController {
      */
     @FXML
     void findCompany(KeyEvent event) {
+        if (searchCompany.getText().isEmpty()){
+            searchAndAddCompany((""));
+            return;
+        }
 
         //get the current character
         if (event.getCharacter().equals("\b") && searchCompany.getText().equals("")) {//check if backspace is pressed and the search field is empty i.e. it is completely cleared, then load all the company list
@@ -146,7 +151,8 @@ public class DebtController {
         companyList.clear();//clear the array list
         
         for (DebtListModel model : CreditCompanyList.getDetailCompanyList()) {//loop through all the companies
-            if (model.getCompanyName().startsWith(text)) {//text match
+            //if (model.getCompanyName().startsWith(text)) {//text match
+            if (model.getCompanyName().toLowerCase().contains(text.toLowerCase())) {//text match
                 companyList.add(model);//add to the model
             } else {// no text match
                 companyList.remove(model);//remove from the list
