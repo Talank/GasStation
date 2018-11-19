@@ -9,6 +9,7 @@ import sample.nepali_date.NepaliDateGenerator;
 import sample.tasks.Tasks;
 
 import javax.xml.crypto.Data;
+import java.nio.channels.FileLock;
 import java.sql.*;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ import java.util.List;
 
 public class GetCompanyClosing {
     private DebtListModel model;
-    private float total,due,grandTotal;
+    private float total,due,grandTotal, prepaid;
 
     public GetCompanyClosing(DebtListModel model){
         this.model = model;
@@ -94,10 +95,12 @@ public class GetCompanyClosing {
 
 
 
-            resultSet = getDetails.executeQuery("SELECT DUE FROM CREDITCOMPANY WHERE UPPER(COMPANY_NAME)= UPPER('"+DatabaseHandler.generateTableName(model.getCompanyName())+"')");
+            resultSet = getDetails.executeQuery("SELECT DUE,PRE_PAID FROM CREDITCOMPANY WHERE UPPER(COMPANY_NAME)= UPPER('"+ model.getCompanyName() +"')");
 
-            if(resultSet.next()) {
-                due = Float.parseFloat(resultSet.getString(1));
+            if(resultSet.next()) {//check if we have valid data and move the cursor
+                //get the prepaid and the due
+                due = resultSet.getFloat(1);
+                prepaid = resultSet.getFloat(2);
             }
 
             grandTotal = due+total;
@@ -123,4 +126,8 @@ public class GetCompanyClosing {
     }
 
     public float getGrandTotal() { return grandTotal; }
+
+    public float getPrepaid() {
+        return prepaid;
+    }
 }

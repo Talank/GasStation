@@ -114,17 +114,27 @@ public class CompanyPaymentTask extends Tasks {
 
                     System.out.println("The Debt of the company has been deducted.");
                 }
+
+                //update the model and mark the company as not expired, the also applies when the company has prepaid and the company is closed
+                model.setDue(due);
+                model.setDate(model.getPrevExpireDate());
+                model.setExpired(false);
+                model.setPrePaid(prepaid);
+
+
                 resultSet.close();
             } else {
                 /*
                  *The use only wants to do prepaid so, update the prepaid
                  */
-                due=model.getDue();
                 prepaid=model.getPrePaid()+payment;
                 PreparedStatement creditPayment=connection.prepareStatement("UPDATE CreditCompany SET PRE_PAID=PRE_PAID+?"+" WHERE COMPANY_NAME=?");
                 creditPayment.setFloat(1,payment);
                 creditPayment.setString(2,model.getCompanyName());
                 creditPayment.execute();
+
+                //update the company prepaid, the company is still expired
+                model.setPrePaid(prepaid);
 
                 creditPayment.close();
             }
@@ -133,12 +143,6 @@ public class CompanyPaymentTask extends Tasks {
             connection.commit();
             SystemLogging.getLogger().fine("CreditCompany payment successfully done ");
 
-            //update the model
-
-            model.setDue(due);
-            model.setDate(model.getPrevExpireDate());
-            model.setExpired(false);
-            model.setPrePaid(prepaid);
 
             SettingsController.getInstance().refreshList(model);
 

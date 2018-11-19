@@ -137,28 +137,35 @@ public class InitializeSystem extends Tasks {
                         ResultSet countResult = getCounts.executeQuery("SELECT COUNT(*) FROM " + DatabaseHandler.generateTableName(model.getCompanyName()));
                         countResult.next();
                         int count = countResult.getInt(1);
-                        countResult = getCounts.executeQuery("SELECT TRANSACTION_ID FROM " + DatabaseHandler.generateTableName(model.getCompanyName()) + " OFFSET " + (count - 1) + " ROWS FETCH NEXT 1 ROWS ONLY");
-                        countResult.next();
 
-                        int transactionID = countResult.getInt(1);
+                        if (count > 0) {//check if the no of rows is greater than 0, as a company without any transaction that gets expired will have count 0, this will result int error
 
-                        //Store the transactionID in prev_transaction field, it is only used to indicate that the company has expired and not closed
-                        //To adjust the id of other transactions when the company is closed, date is used instead
-                        PreparedStatement updateExpireID = connection.prepareStatement("UPDATE CreditCompany SET PREV_TRANSACTION_ID=?,PREV_EXPIRE_DATE=? WHERE COMPANY_NAME=?");
-                        updateExpireID.setInt(1,transactionID);
-                        updateExpireID.setDate(2,date);
-                        updateExpireID.setString(3,model.getCompanyName());
+                            //any company which has not performed transaction since it's last payment will not expire when it's period ends
+                            countResult = getCounts.executeQuery("SELECT TRANSACTION_ID FROM " + DatabaseHandler.generateTableName(model.getCompanyName()) + " OFFSET " + (count - 1) + " ROWS FETCH NEXT 1 ROWS ONLY");
+                            countResult.next();
 
-                        updateExpireID.execute();
+                            int transactionID = countResult.getInt(1);
 
-                        countResult.close();
-                        getCounts.close();
-                        updateExpireID.close();
+                            //Store the transactionID in prev_transaction field, it is only used to indicate that the company has expired and not closed
+                            //To adjust the id of other transactions when the company is closed, date is used instead
+                            PreparedStatement updateExpireID = connection.prepareStatement("UPDATE CreditCompany SET PREV_TRANSACTION_ID=?,PREV_EXPIRE_DATE=? WHERE COMPANY_NAME=?");
+                            updateExpireID.setInt(1,transactionID);
+                            updateExpireID.setDate(2,date);
+                            updateExpireID.setString(3,model.getCompanyName());
 
-                        model.setPrevExpireDate(generator.toString());
-                        model.setExpireDate(date);
-                        model.setTransactionID(resultSet.getInt(2));
-                        model.setPrevTransactionID(transactionID);
+                            updateExpireID.execute();
+
+                            countResult.close();
+                            getCounts.close();
+                            updateExpireID.close();
+
+                            model.setPrevExpireDate(generator.toString());
+                            model.setExpireDate(date);
+                            model.setTransactionID(resultSet.getInt(2));
+                            model.setPrevTransactionID(transactionID);
+                        }
+
+
                     } else {
                         System.out.println("Company Previous due was unclear");
                         model.setTransactionID(resultSet.getInt(2));

@@ -28,6 +28,7 @@ import sample.model.nepaliPriceFormat.Precision;
 import sample.model.nepaliPriceFormat.PriceFormat;
 import sample.nepali_date.NepaliDateGenerator;
 import sample.tasks.TaskManager;
+import sample.tasks.database_tasks.CompanyPaymentTask;
 
 
 import java.sql.SQLException;
@@ -281,7 +282,7 @@ public class CreditCompanyClosingBill {
                     due.setFont(Font.font("Verdana", FontWeight.BOLD,7.7));
                     mainContent.add(due, 0, count);
 
-                    Label dueAmount = new Label(priceFormat.format(precision.format(task.getDue())));
+                    Label dueAmount = new Label(priceFormat.format(precision.format(task.getGrandTotal() - task.getPrepaid())));
                     dueAmount.setFont(Font.font("Verdana", FontWeight.BOLD,7.7));
                     mainContent.add(dueAmount, 1, count);
 
@@ -328,7 +329,7 @@ public class CreditCompanyClosingBill {
                     due.setFont(Font.font("Verdana", FontWeight.BOLD,7.7));
                     mainContent.add(due, 0, count);
 
-                    Label dueAmount = new Label(priceFormat.format(precision.format(task.getDue())));
+                    Label dueAmount = new Label(priceFormat.format(precision.format(task.getGrandTotal() - task.getPrepaid())));
                     dueAmount.setFont(Font.font("Verdana", FontWeight.BOLD,7.7));
                     mainContent.add(dueAmount, 1, count);
 
@@ -367,7 +368,7 @@ public class CreditCompanyClosingBill {
                 due.setFont(Font.font("Verdana", FontWeight.BOLD,7.7));
                 mainContent.add(due, 0, count);
 
-                Label dueAmount = new Label(priceFormat.format(precision.format(task.getDue())));
+                Label dueAmount = new Label(priceFormat.format(precision.format(task.getGrandTotal() - task.getPrepaid())));//assign due - prepaid
                 dueAmount.setFont(Font.font("Verdana", FontWeight.BOLD,7.7));
                 mainContent.add(dueAmount, 1, count);
 
@@ -396,6 +397,19 @@ public class CreditCompanyClosingBill {
             }
 
         }
+
+        //execute the closing task for prepaid once the printing of the bill succeeds
+
+        if (task.getPrepaid() > 0) {//we have prepaid
+
+            //close the company using the default CompanyPaymentTask
+
+            //we are performing payment with amount 0, as this uses the prepaid amount from the company in normal mode (i.e mode 0)
+            CompanyPaymentTask paymentTask = new CompanyPaymentTask(model, 0, 0);
+            paymentTask.execute();
+
+        }
+
 
 
         //change to false for debugging, this doesn't delete the table data, for deployment change to true
