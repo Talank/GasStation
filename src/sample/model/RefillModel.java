@@ -25,7 +25,7 @@ public class RefillModel {
 
         for(TankerModel model:tankerModels) {
 
-            if((model.getTankerNumber()).substring(0,4).equals(tankerModel.getTankerNumber().substring(0,4))) {
+            if((model.getTankerNumber().substring(0, model.getTankerNumber().length() - 1)).equalsIgnoreCase(tankerModel.getTankerNumber().substring(0, tankerModel.getTankerNumber().length() - 1))) {
                 isAvailable=true;
                 this.tankerModel=model;
                 break;

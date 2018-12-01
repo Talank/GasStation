@@ -150,7 +150,7 @@ public class ProfitLossController implements BackButtonInterface {
 
         searchTanker.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)->{
 
-            if(!newValue.matches("[0-9]{0,4}")) {
+            if(!newValue.matches("[-a-zA-Z0-9]{0,10}")) {
                 searchTanker.validate();
                 searchTanker.setText(oldValue);
             } else {
@@ -234,16 +234,16 @@ public class ProfitLossController implements BackButtonInterface {
                         super.updateItem(item, empty);
                         if (!isEmpty()) {
 
-                            if(item.contains("G")) {
+                            if(item.charAt(item.length() - 1) == 'G') {
                                 this.setTextFill(Color.GREEN);
-                            } else if(item.contains("B")) {
+                            } else if(item.charAt(item.length() - 1) == 'B') {
                                 this.setTextFill(Color.BLUE);
-                            } else if(item.contains("R")) {
+                            } else if(item.charAt(item.length() - 1) == 'R') {
                                 this.setTextFill(Color.RED);
                             } else {
                                 this.setTextFill(Color.BLACK);
                             }
-                            item=item.substring(0,4);
+                            item=item.substring(0,(item.length() - 1));
 
                             setText(item);
 
@@ -325,17 +325,17 @@ public class ProfitLossController implements BackButtonInterface {
                         if (!isEmpty()) {
                            System.out.println(item);
 
-                            if(item.contains("G")) {
+                            if(item.charAt(item.length() - 1) == 'G') {
                                 this.setTextFill(Color.GREEN);
-                            } else if(item.contains("B")) {
+                            } else if(item.charAt(item.length() - 1) == 'B') {
                                 this.setTextFill(Color.BLUE);
-                            } else if(item.contains("R")) {
+                            } else if(item.charAt(item.length() - 1) == 'R') {
                                 this.setTextFill(Color.RED);
                             } else {
                                 this.setTextFill(Color.BLACK);
                             }
 
-                            item=item.substring(0,4);
+                            item=item.substring(0, (item.length() - 1));
 
 
                             setText(item);
@@ -446,7 +446,7 @@ public class ProfitLossController implements BackButtonInterface {
             stage.show();
 
             TankRemarkController controller=loader.getController();
-            controller.setData(Integer.parseInt(searchTanker.getText()));
+            controller.setData(searchTanker.getText());
         } else {
             searchTanker.validate();
         }

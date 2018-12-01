@@ -57,7 +57,7 @@ public class TankRemarkController implements BottomBarInterface {
         return instance;
     }
 
-    public void setData(int vehicleNumber) {
+    public void setData(String vehicleNumber) {
 
         /*
         * Check if the tanker is present in the memory, if present load from memory otherwise read from the database
@@ -66,7 +66,7 @@ public class TankRemarkController implements BottomBarInterface {
         boolean isFound = false;
         TankerModel tankerModel = null;
         for (TankerModel model: RefillModel.getTankerModels()) {
-            if(model.getTankerNumber().substring(0,4).equals(String.valueOf(vehicleNumber))) {
+            if(model.getTankerNumber().substring(0,(model.getTankerNumber().length() - 1)).equalsIgnoreCase(vehicleNumber)) {
                 tankerModel = model;
                 isFound = true;
                 break;
@@ -77,11 +77,11 @@ public class TankRemarkController implements BottomBarInterface {
 
             //Tanker present in memory
 
-            if(tankerModel.getTankerNumber().contains("G")) {
+            if(tankerModel.getTankerNumber().charAt(tankerModel.getTankerNumber().length() - 1) == 'G') {
                 remarkLabel.setText("The tanker is good!");
-            } else if (tankerModel.getTankerNumber().contains("B")) {
+            } else if (tankerModel.getTankerNumber().charAt(tankerModel.getTankerNumber().length() - 1) == 'B') {
                 remarkLabel.setText("The tanker is good!");
-            } else if (tankerModel.getTankerNumber().contains("R")) {
+            } else if (tankerModel.getTankerNumber().charAt(tankerModel.getTankerNumber().length() - 1) == 'R') {
                 remarkLabel.setText("Not good tanker");
             } else {
                 remarkLabel.setText("Tanker Status UnKnown");
@@ -113,7 +113,6 @@ public class TankRemarkController implements BottomBarInterface {
                     typeLabel.setText("Type: " + model.getType());
                 }
                 else{
-                    bottomBar.setErrorText("tanker not found");
                     remarkLabel.setText("Sorry! The tanker is not found");
                     typeLabel.setText("");
                     avgLossLabel.setText("");
@@ -121,7 +120,6 @@ public class TankRemarkController implements BottomBarInterface {
             });
 
             tasks.setOnFailed((WorkerStateEvent e)->{
-                bottomBar.setErrorText("tanker not found");
                 remarkLabel.setText("Sorry! The tanker is not found");
                 typeLabel.setText("");
                 avgLossLabel.setText("");
