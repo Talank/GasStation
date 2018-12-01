@@ -24,12 +24,12 @@ public class StoreCreditTransactionTaskTest {
         ArrayList<Transaction> transactions;
         StoreCreditTransactionTask task;
 
-        DebtListModel model = new DebtListModel("Company A", "0", 1, 0, 0, 0,"9444111");
+        DebtListModel model = new DebtListModel("Sujal Dairy", "0", 1, 0, 0, 0,"9444111");
         LocalDate localDate;
 
         Tasks.setupConnection();
-        SystemStatus.setCurrentDate(Date.valueOf(LocalDate.now()));
-        localDate = LocalDate.now();
+        SystemStatus.setCurrentDate(Date.valueOf(LocalDate.of(2018, 9, 1)));
+        localDate = LocalDate.of(2018, 9, 1);
 
         Transaction.setName(model.getCompanyName());
 

@@ -18,7 +18,7 @@ import java.util.List;
 
 public class GetCompanyClosing {
     private DebtListModel model;
-    private float total,due,grandTotal, prepaid;
+    private float total,due, prepaid;
 
     public GetCompanyClosing(DebtListModel model){
         this.model = model;
@@ -33,13 +33,18 @@ public class GetCompanyClosing {
             Statement getDetails= Tasks.getConnection().createStatement();
 
             ResultSet resultSet;
-            if (model.isExpired()) {
+            //check if the company is expired
+            if (model.isExpired()) {//the company is expired
+
+                //then we get the total of the previous expire period, i.e may be a month before
                 resultSet = getDetails.executeQuery("SELECT SUM(PRICE) FROM " + DatabaseHandler.generateTableName(model.getCompanyName()) + " WHERE DATE<'" + model.getExpireDate() + "'");
                 resultSet.next();
                 total = (resultSet.getString(1) != null)? Float.parseFloat(resultSet.getString(1)): 0;
 
                 resultSet=getDetails.executeQuery("SELECT * FROM " + DatabaseHandler.generateTableName(model.getCompanyName()) + " WHERE DATE<'" + model.getExpireDate() + "'");
-            } else {
+            } else {//the company is not expired
+
+                //we get the entire data from the company table
                 resultSet = getDetails.executeQuery("SELECT SUM(PRICE) FROM " + DatabaseHandler.generateTableName(model.getCompanyName()));
                 resultSet.next();
                 total = (resultSet.getString(1) != null)? Float.parseFloat(resultSet.getString(1)): 0;
@@ -103,8 +108,6 @@ public class GetCompanyClosing {
                 prepaid = resultSet.getFloat(2);
             }
 
-            grandTotal = due+total;
-
             //cleanup
             resultSet.close();
             getDetails.close();
@@ -125,7 +128,6 @@ public class GetCompanyClosing {
         return due;
     }
 
-    public float getGrandTotal() { return grandTotal; }
 
     public float getPrepaid() {
         return prepaid;

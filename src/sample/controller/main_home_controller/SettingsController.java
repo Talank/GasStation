@@ -235,7 +235,6 @@ public class SettingsController {
             CreditCompanyClosingBill bill=new CreditCompanyClosingBill(model);
             if (bill.printBill()) {
                 showSnackMessage("Company Closed. Printing Bill!");
-                performTask(new CompanyCreditClosingTask(model));
             } else {
                 showSnackMessage("Couldn't Close Company Transaction!!");
             }

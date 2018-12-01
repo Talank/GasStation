@@ -28,6 +28,7 @@ import sample.model.nepaliPriceFormat.Precision;
 import sample.model.nepaliPriceFormat.PriceFormat;
 import sample.nepali_date.NepaliDateGenerator;
 import sample.tasks.TaskManager;
+import sample.tasks.database_tasks.CompanyCreditClosingTask;
 import sample.tasks.database_tasks.CompanyPaymentTask;
 
 
@@ -39,6 +40,10 @@ import static javafx.geometry.Pos.TOP_LEFT;
 import static javafx.scene.layout.StackPane.setAlignment;
 
 public class CreditCompanyClosingBill {
+
+
+    private final String TAG = "CreditCompanyClosing";
+
     private DebtListModel model;
     private GetCompanyClosing task;
 
@@ -166,6 +171,7 @@ public class CreditCompanyClosingBill {
         for (List<CreditDetailsModel> data : companyData) {
             totalSize += data.size();
         }
+        SystemLogging.log("Size Of the records: " + totalSize);
 
         if (totalSize != 0) {
 
@@ -282,7 +288,7 @@ public class CreditCompanyClosingBill {
                     due.setFont(Font.font("Verdana", FontWeight.BOLD,7.7));
                     mainContent.add(due, 0, count);
 
-                    Label dueAmount = new Label(priceFormat.format(precision.format(task.getGrandTotal() - task.getPrepaid())));
+                    Label dueAmount = new Label(priceFormat.format(precision.format(task.getDue() - task.getPrepaid())));
                     dueAmount.setFont(Font.font("Verdana", FontWeight.BOLD,7.7));
                     mainContent.add(dueAmount, 1, count);
 
@@ -298,7 +304,7 @@ public class CreditCompanyClosingBill {
                     grandTotal.setFont(Font.font("Verdana", FontWeight.BOLD,7.7));
                     mainContent.add(grandTotal, 4, count);
 
-                    Label grandTotalAmount = new Label(priceFormat.format(precision.format(task.getGrandTotal())));
+                    Label grandTotalAmount = new Label(priceFormat.format(precision.format(task.getTotalPrice() + task.getDue() - task.getPrepaid())));
                     grandTotalAmount.setFont(Font.font("Verdana", FontWeight.BOLD,7.7));
                     mainContent.add(grandTotalAmount, 5, count);
 
@@ -329,7 +335,7 @@ public class CreditCompanyClosingBill {
                     due.setFont(Font.font("Verdana", FontWeight.BOLD,7.7));
                     mainContent.add(due, 0, count);
 
-                    Label dueAmount = new Label(priceFormat.format(precision.format(task.getGrandTotal() - task.getPrepaid())));
+                    Label dueAmount = new Label(priceFormat.format(precision.format(task.getDue() - task.getPrepaid())));
                     dueAmount.setFont(Font.font("Verdana", FontWeight.BOLD,7.7));
                     mainContent.add(dueAmount, 1, count);
 
@@ -345,7 +351,7 @@ public class CreditCompanyClosingBill {
                     grandTotal.setFont(Font.font("Verdana", FontWeight.BOLD,7.7));
                     mainContent.add(grandTotal, 4, count);
 
-                    Label grandTotalAmount = new Label(priceFormat.format(precision.format(task.getGrandTotal())));
+                    Label grandTotalAmount = new Label(priceFormat.format(precision.format(task.getTotalPrice() + task.getDue() - task.getPrepaid())));
                     grandTotalAmount.setFont(Font.font("Verdana", FontWeight.BOLD,7.7));
                     mainContent.add(grandTotalAmount, 5, count);
 
@@ -368,7 +374,7 @@ public class CreditCompanyClosingBill {
                 due.setFont(Font.font("Verdana", FontWeight.BOLD,7.7));
                 mainContent.add(due, 0, count);
 
-                Label dueAmount = new Label(priceFormat.format(precision.format(task.getGrandTotal() - task.getPrepaid())));//assign due - prepaid
+                Label dueAmount = new Label(priceFormat.format(precision.format(task.getDue() - task.getPrepaid())));//assign due - prepaid
                 dueAmount.setFont(Font.font("Verdana", FontWeight.BOLD,7.7));
                 mainContent.add(dueAmount, 1, count);
 
@@ -384,12 +390,12 @@ public class CreditCompanyClosingBill {
                 grandTotal.setFont(Font.font("Verdana", FontWeight.BOLD,7.7));
                 mainContent.add(grandTotal, 4, count);
 
-                Label grandTotalAmount = new Label(priceFormat.format(precision.format(task.getGrandTotal())));
+                Label grandTotalAmount = new Label(priceFormat.format(precision.format((task.getTotalPrice() + task.getDue() - task.getPrepaid()))));
                 grandTotalAmount.setFont(Font.font("Verdana", FontWeight.BOLD,7.7));
                 mainContent.add(grandTotalAmount, 5, count);
 
 
-                pageNo.setText("--" + String.valueOf(page) + "--");
+                pageNo.setText("--" + page + "--");
 
                 if (!(new PrintBill()).printClosingBill(mainLayout)) {
                     return false;
@@ -397,6 +403,9 @@ public class CreditCompanyClosingBill {
             }
 
         }
+
+        //close the company before making payment
+        TaskManager.getInstance().executeTask(new CompanyCreditClosingTask(model));
 
         //execute the closing task for prepaid once the printing of the bill succeeds
 
