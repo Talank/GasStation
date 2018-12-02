@@ -99,7 +99,7 @@ public class InitializeSystem extends Tasks {
                         date=converter.getEnglishDate(initialDate.getnYear()+1,1,1);
                         expiredList.add(model);
                         model.setExpired(true);
-                    } else if(initialDate.getnYear()==nYear) {
+                } else if(initialDate.getnYear()==nYear) {
                         if (nDay >= 15 && (Integer.parseInt(model.getDays()) != 30)&&initialDate.getnDay()<15) {
                             date=converter.getEnglishDate(nYear,nMonth,15);
                             expiredList.add(model);

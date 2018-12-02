@@ -41,7 +41,6 @@ import static javafx.scene.layout.StackPane.setAlignment;
 
 public class CreditCompanyClosingBill {
 
-
     private final String TAG = "CreditCompanyClosing";
 
     private DebtListModel model;
@@ -65,6 +64,7 @@ public class CreditCompanyClosingBill {
 
         //create the root layout
         VBox mainLayout = new VBox();
+        mainLayout.setPadding(new Insets(10,50,50,50));
         mainLayout.setAlignment(Pos.CENTER);
         mainLayout.setSpacing(5);
 
@@ -165,7 +165,7 @@ public class CreditCompanyClosingBill {
         mainLayout.getChildren().add(pageNo);
 
         int totalSize = 0;
-        int pageRows = 15; //no of rows to print in single page
+        int pageRows = 40; //no of rows to print in single page
 
         //compute the total size (i.e no of rows of the closing data)
         for (List<CreditDetailsModel> data : companyData) {

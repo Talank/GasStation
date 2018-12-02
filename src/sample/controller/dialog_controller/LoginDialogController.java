@@ -59,6 +59,7 @@ public class LoginDialogController implements BottomBarInterface {
         usernameValidator.setMessage("UserName Cannot Be Empty");
         username.getValidators().add(usernameValidator);
 
+
         RequiredFieldValidator passwordValidator=new RequiredFieldValidator();
         passwordValidator.setMessage("Password Cannot Be Empty");
         password.getValidators().add(passwordValidator);
