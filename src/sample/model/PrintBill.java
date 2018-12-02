@@ -3,6 +3,7 @@ package sample.model;
 import javafx.collections.ObservableSet;
 import javafx.print.*;
 import javafx.scene.Node;
+import javafx.scene.layout.VBox;
 import sample.controller.SystemLogging;
 
 
@@ -42,6 +43,13 @@ public class PrintBill {
         //check if the printer is available
         if(currentPrinter!=null) {
             printerJob = PrinterJob.createPrinterJob(currentPrinter);//create a printer job to print
+
+            //we are using the default printer setup with custom margin
+            PageLayout pageLayout = currentPrinter.createPageLayout(currentPrinter.getPrinterAttributes().getDefaultPaper(), currentPrinter.getPrinterAttributes().getDefaultPageOrientation(), 54,54,54,54);
+
+            ((VBox)node).setPrefWidth(pageLayout.getPrintableWidth());
+
+            printerJob.getJobSettings().setPageLayout(pageLayout);
 
             if(printerJob.printPage(node)) {
                 printerJob.endJob();

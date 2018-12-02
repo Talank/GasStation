@@ -12,13 +12,12 @@ import javafx.scene.control.Separator;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
+import org.omg.PortableInterceptor.INACTIVE;
 import sample.OutputTasks.GetCompanyClosing;
 import sample.OutputTasks.GetCompanyDetailsTask;
 import sample.controller.AppHomeController;
@@ -64,7 +63,6 @@ public class CreditCompanyClosingBill {
 
         //create the root layout
         VBox mainLayout = new VBox();
-        mainLayout.setPadding(new Insets(10,50,50,50));
         mainLayout.setAlignment(Pos.CENTER);
         mainLayout.setSpacing(5);
 
@@ -109,7 +107,7 @@ public class CreditCompanyClosingBill {
         //node for info of the company for which this closing bill is printed
 
         HBox companyInfo = new HBox();
-        companyInfo.setAlignment(Pos.CENTER_LEFT);
+        companyInfo.setAlignment(Pos.CENTER);
         Label company=new Label("Name: ");
         company.setFont(Font.font("Verdana", FontWeight.NORMAL,8.7));
         Label companyName = new Label(model.getCompanyName());
@@ -122,9 +120,11 @@ public class CreditCompanyClosingBill {
         //main content holder (i.e transactions)
         GridPane mainContent = new GridPane();
 
+        mainContent.setAlignment(Pos.CENTER);
+
         //specify the gaps
         mainContent.setVgap(5);
-        mainContent.setHgap(5);
+        mainContent.setHgap(15);
 
 
         //specify the top row columns names
@@ -162,6 +162,12 @@ public class CreditCompanyClosingBill {
         mainContent.getChildren().add(horizontal);
 
         mainLayout.getChildren().add(mainContent);
+
+        GridPane totalPane = new GridPane();
+        totalPane.setVgap(5);
+        totalPane.setHgap(15);
+        totalPane.setAlignment(Pos.CENTER);
+        mainLayout.getChildren().add(totalPane);
 
         Label pageNo = new Label();
         mainLayout.getChildren().add(pageNo);
@@ -276,39 +282,51 @@ public class CreditCompanyClosingBill {
                 if ((count + 2) <= pageRows) {//add the total amount to the last row, (+2 , one for the separator, and for the total Amount row), the rows fits into the same page
 
 
+                    totalPane.getChildren().clear();
+
+
                     //the separator
                     count++;
                     transactionSep = new Separator(Orientation.HORIZONTAL);
                     GridPane.setConstraints(transactionSep, 0, count);
                     GridPane.setColumnSpan(transactionSep, 6);
-                    mainContent.getChildren().add(transactionSep);
+                    totalPane.getChildren().add(transactionSep);
 
 
                     count++;
 
                     Label due = new Label("Due: Rs ");
                     due.setFont(Font.font("Verdana", FontWeight.BOLD,7.7));
-                    mainContent.add(due, 0, count);
+                    totalPane.add(due, 0, count);
 
                     Label dueAmount = new Label(priceFormat.format(precision.format(task.getDue() - task.getPrepaid())));
                     dueAmount.setFont(Font.font("Verdana", FontWeight.BOLD,7.7));
-                    mainContent.add(dueAmount, 1, count);
+                    totalPane.add(dueAmount, 1, count);
 
                     Label total = new Label("Total: Rs ");
                     total.setFont(Font.font("Verdana", FontWeight.BOLD,7.7));
-                    mainContent.add(total, 2, count);
+                    totalPane.add(total, 2, count);
 
                     Label totalAmount = new Label(priceFormat.format(precision.format(task.getTotalPrice())));
                     totalAmount.setFont(Font.font("Verdana", FontWeight.BOLD,7.7));
-                    mainContent.add(totalAmount, 3, count);
+                    totalPane.add(totalAmount, 3, count);
 
                     Label grandTotal = new Label("Grand Total: Rs");
                     grandTotal.setFont(Font.font("Verdana", FontWeight.BOLD,7.7));
-                    mainContent.add(grandTotal, 4, count);
+                    totalPane.add(grandTotal, 4, count);
 
                     Label grandTotalAmount = new Label(priceFormat.format(precision.format(task.getTotalPrice() + task.getDue() - task.getPrepaid())));
                     grandTotalAmount.setFont(Font.font("Verdana", FontWeight.BOLD,7.7));
-                    mainContent.add(grandTotalAmount, 5, count);
+                    totalPane.add(grandTotalAmount, 5, count);
+
+                    count++;
+
+                    transactionSep = new Separator(Orientation.HORIZONTAL);
+                    GridPane.setConstraints(transactionSep, 0, count);
+                    GridPane.setColumnSpan(transactionSep, 6);
+                    totalPane.getChildren().add(transactionSep);
+
+
 
                     pageNo.setText("--" + String.valueOf(page) + "--");
                     if (!(new PrintBill()).printClosingBill(mainLayout)) {
@@ -327,35 +345,47 @@ public class CreditCompanyClosingBill {
                     //clear the content for the next page
                     mainContent.getChildren().clear();
 
+                    totalPane.getChildren().clear();
+
+
+
 
                     transactionSep = new Separator(Orientation.HORIZONTAL);
                     GridPane.setConstraints(transactionSep, 0, 0);
                     GridPane.setColumnSpan(transactionSep, 6);
-                    mainContent.getChildren().add(transactionSep);
+                    totalPane.getChildren().add(transactionSep);
 
                     Label due = new Label("Due: Rs ");
                     due.setFont(Font.font("Verdana", FontWeight.BOLD,7.7));
-                    mainContent.add(due, 0, count);
+                    totalPane.add(due, 0, count);
 
                     Label dueAmount = new Label(priceFormat.format(precision.format(task.getDue() - task.getPrepaid())));
                     dueAmount.setFont(Font.font("Verdana", FontWeight.BOLD,7.7));
-                    mainContent.add(dueAmount, 1, count);
+                    totalPane.add(dueAmount, 1, count);
 
                     Label total = new Label("Total: Rs ");
                     total.setFont(Font.font("Verdana", FontWeight.BOLD,7.7));
-                    mainContent.add(total, 2, count);
+                    totalPane.add(total, 2, count);
 
                     Label totalAmount = new Label(priceFormat.format(precision.format(task.getTotalPrice())));
                     totalAmount.setFont(Font.font("Verdana", FontWeight.BOLD,7.7));
-                    mainContent.add(totalAmount, 3, count);
+                    totalPane.add(totalAmount, 3, count);
 
                     Label grandTotal = new Label("Grand Total: Rs");
                     grandTotal.setFont(Font.font("Verdana", FontWeight.BOLD,7.7));
-                    mainContent.add(grandTotal, 4, count);
+                    totalPane.add(grandTotal, 4, count);
 
                     Label grandTotalAmount = new Label(priceFormat.format(precision.format(task.getTotalPrice() + task.getDue() - task.getPrepaid())));
                     grandTotalAmount.setFont(Font.font("Verdana", FontWeight.BOLD,7.7));
-                    mainContent.add(grandTotalAmount, 5, count);
+                    totalPane.add(grandTotalAmount, 5, count);
+
+
+                    count++;
+
+                    transactionSep = new Separator(Orientation.HORIZONTAL);
+                    GridPane.setConstraints(transactionSep, 0, count);
+                    GridPane.setColumnSpan(transactionSep, 6);
+                    totalPane.getChildren().add(transactionSep);
 
                     pageNo.setText("--" + String.valueOf(page+1) + "--");
 
@@ -367,34 +397,45 @@ public class CreditCompanyClosingBill {
                 }
 
             } else {
+
+                totalPane.getChildren().clear();
+
+
                 transactionSep = new Separator(Orientation.HORIZONTAL);
                 GridPane.setConstraints(transactionSep, 0, 0);
                 GridPane.setColumnSpan(transactionSep, 6);
-                mainContent.getChildren().add(transactionSep);
+                totalPane.getChildren().add(transactionSep);
 
                 Label due = new Label("Due: Rs ");
                 due.setFont(Font.font("Verdana", FontWeight.BOLD,7.7));
-                mainContent.add(due, 0, count);
+                totalPane.add(due, 0, count);
 
                 Label dueAmount = new Label(priceFormat.format(precision.format(task.getDue() - task.getPrepaid())));//assign due - prepaid
                 dueAmount.setFont(Font.font("Verdana", FontWeight.BOLD,7.7));
-                mainContent.add(dueAmount, 1, count);
+                totalPane.add(dueAmount, 1, count);
 
                 Label total = new Label("Total: Rs ");
                 total.setFont(Font.font("Verdana", FontWeight.BOLD,7.7));
-                mainContent.add(total, 2, count);
+                totalPane.add(total, 2, count);
 
                 Label totalAmount = new Label(priceFormat.format(precision.format(task.getTotalPrice())));
                 totalAmount.setFont(Font.font("Verdana", FontWeight.BOLD,7.7));
-                mainContent.add(totalAmount, 3, count);
+                totalPane.add(totalAmount, 3, count);
 
                 Label grandTotal = new Label("Grand Total: Rs");
                 grandTotal.setFont(Font.font("Verdana", FontWeight.BOLD,7.7));
-                mainContent.add(grandTotal, 4, count);
+                totalPane.add(grandTotal, 4, count);
 
                 Label grandTotalAmount = new Label(priceFormat.format(precision.format((task.getTotalPrice() + task.getDue() - task.getPrepaid()))));
                 grandTotalAmount.setFont(Font.font("Verdana", FontWeight.BOLD,7.7));
-                mainContent.add(grandTotalAmount, 5, count);
+                totalPane.add(grandTotalAmount, 5, count);
+
+                count++;
+
+                transactionSep = new Separator(Orientation.HORIZONTAL);
+                GridPane.setConstraints(transactionSep, 0, count);
+                GridPane.setColumnSpan(transactionSep, 6);
+                totalPane.getChildren().add(transactionSep);
 
 
                 pageNo.setText("--" + page + "--");
@@ -406,6 +447,7 @@ public class CreditCompanyClosingBill {
 
         }
 
+        //uncomment for production
         //close the company before making payment
         TaskManager.getInstance().executeTask(new CompanyCreditClosingTask(model));
 
