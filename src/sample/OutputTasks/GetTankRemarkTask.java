@@ -14,9 +14,9 @@ import java.sql.Statement;
 
 public class GetTankRemarkTask extends Task<TankerModel> {
 
-    private int tankerNumber;
+    private String tankerNumber;
 
-    public GetTankRemarkTask(int tankerNumber) {
+    public GetTankRemarkTask(String tankerNumber) {
         this.tankerNumber = tankerNumber;
     }
 
@@ -31,13 +31,13 @@ public class GetTankRemarkTask extends Task<TankerModel> {
 
             Statement getStatus=Tasks.getConnection().createStatement();
 
-            ResultSet resultSet=getStatus.executeQuery("SELECT * FROM Tankers WHERE TANKER_NO="+tankerNumber);
+            ResultSet resultSet=getStatus.executeQuery("SELECT * FROM Tankers WHERE TANKER_NO='"+tankerNumber + "'");
 
             if (resultSet.next()) {
                 avg = resultSet.getFloat(2) / resultSet.getInt(3);
                 count = resultSet.getInt(3);
                 type = resultSet.getString(4);
-                tankerModel = new TankerModel(avg, count, type, (String.valueOf(tankerNumber) + "X"));
+                tankerModel = new TankerModel(avg, count, type, (tankerNumber + "X"));
             } else {
                 failed();
             }

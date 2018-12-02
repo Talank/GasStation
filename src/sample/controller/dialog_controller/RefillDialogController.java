@@ -86,7 +86,7 @@ public class RefillDialogController implements BottomBarInterface {
         });
 
         tankerNumber.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)->{
-            if(!newValue.matches("[0-9]{0,4}")) {
+            if(!newValue.matches("[-a-zA-Z0-9]{0,10}")) {
                 tankerNumber.setText(oldValue);
             } else {
                 if(newValue.isEmpty()) {
@@ -143,7 +143,7 @@ public class RefillDialogController implements BottomBarInterface {
 
                 actualValue=Float.parseFloat(actual.getText())-SystemStatus.getDieselStock();
 
-                if((Float.parseFloat(expected.getText())-actualValue)>=0) {
+                if((Float.parseFloat(expected.getText())-actualValue) >= 0 && actualValue > 0) {
 
                     //Check if diesel tanker is carrying petrol
 
@@ -151,7 +151,7 @@ public class RefillDialogController implements BottomBarInterface {
 
                     boolean isPetrol = false;
                     for (TankerModel tankerModel:RefillModel.getTankerModels()) {
-                        if(tankerModel.getTankerNumber().substring(0,4).equals(tankerNumber.getText()) && tankerModel.getType().equals("Petrol")) {
+                        if(tankerModel.getTankerNumber().substring(0,tankerModel.getTankerNumber().length() - 1).equalsIgnoreCase(tankerNumber.getText()) && tankerModel.getType().equals("Petrol")) {
                             isPetrol = true;
                             break;
                         }
@@ -195,11 +195,11 @@ public class RefillDialogController implements BottomBarInterface {
                  */
                 actualValue=Float.parseFloat(actual.getText())-SystemStatus.getPetrolStock();
 
-                if((Float.parseFloat(expected.getText())-actualValue)>=0) {
+                if((Float.parseFloat(expected.getText())-actualValue) >= 0 && actualValue > 0) {
 
                     boolean isDiesel = false;
                     for (TankerModel tankerModel:RefillModel.getTankerModels()) {
-                        if(tankerModel.getTankerNumber().substring(0,4).equals(tankerNumber.getText()) && tankerModel.getType().equals("Diesel")) {
+                        if(tankerModel.getTankerNumber().substring(0,tankerModel.getTankerNumber().length() - 1).equalsIgnoreCase(tankerNumber.getText()) && tankerModel.getType().equals("Diesel")) {
                             isDiesel = true;
                             break;
                         }
