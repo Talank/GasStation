@@ -110,9 +110,11 @@ public class CreditCompanyClosingBill {
 
         HBox companyInfo = new HBox();
         companyInfo.setAlignment(Pos.CENTER_LEFT);
-
+        Label company=new Label("Name: ");
+        company.setFont(Font.font("Verdana", FontWeight.NORMAL,8.7));
         Label companyName = new Label(model.getCompanyName());
-        companyName.setFont(Font.font("Verdana", FontWeight.BOLD,7.7));
+        companyName.setFont(Font.font("Verdana", FontWeight.BOLD,9.1));
+        companyInfo.getChildren().add(company);
         companyInfo.getChildren().add(companyName);
 
         mainLayout.getChildren().add(companyInfo);
