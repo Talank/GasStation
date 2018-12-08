@@ -11,11 +11,11 @@
 <?import sample.library.dialog_bottombar.DialogBottomBar?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controller.dialog_controller.printConformationController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controller.dialog_controller.PrintConformationController">
     <center>
         <VBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <children>
-                <Label wrapText="true" fx:id="remarkLabel" text="Do you want to print again?">
+                <Label wrapText="true" fx:id="remarkLabel" text="Was the print successful?">
                     <font>
                         <Font name="System Bold" size="25.0" />
                     </font>

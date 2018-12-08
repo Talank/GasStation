@@ -3,9 +3,12 @@ package sample.model;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.concurrent.WorkerStateEvent;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
@@ -17,11 +20,16 @@ import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import org.omg.PortableInterceptor.INACTIVE;
 import sample.OutputTasks.GetCompanyClosing;
 import sample.OutputTasks.GetCompanyDetailsTask;
 import sample.controller.AppHomeController;
 import sample.controller.SystemLogging;
+import sample.controller.dialog_controller.EditCompanyController;
+import sample.controller.dialog_controller.PrintConformationController;
+import sample.controller.dialog_controller.PrinterDialogController;
 import sample.model.databases.DatabaseHandler;
 import sample.model.nepaliPriceFormat.Precision;
 import sample.model.nepaliPriceFormat.PriceFormat;
@@ -31,6 +39,7 @@ import sample.tasks.database_tasks.CompanyCreditClosingTask;
 import sample.tasks.database_tasks.CompanyPaymentTask;
 
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.util.List;
@@ -173,7 +182,7 @@ public class CreditCompanyClosingBill {
         mainLayout.getChildren().add(pageNo);
 
         int totalSize = 0;
-        int pageRows = 40; //no of rows to print in single page
+        int pageRows = 35; //no of rows to print in single page
 
         //compute the total size (i.e no of rows of the closing data)
         for (List<CreditDetailsModel> data : companyData) {
@@ -228,7 +237,7 @@ public class CreditCompanyClosingBill {
 
                     //this is the no of rows to print in single page, change this to fit the page
                     if (count >= pageRows) {
-                        pageNo.setText("--" + String.valueOf(page) + "--");//the page number
+                        pageNo.setText("--" + page + "--");//the page number
 
                         if (!(new PrintBill()).printClosingBill(mainLayout)) {//return false if we failed to print the bill
                             return false;
@@ -236,7 +245,7 @@ public class CreditCompanyClosingBill {
 
                         //increment the pageRows range, as we are not going to print company logos in the next page
 
-                        pageRows = pageRows + 10;
+                        pageRows =40;
 
                         //remove the company info
                         mainLayout.getChildren().remove(mainCompany);
@@ -268,8 +277,9 @@ public class CreditCompanyClosingBill {
 
                 count++;
 
-                if (count != 2) {//check if the count is 2, i.e if it is 2, it is already drawn, so skip it
+                if (count != 2) {//check if the count is 1, i.e if it is 1, it is already drawn in above code, so skip it
                     transactionSep = new Separator(Orientation.HORIZONTAL);
+
                     GridPane.setConstraints(transactionSep, 0, count);
                     GridPane.setColumnSpan(transactionSep, 6);
                     mainContent.getChildren().add(transactionSep);
@@ -277,16 +287,16 @@ public class CreditCompanyClosingBill {
 
             }
 
-            if (count != 1) {//means we have some remaining print to do
+            if (count != 2) {//means we have some remaining print to do
 
-                if ((count + 2) <= pageRows) {//add the total amount to the last row, (+2 , one for the separator, and for the total Amount row), the rows fits into the same page
+                if ((count + 5) <= pageRows) {//add the total amount to the last row, (+5 , 2 for the separator, and 1 for the total Amount row, 2 for page number), the rows fits into the same page
 
 
                     totalPane.getChildren().clear();
 
 
                     //the separator
-                    count++;
+                    count = 0;//this is the row of the totalPane, not the mainContent, so reset the count
                     transactionSep = new Separator(Orientation.HORIZONTAL);
                     GridPane.setConstraints(transactionSep, 0, count);
                     GridPane.setColumnSpan(transactionSep, 6);
@@ -328,7 +338,7 @@ public class CreditCompanyClosingBill {
 
 
 
-                    pageNo.setText("--" + String.valueOf(page) + "--");
+                    pageNo.setText("--" + page + "--");
                     if (!(new PrintBill()).printClosingBill(mainLayout)) {
                         return false;
                     }
@@ -336,18 +346,30 @@ public class CreditCompanyClosingBill {
                 } else {//the rows doesn't fit into the same page, so extend to the next page, (it will fit in the next page)
 
                     //add the page value and print the current page
-                    pageNo.setText("--" + String.valueOf(page) + "--");
+                    pageNo.setText("--" + page + "--");
 
                     if (!(new PrintBill()).printClosingBill(mainLayout)) {
                         return false;
                     }
+
+                    //If the no of rows is less than the pageRows, and the rows and the totalAmount doesn't fit in the same page, then the second page would have image, but for other cases it might throw exception
+                    try {
+                        //remove the company info
+                        mainLayout.getChildren().remove(mainCompany);
+                        mainLayout.getChildren().remove(companyInfo);
+                        mainLayout.getChildren().remove(topImage);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
 
                     //clear the content for the next page
                     mainContent.getChildren().clear();
 
                     totalPane.getChildren().clear();
 
-
+                    //reset the count
+                    count = 1;
 
 
                     transactionSep = new Separator(Orientation.HORIZONTAL);
@@ -387,7 +409,7 @@ public class CreditCompanyClosingBill {
                     GridPane.setColumnSpan(transactionSep, 6);
                     totalPane.getChildren().add(transactionSep);
 
-                    pageNo.setText("--" + String.valueOf(page+1) + "--");
+                    pageNo.setText("--" + (page+1) + "--");
 
 
                     if (!(new PrintBill()).printClosingBill(mainLayout)) {
@@ -396,10 +418,17 @@ public class CreditCompanyClosingBill {
 
                 }
 
-            } else {
+            } else {//this means the data fit the previous page exactly
+
+
+                //clear the mainContent as it contains the top labels
+                mainContent.getChildren().clear();
 
                 totalPane.getChildren().clear();
 
+
+                //make count 1
+                count = 1;
 
                 transactionSep = new Separator(Orientation.HORIZONTAL);
                 GridPane.setConstraints(transactionSep, 0, 0);
@@ -447,20 +476,19 @@ public class CreditCompanyClosingBill {
 
         }
 
-        //uncomment for production
-        //close the company before making payment
-        TaskManager.getInstance().executeTask(new CompanyCreditClosingTask(model));
-
-        //execute the closing task for prepaid once the printing of the bill succeeds
-
-        if (task.getPrepaid() > 0) {//we have prepaid
-
-            //close the company using the default CompanyPaymentTask
-
-            //we are performing payment with amount 0, as this uses the prepaid amount from the company in normal mode (i.e mode 0)
-            CompanyPaymentTask paymentTask = new CompanyPaymentTask(model, 0, 0);
-            paymentTask.execute();
-
+        try {
+            //load the conformation dialog
+            FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("sample/view/dialogs/printConformationDialog.fxml"));
+            Parent root=loader.load();
+            PrintConformationController controller=loader.getController();
+            controller.initializeData(model, task.getPrepaid());
+            Stage stage=new Stage();
+            stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("sample/resources/logo.png")));
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
 

@@ -37,7 +37,7 @@ public class StoreCreditTransactionTaskTest {
 
         for (int i = 0; i < 1; i++) {
 
-            j = (int) (Math.random() * 2 + 15);//select the no of rows to be added to the company table
+            j = (int) (Math.random() * 2 + 20);//select the no of rows to be added to the company table
             for (k = 0; k < j; k++) {
                 l = (int) (Math.random() * 4 + 1);//set the no of transaction within the Transaction
                 transactions = new ArrayList<>();
