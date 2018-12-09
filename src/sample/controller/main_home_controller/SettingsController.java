@@ -180,11 +180,28 @@ public class SettingsController {
     * */
 
     @FXML
-    public void deleteCompany(MouseEvent e) {
+    public void deleteCompany(MouseEvent e) throws IOException {
         DebtListModel model=debtList.getSelectionModel().getSelectedItem();
         if(model!=null) {
-            listModels.remove(model);
-            performTask(new RemoveCompanyTask(model));
+            /*
+            *Here, a conformation dialog is displayed saying
+            * "Are you sure want to delete THIS?
+             */
+
+            //load the conformation dialog
+            FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("sample/view/dialogs/deleteConformationDialog.fxml"));
+            Parent root=loader.load();
+            DeleteConformationController controller=loader.getController();
+            controller.initializeData(model,listModels);
+            Stage stage=new Stage();
+            stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("sample/resources/logo.png")));
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setScene(new Scene(root));
+            stage.show();
+
+
+            //listModels.remove(model);
+            //performTask(new RemoveCompanyTask(model));
         } else {
             showSnackMessage("No Company Selected!");
         }
