@@ -193,6 +193,7 @@ public class SettingsController {
             Parent root=loader.load();
             DeleteConformationController controller=loader.getController();
             controller.initializeData(model,listModels);
+            controller.showBalance();
             Stage stage=new Stage();
             stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("sample/resources/logo.png")));
             stage.initModality(Modality.APPLICATION_MODAL);

@@ -15,7 +15,12 @@
     <center>
         <VBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <children>
-                <Label wrapText="true" fx:id="remarkLabel" text="Sure want to delete this company?">
+                <Label wrapText="true" fx:id="remarkLabel1" text="Sure want to delete this company?">
+                    <font>
+                        <Font name="System Bold" size="25.0" />
+                    </font>
+                </Label>
+                <Label wrapText="true" fx:id="remarkLabel">
                     <font>
                         <Font name="System Bold" size="25.0" />
                     </font>

@@ -55,4 +55,7 @@ public class DeleteConformationController implements BottomBarInterface {
         this.model = model;
         this.listModels = listModels;
     }
+    public void showBalance(){
+        remarkLabel.setText("Due:"+model.getDue()  +"  Total :"+model.getTotal());
+    }
 }
