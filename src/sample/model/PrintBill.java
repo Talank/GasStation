@@ -45,7 +45,7 @@ public class PrintBill {
             printerJob = PrinterJob.createPrinterJob(currentPrinter);//create a printer job to print
 
             //we are using the default printer setup with custom margin
-            PageLayout pageLayout = currentPrinter.createPageLayout(currentPrinter.getPrinterAttributes().getDefaultPaper(), currentPrinter.getPrinterAttributes().getDefaultPageOrientation(), 54,54,54,54);
+            PageLayout pageLayout = currentPrinter.createPageLayout(currentPrinter.getPrinterAttributes().getDefaultPaper(), currentPrinter.getPrinterAttributes().getDefaultPageOrientation(), 54,54,30,30);
 
             ((VBox)node).setPrefWidth(pageLayout.getPrintableWidth());
 

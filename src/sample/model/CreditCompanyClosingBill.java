@@ -16,6 +16,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -132,7 +133,7 @@ public class CreditCompanyClosingBill {
         mainContent.setAlignment(Pos.CENTER);
 
         //specify the gaps
-        mainContent.setVgap(5);
+        mainContent.setVgap(2);
         mainContent.setHgap(15);
 
 
@@ -182,7 +183,7 @@ public class CreditCompanyClosingBill {
         mainLayout.getChildren().add(pageNo);
 
         int totalSize = 0;
-        int pageRows = 35; //no of rows to print in single page
+        int pageRows = 45; //no of rows to print in single page
 
         //compute the total size (i.e no of rows of the closing data)
         for (List<CreditDetailsModel> data : companyData) {
@@ -196,6 +197,7 @@ public class CreditCompanyClosingBill {
             System.out.println("Page Count: " + pageCount);
             int count = 1;
             int page = 1;
+            double renderCount = 1;
 
             PriceFormat priceFormat = new PriceFormat();
             Precision precision = new Precision();
@@ -204,10 +206,12 @@ public class CreditCompanyClosingBill {
 
             Label label;
 
+
             for (List<CreditDetailsModel> mainList : companyData) {
 
                 for (CreditDetailsModel model : mainList) {
                     count++;//start from 2, as we have "column names in row 0, and separator in row 1"
+                    renderCount++;//increment the render count by one, as this is a legit row
 
                     //add the respective data
 
@@ -235,8 +239,10 @@ public class CreditCompanyClosingBill {
                     label.setFont(Font.font("Verdana", FontWeight.NORMAL,7.7));
                     mainContent.add(label, 5, count);
 
+
+
                     //this is the no of rows to print in single page, change this to fit the page
-                    if (count >= pageRows) {
+                    if (renderCount >= pageRows) {
                         pageNo.setText("--" + page + "--");//the page number
 
                         if (!(new PrintBill()).printClosingBill(mainLayout)) {//return false if we failed to print the bill
@@ -245,7 +251,7 @@ public class CreditCompanyClosingBill {
 
                         //increment the pageRows range, as we are not going to print company logos in the next page
 
-                        pageRows =40;
+                        pageRows =55;
 
                         //remove the company info
                         mainLayout.getChildren().remove(mainCompany);
@@ -254,6 +260,7 @@ public class CreditCompanyClosingBill {
 
                         //the page is full, reset the count and clear the gridPane
                         count = 1;
+                        renderCount = 1;
                         mainContent.getChildren().clear();
 
                         mainContent.add(type, 0,0);
@@ -276,6 +283,7 @@ public class CreditCompanyClosingBill {
                 }
 
                 count++;
+                renderCount = renderCount + 0.35;//increment the render count by 0.35 as the separator only occupies about 0.35 of the total rows
 
                 if (count != 2) {//check if the count is 1, i.e if it is 1, it is already drawn in above code, so skip it
                     transactionSep = new Separator(Orientation.HORIZONTAL);
@@ -289,7 +297,7 @@ public class CreditCompanyClosingBill {
 
             if (count != 2) {//means we have some remaining print to do
 
-                if ((count + 5) <= pageRows) {//add the total amount to the last row, (+5 , 2 for the separator, and 1 for the total Amount row, 2 for page number), the rows fits into the same page
+                if ((renderCount + 3.5) <= pageRows) {//add the total amount to the last row, (+5 , 2 for the separator, and 1 for the total Amount row, 2 for page number), the rows fits into the same page
 
 
                     totalPane.getChildren().clear();
