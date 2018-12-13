@@ -167,6 +167,7 @@ public class SettingsController {
         Parent root=FXMLLoader.load(getClass().getClassLoader().getResource("sample/view/dialogs/changeCompany.fxml"));
         Scene scene=new Scene(root);
         Stage stage=new Stage();
+        stage.setTitle("Add company");
         stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("sample/resources/logo.png")));
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(scene);
@@ -196,6 +197,7 @@ public class SettingsController {
             controller.initializeData(model,listModels);
             controller.showBalance();
             Stage stage=new Stage();
+            stage.setTitle("Delete Company");
             stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("sample/resources/logo.png")));
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setScene(new Scene(root));
@@ -228,6 +230,7 @@ public class SettingsController {
             EditCompanyController controller=loader.getController();
             controller.setEditData(model);
             Stage stage=new Stage();
+            stage.setTitle("Edit Company");
             stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("sample/resources/logo.png")));
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setScene(new Scene(root));
@@ -277,6 +280,7 @@ public class SettingsController {
             controller.setModel(model);
 
             Stage stage=new Stage();
+            stage.setTitle("Payment");
             stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("sample/resources/logo.png")));
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setScene(new Scene(root));
@@ -303,6 +307,7 @@ public class SettingsController {
         controller.setInitialRate(model[1][0],model[2][0]);
 
         Stage stage=new Stage();
+        stage.setTitle("Oil Rates");
         stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("sample/resources/logo.png")));
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(new Scene(root));
@@ -317,6 +322,7 @@ public class SettingsController {
         CounterStockDialogController controller=loader.getController();
         controller.setInitialStock(model[5][0]);
         Stage stage=new Stage();
+        stage.setTitle("Counter Setup");
         stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("sample/resources/logo.png")));
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(new Scene(root));
@@ -328,6 +334,7 @@ public class SettingsController {
         Parent root=FXMLLoader.load(getClass().getClassLoader().getResource("sample/view/dialogs/setupMeterReadings.fxml"));
         Scene scene=new Scene(root);
         Stage stage=new Stage();
+        stage.setTitle("Setup Meters");
         stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("sample/resources/logo.png")));
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(scene);
@@ -339,6 +346,7 @@ public class SettingsController {
         Parent root=FXMLLoader.load(getClass().getClassLoader().getResource("sample/view/dialogs/printerDialog.fxml"));
         Scene scene=new Scene(root);
         Stage stage=new Stage();
+        stage.setTitle("Printer setup");
         stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("sample/resources/logo.png")));
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(scene);
@@ -354,6 +362,7 @@ public class SettingsController {
         OilStockDialogController controller=loader.getController();
         controller.setInitialStock(model[6][0], model[7][0]);
         Stage stage=new Stage();
+        stage.setTitle("Oil Stocks");
         stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("sample/resources/logo.png")));
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(new Scene(root));
@@ -376,6 +385,7 @@ public class SettingsController {
         controller.setUserName(usernameValue.getText());
 
         Stage stage=new Stage();
+        stage.setTitle("User Credentials");
         stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("sample/resources/logo.png")));
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(new Scene(root));
@@ -406,6 +416,7 @@ public class SettingsController {
         Parent root=loader.load();
 
         Stage stage=new Stage();
+        stage.setTitle("Expenditure");
         stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("sample/resources/logo.png")));
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(new Scene(root));

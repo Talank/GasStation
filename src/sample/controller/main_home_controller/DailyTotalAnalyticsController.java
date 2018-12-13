@@ -269,6 +269,7 @@ public class DailyTotalAnalyticsController implements BackButtonInterface {
         Parent root=loader.load();
 
         Stage stage=new Stage();
+        stage.setTitle("Today Analytics");
         stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("sample/resources/logo.png")));
         stage.setScene(new Scene(root));
         stage.initModality(Modality.APPLICATION_MODAL);

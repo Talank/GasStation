@@ -425,6 +425,7 @@ public class ProfitLossController implements BackButtonInterface {
         }
 
         Stage stage=new Stage();
+        stage.setTitle("Refill Dialog");
         stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("sample/resources/logo.png")));
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(new Scene(root));
@@ -440,6 +441,7 @@ public class ProfitLossController implements BackButtonInterface {
             Parent root= loader.load();
 
             Stage stage=new Stage();
+            stage.setTitle("Remark Dialog");
             stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("sample/resources/logo.png")));
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setScene(new Scene(root));

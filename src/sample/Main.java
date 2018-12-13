@@ -95,6 +95,7 @@ public class Main extends Application {
                 FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("sample/view/dialogs/dialog_list_views/expireCompanyDialog.fxml"));
                 Parent root=loader.load();
                 Stage stage=new Stage();
+                stage.setTitle("Expired Company");
                 stage.initModality(Modality.APPLICATION_MODAL);
                 stage.setScene(new Scene(root));
                 stage.show();

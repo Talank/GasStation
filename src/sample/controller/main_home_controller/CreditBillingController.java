@@ -530,6 +530,7 @@ public class CreditBillingController {
         FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("sample/view/dialogs/postingDialog.fxml"));
         Parent root=loader.load();
         Stage stage=new Stage();
+        stage.setTitle("Posting Dialog");
         stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("sample/resources/logo.png")));
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(new Scene(root));
