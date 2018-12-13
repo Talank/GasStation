@@ -167,6 +167,7 @@ public class SettingsController {
         Parent root=FXMLLoader.load(getClass().getClassLoader().getResource("sample/view/dialogs/changeCompany.fxml"));
         Scene scene=new Scene(root);
         Stage stage=new Stage();
+        stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("sample/resources/logo.png")));
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(scene);
         stage.show();

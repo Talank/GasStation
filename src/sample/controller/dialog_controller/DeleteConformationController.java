@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.text.Font;
 import sample.library.dialog_bottombar.BottomBarInterface;
 import sample.library.dialog_bottombar.DialogBottomBar;
 import sample.library.dialog_toolbar.DialogToolBar;
@@ -24,7 +25,7 @@ public class DeleteConformationController implements BottomBarInterface {
     private DialogBottomBar bottomBar;
 
     @FXML
-    private Label remarkLabel;
+    private Label remarkLabel,companyLabel;
 
     private DebtListModel model;
 
@@ -57,5 +58,6 @@ public class DeleteConformationController implements BottomBarInterface {
     }
     public void showBalance(){
         remarkLabel.setText("Due:"+model.getDue()  +"  Total :"+model.getTotal());
+        companyLabel.setText("Company : "+model.getCompanyName());
     }
 }

@@ -20,6 +20,11 @@
                         <Font name="System Bold" size="25.0" />
                     </font>
                 </Label>
+                <Label wrapText="true" fx:id="companyLabel" >
+                    <font>
+                        <Font name="System Bold" size="28.0" />
+                    </font>
+                </Label>
                 <Label wrapText="true" fx:id="remarkLabel">
                     <font>
                         <Font name="System Bold" size="25.0" />
