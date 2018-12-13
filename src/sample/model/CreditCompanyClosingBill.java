@@ -93,7 +93,7 @@ public class CreditCompanyClosingBill {
         VBox mainCompany = new VBox();
         mainCompany.setAlignment(Pos.CENTER);
 
-        Label mainCompanyName = new Label("𝐒𝐡𝐫𝐞𝐞 𝐎𝐦 𝐏𝐞𝐭𝐫𝐨𝐥𝐞𝐮𝐦 𝐓𝐫𝐚𝐝𝐞𝐫𝐬");
+        Label mainCompanyName = new Label("Shree Om Petroleum Traders");
         mainCompanyName.setFont(Font.font("Verdana", FontWeight.BOLD,9.15));
 
         mainCompany.getChildren().add(mainCompanyName);
