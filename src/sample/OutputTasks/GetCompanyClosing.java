@@ -41,7 +41,7 @@ public class GetCompanyClosing {
                 resultSet.next();
                 total = (resultSet.getString(1) != null)? Float.parseFloat(resultSet.getString(1)): 0;
 
-                resultSet=getDetails.executeQuery("SELECT * FROM " + DatabaseHandler.generateTableName(model.getCompanyName()) + " WHERE DATE<'" + model.getExpireDate() + "'");
+                resultSet=getDetails.executeQuery("SELECT * FROM " + DatabaseHandler.generateTableName(model.getCompanyName()) + " WHERE DATE<'" + model.getExpireDate() + "' ORDER BY DATE ASC");
             } else {//the company is not expired
 
                 //we get the entire data from the company table
@@ -55,45 +55,68 @@ public class GetCompanyClosing {
             List<CreditDetailsModel> smallList=new ArrayList<>();
             int  i=1;//index used to group the transactions having same TransactionID
             boolean create=false;
-
             NepaliDateGenerator generator=new NepaliDateGenerator();
 
-            //iterate through all the rows in the table
-            while(resultSet.next()) {
+            if (resultSet.next()) {//get the first row in the result set, and get the transaction id from the result set,as it might not be 1 (assuming i = 1 is a bug as the data is ordered by date)
 
-                if(i==resultSet.getInt(1)) {
+                i = resultSet.getInt(1);//initialize the transaction id
 
-                    if(resultSet.getString(2).startsWith("D")||resultSet.getString(2).startsWith("P")) {//the row is for oil transaction
+                //store the first data information in the array list
+                if(resultSet.getString(2).startsWith("D")||resultSet.getString(2).startsWith("P")) {//the row is for oil transaction
 
-                        //add the data to smallList
-                        smallList.add(new CreditDetailsModel(resultSet.getString(3),resultSet.getString(2),generator.convertDate(resultSet.getDate(7)),resultSet.getString(5),resultSet.getString(6),resultSet.getString(4)));
-                    } else {
+                    //add the data to smallList
+                    smallList.add(new CreditDetailsModel(resultSet.getString(3),resultSet.getString(2),generator.convertDate(resultSet.getDate(7)),resultSet.getString(5),resultSet.getString(6),resultSet.getString(4)));
+                } else {
 
-                        //add the data to smallList
-                        smallList.add(new CreditDetailsModel("XXXX",resultSet.getString(2),generator.convertDate(resultSet.getDate(7)),String.valueOf(resultSet.getInt(5)),resultSet.getString(6),resultSet.getString(4)));
-                    }
-
-                } else {//the index is different from the initial index, i.e this is the next transaction
-                    mainList.add(smallList); //add the list to the mainList
-                    create=true; //to indicate to create another object for storing the next transaction set
-                    i++; //increment the index
+                    //add the data to smallList
+                    smallList.add(new CreditDetailsModel("XXXX",resultSet.getString(2),generator.convertDate(resultSet.getDate(7)),String.valueOf(resultSet.getInt(5)),resultSet.getString(6),resultSet.getString(4)));
                 }
-                if(create) {
 
-                    smallList=new ArrayList<>(); //create a new ArrayList()
 
-                    //we are adding the result to the smallList, because we are in the iteration and , there is data in the current iteration
-                    if(resultSet.getString(2).startsWith("D")||resultSet.getString(2).startsWith("P")) {
+                //iterate through all the rows in the table
+                while(resultSet.next()) {
 
-                        smallList.add(new CreditDetailsModel(resultSet.getString(3),resultSet.getString(2),generator.convertDate(resultSet.getDate(7)),resultSet.getString(5),resultSet.getString(6),resultSet.getString(4)));
-                    } else {
+                    if(i==resultSet.getInt(1)) {
 
-                        smallList.add(new CreditDetailsModel("XXXX",resultSet.getString(2),generator.convertDate(resultSet.getDate(7)),String.valueOf(resultSet.getInt(5)),resultSet.getString(6),resultSet.getString(4)));
+                        if(resultSet.getString(2).startsWith("D")||resultSet.getString(2).startsWith("P")) {//the row is for oil transaction
+
+                            //add the data to smallList
+                            smallList.add(new CreditDetailsModel(resultSet.getString(3),resultSet.getString(2),generator.convertDate(resultSet.getDate(7)),resultSet.getString(5),resultSet.getString(6),resultSet.getString(4)));
+                        } else {
+
+                            //add the data to smallList
+                            smallList.add(new CreditDetailsModel("XXXX",resultSet.getString(2),generator.convertDate(resultSet.getDate(7)),String.valueOf(resultSet.getInt(5)),resultSet.getString(6),resultSet.getString(4)));
+                        }
+
+                    } else {//the index is different from the initial index, i.e this is the next transaction
+                        mainList.add(smallList); //add the list to the mainList
+                        create=true; //to indicate to create another object for storing the next transaction set
+                       // i++; //increment the index (this is the bug)
+
+                        i = resultSet.getInt(1); //assign the new transaction id to the  i
                     }
-                    create=false;
+                    if(create) {
+
+                        smallList=new ArrayList<>(); //create a new ArrayList()
+
+                        //we are adding the result to the smallList, because we are in the iteration and , there is data in the current iteration
+                        if(resultSet.getString(2).startsWith("D")||resultSet.getString(2).startsWith("P")) {
+
+                            smallList.add(new CreditDetailsModel(resultSet.getString(3),resultSet.getString(2),generator.convertDate(resultSet.getDate(7)),resultSet.getString(5),resultSet.getString(6),resultSet.getString(4)));
+                        } else {
+
+                            smallList.add(new CreditDetailsModel("XXXX",resultSet.getString(2),generator.convertDate(resultSet.getDate(7)),String.valueOf(resultSet.getInt(5)),resultSet.getString(6),resultSet.getString(4)));
+                        }
+                        create=false;
+                    }
+
                 }
 
             }
+
+
+
+
 
             //add the last transaction arrayList to the main list
             mainList.add(smallList);
