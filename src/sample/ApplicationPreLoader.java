@@ -4,6 +4,7 @@ import javafx.application.Preloader;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 /**+
@@ -24,7 +25,11 @@ public class ApplicationPreLoader extends Preloader {
     public void start(Stage primaryStage) throws Exception {
         this.primaryStage=primaryStage;
         Parent root=FXMLLoader.load(getClass().getResource("view/startingScreen.fxml"));
+        primaryStage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("sample/resources/logo.png")));
+        primaryStage.setTitle("Shree Om Petroleum Traders");
+
         primaryStage.setScene(new Scene(root));
+
         primaryStage.setMaximized(true);
         primaryStage.show();
 

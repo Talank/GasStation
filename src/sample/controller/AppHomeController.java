@@ -124,6 +124,7 @@ public class AppHomeController {
         controller.setStage((Stage)((Node)e.getSource()).getScene().getWindow());
         Stage stage=new Stage();
         stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("sample/resources/logo.png")));
+        stage.setTitle("Login");
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(new Scene(root));
         stage.show();
