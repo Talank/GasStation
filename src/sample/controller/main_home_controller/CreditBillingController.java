@@ -677,7 +677,7 @@ public class CreditBillingController {
     @FXML
     public void printBill(MouseEvent e)throws IOException {
         if(!isListEmpty()) {
-            AppHomeController.getInstance().showMessage("Printing Bill",1000);
+
 
             DebtListModel model=CreditCompanyList.getCompany(companyName.getValue());
 
@@ -706,10 +706,59 @@ public class CreditBillingController {
             transactionBill.setPostingDate(date);
             transactionBill.print();
 
+            //display the printing bill
+            AppHomeController.getInstance().showMessage("Printing Bill",1000);
+
         } else {
             AppHomeController.getInstance().showMessage("No Transaction Detected",1000);
         }
 
+    }
+
+    @FXML
+    public void saveBill(MouseEvent event) {
+        if(!isListEmpty()) {
+
+
+            //get the current company from the company select field
+            DebtListModel model=CreditCompanyList.getCompany(companyName.getValue());
+
+            List<Transaction> newList=new ArrayList<>(transactionListView.getItems());//Create A shallow copy
+
+            //the task to store the task
+            StoreCreditTransactionTask task=new StoreCreditTransactionTask(newList,model);
+
+            if(admin) {//set the admin date of the transaction
+                task.setAdminDate(true,date);
+            }
+
+            //store the transactions
+            TaskManager.getInstance().executeTask(task);
+
+            //clear the current lists of all the items
+            transactionListView.getItems().clear();
+
+            //reset the textFields
+            masterClear();
+
+            //reset the admin
+            admin=false;
+            adminButton.setBorder(new Border(new BorderStroke(Color.TRANSPARENT,BorderStrokeStyle.NONE,CornerRadii.EMPTY,BorderWidths.EMPTY)));
+
+            //reset the rate of the transaction
+            if(((JFXRadioButton)selection.getSelectedToggle()).getText().equals("Diesel")) {
+                rate=SystemStatus.getdRate();
+            } else if(((JFXRadioButton)selection.getSelectedToggle()).getText().equals("Petrol")) {
+                rate=SystemStatus.getpRate();
+            }
+
+
+            //display the success message
+            AppHomeController.getInstance().showMessage("Transaction Saved!",1000);
+
+        } else {
+            AppHomeController.getInstance().showMessage("No Transaction Detected",1000);
+        }
     }
 
 }

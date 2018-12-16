@@ -238,9 +238,9 @@
                         <Insets top="15.0" />
                     </VBox.margin>
                 </HBox>
-                <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="30.0">
                     <children>
-                        <JFXButton fx:id="print" buttonType="RAISED" onMouseClicked="#printBill" text="PRINT">
+                        <JFXButton fx:id="save" buttonType="RAISED" onMouseClicked="#saveBill" text="SAVE">
                             <font>
                                 <Font size="25.0" />
                             </font>
@@ -249,10 +249,23 @@
                         <URL value="@../../css/componentStyles.css" />
                      </stylesheets>
                      <styleClass>
-                        <String fx:value="generalButtonColor" />
+                        <String fx:value="addButtonColor" />
                         <String fx:value="generalButton" />
                      </styleClass>
                         </JFXButton>
+                  <JFXButton fx:id="print" buttonType="RAISED" onMouseClicked="#printBill" text="PRINT">
+                     <font>
+                        <Font size="25.0" />
+                     </font>
+                     <stylesheets>
+                        <URL value="@../../css/appColorPalette.css" />
+                        <URL value="@../../css/componentStyles.css" />
+                     </stylesheets>
+                     <styleClass>
+                        <String fx:value="generalButtonColor" />
+                        <String fx:value="generalButton" />
+                     </styleClass>
+                  </JFXButton>
                     </children>
                 </HBox>
             </children>
