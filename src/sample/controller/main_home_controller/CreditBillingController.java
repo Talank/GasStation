@@ -752,6 +752,9 @@ public class CreditBillingController {
                 rate=SystemStatus.getpRate();
             }
 
+            //reset the transaction total
+            Transaction.setTotal(0);
+
 
             //display the success message
             AppHomeController.getInstance().showMessage("Transaction Saved!",1000);

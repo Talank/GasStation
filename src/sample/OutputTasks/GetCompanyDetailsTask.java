@@ -46,7 +46,7 @@ public class GetCompanyDetailsTask extends Task<List<List<CreditDetailsModel>>> 
 
             NepaliDateGenerator generator=new NepaliDateGenerator();
 
-
+            CreditDetailsModel model;
             //iterate through all the rows in the table
             while(resultSet.next()) {
 
@@ -60,12 +60,17 @@ public class GetCompanyDetailsTask extends Task<List<List<CreditDetailsModel>>> 
 
                         if(resultSet.getString(2).startsWith("D")||resultSet.getString(2).startsWith("P")) {//the row is for oil transaction
 
+
                             //add the data to smallList
-                            smallList.add(new CreditDetailsModel(resultSet.getString(3),resultSet.getString(2),generator.convertDate(resultSet.getDate(7)),resultSet.getString(5),resultSet.getString(6),resultSet.getString(4)));
+                            model = new CreditDetailsModel(resultSet.getString(3),resultSet.getString(2),generator.convertDate(resultSet.getDate(7)),resultSet.getString(5),resultSet.getString(6),resultSet.getString(4));
+                            model.setTransactionID(resultSet.getInt(1));
+                            smallList.add(model);
                         } else {
                             
                             //add the data to smallList
-                            smallList.add(new CreditDetailsModel("XXXX",resultSet.getString(2),generator.convertDate(resultSet.getDate(7)),String.valueOf(resultSet.getInt(5)),resultSet.getString(6),resultSet.getString(4)));
+                            model = new CreditDetailsModel("XXXX",resultSet.getString(2),generator.convertDate(resultSet.getDate(7)),String.valueOf(resultSet.getInt(5)),resultSet.getString(6),resultSet.getString(4));
+                            model.setTransactionID(resultSet.getInt(1));
+                            smallList.add(model);
                         }
 
                     } else {//the index is different from the initial index, i.e this is the next transaction
@@ -79,11 +84,15 @@ public class GetCompanyDetailsTask extends Task<List<List<CreditDetailsModel>>> 
 
                         //we are adding the result to the smallList, because we are in the iteration and , there is data in the current iteration
                         if(resultSet.getString(2).startsWith("D")||resultSet.getString(2).startsWith("P")) {
-                            
-                            smallList.add(new CreditDetailsModel(resultSet.getString(3),resultSet.getString(2),generator.convertDate(resultSet.getDate(7)),resultSet.getString(5),resultSet.getString(6),resultSet.getString(4)));
+
+                            model = new CreditDetailsModel(resultSet.getString(3),resultSet.getString(2),generator.convertDate(resultSet.getDate(7)),resultSet.getString(5),resultSet.getString(6),resultSet.getString(4));
+                            model.setTransactionID(resultSet.getInt(1));
+                            smallList.add(model);
                         } else {
 
-                            smallList.add(new CreditDetailsModel("XXXX",resultSet.getString(2),generator.convertDate(resultSet.getDate(7)),String.valueOf(resultSet.getInt(5)),resultSet.getString(6),resultSet.getString(4)));
+                            model = new CreditDetailsModel("XXXX",resultSet.getString(2),generator.convertDate(resultSet.getDate(7)),String.valueOf(resultSet.getInt(5)),resultSet.getString(6),resultSet.getString(4));
+                            model.setTransactionID(resultSet.getInt(1));
+                            smallList.add(model);
                         }
                         create=false;
                     }

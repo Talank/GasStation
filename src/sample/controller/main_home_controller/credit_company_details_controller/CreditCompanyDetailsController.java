@@ -7,12 +7,20 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 
 
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.util.Callback;
 import sample.OutputTasks.GetCompanyDetailsTask;
 import sample.library.output_task_loading.OutputTaskLoading;
 import sample.library.toolbar.BackButtonInterface;
 import sample.library.toolbar.ToolBar;
 import sample.model.CreditDetailsModel;
 import sample.model.databases.DatabaseHandler;
+import sample.model.nepaliPriceFormat.Precision;
+import sample.model.nepaliPriceFormat.PriceFormat;
 import sample.tasks.TaskManager;
 
 import java.util.List;
@@ -27,9 +35,35 @@ public class CreditCompanyDetailsController implements BackButtonInterface {
     private OutputTaskLoading progressLayout;
 
     @FXML
-    private ListView<List<CreditDetailsModel>> detailsListView;
+    private TableView<CreditDetailsModel> detailsTableView;
+
+    @FXML
+    private TableColumn<CreditDetailsModel,String> vehicleNo;
+
+    @FXML
+    private TableColumn<CreditDetailsModel,String> itemName;
+
+    @FXML
+    private TableColumn<CreditDetailsModel,String> rate;
+
+    @FXML
+    private TableColumn<CreditDetailsModel,String> quantity;
+
+    @FXML
+    private TableColumn<CreditDetailsModel,String> price;
+
+    @FXML
+    private TableColumn<CreditDetailsModel,String> date;
+
 
     private GetCompanyDetailsTask task;
+
+    private PriceFormat priceFormat;
+    private Precision precision;
+
+    //The list to hold the data of the company transactions
+
+    private List<List<CreditDetailsModel>> companyDetails;
 
 
     @FXML
@@ -42,11 +76,55 @@ public class CreditCompanyDetailsController implements BackButtonInterface {
         toolBar.addBackButtonInterface(this);
 
         progressLayout.setVisible(true);
-        detailsListView.setVisible(false);
+        detailsTableView.setVisible(false);
 
+        precision = new Precision();
+        priceFormat = new PriceFormat();
 
-        detailsListView.setCellFactory(lv->new CreditListCell());
-        detailsListView.setSelectionModel(new NoSelectionModel<>());
+        detailsTableView.setEditable(true);
+
+        Callback<TableColumn<CreditDetailsModel,String>, TableCell<CreditDetailsModel,String>> cellFactory = (s -> {
+            return new CustomTableCell();
+        });
+
+        vehicleNo.setCellFactory(cellFactory);
+        itemName.setCellFactory(cellFactory);
+        rate.setCellFactory(cellFactory);
+        quantity.setCellFactory(cellFactory);
+
+        vehicleNo.setCellValueFactory(new PropertyValueFactory<>("vehicleNo"));
+        vehicleNo.setStyle("-fx-alignment: CENTER;");
+        itemName.setCellValueFactory(new PropertyValueFactory<>("itemName"));
+        itemName.setStyle("-fx-alignment: CENTER;");
+        rate.setCellValueFactory(new PropertyValueFactory<>("rate"));
+
+        rate.setStyle("-fx-alignment: CENTER;");
+
+        quantity.setCellValueFactory(new PropertyValueFactory<>("volume"));
+
+        quantity.setStyle("-fx-alignment: CENTER;");
+
+        price.setCellValueFactory(new PropertyValueFactory<>("price"));
+
+        price.setCellFactory(new Callback<TableColumn<CreditDetailsModel, String>, TableCell<CreditDetailsModel, String>>() {
+            @Override
+            public TableCell<CreditDetailsModel, String> call(TableColumn<CreditDetailsModel, String> param) {
+                return new TableCell<CreditDetailsModel, String>() {
+                    @Override
+                    protected void updateItem(String item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if(!empty) {
+                            setText(priceFormat.format(precision.format(Float.parseFloat(item))));
+                        }
+
+                    }
+                };
+            }
+        });
+        price.setStyle("-fx-alignment: CENTER;");
+
+        date.setCellValueFactory(new PropertyValueFactory<>("date"));
+        date.setStyle("-fx-alignment: CENTER;");
 
 
     }
@@ -66,9 +144,24 @@ public class CreditCompanyDetailsController implements BackButtonInterface {
         progressLayout.setProgressProperty(task.progressProperty());
 
         task.setOnSucceeded((WorkerStateEvent e)->{//this is called on UI thread, so safe to use live scene objects
-            detailsListView.getItems().addAll(FXCollections.observableList(task.getValue()));
+
+            //store the data received from the database, we need this data inorder to detect the changes when the field is edited
+            companyDetails = task.getValue();
+
+            CustomTableCell.setCompanyDetails(companyDetails);
+
+            CustomTableCell.setCompanyName(companyName);
+
+            //loop through the data and set the data to the columns of the tables
+            for(List<CreditDetailsModel> model: companyDetails) {
+                detailsTableView.getItems().addAll(model);
+            }
+
+            //hide the progress layout
             progressLayout.setVisible(false);
-            detailsListView.setVisible(true);
+
+            //show the table view
+            detailsTableView.setVisible(true);
         });
         TaskManager.getInstance().executeInstantTask(task);
 

@@ -1,62 +1,98 @@
 package sample.model;
 
+import javafx.beans.property.SimpleStringProperty;
+
 public class CreditDetailsModel {
-    private String vehicleNo, itemName,date,volume,price,rate;
+    private SimpleStringProperty vehicleNo, itemName,date,volume,price,rate;
+
+    private int transactionID;
 
     public CreditDetailsModel(String vehicleNo, String itemName, String date, String volume, String price, String rate) {
-        this.vehicleNo = vehicleNo;
-        this.itemName = itemName;
-        this.date = date;
-        this.volume = volume;
-        this.price = price;
-        this.rate=rate;
+        this.vehicleNo = new SimpleStringProperty(vehicleNo);
+        this.itemName = new SimpleStringProperty(itemName);
+        this.date = new SimpleStringProperty(date);
+        this.volume = new SimpleStringProperty(volume);
+        this.price = new SimpleStringProperty(price);
+        this.rate= new SimpleStringProperty(rate);
     }
 
-    public String getVehicleNo() {
+    public int getTransactionID() {
+        return transactionID;
+    }
+
+    public void setTransactionID(int transactionID) {
+        this.transactionID = transactionID;
+    }
+
+    public SimpleStringProperty vehicleNoProperty() {
         return vehicleNo;
     }
 
-    public void setVehicleNo(String vehicleNo) {
-        this.vehicleNo = vehicleNo;
-    }
-
-    public String getItemName() {
+    public SimpleStringProperty itemNameProperty() {
         return itemName;
     }
 
-    public void setItemName(String itemName) {
-        this.itemName = itemName;
-    }
-
-    public String getDate() {
+    public SimpleStringProperty dateProperty() {
         return date;
     }
 
-    public void setDate(String date) {
-        this.date = date;
-    }
-
-    public String getVolume() {
+    public SimpleStringProperty volumeProperty() {
         return volume;
     }
 
-    public void setVolume(String volume) {
-        this.volume = volume;
-    }
-
-    public String getPrice() {
+    public SimpleStringProperty priceProperty() {
         return price;
     }
 
-    public void setPrice(String price) {
-        this.price = price;
-    }
-
-    public String getRate() {
+    public SimpleStringProperty rateProperty() {
         return rate;
     }
 
+    public String getVehicleNo() {
+        return vehicleNo.get();
+    }
+
+    public void setVehicleNo(String vehicleNo) {
+        this.vehicleNo.set(vehicleNo);
+    }
+
+    public String getItemName() {
+        return itemName.get();
+    }
+
+    public void setItemName(String itemName) {
+        this.itemName.set(itemName);
+    }
+
+    public String getDate() {
+        return date.get();
+    }
+
+    public void setDate(String date) {
+        this.date.set(date);
+    }
+
+    public String getVolume() {
+        return volume.get();
+    }
+
+    public void setVolume(String volume) {
+        this.volume.set(volume);
+    }
+
+    public String getPrice() {
+        return price.get();
+    }
+
+    public void setPrice(String price) {
+        this.price.set(price);
+    }
+
+    public String getRate() {
+        return rate.get();
+    }
+
     public void setRate(String rate) {
-        this.rate = rate;
+        this.rate.set(rate);
     }
 }
