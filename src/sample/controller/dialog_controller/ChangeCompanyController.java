@@ -27,7 +27,7 @@ import java.io.IOException;
 public class ChangeCompanyController implements BottomBarInterface {
 
     @FXML
-    private JFXTextField companyName,creditCycle,phone;
+    private JFXTextField companyName,creditCycle,phone,due;
 
     @FXML
     private DialogBottomBar bottomBar;
@@ -54,6 +54,10 @@ public class ChangeCompanyController implements BottomBarInterface {
         RequiredFieldValidator cycleValidator=new RequiredFieldValidator();
         cycleValidator.setMessage("Cycle Time Cannot Be Empty");
         creditCycle.getValidators().add(cycleValidator);
+
+        RequiredFieldValidator dueValidator=new RequiredFieldValidator();
+        dueValidator.setMessage("Due Cannot Be Empty");
+        due.getValidators().add(dueValidator);
 
         RequiredFieldValidator phoneValidator=new RequiredFieldValidator();
         phoneValidator.setMessage("Phone numbers cannot be Empty");
@@ -83,9 +87,20 @@ public class ChangeCompanyController implements BottomBarInterface {
             }
         });
 
+        due.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)->{
+            if(!newValue.matches("[0-9]{0,9}")) {
+                due.setText(oldValue);
+            } else {
+                if(newValue.isEmpty()) {
+                    due.validate();
+                } else {
+                    due.resetValidation();
+                }
+            }
+        });
 
         phone.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)->{
-            if(!newValue.matches("[0-9]{0,10}")) {
+            if(!newValue.matches("[0-9]{0,9}([\\.][0-9]{0,2})?")) {
                 phone.setText(oldValue);
             } else {
                 if(newValue.isEmpty()) {
@@ -112,6 +127,10 @@ public class ChangeCompanyController implements BottomBarInterface {
             status++;
         }
 
+        if(due.getText().trim().isEmpty()) {
+            due.validate();
+            status++;
+        }
 
         if(phone.getText().trim().isEmpty()){
             phone.validate();
@@ -121,7 +140,7 @@ public class ChangeCompanyController implements BottomBarInterface {
         if(status==0) {
             if(!isEditable) {
 
-                SaveCompanyTask task=new SaveCompanyTask(companyName.getText().trim(),creditCycle.getText(),phone.getText());
+                SaveCompanyTask task=new SaveCompanyTask(companyName.getText().trim(),creditCycle.getText(),phone.getText(),Float.parseFloat(due.getText()));
                 task.addTaskInterfaceListener(new TaskInterface<Integer>() {
                     @Override
                     public void onComplete(Integer id) {
@@ -143,6 +162,7 @@ public class ChangeCompanyController implements BottomBarInterface {
             } else {
                 model.setCompanyName(companyName.getText().trim());
                 model.setDays(creditCycle.getText());
+                model.setDue(Float.parseFloat(due.getText()));
                 model.setPhone(phone.getText());
                 UpdateCompanyTask task=new UpdateCompanyTask(model);
                 TaskManager.getInstance().executeTask(task);

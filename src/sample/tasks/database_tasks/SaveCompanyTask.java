@@ -21,6 +21,7 @@ import java.sql.*;
 public class SaveCompanyTask extends Tasks {
 
     private String companyName,creditCycle,phone;
+    private Float due;
 
     /**
      *
@@ -28,10 +29,11 @@ public class SaveCompanyTask extends Tasks {
      * @param creditCycle the cycle time of the company
      */
 
-    public SaveCompanyTask(String companyName,String creditCycle,String phone) {
+    public SaveCompanyTask(String companyName,String creditCycle,String phone,Float due) {
         this.companyName=companyName;
         this.creditCycle=creditCycle;
         this.phone=phone;
+        this.due=due;
     }
 
     /**
@@ -59,7 +61,7 @@ public class SaveCompanyTask extends Tasks {
             insertCompany.setDate(3,SystemStatus.getCurrentDate());
             insertCompany.setInt(4,0);
             insertCompany.setString(5,creditCycle);
-            insertCompany.setFloat(6,0);
+            insertCompany.setFloat(6,due);
             insertCompany.setFloat(7,0);
             insertCompany.setDate(8,SystemStatus.getCurrentDate());
             insertCompany.setFloat(9,0);
@@ -75,7 +77,7 @@ public class SaveCompanyTask extends Tasks {
             connection.commit();
             SystemLogging.getLogger().fine(" CreditCompany added successfully");
 
-            final DebtListModel model=new DebtListModel(companyName,creditCycle,1,1,0f,0f,phone);
+            final DebtListModel model=new DebtListModel(companyName,creditCycle,1,1,due,0f,phone);
             model.setDate(SystemStatus.getNepaliCurrentDate());
             model.setPrePaid(0);
 
