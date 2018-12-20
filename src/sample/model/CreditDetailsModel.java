@@ -2,8 +2,12 @@ package sample.model;
 
 import javafx.beans.property.SimpleStringProperty;
 
+import java.sql.Date;
+
 public class CreditDetailsModel {
     private SimpleStringProperty vehicleNo, itemName,date,volume,price,rate;
+
+    private Date sqlDate;
 
     private int transactionID;
 
@@ -14,6 +18,14 @@ public class CreditDetailsModel {
         this.volume = new SimpleStringProperty(volume);
         this.price = new SimpleStringProperty(price);
         this.rate= new SimpleStringProperty(rate);
+    }
+
+    public Date getSqlDate() {
+        return sqlDate;
+    }
+
+    public void setSqlDate(Date sqlDate) {
+        this.sqlDate = sqlDate;
     }
 
     public int getTransactionID() {

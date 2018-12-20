@@ -124,6 +124,7 @@ public class CreditCompanyDetailsController implements BackButtonInterface {
         price.setStyle("-fx-alignment: CENTER;");
 
         date.setCellValueFactory(new PropertyValueFactory<>("date"));
+        date.setCellFactory(cellFactory);
         date.setStyle("-fx-alignment: CENTER;");
 
 

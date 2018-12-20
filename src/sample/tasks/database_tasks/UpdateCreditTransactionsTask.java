@@ -18,13 +18,13 @@ public class UpdateCreditTransactionsTask extends Tasks {
 
     private CreditDetailsModel newModel, oldModel;
     private String companyName;
-    private boolean priceIncluded;
+    private int status;
 
-    public UpdateCreditTransactionsTask(CreditDetailsModel oldModel, CreditDetailsModel newModel, String companyName, boolean priceIncluded) {
+    public UpdateCreditTransactionsTask(CreditDetailsModel oldModel, CreditDetailsModel newModel, String companyName, int status) {
         this.newModel = newModel;
         this.oldModel = oldModel;
         this.companyName = companyName;
-        this.priceIncluded = priceIncluded;
+        this.status = status;
     }
 
     @Override
@@ -33,39 +33,69 @@ public class UpdateCreditTransactionsTask extends Tasks {
 
 
             //update new model using old parameters as compound key
-            PreparedStatement update=connection.prepareStatement("UPDATE " + DatabaseHandler.generateTableName(companyName) + " SET TYPE=?,VEHICLE_NO=?, RATE=?, VOLUME=?, PRICE=? WHERE TRANSACTION_ID=? AND TYPE=? AND RATE=? AND VOLUME=? AND PRICE=?");
+            PreparedStatement update;
 
-            update.setString(1, newModel.getItemName());
-            update.setString(2, newModel.getVehicleNo());
-            update.setFloat(3, Float.parseFloat(newModel.getRate()));
-            update.setFloat(4, Float.parseFloat(newModel.getVolume()));
-            update.setFloat(5, Float.parseFloat(newModel.getPrice()));
-            update.setInt(6, newModel.getTransactionID());
-            update.setString(7, oldModel.getItemName());
-            update.setFloat(8, Float.parseFloat(oldModel.getRate()));
-            update.setFloat(9, Float.parseFloat(oldModel.getVolume()));
-            update.setFloat(10, Float.parseFloat(oldModel.getPrice()));
+            switch (status) {
+                //this is case when either rate or volume is changed, so we need to modify the company's total amount
+                case 0:
+                    update =connection.prepareStatement("UPDATE " + DatabaseHandler.generateTableName(companyName) + " SET RATE=?, VOLUME=?, PRICE=?, DATE=? WHERE TRANSACTION_ID=? AND TYPE=? AND RATE=? AND VOLUME=? AND PRICE=?");
 
-            update.execute();
+                    update.setFloat(1, Float.parseFloat(newModel.getRate()));
+                    update.setFloat(2, Float.parseFloat(newModel.getVolume()));
+                    update.setFloat(3, Float.parseFloat(newModel.getPrice()));
+                    update.setDate(4, newModel.getSqlDate());
+                    update.setInt(5, newModel.getTransactionID());
+                    update.setString(6, oldModel.getItemName());
+                    update.setFloat(7, Float.parseFloat(oldModel.getRate()));
+                    update.setFloat(8, Float.parseFloat(oldModel.getVolume()));
+                    update.setFloat(9, Float.parseFloat(oldModel.getPrice()));
 
-            //check if the price is actually changed or not, as we are casting float from string, it may result in slight amount variation even if no update to price was made
-            if (priceIncluded) {
-                //update the new total in the credit company
-                float netUpdateTotal = (Float.parseFloat(newModel.getPrice()) - Float.parseFloat(oldModel.getPrice()));
-                update = connection.prepareStatement("UPDATE CreditCompany SET TOTAL = TOTAL + ? WHERE COMPANY_NAME = ?");
-                update.setFloat(1, netUpdateTotal);
-                update.setString(2, companyName);
+                    update.execute();
+                    //update the new total in the credit company
+                    float netUpdateTotal = (Float.parseFloat(newModel.getPrice()) - Float.parseFloat(oldModel.getPrice()));
+                    update = connection.prepareStatement("UPDATE CreditCompany SET TOTAL = TOTAL + ? WHERE COMPANY_NAME = ?");
+                    update.setFloat(1, netUpdateTotal);
+                    update.setString(2, companyName);
 
-                update.execute();
+                    update.execute();
 
-                DebtListModel model = CreditCompanyList.getCompany(companyName);
-                model.setTotal(model.getTotal() + netUpdateTotal);
+                    update.close();
+
+                    DebtListModel model = CreditCompanyList.getCompany(companyName);
+                    model.setTotal(model.getTotal() + netUpdateTotal);
+                    break;
+
+                    //this is the case when we need to update the date of the company
+                case 1:
+                    update =connection.prepareStatement("UPDATE " + DatabaseHandler.generateTableName(companyName) + " SET DATE=? WHERE TRANSACTION_ID=?");
+
+                    update.setDate(1, newModel.getSqlDate());
+                    update.setInt(2, newModel.getTransactionID());
+
+                    update.execute();
+                    update.close();
+
+                    break;
+                    //this is the normal case
+                case 2:
+                    update = connection.prepareStatement("UPDATE " + DatabaseHandler.generateTableName(companyName) + " SET TYPE=?,VEHICLE_NO=? WHERE TRANSACTION_ID=? AND TYPE=? AND RATE=? AND VOLUME=? AND PRICE=?");
+
+                    update.setString(1, newModel.getItemName());
+                    update.setString(2, newModel.getVehicleNo());
+                    update.setInt(3, newModel.getTransactionID());
+                    update.setString(4, oldModel.getItemName());
+                    update.setFloat(5, Float.parseFloat(oldModel.getRate()));
+                    update.setFloat(6, Float.parseFloat(oldModel.getVolume()));
+                    update.setFloat(7, Float.parseFloat(oldModel.getPrice()));
+
+                    update.execute();
+                    break;
 
             }
 
 
 
-            update.close();
+
 
 
             connection.commit();

@@ -64,12 +64,14 @@ public class GetCompanyDetailsTask extends Task<List<List<CreditDetailsModel>>> 
                             //add the data to smallList
                             model = new CreditDetailsModel(resultSet.getString(3),resultSet.getString(2),generator.convertDate(resultSet.getDate(7)),resultSet.getString(5),resultSet.getString(6),resultSet.getString(4));
                             model.setTransactionID(resultSet.getInt(1));
+                            model.setSqlDate(resultSet.getDate(7));
                             smallList.add(model);
                         } else {
                             
                             //add the data to smallList
                             model = new CreditDetailsModel("XXXX",resultSet.getString(2),generator.convertDate(resultSet.getDate(7)),String.valueOf(resultSet.getInt(5)),resultSet.getString(6),resultSet.getString(4));
                             model.setTransactionID(resultSet.getInt(1));
+                            model.setSqlDate(resultSet.getDate(7));
                             smallList.add(model);
                         }
 
@@ -87,11 +89,13 @@ public class GetCompanyDetailsTask extends Task<List<List<CreditDetailsModel>>> 
 
                             model = new CreditDetailsModel(resultSet.getString(3),resultSet.getString(2),generator.convertDate(resultSet.getDate(7)),resultSet.getString(5),resultSet.getString(6),resultSet.getString(4));
                             model.setTransactionID(resultSet.getInt(1));
+                            model.setSqlDate(resultSet.getDate(7));
                             smallList.add(model);
                         } else {
 
                             model = new CreditDetailsModel("XXXX",resultSet.getString(2),generator.convertDate(resultSet.getDate(7)),String.valueOf(resultSet.getInt(5)),resultSet.getString(6),resultSet.getString(4));
                             model.setTransactionID(resultSet.getInt(1));
+                            model.setSqlDate(resultSet.getDate(7));
                             smallList.add(model);
                         }
                         create=false;

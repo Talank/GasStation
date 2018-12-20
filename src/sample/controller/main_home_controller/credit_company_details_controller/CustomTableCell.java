@@ -10,13 +10,24 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import jdk.nashorn.internal.parser.DateParser;
 import sample.model.CreditDetailsModel;
+import sample.model.SystemStatus;
 import sample.model.nepaliPriceFormat.Precision;
 import sample.model.nepaliPriceFormat.PriceFormat;
+import sample.nepali_date.DateConverter;
+import sample.nepali_date.NepaliDateGenerator;
+import sample.nepali_date.ParseNepaliDate;
 import sample.tasks.TaskManager;
 import sample.tasks.database_tasks.UpdateCreditTransactionsTask;
 
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 
@@ -50,7 +61,7 @@ public class CustomTableCell extends TableCell<CreditDetailsModel, String> {
 
 
     private void createTextField() {
-        editField = new TextField(parseCellString());
+        editField = new TextField();
         editField.setMinWidth(getWidth() - getGraphicTextGap()*2);
 
         //initialize the change listener for the text field
@@ -78,11 +89,10 @@ public class CustomTableCell extends TableCell<CreditDetailsModel, String> {
 
     private void updateModel() {
         CreditDetailsModel model = getTableView().getItems().get(getTableRow().getIndex());
+        //store the old model so that it can be used as compound key
+        CreditDetailsModel oldModel = new CreditDetailsModel(model.getVehicleNo(), model.getItemName(), model.getDate(), model.getVolume(), model.getPrice(), model.getRate());
+        oldModel.setTransactionID(model.getTransactionID());
         if (getTableColumn().getId().equals("rate")) {
-
-            //store the old model so that it can be used as compound key
-            CreditDetailsModel oldModel = new CreditDetailsModel(model.getVehicleNo(), model.getItemName(), model.getDate(), model.getVolume(), model.getPrice(), model.getRate());
-            oldModel.setTransactionID(model.getTransactionID());
 
 
             //update the model, so that it can be obtained from other location
@@ -91,41 +101,104 @@ public class CustomTableCell extends TableCell<CreditDetailsModel, String> {
 
 
             //perform the  update of the credit transaction
-            TaskManager.getInstance().executeTask(new UpdateCreditTransactionsTask(oldModel, model, companyName, true));
+            TaskManager.getInstance().executeTask(new UpdateCreditTransactionsTask(oldModel, model, companyName, 0));
 
 
         } else if (getTableColumn().getId().equals("quantity")) {
 
-            //store the old model so that it can be used as compound key
-            CreditDetailsModel oldModel = new CreditDetailsModel(model.getVehicleNo(), model.getItemName(), model.getDate(), model.getVolume(), model.getPrice(), model.getRate());
-            oldModel.setTransactionID(model.getTransactionID());
-
             model.setVolume(editField.getText());
             model.setPrice(String.valueOf(Float.parseFloat(model.getRate()) * Float.parseFloat(editField.getText())));
 
-            TaskManager.getInstance().executeTask(new UpdateCreditTransactionsTask(oldModel, model, companyName, true));
+            TaskManager.getInstance().executeTask(new UpdateCreditTransactionsTask(oldModel, model, companyName, 0));
 
         } else if (getTableColumn().getId().equals("vehicleNo")) {
 
-            CreditDetailsModel oldModel = new CreditDetailsModel(model.getVehicleNo(), model.getItemName(), model.getDate(), model.getVolume(), model.getPrice(), model.getRate());
-            oldModel.setTransactionID(model.getTransactionID());
-
             model.setVehicleNo(editField.getText());
 
-            TaskManager.getInstance().executeTask(new UpdateCreditTransactionsTask(oldModel, model, companyName, false));
+            TaskManager.getInstance().executeTask(new UpdateCreditTransactionsTask(oldModel, model, companyName, 2));
 
 
         } else if (getTableColumn().getId().equals("itemName")) {
 
-            CreditDetailsModel oldModel = new CreditDetailsModel(model.getVehicleNo(), model.getItemName(), model.getDate(), model.getVolume(), model.getPrice(), model.getRate());
-            oldModel.setTransactionID(model.getTransactionID());
-
             model.setItemName(editField.getText());
 
-            TaskManager.getInstance().executeTask(new UpdateCreditTransactionsTask(oldModel, model, companyName, false));
+            TaskManager.getInstance().executeTask(new UpdateCreditTransactionsTask(oldModel, model, companyName, 2));
+        } else if (getTableColumn().getId().equals("date")) {
+
+            if (dateParser(model)) {
+                TaskManager.getInstance().executeTask(new UpdateCreditTransactionsTask(oldModel, model, companyName, 1));
+            } else {
+                cancelEdit();
+            }
+
+
         }
 
 
+    }
+
+    private boolean dateParser(CreditDetailsModel model) {
+
+        try {
+
+            //parse the date from the text in the cell
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+
+            //build a calender to represent the provided date
+            Calendar editedDate =  Calendar.getInstance();
+            editedDate.setTime(format.parse(editField.getText()));
+
+
+            //parse the current nepali date
+            ParseNepaliDate parser = new ParseNepaliDate(SystemStatus.getNepaliCurrentDate());
+
+            //check if the year difference is within 1 year
+            if ((parser.getnYear() - editedDate.get(Calendar.YEAR)) < 2) {
+
+                //this is the date which we used as a reference to convert the date to nepali
+                LocalDate date=LocalDate.of(2018,4,14);
+
+                //convert the date to english date
+                date=date.plusDays((new DateConverter()).getTotalDays(editedDate.get(Calendar.YEAR),(editedDate.get(Calendar.MONTH) + 1),editedDate.get(Calendar.DAY_OF_MONTH)));
+
+                //check if the date is not more than today's date
+                if (LocalDate.now().compareTo(date) >= 0) {
+                    //set the date
+                    model.setSqlDate(Date.valueOf(date));
+
+                    //format the date and set the new formatted date to the cell
+                    NepaliDateGenerator generator = new NepaliDateGenerator(date);
+                    editField.setText(generator.toString());
+
+                    //copy all the entry inside the current transaction id
+                    List<CreditDetailsModel> modelList = new ArrayList<>();
+                    for (List<CreditDetailsModel> list : companyDetails) {
+                        if (list.get(0).getTransactionID() == model.getTransactionID()) {
+                            modelList = list;
+                            break;
+                        }
+                    }
+
+                    //modify the date of all the entry that is present within the current transaction
+                    for (CreditDetailsModel detailsModel : modelList) {
+                        detailsModel.setSqlDate(Date.valueOf(date));
+                        detailsModel.setDate(generator.toString());
+                    }
+
+                    return true;
+                }
+
+
+            }
+
+
+
+
+        } catch(ParseException e) {
+            e.printStackTrace();
+        }
+
+        return false;
     }
 
     private String parseCellString() {
@@ -152,6 +225,14 @@ public class CustomTableCell extends TableCell<CreditDetailsModel, String> {
         //initialize the text field
         if (editField == null) {
             createTextField();
+        }
+
+        //load the formatted text in the text field
+        if (getTableColumn().getId().equals("date")) {
+            ParseNepaliDate parseNepaliDate = new ParseNepaliDate(getItem());
+            editField.setText(parseNepaliDate.getnYear() + "-" + parseNepaliDate.getnMonth() + "-" + parseNepaliDate.getnDay());
+        } else {
+            editField.setText(parseCellString());
         }
 
         try {
@@ -198,7 +279,15 @@ public class CustomTableCell extends TableCell<CreditDetailsModel, String> {
             //the current cell is being edited
             if (isEditing()) {
                 if (editField != null) {
-                    editField.setText(parseCellString());
+
+                    if (getTableColumn().getId().equals("date")) {
+                        ParseNepaliDate parseNepaliDate = new ParseNepaliDate(item);
+                        editField.setText(parseNepaliDate.getnYear() + "-" + parseNepaliDate.getnMonth() + "-" + parseNepaliDate.getnDay());
+                    } else {
+                        editField.setText(parseCellString());
+                    }
+
+
                 }
 
                 setGraphic(editField);

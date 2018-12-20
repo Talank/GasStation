@@ -24,7 +24,7 @@ public class ParseNepaliDate {
         dayOfWeek=nepaliDate.substring(0,firstIndex);
 
 
-        nepaliDate=nepaliDate.substring(firstIndex+1,nepaliDate.length());
+        nepaliDate=nepaliDate.substring(firstIndex+1);
 
         firstIndex=nepaliDate.indexOf(' ');
 
@@ -58,13 +58,13 @@ public class ParseNepaliDate {
         }
 
 
-        nepaliDate=nepaliDate.substring(firstIndex+1,nepaliDate.length());
+        nepaliDate=nepaliDate.substring(firstIndex+1);
 
         firstIndex=nepaliDate.indexOf(',');
 
         nDay=Integer.parseInt(nepaliDate.substring(0,firstIndex));
 
-        nepaliDate=nepaliDate.substring(firstIndex+1,nepaliDate.length());
+        nepaliDate=nepaliDate.substring(firstIndex+1);
 
         nYear=Integer.parseInt(nepaliDate);
 
