@@ -113,7 +113,8 @@ public class TodayClosingTask extends Tasks {
 
                 SnackBarToastGenerator snackBarToastGenerator=new SnackBarToastGenerator("Today Closing SuccessFull. Auto Stock Adjust",1000);
                 snackBarToastGenerator.show();
-
+                SystemStatus.setiDiesel(SystemStatus.getfDiesel());
+                SystemStatus.setiPetrol(SystemStatus.getfPetrol());
                 SystemStatus.setfDiesel(0f);
                 SystemStatus.setfPetrol(0f);
 

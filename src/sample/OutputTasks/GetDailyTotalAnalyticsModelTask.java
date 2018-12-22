@@ -33,6 +33,8 @@ public class GetDailyTotalAnalyticsModelTask extends Task<DailyTotalAnalyticMode
             model.setCExtra(resultSet.getString(1));
             model.setExtraIncome(model.getCExtra());
             resultSet.close();
+            System.out.println("Final reading:"+SystemStatus.getfDiesel()+  " Initial Reading:"+SystemStatus.getiDiesel()+" Credit diesel Vol:"+model.getCDieselVol());
+            System.out.println("Final reading:"+SystemStatus.getfPetrol()+  " Initial Reading:"+SystemStatus.getiPetrol()+" Credit petrol Vol:"+model.getCPetrolVol());
 
             model.setIDieselVol(String.valueOf(SystemStatus.getfDiesel()-(SystemStatus.getiDiesel()+Float.parseFloat(model.getCDieselVol()))));
             model.setIPetrolVol(String.valueOf(SystemStatus.getfPetrol()-(SystemStatus.getiPetrol()+Float.parseFloat(model.getCPetrolVol()))));
