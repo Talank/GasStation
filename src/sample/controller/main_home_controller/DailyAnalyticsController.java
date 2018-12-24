@@ -28,15 +28,8 @@ public class DailyAnalyticsController {
     @FXML
     private ToolBar toolBar;
 
-    private DailyTotalAnalyticModel model;
-
     private Precision precision;
     private PriceFormat priceFormat;
-
-    public static DailyAnalyticsController instance;
-    public DailyAnalyticsController() {
-        instance=this;
-    }
 
 
     @FXML
@@ -48,15 +41,9 @@ public class DailyAnalyticsController {
         precision = new Precision();
         priceFormat = new PriceFormat();
 
-        GetDailyTotalAnalyticsModelTask task=new GetDailyTotalAnalyticsModelTask();
-        task.setOnSucceeded((WorkerStateEvent e)->setModel(task.getValue()));
-
-        TaskManager.getInstance().executeInstantTask(task);
-
     }
 
     public void setModel(DailyTotalAnalyticModel model) {
-        this.model=model;
 
         pInitial.setText(priceFormat.format(precision.format(Float.parseFloat(model.getIPetrolVol())))+" L");
 
@@ -76,11 +63,6 @@ public class DailyAnalyticsController {
         TodayClosingTask tasks=new TodayClosingTask(model);
         TaskManager.getInstance().executeTask(tasks);
 
-    }
-
-
-    public static  DailyAnalyticsController getInstance() {
-        return instance;
     }
 
 
