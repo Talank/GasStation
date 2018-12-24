@@ -88,7 +88,7 @@ public class ChangeCompanyController implements BottomBarInterface {
         });
 
         due.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)->{
-            if(!newValue.matches("[0-9]{0,9}")) {
+            if(!newValue.matches("[0-9]{0,9}([\\.][0-9]{0,2})?")) {
                 due.setText(oldValue);
             } else {
                 if(newValue.isEmpty()) {
@@ -100,7 +100,7 @@ public class ChangeCompanyController implements BottomBarInterface {
         });
 
         phone.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)->{
-            if(!newValue.matches("[0-9]{0,9}([\\.][0-9]{0,2})?")) {
+            if(!newValue.matches("[0-9]{0,10}")) {
                 phone.setText(oldValue);
             } else {
                 if(newValue.isEmpty()) {

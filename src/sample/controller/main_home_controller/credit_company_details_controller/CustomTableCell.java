@@ -121,8 +121,20 @@ public class CustomTableCell extends TableCell<CreditDetailsModel, String> {
         } else if (getTableColumn().getId().equals("itemName")) {
 
             model.setItemName(editField.getText());
+            //Here if the item is changed from petrol to diesel or vice-versa then, change the rate and price respectively
 
-            TaskManager.getInstance().executeTask(new UpdateCreditTransactionsTask(oldModel, model, companyName, 2));
+            if (editField.getText().equalsIgnoreCase("petrol")){
+                model.setRate(String.valueOf(SystemStatus.getpRate()));
+            }
+
+            if (editField.getText().equalsIgnoreCase("diesel")){
+                model.setRate(String.valueOf(SystemStatus.getdRate()));
+            }
+            model.setPrice(String.valueOf(Float.parseFloat(model.getVolume()) * Float.parseFloat(model.getRate())));
+
+            TaskManager.getInstance().executeTask(new UpdateCreditTransactionsTask(oldModel, model, companyName, 3));
+
+
         } else if (getTableColumn().getId().equals("date")) {
 
             if (dateParser(model)) {
