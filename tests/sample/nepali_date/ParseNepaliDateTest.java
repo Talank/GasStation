@@ -1,4 +1,4 @@
-package sample.nepali_date;
+package np.com.spirrotech.utils.nepali_date;
 
 import org.junit.Test;
 

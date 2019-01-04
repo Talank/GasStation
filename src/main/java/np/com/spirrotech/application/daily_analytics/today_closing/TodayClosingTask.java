@@ -1,0 +1,142 @@
+package np.com.spirrotech.application.daily_analytics.today_closing;
+
+import javafx.application.Platform;
+import np.com.spirrotech.application.home.AppHomeController;
+import np.com.spirrotech.utils.SystemLogging;
+import np.com.spirrotech.library.ErrorMessageDialogGenerator;
+import np.com.spirrotech.library.SnackBarToastGenerator;
+import np.com.spirrotech.model.SystemStatus;
+import np.com.spirrotech.model.transaction_model.DailyTotalAnalyticModel;
+import np.com.spirrotech.utils.nepali_date.NepaliDateGenerator;
+import np.com.spirrotech.utils.tasks.Tasks;
+
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.time.LocalDate;
+
+/**
+ *Closes the current session of transactions.
+ * Stores the data in the databases, and changes the system date to next day.
+ */
+
+public class TodayClosingTask extends Tasks {
+
+
+    private DailyTotalAnalyticModel model;
+
+    /**
+     *
+     * @param model the closing model
+     */
+
+    public TodayClosingTask(DailyTotalAnalyticModel model) {
+        this.model=model;
+    }
+
+    @Override
+    public void execute() {
+
+        try {
+
+            if ((SystemStatus.getDieselStock()-Float.parseFloat(model.getIDieselVol())) < 0 || (SystemStatus.getPetrolStock()-Float.parseFloat(model.getIPetrolVol()) < 0)) {
+                ErrorMessageDialogGenerator generator = new ErrorMessageDialogGenerator("Out Of Stock. Please Adjust the stock and try again.","Stock Error");
+                generator.setTasks(this);
+                generator.showDialog();
+            } else {
+                PreparedStatement closing=connection.prepareStatement("UPDATE SystemStatus SET VALUE=?,DATE=? WHERE ID=?");
+
+                closing.setString(1,String.valueOf(SystemStatus.getfDiesel()));
+                closing.setDate(2,SystemStatus.getCurrentDate());
+                closing.setInt(3,11);
+                closing.addBatch();
+
+                closing.setString(1,String.valueOf(SystemStatus.getfPetrol()));
+                closing.setInt(3,12);
+                closing.addBatch();
+
+                closing.setString(1,String.valueOf(SystemStatus.getDieselStock()-Float.parseFloat(model.getIDieselVol())));
+                closing.setInt(3,14);
+                closing.addBatch();
+
+                closing.setString(1,String.valueOf(SystemStatus.getPetrolStock()-Float.parseFloat(model.getIPetrolVol())));
+                closing.setInt(3,15);
+                closing.addBatch();
+
+                closing.setString(1,String.valueOf(0));
+                closing.setInt(3,1);
+                closing.addBatch();
+
+                closing.setString(1,String.valueOf(0));
+                closing.setInt(3,2);
+                closing.addBatch();
+
+                closing.setString(1,String.valueOf(0));
+                closing.setInt(3,3);
+                closing.addBatch();
+
+                closing.setString(1,String.valueOf(0));
+                closing.setInt(3,4);
+                closing.addBatch();
+
+                closing.setString(1,String.valueOf(0));
+                closing.setInt(3,5);
+                closing.addBatch();
+
+                closing.setString(1,String.valueOf(0));
+                closing.setInt(3,6);
+                closing.addBatch();
+
+                closing.executeBatch();
+
+                closing=connection.prepareStatement("INSERT INTO DailyAnalytics VALUES (?,?,?,?,?,?,?,?)");
+                closing.setFloat(1,Float.parseFloat(model.getIDieselVol()));
+                closing.setFloat(2,Float.parseFloat(model.getIPetrolVol()));
+                closing.setFloat(3,Float.parseFloat(model.getCDieselVol()));
+                closing.setFloat(4,Float.parseFloat(model.getCPetrolVol()));
+                closing.setFloat(5,Float.parseFloat(model.getCExtra()));
+                closing.setFloat(6,SystemStatus.getdRate());
+                closing.setFloat(7,SystemStatus.getpRate());
+                closing.setDate(8,SystemStatus.getCurrentDate());
+
+                closing.execute();
+
+                closing.close();
+
+                connection.commit();
+                SystemStatus.setDieselStock(SystemStatus.getDieselStock()-Float.parseFloat(model.getIDieselVol()));
+                SystemStatus.setPetrolStock(SystemStatus.getPetrolStock()-Float.parseFloat(model.getIPetrolVol()));
+
+                Platform.runLater(()->AppHomeController.getInstance().setStock());
+
+                SnackBarToastGenerator snackBarToastGenerator=new SnackBarToastGenerator("Today Closing SuccessFull. Auto Stock Adjust",1000);
+                snackBarToastGenerator.show();
+                SystemStatus.setiDiesel(SystemStatus.getfDiesel());
+                SystemStatus.setiPetrol(SystemStatus.getfPetrol());
+                SystemStatus.setfDiesel(0f);
+                SystemStatus.setfPetrol(0f);
+
+                LocalDate tomorrow=LocalDate.now().plusDays(1);
+                SystemStatus.setTransactionDate(Date.valueOf(tomorrow));
+                SystemStatus.setNepaliTransactionDate((new NepaliDateGenerator(tomorrow)).toString());
+
+                SystemLogging.getLogger().fine("Closing Successfully Done. Next Transaction Stored on Date:"+SystemStatus.getTransactionDate());
+                System.out.println("Closing Successfully Done. Next Transaction Stored on Date:"+SystemStatus.getTransactionDate());
+            }
+
+
+        } catch (SQLException e) {
+            SystemLogging.getLogger().warning("Couldn't perform The closing operation.");
+
+            rollBack();
+
+            String message="Error Closing.\n"+"Please Retry Again.";
+            String title="System Error";
+            reportError(title, message, this);
+
+            System.out.println(e.getNextException().getMessage());
+        }
+
+
+    }
+}

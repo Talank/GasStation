@@ -1,4 +1,4 @@
-package sample.model.nepaliPriceFormat;
+package np.com.spirrotech.model.nepaliPriceFormat;
 
 import org.junit.Test;
 

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<?import np.com.spirrotech.library.dialog_toolbar.DialogToolBar?>
+
+<?import np.com.spirrotech.library.dialog_bottombar.DialogBottomBar?>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="np.com.spirrotech.application.settings.dialogs.edit_company.EditCompanyController">
+   <center>
+      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0" BorderPane.alignment="CENTER">
+         <children>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <JFXTextField fx:id="creditCycle" labelFloat="true" promptText="Credit Cycle" unFocusColor="#74ff02">
+                     <font>
+                        <Font size="26.0" />
+                     </font>
+                  </JFXTextField>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <JFXTextField fx:id="phone" labelFloat="true" promptText="Company phone" unFocusColor="#74ff02">
+                     <font>
+                        <Font size="25.0" />
+                     </font>
+                  </JFXTextField>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </center>
+   <bottom>
+      <DialogBottomBar fx:id="bottomBar"/>
+   </bottom>
+   <top>
+      <DialogToolBar fx:id="toolBar"/>
+   </top>
+</BorderPane>

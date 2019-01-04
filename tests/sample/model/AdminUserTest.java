@@ -1,4 +1,4 @@
-package sample.model;
+package np.com.spirrotech.model;
 
 import org.junit.Test;
 

@@ -1,10 +1,10 @@
 package sample.tasks.database_tasks;
 
 import org.junit.Test;
-import sample.model.DebtListModel;
-import sample.model.SystemStatus;
-import sample.model.databases.DatabaseHandler;
-import sample.model.transaction_model.Transaction;
+import np.com.spirrotech.model.DebtListModel;
+import np.com.spirrotech.model.SystemStatus;
+import np.com.spirrotech.model.databases.DatabaseHandler;
+import np.com.spirrotech.model.transaction_model.Transaction;
 import sample.tasks.TaskManager;
 import sample.tasks.Tasks;
 
