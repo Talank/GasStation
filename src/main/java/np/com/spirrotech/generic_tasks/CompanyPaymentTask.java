@@ -3,7 +3,7 @@ package np.com.spirrotech.generic_tasks;
 import np.com.spirrotech.utils.SystemLogging;
 import np.com.spirrotech.application.settings.SettingsController;
 import np.com.spirrotech.library.SnackBarToastGenerator;
-import np.com.spirrotech.model.DebtListModel;
+import np.com.spirrotech.dao.DebtListModel;
 import np.com.spirrotech.utils.tasks.Tasks;
 
 import java.sql.PreparedStatement;

@@ -2,7 +2,7 @@ package np.com.spirrotech.application.system_status;
 
 import javafx.scene.Node;
 import javafx.scene.control.ListCell;
-import np.com.spirrotech.model.ExpenditureModel;
+import np.com.spirrotech.dao.ExpenditureModel;
 
 public class ExpenditureListCell extends ListCell<ExpenditureModel> {
 

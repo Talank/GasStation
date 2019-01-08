@@ -25,13 +25,14 @@ import np.com.spirrotech.application.home.AppHomeController;
 
 import np.com.spirrotech.library.toolbar.ToolBar;
 
-import np.com.spirrotech.model.CreditCompanyList;
-import np.com.spirrotech.model.DebtListModel;
-import np.com.spirrotech.model.SystemStatus;
-import np.com.spirrotech.model.nepaliPriceFormat.Precision;
-import np.com.spirrotech.model.nepaliPriceFormat.PriceFormat;
-import np.com.spirrotech.model.transaction_model.CreditTransactionBill;
-import np.com.spirrotech.model.transaction_model.Transaction;
+import np.com.spirrotech.dao.CreditCompanyList;
+import np.com.spirrotech.dao.DebtListModel;
+import np.com.spirrotech.dao.SystemStatus;
+import np.com.spirrotech.model.StoreCreditTransactionTask;
+import np.com.spirrotech.utils.nepaliPriceFormat.Precision;
+import np.com.spirrotech.utils.nepaliPriceFormat.PriceFormat;
+import np.com.spirrotech.dao.transaction_model.CreditTransactionBill;
+import np.com.spirrotech.dao.transaction_model.Transaction;
 
 import np.com.spirrotech.utils.tasks.TaskManager;
 
@@ -525,11 +526,11 @@ public class CreditBillingController {
     @FXML
     public void loadAdmin(MouseEvent e) throws IOException {
 
-        FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("np/com/spirrotech/application/credit_billing/dialogs/posting/postingDialog.fxml"));
+        FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("application/credit_billing/dialogs/posting/postingDialog.fxml"));
         Parent root=loader.load();
         Stage stage=new Stage();
         stage.setTitle("Posting Dialog");
-        stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("np/com/spirrotech/resources/images/logo.png")));
+        stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("images/logo.png")));
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(new Scene(root));
         stage.show();

@@ -13,7 +13,7 @@ import np.com.spirrotech.application.credit_billing.CreditBillingController;
 import np.com.spirrotech.library.dialog_bottombar.BottomBarInterface;
 import np.com.spirrotech.library.dialog_bottombar.DialogBottomBar;
 import np.com.spirrotech.library.dialog_toolbar.DialogToolBar;
-import np.com.spirrotech.model.SystemStatus;
+import np.com.spirrotech.dao.SystemStatus;
 import np.com.spirrotech.utils.nepali_date.DateConverter;
 import np.com.spirrotech.utils.nepali_date.NepaliDate;
 import np.com.spirrotech.utils.nepali_date.NepaliDateFormat;

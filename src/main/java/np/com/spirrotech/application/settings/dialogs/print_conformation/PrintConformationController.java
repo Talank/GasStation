@@ -7,7 +7,8 @@ import javafx.scene.input.MouseEvent;
 import np.com.spirrotech.library.dialog_bottombar.BottomBarInterface;
 import np.com.spirrotech.library.dialog_bottombar.DialogBottomBar;
 import np.com.spirrotech.library.dialog_toolbar.DialogToolBar;
-import np.com.spirrotech.model.DebtListModel;
+import np.com.spirrotech.dao.DebtListModel;
+import np.com.spirrotech.model.CompanyCreditClosingTask;
 import np.com.spirrotech.utils.tasks.TaskManager;
 import np.com.spirrotech.generic_tasks.CompanyPaymentTask;
 

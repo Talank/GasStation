@@ -5,7 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
-import np.com.spirrotech.model.ExpenditureModel;
+import np.com.spirrotech.dao.ExpenditureModel;
 
 public class ExpenditureListCellController {
 
@@ -17,7 +17,7 @@ public class ExpenditureListCellController {
     public ExpenditureListCellController() {
 
         try {
-            FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("np/com/spirrotech/application/system_status/expenditure_list_cell.fxml"));
+            FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("application/system_status/expenditure_list_cell.fxml"));
             loader.setController(this);
             vBox=loader.load();
         } catch (Exception e) {

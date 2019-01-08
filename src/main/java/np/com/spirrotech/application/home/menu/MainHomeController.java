@@ -17,7 +17,7 @@ import np.com.spirrotech.application.home.AppHomeController;
 
 
 import np.com.spirrotech.application.home.dialogs.LoginDialogController;
-import np.com.spirrotech.model.CreditCompanyList;
+import np.com.spirrotech.dao.CreditCompanyList;
 
 
 import javafx.scene.input.MouseEvent;
@@ -117,7 +117,7 @@ public class MainHomeController {
 
     @FXML
     public void loadInstantBilling(MouseEvent e) throws IOException {
-        loadStage((Node)e.getSource(), "np/com/spirrotech/application/instant_billing/instantBilling.fxml");
+        loadStage((Node)e.getSource(), "application/instant_billing/instantBilling.fxml");
     }
 
 
@@ -128,7 +128,7 @@ public class MainHomeController {
     @FXML
     public void loadCreditBilling(MouseEvent e) throws IOException {
         if (CreditCompanyList.getCompanyList().size() != 0) {
-            loadStage((Node)e.getSource(), "np/com/spirrotech/application/credit_billing/creditBilling.fxml");
+            loadStage((Node)e.getSource(), "application/credit_billing/creditBilling.fxml");
         } else {
             AppHomeController.getInstance().showMessage("No Companies Detected.",2000);
         }
@@ -142,7 +142,7 @@ public class MainHomeController {
     @FXML
     public void loadDebt(MouseEvent e) throws IOException {
 
-        loadStage((Node)e.getSource(), "np/com/spirrotech/application/credit_companies/companies_list/debt.fxml");
+        loadStage((Node)e.getSource(), "application/credit_companies/companies_list/debt.fxml");
     }
 
     /*
@@ -153,7 +153,7 @@ public class MainHomeController {
     @FXML
     public void loadSettings(MouseEvent e) throws IOException {
 
-        FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("np/com/spirrotech/application/home/dialogs/loginDialog.fxml"));
+        FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("application/home/dialogs/loginDialog.fxml"));
         Parent root=loader.load();
         LoginDialogController controller=loader.getController();
         controller.setStatus(1);
@@ -166,7 +166,7 @@ public class MainHomeController {
 
     @FXML
     public void loadSystemStatus(MouseEvent e) throws IOException {
-        loadStage((Node)e.getSource(), "np/com/spirrotech/application/system_status/systemStatus.fxml");
+        loadStage((Node)e.getSource(), "application/system_status/systemStatus.fxml");
     }
 
     /*
@@ -175,7 +175,7 @@ public class MainHomeController {
 
     @FXML
     public void loadDailyAnalytics(MouseEvent e) throws IOException {
-        loadStage((Node)e.getSource(), "np/com/spirrotech/application/daily_analytics/detail_analytics/dailyTotalAnalytics.fxml");
+        loadStage((Node)e.getSource(), "application/daily_analytics/detail_analytics/dailyTotalAnalytics.fxml");
     }
 
     /*
@@ -184,7 +184,7 @@ public class MainHomeController {
 
     @FXML
     public void loadProfitLoss(MouseEvent e) throws IOException {
-        loadStage((Node)e.getSource(), "np/com/spirrotech/application/profit_loss/profitLoss.fxml");
+        loadStage((Node)e.getSource(), "application/profit_loss/profitLoss.fxml");
 
     }
 
@@ -194,7 +194,7 @@ public class MainHomeController {
 
 
     public void showSettings(Stage stage) throws IOException {
-        Parent root=FXMLLoader.load(getClass().getClassLoader().getResource("np/com/spirrotech/application/settings/settings.fxml"));
+        Parent root=FXMLLoader.load(getClass().getClassLoader().getResource("application/settings/settings.fxml"));
         Scene scene=new Scene(root);
         scene.getStylesheets().add(getClass().getClassLoader().getResource("sample/css/mainStyle.css").toExternalForm());
         stage.setScene(scene);

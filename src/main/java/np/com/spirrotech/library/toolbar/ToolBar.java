@@ -25,7 +25,7 @@ public class ToolBar extends GridPane {
 
     public ToolBar() {
         backButtonInterface=null;
-        FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("np/com/spirrotech/library/toolbar/toolbar.fxml"));
+        FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("library/toolbar/toolbar.fxml"));
         loader.setRoot(this);
         loader.setController(this);
         try {

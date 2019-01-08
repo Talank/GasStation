@@ -1,8 +1,8 @@
 package np.com.spirrotech.generic_tasks;
 
-import np.com.spirrotech.model.CreditDetailsModel;
-import np.com.spirrotech.model.DebtListModel;
-import np.com.spirrotech.model.databases.DatabaseHandler;
+import np.com.spirrotech.dao.CreditDetailsModel;
+import np.com.spirrotech.dao.DebtListModel;
+import np.com.spirrotech.utils.databases.DatabaseHandler;
 import np.com.spirrotech.utils.nepali_date.NepaliDateGenerator;
 import np.com.spirrotech.utils.tasks.Tasks;
 

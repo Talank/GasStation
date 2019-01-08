@@ -12,8 +12,8 @@ import np.com.spirrotech.library.NoSelectionModel;
 import np.com.spirrotech.library.dialog_bottombar.BottomBarInterface;
 import np.com.spirrotech.library.dialog_bottombar.DialogBottomBar;
 import np.com.spirrotech.library.dialog_toolbar.DialogToolBar;
-import np.com.spirrotech.model.CreditCompanyList;
-import np.com.spirrotech.model.DebtListModel;
+import np.com.spirrotech.dao.CreditCompanyList;
+import np.com.spirrotech.dao.DebtListModel;
 
 
 import java.io.IOException;

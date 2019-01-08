@@ -16,9 +16,9 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import np.com.spirrotech.application.home.dialogs.LoginDialogController;
-import np.com.spirrotech.model.SystemStatus;
-import np.com.spirrotech.model.nepaliPriceFormat.Precision;
-import np.com.spirrotech.model.nepaliPriceFormat.PriceFormat;
+import np.com.spirrotech.dao.SystemStatus;
+import np.com.spirrotech.utils.nepaliPriceFormat.Precision;
+import np.com.spirrotech.utils.nepaliPriceFormat.PriceFormat;
 
 import java.io.IOException;
 
@@ -69,7 +69,7 @@ public class AppHomeController {
         try {
 
             mainHome.getChildren().clear();
-            BorderPane borderPane=FXMLLoader.load(getClass().getClassLoader().getResource("np/com/spirrotech/application/home/menu/mainHome.fxml"));
+            BorderPane borderPane=FXMLLoader.load(getClass().getClassLoader().getResource("application/home/menu/mainHome.fxml"));
             mainHome.getChildren().add(borderPane);
         } catch(IOException e) {
             e.printStackTrace();
@@ -117,13 +117,13 @@ public class AppHomeController {
 
     @FXML
     public void loadSettings(MouseEvent e) throws IOException {
-        FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("np/com/spirrotech/application/home/dialogs/loginDialog.fxml"));
+        FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("application/home/dialogs/loginDialog.fxml"));
         Parent root=loader.load();
         LoginDialogController controller=loader.getController();
         controller.setStatus(1);
         controller.setStage((Stage)((Node)e.getSource()).getScene().getWindow());
         Stage stage=new Stage();
-        stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("np/com/spirrotech/resources/images/logo.png")));
+        stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("images/logo.png")));
         stage.setTitle("Login");
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(new Scene(root));

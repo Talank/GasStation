@@ -4,10 +4,11 @@ package np.com.spirrotech.application.daily_analytics.today_closing;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import np.com.spirrotech.library.toolbar.ToolBar;
-import np.com.spirrotech.model.SystemStatus;
-import np.com.spirrotech.model.nepaliPriceFormat.Precision;
-import np.com.spirrotech.model.nepaliPriceFormat.PriceFormat;
-import np.com.spirrotech.model.transaction_model.DailyTotalAnalyticModel;
+import np.com.spirrotech.dao.SystemStatus;
+import np.com.spirrotech.model.TodayClosingTask;
+import np.com.spirrotech.utils.nepaliPriceFormat.Precision;
+import np.com.spirrotech.utils.nepaliPriceFormat.PriceFormat;
+import np.com.spirrotech.dao.transaction_model.DailyTotalAnalyticModel;
 
 import np.com.spirrotech.utils.tasks.TaskManager;
 
@@ -33,7 +34,7 @@ public class DailyAnalyticsController {
     public void initialize() {
 
         toolBar.setTitle("Today Analytics");//title
-        toolBar.setBackPath("np/com/spirrotech/application/daily_analytics/detail_analytics/dailyTotalAnalytics.fxml");
+        toolBar.setBackPath("application/daily_analytics/detail_analytics/dailyTotalAnalytics.fxml");
 
         precision = new Precision();
         priceFormat = new PriceFormat();

@@ -10,10 +10,11 @@ import javafx.scene.input.MouseEvent;
 import np.com.spirrotech.library.dialog_bottombar.BottomBarInterface;
 import np.com.spirrotech.library.dialog_bottombar.DialogBottomBar;
 import np.com.spirrotech.library.dialog_toolbar.DialogToolBar;
-import np.com.spirrotech.model.SystemStatus;
-import np.com.spirrotech.model.RefillModel;
-import np.com.spirrotech.model.TankerModel;
+import np.com.spirrotech.dao.SystemStatus;
+import np.com.spirrotech.dao.RefillModel;
+import np.com.spirrotech.dao.TankerModel;
 
+import np.com.spirrotech.model.RefillTask;
 import np.com.spirrotech.utils.tasks.TaskInterface;
 import np.com.spirrotech.utils.tasks.TaskManager;
 

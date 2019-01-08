@@ -29,7 +29,7 @@ public class ErrorMessageDialogGenerator {
         Platform.runLater(()->{
             try {
 
-                FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("np/com/spirrotech/library/error_dialog/errorDialog.fxml"));
+                FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("library/error_dialog/errorDialog.fxml"));
 
                 Parent root=loader.load();
                 ErrorDialogController controller=loader.getController();

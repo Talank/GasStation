@@ -10,11 +10,11 @@ import javafx.stage.Stage;
 
 
 import np.com.spirrotech.library.error_dialog.ErrorDialogController;
-import np.com.spirrotech.model.CreditCompanyList;
-import np.com.spirrotech.model.databases.DatabaseHandler;
+import np.com.spirrotech.dao.CreditCompanyList;
+import np.com.spirrotech.utils.databases.DatabaseHandler;
 
 
-import np.com.spirrotech.model.SystemStatus;
+import np.com.spirrotech.dao.SystemStatus;
 import np.com.spirrotech.utils.tasks.TaskManager;
 import np.com.spirrotech.utils.tasks.Tasks;
 
@@ -68,7 +68,7 @@ public class Main extends Application {
         SystemStatus.setStage(primaryStage);
 
         if(startup) {
-            primaryStage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("np/com/spirrotech/resources/images/logo.png")));
+            primaryStage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("images/logo.png")));
 
             primaryStage.setTitle("Shree Om Petroleum Traders");
             primaryStage.setScene(new Scene(root));
@@ -76,7 +76,7 @@ public class Main extends Application {
             primaryStage.show();
 
             if(CreditCompanyList.getExpiredCompanyList().size()!=0) {
-                FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("np/com/spirrotech/init/dialogs/expireCompanyDialog.fxml"));
+                FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("init/dialogs/expireCompanyDialog.fxml"));
                 Parent root=loader.load();
                 Stage stage=new Stage();
                 stage.setTitle("Expired Company");

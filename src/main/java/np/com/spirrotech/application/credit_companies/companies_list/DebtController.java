@@ -21,9 +21,9 @@ import np.com.spirrotech.application.home.AppHomeController;
 import np.com.spirrotech.application.credit_companies.company_transactions.CreditCompanyDetailsController;
 
 import np.com.spirrotech.library.toolbar.ToolBar;
-import np.com.spirrotech.model.CreditCompanyList;
-import np.com.spirrotech.model.DebtListModel;
-import np.com.spirrotech.model.SystemStatus;
+import np.com.spirrotech.dao.CreditCompanyList;
+import np.com.spirrotech.dao.DebtListModel;
+import np.com.spirrotech.dao.SystemStatus;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -97,7 +97,7 @@ public class DebtController {
         debtList.setItems(observableList);
 
         debtList.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends DebtListModel> observable, DebtListModel oldValue, DebtListModel newValue)->{
-            FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("np/com/spirrotech/application/credit_companies/company_transactions/creditCompanyDetails.fxml"));
+            FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("application/credit_companies/company_transactions/creditCompanyDetails.fxml"));
 
             try {
 

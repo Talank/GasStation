@@ -15,7 +15,7 @@ public class TransactionListCellController {
 
     public TransactionListCellController() {
         try {
-            FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("np/com/spirrotech/application/credit_billing/transactionListCell.fxml"));
+            FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("application/credit_billing/transactionListCell.fxml"));
             loader.setController(this);
             hBox=loader.load();
         } catch (Exception e) {

@@ -5,7 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
-import np.com.spirrotech.model.DebtListModel;
+import np.com.spirrotech.dao.DebtListModel;
 
 public class CustomListCellController {
 
@@ -16,7 +16,7 @@ public class CustomListCellController {
 
     public CustomListCellController() {
         try {
-            FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("np/com/spirrotech/init/dialogs/customListCell.fxml"));
+            FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("init/dialogs/customListCell.fxml"));
             loader.setController(this);
             hBox=loader.load();
         } catch (Exception e) {

@@ -2,7 +2,7 @@ package np.com.spirrotech.application.credit_billing;
 
 import javafx.scene.Node;
 import javafx.scene.control.ListCell;
-import np.com.spirrotech.model.transaction_model.Transaction;
+import np.com.spirrotech.dao.transaction_model.Transaction;
 
 public class TransactionListCell extends ListCell<Transaction> {
 

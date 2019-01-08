@@ -29,10 +29,11 @@ import np.com.spirrotech.application.profit_loss.dialogs.tanker_check.TankRemark
 import np.com.spirrotech.library.output_task_loading.OutputTaskLoading;
 import np.com.spirrotech.library.toolbar.BackButtonInterface;
 import np.com.spirrotech.library.toolbar.ToolBar;
-import np.com.spirrotech.model.SystemStatus;
-import np.com.spirrotech.model.RefillModel;
-import np.com.spirrotech.model.nepaliPriceFormat.Precision;
-import np.com.spirrotech.model.nepaliPriceFormat.PriceFormat;
+import np.com.spirrotech.dao.SystemStatus;
+import np.com.spirrotech.dao.RefillModel;
+import np.com.spirrotech.model.GetRefillTask;
+import np.com.spirrotech.utils.nepaliPriceFormat.Precision;
+import np.com.spirrotech.utils.nepaliPriceFormat.PriceFormat;
 import np.com.spirrotech.utils.tasks.TaskManager;
 
 
@@ -410,7 +411,7 @@ public class ProfitLossController implements BackButtonInterface {
     @FXML
     public void loadRefillChange(MouseEvent e) throws IOException {
 
-        FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("np/com/spirrotech/application/profit_loss/dialogs/refill/refillDialog.fxml"));
+        FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("application/profit_loss/dialogs/refill/refillDialog.fxml"));
 
         Parent root=loader.load();
         RefillDialogController controller=loader.getController();
@@ -425,7 +426,7 @@ public class ProfitLossController implements BackButtonInterface {
 
         Stage stage=new Stage();
         stage.setTitle("Refill Dialog");
-        stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("np/com/spirrotech/resources/images/logo.png")));
+        stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("images/logo.png")));
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(new Scene(root));
         stage.show();
@@ -436,12 +437,12 @@ public class ProfitLossController implements BackButtonInterface {
 
 
         if(!searchTanker.getText().isEmpty()) {
-            FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("np/com/spirrotech/application/profit_loss/dialogs/tanker_check/tankRemark.fxml"));
+            FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("application/profit_loss/dialogs/tanker_check/tankRemark.fxml"));
             Parent root= loader.load();
 
             Stage stage=new Stage();
             stage.setTitle("Remark Dialog");
-            stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("np/com/spirrotech/resources/images/logo.png")));
+            stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("images/logo.png")));
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setScene(new Scene(root));
             stage.show();

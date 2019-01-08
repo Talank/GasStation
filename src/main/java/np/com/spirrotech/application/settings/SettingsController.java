@@ -27,13 +27,15 @@ import np.com.spirrotech.application.settings.dialogs.edit_company.EditCompanyCo
 import np.com.spirrotech.library.SettingsConstants;
 import np.com.spirrotech.library.SnackBarToastGenerator;
 import np.com.spirrotech.library.toolbar.ToolBar;
-import np.com.spirrotech.model.CreditCompanyClosingBill;
-import np.com.spirrotech.model.CreditCompanyList;
-import np.com.spirrotech.model.SystemStatus;
+import np.com.spirrotech.dao.CreditCompanyClosingBill;
+import np.com.spirrotech.dao.CreditCompanyList;
+import np.com.spirrotech.dao.SystemStatus;
 
-import np.com.spirrotech.model.DebtListModel;
-import np.com.spirrotech.model.nepaliPriceFormat.Precision;
-import np.com.spirrotech.model.nepaliPriceFormat.PriceFormat;
+import np.com.spirrotech.dao.DebtListModel;
+import np.com.spirrotech.model.ClearTableTask;
+import np.com.spirrotech.model.GetSettingsTask;
+import np.com.spirrotech.utils.nepaliPriceFormat.Precision;
+import np.com.spirrotech.utils.nepaliPriceFormat.PriceFormat;
 
 import np.com.spirrotech.utils.tasks.TaskManager;
 import np.com.spirrotech.utils.tasks.Tasks;
@@ -165,11 +167,11 @@ public class SettingsController {
 
     @FXML
     public void addCompany(MouseEvent e) throws IOException {
-        Parent root=FXMLLoader.load(getClass().getClassLoader().getResource("np/com/spirrotech/application/settings/dialogs/add_company/changeCompany.fxml"));
+        Parent root=FXMLLoader.load(getClass().getClassLoader().getResource("application/settings/dialogs/add_company/changeCompany.fxml"));
         Scene scene=new Scene(root);
         Stage stage=new Stage();
         stage.setTitle("Add company");
-        stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("np/com/spirrotech/resources/images/logo.png")));
+        stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("images/logo.png")));
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(scene);
         stage.show();
@@ -192,14 +194,14 @@ public class SettingsController {
              */
 
             //load the conformation dialog
-            FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("np/com/spirrotech/application/settings/dialogs/delete_company/deleteConformationDialog.fxml"));
+            FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("application/settings/dialogs/delete_company/deleteConformationDialog.fxml"));
             Parent root=loader.load();
             DeleteConformationController controller=loader.getController();
             controller.initializeData(model,listModels);
             controller.showBalance();
             Stage stage=new Stage();
             stage.setTitle("Delete Company");
-            stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("np/com/spirrotech/resources/images/logo.png")));
+            stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("images/logo.png")));
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setScene(new Scene(root));
             stage.show();
@@ -226,13 +228,13 @@ public class SettingsController {
 
         //check if the model is null, if a dialog was shown before the selection might get cleared
         if (model != null) {
-            FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("np/com/spirrotech/application/settings/dialogs/edit_company/editCompany.fxml"));
+            FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("application/settings/dialogs/edit_company/editCompany.fxml"));
             Parent root=loader.load();
             EditCompanyController controller=loader.getController();
             controller.setEditData(model);
             Stage stage=new Stage();
             stage.setTitle("Edit Company");
-            stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("np/com/spirrotech/resources/images/logo.png")));
+            stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("images/logo.png")));
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setScene(new Scene(root));
             stage.show();
@@ -274,7 +276,7 @@ public class SettingsController {
         DebtListModel model=debtList.getSelectionModel().getSelectedItem();
 
         if (model != null) {
-            FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("np/com/spirrotech/application/settings/dialogs/company_payment/paymentDialog.fxml"));
+            FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("application/settings/dialogs/company_payment/paymentDialog.fxml"));
             Parent root=loader.load();
 
             PaymentDialogController controller=loader.getController();
@@ -282,7 +284,7 @@ public class SettingsController {
 
             Stage stage=new Stage();
             stage.setTitle("Payment");
-            stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("np/com/spirrotech/resources/images/logo.png")));
+            stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("images/logo.png")));
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setScene(new Scene(root));
             stage.show();
@@ -301,7 +303,7 @@ public class SettingsController {
 
     @FXML
     public void changeOilRates(MouseEvent e) throws IOException {
-        FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("np/com/spirrotech/application/settings/dialogs/change_oil_rates/changeRateDialog.fxml"));
+        FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("application/settings/dialogs/change_oil_rates/changeRateDialog.fxml"));
 
         Parent root=loader.load();
         ChangeRateController controller=loader.getController();
@@ -309,7 +311,7 @@ public class SettingsController {
 
         Stage stage=new Stage();
         stage.setTitle("Oil Rates");
-        stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("np/com/spirrotech/resources/images/logo.png")));
+        stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("images/logo.png")));
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(new Scene(root));
         stage.show();
@@ -317,14 +319,14 @@ public class SettingsController {
 
     @FXML
     public void setupCounterStock(MouseEvent e) throws IOException {
-        FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("np/com/spirrotech/application/settings/dialogs/change_counter_stock/counterStockDialog.fxml"));
+        FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("application/settings/dialogs/change_counter_stock/counterStockDialog.fxml"));
 
         Parent root=loader.load();
         CounterStockDialogController controller=loader.getController();
         controller.setInitialStock(model[5][0]);
         Stage stage=new Stage();
         stage.setTitle("Counter Setup");
-        stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("np/com/spirrotech/resources/images/logo.png")));
+        stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("images/logo.png")));
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(new Scene(root));
         stage.show();
@@ -332,11 +334,11 @@ public class SettingsController {
 
     @FXML
     public void setupMeterReadings(MouseEvent e) throws IOException {
-        Parent root=FXMLLoader.load(getClass().getClassLoader().getResource("np/com/spirrotech/application/settings/dialogs/change_meter_reading/setupMeterReadings.fxml"));
+        Parent root=FXMLLoader.load(getClass().getClassLoader().getResource("application/settings/dialogs/change_meter_reading/setupMeterReadings.fxml"));
         Scene scene=new Scene(root);
         Stage stage=new Stage();
         stage.setTitle("Setup Meters");
-        stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("np/com/spirrotech/resources/images/logo.png")));
+        stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("images/logo.png")));
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(scene);
         stage.show();
@@ -344,11 +346,11 @@ public class SettingsController {
 
     @FXML
     public void setupPrinters(MouseEvent e) throws IOException  {
-        Parent root=FXMLLoader.load(getClass().getClassLoader().getResource("np/com/spirrotech/application/settings/dialogs/change_printer/printerDialog.fxml"));
+        Parent root=FXMLLoader.load(getClass().getClassLoader().getResource("application/settings/dialogs/change_printer/printerDialog.fxml"));
         Scene scene=new Scene(root);
         Stage stage=new Stage();
         stage.setTitle("Printer setup");
-        stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("np/com/spirrotech/resources/images/logo.png")));
+        stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("images/logo.png")));
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(scene);
         stage.show();
@@ -357,14 +359,14 @@ public class SettingsController {
 
     @FXML
     public void setupOilStock(MouseEvent e) throws IOException {
-        FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("np/com/spirrotech/application/settings/dialogs/change_oil_stock/oilStockDialog.fxml"));
+        FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("application/settings/dialogs/change_oil_stock/oilStockDialog.fxml"));
 
         Parent root=loader.load();
         OilStockDialogController controller=loader.getController();
         controller.setInitialStock(model[6][0], model[7][0]);
         Stage stage=new Stage();
         stage.setTitle("Oil Stocks");
-        stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("np/com/spirrotech/resources/images/logo.png")));
+        stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("images/logo.png")));
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(new Scene(root));
         stage.show();
@@ -379,7 +381,7 @@ public class SettingsController {
 
     @FXML
     public void changeUserNameAndPassword(MouseEvent e) throws IOException {
-        FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("np/com/spirrotech/application/settings/dialogs/change_user_parameter/changeUserParameters.fxml"));
+        FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("application/settings/dialogs/change_user_parameter/changeUserParameters.fxml"));
         Parent root=loader.load();
 
         ChangeUserParametersController controller=loader.getController();
@@ -387,7 +389,7 @@ public class SettingsController {
 
         Stage stage=new Stage();
         stage.setTitle("User Credentials");
-        stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("np/com/spirrotech/resources/images/logo.png")));
+        stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("images/logo.png")));
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(new Scene(root));
         stage.show();
@@ -413,12 +415,12 @@ public class SettingsController {
         /**
          * Petrol Pump expenditure code goes here
          */
-        FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("np/com/spirrotech/application/settings/dialogs/add_expenditure/addExpenditure.fxml"));
+        FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("application/settings/dialogs/add_expenditure/addExpenditure.fxml"));
         Parent root=loader.load();
 
         Stage stage=new Stage();
         stage.setTitle("Expenditure");
-        stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("np/com/spirrotech/resources/images/logo.png")));
+        stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("images/logo.png")));
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(new Scene(root));
         stage.show();

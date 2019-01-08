@@ -1,10 +1,10 @@
 package np.com.spirrotech.init;
 
 import np.com.spirrotech.utils.SystemLogging;
-import np.com.spirrotech.model.CreditCompanyList;
-import np.com.spirrotech.model.DebtListModel;
-import np.com.spirrotech.model.SystemStatus;
-import np.com.spirrotech.model.databases.DatabaseHandler;
+import np.com.spirrotech.dao.CreditCompanyList;
+import np.com.spirrotech.dao.DebtListModel;
+import np.com.spirrotech.dao.SystemStatus;
+import np.com.spirrotech.utils.databases.DatabaseHandler;
 import np.com.spirrotech.utils.nepali_date.DateConverter;
 import np.com.spirrotech.utils.nepali_date.NepaliDateGenerator;
 import np.com.spirrotech.utils.nepali_date.ParseNepaliDate;
@@ -33,7 +33,7 @@ public class InitializeSystem extends Tasks {
     public boolean customExecute() {
 
         SystemLogging.initializeLogger();//Initialize The Logger
-        SystemStatus.setMainHomePath("np/com/spirrotech/application/home/menu/mainHome.fxml");
+        SystemStatus.setMainHomePath("application/home/menu/mainHome.fxml");
 
 
         NepaliDateGenerator generator = new NepaliDateGenerator();

@@ -19,7 +19,8 @@ import np.com.spirrotech.library.dialog_bottombar.BottomBarInterface;
 import np.com.spirrotech.library.dialog_bottombar.DialogBottomBar;
 import np.com.spirrotech.library.dialog_toolbar.DialogToolBar;
 
-import np.com.spirrotech.model.SystemStatus;
+import np.com.spirrotech.dao.SystemStatus;
+import np.com.spirrotech.model.GetDailyTotalAnalyticsModelTask;
 import np.com.spirrotech.utils.tasks.TaskManager;
 
 import java.io.IOException;
@@ -104,7 +105,7 @@ public class FinalReadingsController implements BottomBarInterface {
                 SystemStatus.setfPetrol(Float.parseFloat(fPetrol.getText()));
 
                 //load the daily analytics view
-                FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("np/com/spirrotech/application/daily_analytics/today_closing/dailyAnalytics.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("application/daily_analytics/today_closing/dailyAnalytics.fxml"));
 
                 //retrieve the Analytics model from the database
                 GetDailyTotalAnalyticsModelTask task=new GetDailyTotalAnalyticsModelTask();

@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane fx:id="rootLayout" minHeight="-Infinity" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="np.com.spirrotech.application.home.menu.MainHomeController">
+   <center>
+      <GridPane fx:id="rootGrid" styleClass="gridBackground" stylesheets="@../../../../java/np/com/spirrotech/css/mainHomeStyle.css">
+         <columnConstraints>
+            <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
+            <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" vgrow="ALWAYS" />
+            <RowConstraints minHeight="10.0" vgrow="ALWAYS" />
+            <RowConstraints minHeight="10.0" vgrow="ALWAYS" />
+         </rowConstraints>
+         <children>
+            <VBox fx:id="instantBillingLayout" alignment="CENTER" onMouseClicked="#loadInstantBilling" styleClass="menuBackground" stylesheets="@../../../../java/np/com/spirrotech/css/mainHomeStyle.css">
+               <children>
+                  <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="gridMenuItems" stylesheets="@../../../../java/np/com/spirrotech/css/mainHomeStyle.css" VBox.vgrow="ALWAYS">
+                     <children>
+                        <ImageView fitHeight="135.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="NEVER">
+                           <image>
+                              <Image url="@../../../images/instantBilling.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </HBox>
+                  <Label styleClass="gridMenuItemsText" stylesheets="@../../../../java/np/com/spirrotech/css/mainHomeStyle.css" text="Instant Billing" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="40.0" />
+                     </font>
+                  </Label>
+               </children>
+               <padding>
+                  <Insets top="10.0" />
+               </padding>
+            </VBox>
+            <VBox fx:id="creditBillingLayout" alignment="CENTER" onMouseClicked="#loadCreditBilling" styleClass="menuBackground" stylesheets="@../../../../java/np/com/spirrotech/css/mainHomeStyle.css" GridPane.columnIndex="1">
+               <children>
+                  <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="gridMenuItems" stylesheets="@../../../../java/np/com/spirrotech/css/mainHomeStyle.css">
+                     <children>
+                        <ImageView fitHeight="135.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="NEVER">
+                           <image>
+                              <Image url="@../../../images/creditBilling.png" />
+                           </image>
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                        </ImageView>
+                     </children>
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </HBox>
+                  <Label styleClass="gridMenuItemsText" stylesheets="@../../../../java/np/com/spirrotech/css/mainHomeStyle.css" text="Credit Billing" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="40.0" />
+                     </font>
+                  </Label>
+               </children>
+               <padding>
+                  <Insets top="10.0" />
+               </padding>
+            </VBox>
+            <VBox fx:id="creditLayout" alignment="CENTER" onMouseClicked="#loadDebt" styleClass="menuBackground" stylesheets="@../../../../java/np/com/spirrotech/css/mainHomeStyle.css" GridPane.rowIndex="1">
+               <children>
+                  <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="gridMenuItems" stylesheets="@../../../../java/np/com/spirrotech/css/mainHomeStyle.css">
+                     <children>
+                        <ImageView fitHeight="135.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="NEVER">
+                           <image>
+                              <Image url="@../../../images/creditAnalysis.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </HBox>
+                  <Label styleClass="gridMenuItemsText" stylesheets="@../../../../java/np/com/spirrotech/css/mainHomeStyle.css" text="Credit Companies" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="40.0" />
+                     </font>
+                  </Label>
+               </children>
+               <padding>
+                  <Insets top="10.0" />
+               </padding>
+            </VBox>
+            <VBox fx:id="profitLossLayout" alignment="CENTER" onMouseClicked="#loadProfitLoss" styleClass="menuBackground" stylesheets="@../../../../java/np/com/spirrotech/css/mainHomeStyle.css" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <children>
+                  <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="gridMenuItems" stylesheets="@../../../../java/np/com/spirrotech/css/mainHomeStyle.css">
+                     <children>
+                        <ImageView fitHeight="135.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="NEVER">
+                           <image>
+                              <Image url="@../../../images/profitLoss.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </HBox>
+                  <Label styleClass="gridMenuItemsText" stylesheets="@../../../../java/np/com/spirrotech/css/mainHomeStyle.css" text="Profit Loss" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="40.0" />
+                     </font>
+                  </Label>
+               </children>
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+               <padding>
+                  <Insets top="10.0" />
+               </padding>
+            </VBox>
+            <VBox fx:id="dailyAnalyticsLayout" alignment="CENTER" onMouseClicked="#loadDailyAnalytics" styleClass="menuBackground" stylesheets="@../../../../java/np/com/spirrotech/css/mainHomeStyle.css" GridPane.rowIndex="2">
+               <children>
+                  <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="gridMenuItems" stylesheets="@../../../../java/np/com/spirrotech/css/mainHomeStyle.css">
+                     <children>
+                        <ImageView fitHeight="135.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="NEVER">
+                           <image>
+                              <Image url="@../../../images/dailyAnalytics.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </HBox>
+                  <Label styleClass="gridMenuItemsText" stylesheets="@../../../../java/np/com/spirrotech/css/mainHomeStyle.css" text="Daily Analytics" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="40.0" />
+                     </font>
+                  </Label>
+               </children>
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+               <padding>
+                  <Insets top="10.0" />
+               </padding>
+            </VBox>
+            <VBox fx:id="settingsLayout" alignment="CENTER" onMouseClicked="#loadSystemStatus" styleClass="menuBackground" stylesheets="@../../../../java/np/com/spirrotech/css/mainHomeStyle.css" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <children>
+                  <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" styleClass="gridMenuItems" stylesheets="@../../../../java/np/com/spirrotech/css/mainHomeStyle.css">
+                     <children>
+                        <ImageView fitHeight="135.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="NEVER">
+                           <image>
+                              <Image url="@../../../images/systemStatus.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </HBox>
+                  <Label styleClass="gridMenuItemsText" stylesheets="@../../../../java/np/com/spirrotech/css/mainHomeStyle.css" text="System Status" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="40.0" />
+                     </font>
+                  </Label>
+               </children>
+               <padding>
+                  <Insets top="10.0" />
+               </padding>
+            </VBox>
+         </children>
+      </GridPane>
+   </center>
+</BorderPane>

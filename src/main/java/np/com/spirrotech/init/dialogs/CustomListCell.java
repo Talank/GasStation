@@ -4,7 +4,7 @@ package np.com.spirrotech.init.dialogs;
 import javafx.scene.Node;
 import javafx.scene.control.ListCell;
 
-import np.com.spirrotech.model.DebtListModel;
+import np.com.spirrotech.dao.DebtListModel;
 
 
 public class CustomListCell extends ListCell<DebtListModel> {

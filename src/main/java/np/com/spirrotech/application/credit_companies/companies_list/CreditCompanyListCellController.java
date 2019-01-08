@@ -8,9 +8,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import np.com.spirrotech.model.DebtListModel;
-import np.com.spirrotech.model.nepaliPriceFormat.Precision;
-import np.com.spirrotech.model.nepaliPriceFormat.PriceFormat;
+import np.com.spirrotech.dao.DebtListModel;
+import np.com.spirrotech.utils.nepaliPriceFormat.Precision;
+import np.com.spirrotech.utils.nepaliPriceFormat.PriceFormat;
 
 import java.io.IOException;
 
@@ -31,7 +31,7 @@ public class CreditCompanyListCellController {
         priceFormat = new PriceFormat();
         precision = new Precision();
         try {
-            FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("np/com/spirrotech/application/credit_companies/companies_list/creditCompanyListCell.fxml"));
+            FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("application/credit_companies/companies_list/creditCompanyListCell.fxml"));
             loader.setController(this);
             vBox=loader.load();
         } catch(IOException e) {
@@ -57,9 +57,9 @@ public class CreditCompanyListCellController {
 
         if(model.isExpired()) {
             companyLastPaid.setTextFill(Color.RED);
-            imageView.setImage(new Image(getClass().getClassLoader().getResourceAsStream("np/com/spirrotech/resources/images/warn.png")));
+            imageView.setImage(new Image(getClass().getClassLoader().getResourceAsStream("images/warn.png")));
         } else {
-            imageView.setImage(new Image(getClass().getClassLoader().getResourceAsStream("np/com/spirrotech/resources/images/true.png")));
+            imageView.setImage(new Image(getClass().getClassLoader().getResourceAsStream("images/true.png")));
         }
 
     }

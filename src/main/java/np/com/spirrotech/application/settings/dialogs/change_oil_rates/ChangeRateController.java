@@ -17,11 +17,11 @@ import np.com.spirrotech.library.dialog_bottombar.DialogBottomBar;
 import np.com.spirrotech.library.dialog_toolbar.DialogToolBar;
 
 import javafx.scene.Node;
-import np.com.spirrotech.model.SystemStatus;
+import np.com.spirrotech.dao.SystemStatus;
 import np.com.spirrotech.utils.tasks.TaskInterface;
 import np.com.spirrotech.utils.tasks.TaskManager;
 
-import np.com.spirrotech.application.settings.SettingsTask;
+import np.com.spirrotech.model.SettingsTask;
 
 import java.io.IOException;
 

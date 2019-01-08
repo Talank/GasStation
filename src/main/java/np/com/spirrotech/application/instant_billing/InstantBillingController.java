@@ -19,11 +19,11 @@ import np.com.spirrotech.application.home.AppHomeController;
 
 import np.com.spirrotech.application.credit_billing.TransactionListCell;
 
-import np.com.spirrotech.model.SystemStatus;
+import np.com.spirrotech.dao.SystemStatus;
 import np.com.spirrotech.library.toolbar.ToolBar;
-import np.com.spirrotech.model.nepaliPriceFormat.Precision;
-import np.com.spirrotech.model.transaction_model.InstantTransactionBill;
-import np.com.spirrotech.model.transaction_model.Transaction;
+import np.com.spirrotech.utils.nepaliPriceFormat.Precision;
+import np.com.spirrotech.dao.transaction_model.InstantTransactionBill;
+import np.com.spirrotech.dao.transaction_model.Transaction;
 
 
 

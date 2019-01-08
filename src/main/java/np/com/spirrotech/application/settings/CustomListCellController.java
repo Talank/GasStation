@@ -12,7 +12,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
-import np.com.spirrotech.model.DebtListModel;
+import np.com.spirrotech.dao.DebtListModel;
 public class CustomListCellController {
 
     @FXML
@@ -25,7 +25,7 @@ public class CustomListCellController {
 
     public CustomListCellController() {
         try {
-            FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("np/com/spirrotech/application/settings/customListCell.fxml"));
+            FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("application/settings/customListCell.fxml"));
             loader.setController(this);
             vbox=loader.load();
         } catch (Exception e) {
@@ -42,12 +42,12 @@ public class CustomListCellController {
             companyLabel.setTextFill(Color.RED);
             date.setTextFill(Color.RED);
             days.setTextFill(Color.RED);
-            imageView.setImage(new Image(getClass().getClassLoader().getResourceAsStream("np/com/spirrotech/resources/images/warn.png")));
+            imageView.setImage(new Image(getClass().getClassLoader().getResourceAsStream("images/warn.png")));
         } else {
             companyLabel.setTextFill(Color.BLACK);
             date.setTextFill(Color.BLACK);
             days.setTextFill(Color.BLACK);
-            imageView.setImage(new Image(getClass().getClassLoader().getResourceAsStream("np/com/spirrotech/resources/images/true.png")));
+            imageView.setImage(new Image(getClass().getClassLoader().getResourceAsStream("images/true.png")));
         }
 
 

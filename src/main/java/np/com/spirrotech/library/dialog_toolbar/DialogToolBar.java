@@ -13,7 +13,7 @@ public class DialogToolBar extends HBox {
     private Label dialogTitle;
 
     public DialogToolBar() {
-        FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("np/com/spirrotech/library/dialog_toolbar/dialogToolBar.fxml"));
+        FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("library/dialog_toolbar/dialogToolBar.fxml"));
         loader.setRoot(this);
         loader.setController(this);
         try {

@@ -23,11 +23,12 @@ import np.com.spirrotech.library.output_task_loading.OutputTaskLoading;
 import np.com.spirrotech.library.toolbar.BackButtonInterface;
 import np.com.spirrotech.library.toolbar.ToolBar;
 
-import np.com.spirrotech.model.SystemStatus;
+import np.com.spirrotech.dao.SystemStatus;
 
-import np.com.spirrotech.model.nepaliPriceFormat.Precision;
-import np.com.spirrotech.model.nepaliPriceFormat.PriceFormat;
-import np.com.spirrotech.model.transaction_model.DailyTotalAnalyticModel;
+import np.com.spirrotech.model.GetDailyTotalAnalyticsTask;
+import np.com.spirrotech.utils.nepaliPriceFormat.Precision;
+import np.com.spirrotech.utils.nepaliPriceFormat.PriceFormat;
+import np.com.spirrotech.dao.transaction_model.DailyTotalAnalyticModel;
 import np.com.spirrotech.utils.tasks.TaskManager;
 
 import java.io.IOException;
@@ -264,12 +265,12 @@ public class DailyTotalAnalyticsController implements BackButtonInterface {
     @FXML
     public void showTodayAnalytics(MouseEvent e) throws IOException {
 
-        FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("np/com/spirrotech/application/daily_analytics/detail_analytics/dialogs/finalReadings.fxml"));
+        FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("application/daily_analytics/detail_analytics/dialogs/finalReadings.fxml"));
         Parent root=loader.load();
 
         Stage stage=new Stage();
         stage.setTitle("Today Analytics");
-        stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("np/com/spirrotech/resources/images/logo.png")));
+        stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("images/logo.png")));
         stage.setScene(new Scene(root));
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.show();

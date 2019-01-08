@@ -23,7 +23,8 @@ import np.com.spirrotech.library.error_dialog.ErrorDialogController;
 import np.com.spirrotech.library.dialog_bottombar.BottomBarInterface;
 import np.com.spirrotech.library.dialog_bottombar.DialogBottomBar;
 import np.com.spirrotech.library.dialog_toolbar.DialogToolBar;
-import np.com.spirrotech.model.AdminUser;
+import np.com.spirrotech.dao.AdminUser;
+import np.com.spirrotech.model.GetAdminUser;
 import np.com.spirrotech.utils.tasks.TaskManager;
 
 import java.io.IOException;
@@ -106,7 +107,7 @@ public class LoginDialogController implements BottomBarInterface {
                         switch (this.status) {
                             case 1:
 
-                                BorderPane borderPane=FXMLLoader.load(getClass().getClassLoader().getResource("np/com/spirrotech/application/settings/settings.fxml"));
+                                BorderPane borderPane=FXMLLoader.load(getClass().getClassLoader().getResource("application/settings/settings.fxml"));
                                 AppHomeController.getInstance().loadStages(borderPane);
                                 break;
                         }
@@ -114,7 +115,7 @@ public class LoginDialogController implements BottomBarInterface {
                         loginWindow.close();
 
                     } else {
-                        FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("np/com/spirrotech/library/error_dialog/errorDialog.fxml"));
+                        FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("library/error_dialog/errorDialog.fxml"));
                         Parent root=loader.load();
                         ErrorDialogController controller=loader.getController();
                         controller.setTitle("Login Error");

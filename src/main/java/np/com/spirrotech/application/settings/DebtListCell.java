@@ -3,7 +3,7 @@ package np.com.spirrotech.application.settings;
 import javafx.scene.Node;
 import javafx.scene.control.ListCell;
 
-import np.com.spirrotech.model.DebtListModel;
+import np.com.spirrotech.dao.DebtListModel;
 
 public class DebtListCell extends ListCell<DebtListModel> {
 

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import java.lang.String?>
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane fx:id="root" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="np.com.spirrotech.application.home.AppHomeController">
+   <center>
+      <StackPane fx:id="mainHome" BorderPane.alignment="CENTER" />
+   </center>
+   <top>
+      <GridPane alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="150.0" stylesheets="@../../../java/np/com/spirrotech/css/appHomeStyle.css" BorderPane.alignment="CENTER">
+        <columnConstraints>
+          <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="280.0" />
+          <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="280.0" />
+            <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="160.0" />
+            <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="280.0" />
+            <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="280.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" vgrow="ALWAYS" />
+        </rowConstraints>
+         <children>
+            <VBox alignment="CENTER" styleClass="toolBarBubbleColor" stylesheets="@../../../java/np/com/spirrotech/css/appHomeStyle.css">
+               <children>
+                  <Label styleClass="toolBarBubbleInfoText" stylesheets="@../../../java/np/com/spirrotech/css/appHomeStyle.css" text="Diesel Rate:" />
+                  <Label fx:id="dieselRate" styleClass="toolBarBubbleDataText" stylesheets="@../../../java/np/com/spirrotech/css/appHomeStyle.css" text="Rs. 0.00" />
+               </children>
+               <GridPane.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </GridPane.margin>
+            </VBox>
+            <VBox alignment="CENTER" styleClass="toolBarBubbleColor" stylesheets="@../../../java/np/com/spirrotech/css/appHomeStyle.css" GridPane.columnIndex="1">
+               <children>
+                  <Label styleClass="toolBarBubbleInfoText" stylesheets="@../../../java/np/com/spirrotech/css/appHomeStyle.css" text="Petrol Rate:" />
+                  <Label fx:id="petrolRate" styleClass="toolBarBubbleDataText" stylesheets="@../../../java/np/com/spirrotech/css/appHomeStyle.css" text="Rs. 0.00" />
+               </children>
+               <GridPane.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </GridPane.margin>
+            </VBox>
+            <VBox alignment="CENTER" layoutX="266.0" layoutY="10.0" styleClass="toolBarBubbleColor" stylesheets="@../../../java/np/com/spirrotech/css/appHomeStyle.css" GridPane.columnIndex="3">
+               <children>
+                  <Label styleClass="toolBarBubbleInfoText" stylesheets="@../../../java/np/com/spirrotech/css/appHomeStyle.css" text="Diesel Stock:" />
+                  <Label fx:id="dieselStock" alignment="TOP_LEFT" styleClass="toolBarBubbleDataText" stylesheets="@../../../java/np/com/spirrotech/css/appHomeStyle.css" text="0.00 L" />
+               </children>
+               <GridPane.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </GridPane.margin>
+            </VBox>
+            <VBox alignment="CENTER" layoutX="10.0" layoutY="10.0" styleClass="toolBarBubbleColor" stylesheets="@../../../java/np/com/spirrotech/css/appHomeStyle.css" GridPane.columnIndex="4">
+               <children>
+                  <Label styleClass="toolBarBubbleInfoText" stylesheets="@../../../java/np/com/spirrotech/css/appHomeStyle.css" text="Petrol Stock:" />
+                  <Label fx:id="petrolStock" styleClass="toolBarBubbleDataText" stylesheets="@../../../java/np/com/spirrotech/css/appHomeStyle.css" text="0.00L" />
+               </children>
+               <GridPane.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </GridPane.margin>
+            </VBox>
+            <HBox alignment="CENTER" maxWidth="1.7976931348623157E308" GridPane.columnIndex="2">
+               <children>
+                  <JFXButton fx:id="settings" buttonType="RAISED" focusTraversable="false" onMouseClicked="#loadSettings" prefHeight="120.0" prefWidth="120.0" style="-fx-background-radius: 60px;" text=" ">
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                     <stylesheets>
+                        <URL value="@../../../java/np/com/spirrotech/css/appHomeStyle.css" />
+                        <URL value="@../../../java/np/com/spirrotech/css/appColorPalette.css" />
+                     </stylesheets>
+                     <styleClass>
+                        <String fx:value="settingsButton" />
+                        <String fx:value="generalButtonColor" />
+                     </styleClass>
+                  </JFXButton>
+               </children>
+            </HBox>
+         </children>
+      </GridPane>
+   </top>
+</BorderPane>

@@ -12,10 +12,11 @@ import javafx.util.Callback;
 import np.com.spirrotech.library.output_task_loading.OutputTaskLoading;
 import np.com.spirrotech.library.toolbar.BackButtonInterface;
 import np.com.spirrotech.library.toolbar.ToolBar;
-import np.com.spirrotech.model.CreditDetailsModel;
-import np.com.spirrotech.model.databases.DatabaseHandler;
-import np.com.spirrotech.model.nepaliPriceFormat.Precision;
-import np.com.spirrotech.model.nepaliPriceFormat.PriceFormat;
+import np.com.spirrotech.dao.CreditDetailsModel;
+import np.com.spirrotech.model.GetCompanyDetailsTask;
+import np.com.spirrotech.utils.databases.DatabaseHandler;
+import np.com.spirrotech.utils.nepaliPriceFormat.Precision;
+import np.com.spirrotech.utils.nepaliPriceFormat.PriceFormat;
 import np.com.spirrotech.utils.tasks.TaskManager;
 
 import java.util.List;
@@ -67,7 +68,7 @@ public class CreditCompanyDetailsController implements BackButtonInterface {
         task=null;
 
         toolBar.setTitle("Company Transactions");
-        toolBar.setBackPath("np/com/spirrotech/application/credit_companies/companies_list/debt.fxml");
+        toolBar.setBackPath("application/credit_companies/companies_list/debt.fxml");
         toolBar.addBackButtonInterface(this);
 
         progressLayout.setVisible(true);

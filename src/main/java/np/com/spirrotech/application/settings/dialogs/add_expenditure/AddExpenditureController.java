@@ -13,6 +13,7 @@ import np.com.spirrotech.library.dialog_bottombar.DialogBottomBar;
 import np.com.spirrotech.library.dialog_toolbar.DialogToolBar;
 
 
+import np.com.spirrotech.model.AddExpenditureTask;
 import np.com.spirrotech.utils.tasks.TaskManager;
 
 

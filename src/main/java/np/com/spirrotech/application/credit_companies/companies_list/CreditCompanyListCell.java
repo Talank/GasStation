@@ -2,7 +2,7 @@ package np.com.spirrotech.application.credit_companies.companies_list;
 
 import javafx.scene.Node;
 import javafx.scene.control.ListCell;
-import np.com.spirrotech.model.DebtListModel;
+import np.com.spirrotech.dao.DebtListModel;
 
 public class CreditCompanyListCell extends ListCell<DebtListModel> {
 

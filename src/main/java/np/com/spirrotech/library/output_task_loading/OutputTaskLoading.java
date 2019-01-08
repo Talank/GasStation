@@ -16,7 +16,7 @@ public class OutputTaskLoading extends VBox {
 
     public OutputTaskLoading() {
 
-        FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("np/com/spirrotech/library/output_task_loading/outputTaskLoading.fxml"));
+        FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("library/output_task_loading/outputTaskLoading.fxml"));
         loader.setRoot(this);
         loader.setController(this);
         try {

@@ -24,8 +24,8 @@ public class ApplicationPreLoader extends Preloader {
     @Override
     public void start(Stage primaryStage) throws Exception {
         this.primaryStage=primaryStage;
-        Parent root=FXMLLoader.load(getClass().getClassLoader().getResource("/startingScreen.fxml"));
-        primaryStage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("np/com/spirrotech/resources/images/logo.png")));
+        Parent root=FXMLLoader.load(getClass().getClassLoader().getResource("init/startingScreen.fxml"));
+        primaryStage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("images/logo.png")));
         primaryStage.setTitle("Shree Om Petroleum Traders");
 
         primaryStage.setScene(new Scene(root));
