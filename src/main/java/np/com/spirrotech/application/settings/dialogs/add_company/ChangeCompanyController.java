@@ -18,7 +18,7 @@ import np.com.spirrotech.dao.DebtListModel;
 
 import np.com.spirrotech.utils.tasks.TaskInterface;
 import np.com.spirrotech.utils.tasks.TaskManager;
-import np.com.spirrotech.generic_tasks.UpdateCompanyTask;
+import np.com.spirrotech.model.UpdateCompanyTask;
 
 import java.io.IOException;
 

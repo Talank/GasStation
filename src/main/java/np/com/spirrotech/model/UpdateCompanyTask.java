@@ -1,4 +1,4 @@
-package np.com.spirrotech.generic_tasks;
+package np.com.spirrotech.model;
 
 import javafx.application.Platform;
 import np.com.spirrotech.utils.SystemLogging;

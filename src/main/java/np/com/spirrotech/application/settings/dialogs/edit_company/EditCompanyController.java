@@ -11,7 +11,7 @@ import np.com.spirrotech.library.dialog_bottombar.DialogBottomBar;
 import np.com.spirrotech.library.dialog_toolbar.DialogToolBar;
 import np.com.spirrotech.dao.DebtListModel;
 import np.com.spirrotech.utils.tasks.TaskManager;
-import np.com.spirrotech.generic_tasks.UpdateCompanyTask;
+import np.com.spirrotech.model.UpdateCompanyTask;
 
 import java.io.IOException;
 

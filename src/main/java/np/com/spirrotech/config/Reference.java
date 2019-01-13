@@ -1,4 +1,4 @@
-package np.com.spirrotech.resources;
+package np.com.spirrotech.config;
 
 public class Reference {
 

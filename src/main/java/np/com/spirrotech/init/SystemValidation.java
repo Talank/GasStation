@@ -1,8 +1,7 @@
 package np.com.spirrotech.init;
 
 
-import com.sun.xml.internal.fastinfoset.util.CharArray;
-import np.com.spirrotech.resources.Reference;
+import np.com.spirrotech.config.Reference;
 
 import java.io.IOException;
 import java.security.Key;

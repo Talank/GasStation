@@ -98,7 +98,7 @@ public class Main extends Application {
     }
 
     /**+
-     * Called when the app is closed, performs realising of resources like, database connections
+     * Called when the app is closed, performs realising of config like, database connections
      */
 
     @Override

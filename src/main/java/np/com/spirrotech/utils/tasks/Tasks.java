@@ -1,7 +1,7 @@
 package np.com.spirrotech.utils.tasks;
 
 
-import np.com.spirrotech.resources.Reference;
+import np.com.spirrotech.config.Reference;
 import np.com.spirrotech.utils.SystemLogging;
 import np.com.spirrotech.library.ErrorMessageDialogGenerator;
 

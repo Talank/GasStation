@@ -52,7 +52,7 @@ public class GetCompanyDetailsTask extends Task<List<List<CreditDetailsModel>>> 
 
                 //check if the task is cancelled
                 if(isCancelled()) {
-                    System.out.println("Task was requested to cancel. Cleaning up resources.");
+                    System.out.println("Task was requested to cancel. Cleaning up config.");
                     mainList.clear();//clear the mainList (free memory)
                     break;
                 } else {

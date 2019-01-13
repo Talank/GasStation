@@ -10,7 +10,7 @@ import np.com.spirrotech.library.dialog_toolbar.DialogToolBar;
 import np.com.spirrotech.dao.DebtListModel;
 import np.com.spirrotech.model.CompanyCreditClosingTask;
 import np.com.spirrotech.utils.tasks.TaskManager;
-import np.com.spirrotech.generic_tasks.CompanyPaymentTask;
+import np.com.spirrotech.model.CompanyPaymentTask;
 
 import java.io.IOException;
 

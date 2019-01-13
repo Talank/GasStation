@@ -1,22 +1,21 @@
-package sample.tasks.database_tasks;
+package np.com.spirrotech.model;
 
-import org.junit.Test;
-import np.com.spirrotech.model.DebtListModel;
-import np.com.spirrotech.model.SystemStatus;
-import np.com.spirrotech.utils.databases.DatabaseHandler;
+import np.com.spirrotech.dao.DebtListModel;
+import np.com.spirrotech.dao.SystemStatus;
 import np.com.spirrotech.dao.transaction_model.Transaction;
-import sample.tasks.TaskManager;
-import sample.tasks.Tasks;
+import np.com.spirrotech.utils.databases.DatabaseHandler;
+import np.com.spirrotech.utils.tasks.Tasks;
+import org.junit.Test;
 
-import java.sql.*;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 
 public class StoreCreditTransactionTaskTest {
-
-
     @Test
     public void loadData() {
 
@@ -158,11 +157,11 @@ public class StoreCreditTransactionTaskTest {
 
                     storeCredit.executeBatch();*/
 
-        //            resultSet.close();
+                    //            resultSet.close();
 
                     storeCredit.close();
 
-       //             getInstant.close();
+                    //             getInstant.close();
 
                     Tasks.getConnection().commit();
 
@@ -179,4 +178,5 @@ public class StoreCreditTransactionTaskTest {
         }
 
     }
+
 }

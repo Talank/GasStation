@@ -14,7 +14,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import np.com.spirrotech.generic_tasks.GetCompanyClosing;
+import np.com.spirrotech.model.GetCompanyClosing;
 import np.com.spirrotech.utils.PrintBill;
 import np.com.spirrotech.utils.SystemLogging;
 import np.com.spirrotech.application.settings.dialogs.print_conformation.PrintConformationController;
