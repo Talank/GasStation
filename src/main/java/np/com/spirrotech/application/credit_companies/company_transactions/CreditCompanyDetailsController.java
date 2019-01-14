@@ -1,5 +1,6 @@
 package np.com.spirrotech.application.credit_companies.company_transactions;
 
+import javafx.application.Platform;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.fxml.FXML;
 
@@ -17,6 +18,7 @@ import np.com.spirrotech.model.GetCompanyDetailsTask;
 import np.com.spirrotech.utils.databases.DatabaseHandler;
 import np.com.spirrotech.utils.nepaliPriceFormat.Precision;
 import np.com.spirrotech.utils.nepaliPriceFormat.PriceFormat;
+import np.com.spirrotech.utils.tasks.TaskInterface;
 import np.com.spirrotech.utils.tasks.TaskManager;
 
 import java.util.List;
@@ -129,7 +131,8 @@ public class CreditCompanyDetailsController implements BackButtonInterface {
     @Override
     public void cleanUp() {
         if(task!=null)
-            task.cancel();
+            //cancel the task
+            task.setCancelled(true);
     }
 
     public void setParameters(String companyName) {
@@ -138,28 +141,47 @@ public class CreditCompanyDetailsController implements BackButtonInterface {
         toolBar.setTitle(companyName + " Transactions");
 
         task=new GetCompanyDetailsTask(DatabaseHandler.generateTableName(companyName));
-        progressLayout.setProgressProperty(task.progressProperty());
 
-        task.setOnSucceeded((WorkerStateEvent e)->{//this is called on UI thread, so safe to use live scene objects
+        task.addTaskInterfaceListener(new TaskInterface() {
+            @Override
+            public void onComplete(Object data) {
+                Platform.runLater(() -> {
+                    //store the data received from the database, we need this data in order to detect the changes when the field is edited
+                    companyDetails = (List<List<CreditDetailsModel>>) data;
 
-            //store the data received from the database, we need this data inorder to detect the changes when the field is edited
-            companyDetails = task.getValue();
+                    CustomTableCell.setCompanyDetails(companyDetails);
 
-            CustomTableCell.setCompanyDetails(companyDetails);
+                    CustomTableCell.setCompanyName(companyName);
 
-            CustomTableCell.setCompanyName(companyName);
+                    //loop through the data and set the data to the columns of the tables
+                    for(List<CreditDetailsModel> model: companyDetails) {
+                        detailsTableView.getItems().addAll(model);
+                    }
 
-            //loop through the data and set the data to the columns of the tables
-            for(List<CreditDetailsModel> model: companyDetails) {
-                detailsTableView.getItems().addAll(model);
+                    //hide the progress layout
+                    progressLayout.setVisible(false);
+
+                    //show the table view
+                    detailsTableView.setVisible(true);
+                });
             }
 
-            //hide the progress layout
-            progressLayout.setVisible(false);
+            @Override
+            public void onError(String message) {
 
-            //show the table view
-            detailsTableView.setVisible(true);
+            }
+
+            @Override
+            public void updateProgress(double current, double total) {
+
+                Platform.runLater(() -> {
+                    //set the progress of the operation
+                    progressLayout.setProgress(current / total);
+                });
+
+            }
         });
+
         TaskManager.getInstance().executeInstantTask(task);
 
     }

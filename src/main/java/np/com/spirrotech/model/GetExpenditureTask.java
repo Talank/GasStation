@@ -1,6 +1,5 @@
 package np.com.spirrotech.model;
 
-import javafx.concurrent.Task;
 import np.com.spirrotech.dao.ExpenditureModel;
 import np.com.spirrotech.utils.nepali_date.NepaliDateGenerator;
 import np.com.spirrotech.utils.tasks.Tasks;
@@ -10,9 +9,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-public class GetExpenditureTask extends Task<ArrayList<ExpenditureModel>> {
+public class GetExpenditureTask extends Tasks {
+
     @Override
-    protected ArrayList<ExpenditureModel> call() throws Exception {
+    public void execute() {
         int totalSize,currentSize=0;
         ArrayList<ExpenditureModel> expenditureModels=new ArrayList<>();
 
@@ -51,8 +51,8 @@ public class GetExpenditureTask extends Task<ArrayList<ExpenditureModel>> {
             e.printStackTrace();
         }
 
+        taskInterface.onComplete(expenditureModels);
 
-
-        return expenditureModels;
     }
+
 }

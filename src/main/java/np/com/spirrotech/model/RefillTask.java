@@ -51,7 +51,7 @@ public class RefillTask extends Tasks {
                 while (getTankerDetails.next()) {
                     if (model.getTankerNumber().equalsIgnoreCase(getTankerDetails.getString(1)) && !model.getTankerModel().getType().equals(getTankerDetails.getString(2))) {
                         if(taskInterface!=null) {
-                            taskInterface.onError();
+                            taskInterface.onError("Error Message");
                             getTankerDetails.close();
                             getTanker.close();
                             return;
@@ -86,7 +86,7 @@ public class RefillTask extends Tasks {
                 while (getTankerDetails.next()) {
                     if (model.getTankerNumber().equalsIgnoreCase(getTankerDetails.getString(1)) && !model.getTankerModel().getType().equals(getTankerDetails.getString(2))) {
                         if(taskInterface!=null) {
-                            taskInterface.onError();
+                            taskInterface.onError("Error Message");
                             getTankerDetails.close();
                             getTanker.close();
                             return;

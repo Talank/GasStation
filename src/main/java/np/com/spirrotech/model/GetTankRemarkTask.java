@@ -1,6 +1,5 @@
 package np.com.spirrotech.model;
 
-import javafx.concurrent.Task;
 import np.com.spirrotech.utils.SystemLogging;
 import np.com.spirrotech.dao.TankerModel;
 import np.com.spirrotech.utils.tasks.Tasks;
@@ -10,7 +9,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 
-public class GetTankRemarkTask extends Task<TankerModel> {
+public class GetTankRemarkTask extends Tasks {
 
     private String tankerNumber;
 
@@ -19,7 +18,7 @@ public class GetTankRemarkTask extends Task<TankerModel> {
     }
 
     @Override
-    protected TankerModel call() throws Exception {
+    public void execute() {
         TankerModel tankerModel = null;
         try {
 
@@ -37,7 +36,7 @@ public class GetTankRemarkTask extends Task<TankerModel> {
                 type = resultSet.getString(4);
                 tankerModel = new TankerModel(avg, count, type, (tankerNumber + "X"));
             } else {
-                failed();
+                taskInterface.onError("Error Message");
             }
 
         } catch(SQLException e) {
@@ -46,7 +45,9 @@ public class GetTankRemarkTask extends Task<TankerModel> {
             System.out.println(e.getMessage());
         }
 
-        return tankerModel;
+        taskInterface.onComplete(tankerModel);
+
     }
+
 
 }

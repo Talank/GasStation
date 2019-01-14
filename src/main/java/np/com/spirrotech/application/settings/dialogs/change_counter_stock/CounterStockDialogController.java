@@ -79,7 +79,12 @@ public class CounterStockDialogController implements BottomBarInterface {
                 }
 
                 @Override
-                public void onError() {
+                public void onError(String msg) {
+
+                }
+
+                @Override
+                public void updateProgress(double current, double total) {
 
                 }
             });

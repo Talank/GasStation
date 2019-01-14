@@ -114,7 +114,12 @@ public class OilStockDialogController implements BottomBarInterface {
                 }
 
                 @Override
-                public void onError() {
+                public void onError(String msg) {
+
+                }
+
+                @Override
+                public void updateProgress(double current, double total) {
 
                 }
             });

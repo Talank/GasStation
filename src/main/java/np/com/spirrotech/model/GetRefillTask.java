@@ -1,6 +1,5 @@
 package np.com.spirrotech.model;
 
-import javafx.concurrent.Task;
 import np.com.spirrotech.dao.RefillModel;
 import np.com.spirrotech.dao.TankerModel;
 import np.com.spirrotech.utils.nepali_date.NepaliDateGenerator;
@@ -10,11 +9,10 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-public class GetRefillTask extends Task<ArrayList<ArrayList<RefillModel>>> {
-
+public class GetRefillTask extends Tasks {
 
     @Override
-    protected ArrayList<ArrayList<RefillModel>> call() throws Exception {
+    public void execute() {
         ArrayList<ArrayList<RefillModel>> arrayList=new ArrayList<>(2);
 
         int totalSize,currentSize=0;
@@ -46,7 +44,7 @@ public class GetRefillTask extends Task<ArrayList<ArrayList<RefillModel>>> {
                     break;
                 }
 
-            //The average value is to be calculated and Pass as a parameter to check the tanker status accordingly
+                //The average value is to be calculated and Pass as a parameter to check the tanker status accordingly
 
                 float avgValue=resultSet.getFloat(6)/resultSet.getInt(7);
                 StringBuilder stringBuilder=new StringBuilder(resultSet.getString(3));
@@ -60,7 +58,7 @@ public class GetRefillTask extends Task<ArrayList<ArrayList<RefillModel>>> {
                 } else
                     stringBuilder.append("P");
 
-               String codeData= stringBuilder.toString();
+                String codeData= stringBuilder.toString();
 
 
                 smallList.add(new RefillModel(resultSet.getFloat(1),resultSet.getFloat(2),generator.convertDate(resultSet.getDate(4)),
@@ -117,6 +115,8 @@ public class GetRefillTask extends Task<ArrayList<ArrayList<RefillModel>>> {
             e.printStackTrace();
         }
 
-        return arrayList;
+        taskInterface.onComplete(arrayList);
+
     }
+
 }

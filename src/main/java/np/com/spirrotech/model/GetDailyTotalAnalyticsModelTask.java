@@ -3,7 +3,6 @@ package np.com.spirrotech.model;
 import np.com.spirrotech.utils.SystemLogging;
 import np.com.spirrotech.dao.SystemStatus;
 import np.com.spirrotech.dao.transaction_model.DailyTotalAnalyticModel;
-import javafx.concurrent.Task;
 import np.com.spirrotech.utils.tasks.Tasks;
 
 import java.sql.ResultSet;
@@ -14,11 +13,10 @@ import java.sql.Statement;
  *Computes and returns the {@link DailyTotalAnalyticModel} from the database
  */
 
-public class GetDailyTotalAnalyticsModelTask extends Task<DailyTotalAnalyticModel> {
-
+public class GetDailyTotalAnalyticsModelTask extends Tasks {
 
     @Override
-    protected DailyTotalAnalyticModel call() throws Exception {
+    public void execute() {
         DailyTotalAnalyticModel model=new DailyTotalAnalyticModel();
         try {
 
@@ -38,7 +36,7 @@ public class GetDailyTotalAnalyticsModelTask extends Task<DailyTotalAnalyticMode
             float iPetrolVol = SystemStatus.getfPetrol()-(SystemStatus.getiPetrol()+Float.parseFloat(model.getCPetrolVol()));
 
             if (iDieselVol < 0 || iPetrolVol < 0) {
-                throw new Exception("Negative Transaction Detected!");
+                taskInterface.onError("Negative Transaction Detected!");
             } else {
                 model.setIDieselVol(String.valueOf(iDieselVol));
                 model.setIPetrolVol(String.valueOf(iPetrolVol));
@@ -57,7 +55,7 @@ public class GetDailyTotalAnalyticsModelTask extends Task<DailyTotalAnalyticMode
             System.out.println(e.getMessage());
         }
 
-        return model;
+        taskInterface.onComplete(model);
     }
 
     /**

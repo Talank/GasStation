@@ -1,16 +1,16 @@
 package np.com.spirrotech.model;
 
-import javafx.concurrent.Task;
 import np.com.spirrotech.dao.AdminUser;
 import np.com.spirrotech.utils.tasks.Tasks;
 
 import java.sql.ResultSet;
 import java.sql.Statement;
 
-public class GetAdminUser extends Task<AdminUser> {
+public class GetAdminUser extends Tasks {
+
 
     @Override
-    protected AdminUser call() throws Exception {
+    public void execute() {
         AdminUser user=new AdminUser();
         try {
             Statement getUserData= Tasks.getConnection().createStatement();
@@ -23,6 +23,7 @@ public class GetAdminUser extends Task<AdminUser> {
         } catch(Exception e) {
             e.printStackTrace();
         }
-        return user;
+        taskInterface.onComplete(user);
     }
+
 }

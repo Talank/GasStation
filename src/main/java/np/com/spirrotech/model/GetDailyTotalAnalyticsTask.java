@@ -1,6 +1,5 @@
 package np.com.spirrotech.model;
 
-import javafx.concurrent.Task;
 import np.com.spirrotech.dao.transaction_model.DailyTotalAnalyticModel;
 import np.com.spirrotech.utils.nepali_date.NepaliDateGenerator;
 import np.com.spirrotech.utils.tasks.Tasks;
@@ -10,11 +9,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-public class GetDailyTotalAnalyticsTask extends Task<ArrayList<DailyTotalAnalyticModel>> {
+public class GetDailyTotalAnalyticsTask extends Tasks {
 
     @Override
-    protected ArrayList<DailyTotalAnalyticModel> call() throws Exception {
-
+    public void execute() {
         int totalSize,currentSize=0;
         ArrayList<DailyTotalAnalyticModel> arrayList=new ArrayList<>();
 
@@ -55,8 +53,7 @@ public class GetDailyTotalAnalyticsTask extends Task<ArrayList<DailyTotalAnalyti
             System.out.println(e.getMessage());
         }
 
-
-        return arrayList;
-
+        taskInterface.onComplete(arrayList);
     }
+
 }

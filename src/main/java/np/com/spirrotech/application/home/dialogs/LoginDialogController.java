@@ -4,6 +4,7 @@ package np.com.spirrotech.application.home.dialogs;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.validation.RequiredFieldValidator;
+import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.fxml.FXML;
@@ -25,6 +26,7 @@ import np.com.spirrotech.library.dialog_bottombar.DialogBottomBar;
 import np.com.spirrotech.library.dialog_toolbar.DialogToolBar;
 import np.com.spirrotech.dao.AdminUser;
 import np.com.spirrotech.model.GetAdminUser;
+import np.com.spirrotech.utils.tasks.TaskInterface;
 import np.com.spirrotech.utils.tasks.TaskManager;
 
 import java.io.IOException;
@@ -101,34 +103,48 @@ public class LoginDialogController implements BottomBarInterface {
             AdminUser user=new AdminUser();
             user.initializeAdmin(username.getText().trim(),password.getText().trim());
             GetAdminUser task=new GetAdminUser();
-            task.setOnSucceeded((WorkerStateEvent e1)->{
-                try {
-                    if(user.validate(task.getValue())) {
-                        switch (this.status) {
-                            case 1:
 
+            task.addTaskInterfaceListener(new TaskInterface() {
+                @Override
+                public void onComplete(Object data) {
+
+                    Platform.runLater(() -> {
+                        try {
+                            if(user.validate((AdminUser) data)) {
                                 BorderPane borderPane=FXMLLoader.load(getClass().getClassLoader().getResource("application/settings/settings.fxml"));
                                 AppHomeController.getInstance().loadStages(borderPane);
-                                break;
-                        }
-                        Stage loginWindow=(Stage)((Node)e.getSource()).getScene().getWindow();
-                        loginWindow.close();
 
-                    } else {
-                        FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("library/error_dialog/errorDialog.fxml"));
-                        Parent root=loader.load();
-                        ErrorDialogController controller=loader.getController();
-                        controller.setTitle("Login Error");
-                        controller.setErrorMessage("Invalid Username and Password Provided.Please Try Again Later.");
-                        Stage stage=new Stage();
-                        stage.setScene(new Scene(root));
-                        stage.initModality(Modality.APPLICATION_MODAL);
-                        stage.show();
-                    }
-                } catch(IOException e2) {
-                    e2.printStackTrace();
+                                Stage loginWindow=(Stage)((Node)e.getSource()).getScene().getWindow();
+                                loginWindow.close();
+
+                            } else {
+                                FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("library/error_dialog/errorDialog.fxml"));
+                                Parent root=loader.load();
+                                ErrorDialogController controller=loader.getController();
+                                controller.setTitle("Login Error");
+                                controller.setErrorMessage("Invalid Username and Password Provided.Please Try Again Later.");
+                                Stage stage=new Stage();
+                                stage.setScene(new Scene(root));
+                                stage.initModality(Modality.APPLICATION_MODAL);
+                                stage.show();
+                            }
+                        } catch(IOException e2) {
+                            e2.printStackTrace();
+                        }
+                    });
+
+
                 }
 
+                @Override
+                public void onError(String msg) {
+
+                }
+
+                @Override
+                public void updateProgress(double current, double total) {
+
+                }
             });
 
             TaskManager.getInstance().executeInstantTask(task);

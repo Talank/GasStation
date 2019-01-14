@@ -1,5 +1,6 @@
 package np.com.spirrotech.application.profit_loss.dialogs.tanker_check;
 
+import javafx.application.Platform;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.fxml.FXML;
 
@@ -14,6 +15,7 @@ import np.com.spirrotech.dao.RefillModel;
 import np.com.spirrotech.dao.TankerModel;
 
 import np.com.spirrotech.model.GetTankRemarkTask;
+import np.com.spirrotech.utils.tasks.TaskInterface;
 import np.com.spirrotech.utils.tasks.TaskManager;
 
 import java.io.IOException;
@@ -94,35 +96,53 @@ public class TankRemarkController implements BottomBarInterface {
             //Read tanker from database
 
             GetTankRemarkTask tasks = new GetTankRemarkTask(vehicleNumber);
-            tasks.setOnSucceeded((WorkerStateEvent e)->{
-                TankerModel model = tasks.getValue();
 
-                if(model!=null) {
-                    float avgValue = model.getAvg();
+            tasks.addTaskInterfaceListener(new TaskInterface() {
+                @Override
+                public void onComplete(Object data) {
 
-                    if (avgValue >= 0 && avgValue <= 20) {
-                        remarkLabel.setText("The tanker is good!");
-                    } else if (avgValue >= 21 && avgValue <= 50) {
-                        remarkLabel.setText("The tanker is good!");
-                    } else if (avgValue > 50) {
-                        remarkLabel.setText("Not good tanker");
-                    } else {
-                        remarkLabel.setText("Tanker Status UnKnown");
-                    }
-                    avgLossLabel.setText("Total Loss: " + avgValue * model.getCount() + "  Count: " + model.getCount());
-                    typeLabel.setText("Type: " + model.getType());
+                    Platform.runLater(() -> {
+                        TankerModel model = (TankerModel) data;
+
+                        if(model!=null) {
+                            float avgValue = model.getAvg();
+
+                            if (avgValue >= 0 && avgValue <= 20) {
+                                remarkLabel.setText("The tanker is good!");
+                            } else if (avgValue >= 21 && avgValue <= 50) {
+                                remarkLabel.setText("The tanker is good!");
+                            } else if (avgValue > 50) {
+                                remarkLabel.setText("Not good tanker");
+                            } else {
+                                remarkLabel.setText("Tanker Status UnKnown");
+                            }
+                            avgLossLabel.setText("Total Loss: " + avgValue * model.getCount() + "  Count: " + model.getCount());
+                            typeLabel.setText("Type: " + model.getType());
+                        }
+                        else{
+                            remarkLabel.setText("Sorry! The tanker is not found");
+                            typeLabel.setText("");
+                            avgLossLabel.setText("");
+                        }
+                    });
+
+
                 }
-                else{
-                    remarkLabel.setText("Sorry! The tanker is not found");
-                    typeLabel.setText("");
-                    avgLossLabel.setText("");
-                }
-            });
 
-            tasks.setOnFailed((WorkerStateEvent e)->{
-                remarkLabel.setText("Sorry! The tanker is not found");
-                typeLabel.setText("");
-                avgLossLabel.setText("");
+                @Override
+                public void onError(String msg) {
+
+                    Platform.runLater(() -> {
+                        remarkLabel.setText("Sorry! The tanker is not found");
+                        typeLabel.setText("");
+                        avgLossLabel.setText("");
+                    });
+                }
+
+                @Override
+                public void updateProgress(double current, double total) {
+
+                }
             });
 
             TaskManager.getInstance().executeInstantTask(tasks);

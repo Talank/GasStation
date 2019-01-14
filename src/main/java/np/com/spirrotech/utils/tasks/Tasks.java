@@ -22,6 +22,8 @@ public class Tasks {
 
     protected int retryStatus=0;
 
+    private boolean cancelled = false;
+
     protected TaskInterface taskInterface;
 
     /**
@@ -78,6 +80,18 @@ public class Tasks {
 
     public void execute() {
 
+    }
+
+    public boolean isCancelled() {
+        return cancelled;
+    }
+
+    public void setCancelled(boolean cancelled) {
+        this.cancelled = cancelled;
+    }
+
+    protected  void updateProgress(double current, double total) {
+        taskInterface.updateProgress(current, total);
     }
 
     protected void reportError(String title, String message, Tasks tasks) {

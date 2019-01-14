@@ -2,6 +2,7 @@ package np.com.spirrotech.application.daily_analytics.detail_analytics.dialogs;
 
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.validation.RequiredFieldValidator;
+import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.fxml.FXML;
@@ -15,12 +16,14 @@ import np.com.spirrotech.application.home.AppHomeController;
 
 
 import np.com.spirrotech.application.daily_analytics.today_closing.DailyAnalyticsController;
+import np.com.spirrotech.dao.transaction_model.DailyTotalAnalyticModel;
 import np.com.spirrotech.library.dialog_bottombar.BottomBarInterface;
 import np.com.spirrotech.library.dialog_bottombar.DialogBottomBar;
 import np.com.spirrotech.library.dialog_toolbar.DialogToolBar;
 
 import np.com.spirrotech.dao.SystemStatus;
 import np.com.spirrotech.model.GetDailyTotalAnalyticsModelTask;
+import np.com.spirrotech.utils.tasks.TaskInterface;
 import np.com.spirrotech.utils.tasks.TaskManager;
 
 import java.io.IOException;
@@ -109,34 +112,44 @@ public class FinalReadingsController implements BottomBarInterface {
 
                 //retrieve the Analytics model from the database
                 GetDailyTotalAnalyticsModelTask task=new GetDailyTotalAnalyticsModelTask();
-                task.setOnSucceeded((WorkerStateEvent et) -> {
 
-                    //hide the dialog
+                task.addTaskInterfaceListener(new TaskInterface() {
+                    @Override
+                    public void onComplete(Object data) {
+                        Platform.runLater(() -> {
+                            //hide the dialog
 
-                    ((Node)e.getSource()).getScene().getWindow().hide();
-                    //load the view into the screen
-                    try {
-                        BorderPane borderPane=loader.load();
+                            ((Node)e.getSource()).getScene().getWindow().hide();
+                            //load the view into the screen
+                            try {
+                                BorderPane borderPane=loader.load();
 
-                        //get the controller
-                        DailyAnalyticsController controller = loader.getController();
+                                //get the controller
+                                DailyAnalyticsController controller = loader.getController();
 
-                        //set the model of the controller
-                        controller.setModel(task.getValue());
-                        AppHomeController.getInstance().loadStages(borderPane);
-                    } catch(IOException ex) {
-                        ex.printStackTrace();
+                                //set the model of the controller
+                                controller.setModel((DailyTotalAnalyticModel) data);
+                                AppHomeController.getInstance().loadStages(borderPane);
+                            } catch(IOException ex) {
+                                ex.printStackTrace();
+                            }
+                        });
                     }
 
+                    @Override
+                    public void onError(String msg) {
 
+                        Platform.runLater(() -> {
+                            //display the error message
+                            bottomBar.setErrorText(msg);
+                        });
 
-                });
+                    }
 
-                //listen for task failed, i.e when the value computed is -ve
-                task.setOnFailed((WorkerStateEvent et) -> {
+                    @Override
+                    public void updateProgress(double current, double total) {
 
-                    //display the error message
-                    bottomBar.setErrorText(et.getSource().getException().getMessage());
+                    }
                 });
 
                 //execute the task

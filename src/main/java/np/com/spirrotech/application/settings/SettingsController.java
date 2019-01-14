@@ -7,6 +7,7 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.print.PageLayout;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -37,6 +38,7 @@ import np.com.spirrotech.model.GetSettingsTask;
 import np.com.spirrotech.utils.nepaliPriceFormat.Precision;
 import np.com.spirrotech.utils.nepaliPriceFormat.PriceFormat;
 
+import np.com.spirrotech.utils.tasks.TaskInterface;
 import np.com.spirrotech.utils.tasks.TaskManager;
 import np.com.spirrotech.utils.tasks.Tasks;
 
@@ -103,10 +105,28 @@ public class SettingsController {
 //      Select First item by default so that we do not have to check for list selection
         debtList.getSelectionModel().select(0);
         task=new GetSettingsTask();
-        task.setOnSucceeded((WorkerStateEvent e)->{
-            model=task.getValue();
-            loadSettings(model);
+
+        task.addTaskInterfaceListener(new TaskInterface() {
+            @Override
+            public void onComplete(Object data) {
+                Platform.runLater(() -> {
+                    model = (String[][]) data;
+                    loadSettings(model);
+                });
+
+            }
+
+            @Override
+            public void onError(String msg) {
+
+            }
+
+            @Override
+            public void updateProgress(double current, double total) {
+
+            }
         });
+
         TaskManager.getInstance().executeInstantTask(task);
 
     }

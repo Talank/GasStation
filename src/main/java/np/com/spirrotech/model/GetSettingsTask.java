@@ -1,6 +1,5 @@
 package np.com.spirrotech.model;
 
-import javafx.concurrent.Task;
 import np.com.spirrotech.utils.nepali_date.NepaliDateGenerator;
 import np.com.spirrotech.utils.tasks.Tasks;
 
@@ -8,10 +7,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class GetSettingsTask extends Task<String[][]> {
+public class GetSettingsTask extends Tasks {
+
 
     @Override
-    protected String[][] call() throws Exception {
+    public void execute() {
         String model[][];
         model=new String[10][2];
         try {
@@ -34,7 +34,7 @@ public class GetSettingsTask extends Task<String[][]> {
             System.out.println(e.getMessage());
         }
 
-        return model;
-
+        taskInterface.onComplete(model);
     }
+
 }

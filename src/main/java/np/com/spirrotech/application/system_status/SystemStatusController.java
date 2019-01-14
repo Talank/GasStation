@@ -1,5 +1,6 @@
 package np.com.spirrotech.application.system_status;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.fxml.FXML;
@@ -14,7 +15,11 @@ import np.com.spirrotech.dao.SystemStatus;
 import np.com.spirrotech.model.GetExpenditureTask;
 import np.com.spirrotech.utils.nepaliPriceFormat.Precision;
 import np.com.spirrotech.utils.nepaliPriceFormat.PriceFormat;
+import np.com.spirrotech.utils.tasks.TaskInterface;
 import np.com.spirrotech.utils.tasks.TaskManager;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 public class SystemStatusController implements BackButtonInterface {
 
@@ -63,21 +68,42 @@ public class SystemStatusController implements BackButtonInterface {
         expenditureList.setSelectionModel(new NoSelectionModel<>());
 
         task=new GetExpenditureTask();
-        task.setOnSucceeded((WorkerStateEvent e)->{
-            expenditureList.setItems(FXCollections.observableList(task.getValue()));
 
-            float sum=0;
-            for (ExpenditureModel model:task.getValue()) {
-                sum+=Integer.parseInt(model.getAmount());
+        task.addTaskInterfaceListener(new TaskInterface() {
+            @Override
+            public void onComplete(Object data) {
+                Platform.runLater(() -> {
+                    expenditureList.setItems(FXCollections.observableList((ArrayList<ExpenditureModel>) data));
+
+                    float sum=0;
+                    for (ExpenditureModel model:(ArrayList<ExpenditureModel>) data) {
+                        sum+=Integer.parseInt(model.getAmount());
+                    }
+
+                    total.setText("Total Expenditure:Rs "+priceFormat.format(precision.format(sum))+"/-");
+
+                    expenditureList.setVisible(true);
+                    progressLayout.setVisible(false);
+                });
+
+
             }
 
-            total.setText("Total Expenditure:Rs "+priceFormat.format(precision.format(sum))+"/-");
+            @Override
+            public void onError(String msg) {
 
-            expenditureList.setVisible(true);
-            progressLayout.setVisible(false);
+            }
+
+            @Override
+            public void updateProgress(double current, double total) {
+                Platform.runLater(() -> {
+                    progressLayout.setProgress(current / total);
+                });
+
+
+            }
         });
 
-        progressLayout.setProgressProperty(task.progressProperty());
 
         systemDate.setText(SystemStatus.getNepaliCurrentDate());
         transactionDate.setText(SystemStatus.getNepaliTransactionDate());
@@ -93,7 +119,7 @@ public class SystemStatusController implements BackButtonInterface {
     @Override
     public void cleanUp() {
         if(task!=null) {
-            task.cancel();
+            task.setCancelled(true);
         }
     }
 }

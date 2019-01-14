@@ -32,9 +32,11 @@ public class TaskManager {
         tasks.execute();
     }
 
-    public void executeInstantTask(Runnable instantTasks) {
+    public void executeInstantTask(Tasks tasks) {
         System.out.println("Temporary Thread performing Instant Task");
-        Thread mainThread=new Thread(instantTasks);
+        Thread mainThread=new Thread(() -> {
+            tasks.execute();
+        });
         mainThread.setDaemon(true);
         mainThread.start();
 

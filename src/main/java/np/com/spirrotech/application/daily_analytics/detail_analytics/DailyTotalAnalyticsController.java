@@ -1,5 +1,6 @@
 package np.com.spirrotech.application.daily_analytics.detail_analytics;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.fxml.FXML;
@@ -29,9 +30,11 @@ import np.com.spirrotech.model.GetDailyTotalAnalyticsTask;
 import np.com.spirrotech.utils.nepaliPriceFormat.Precision;
 import np.com.spirrotech.utils.nepaliPriceFormat.PriceFormat;
 import np.com.spirrotech.dao.transaction_model.DailyTotalAnalyticModel;
+import np.com.spirrotech.utils.tasks.TaskInterface;
 import np.com.spirrotech.utils.tasks.TaskManager;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 
 /*
@@ -236,13 +239,30 @@ public class DailyTotalAnalyticsController implements BackButtonInterface {
 
         task=new GetDailyTotalAnalyticsTask();
 
-        progressLayout.setProgressProperty(task.progressProperty());
+        task.addTaskInterfaceListener(new TaskInterface() {
+            @Override
+            public void onComplete(Object data) {
+                Platform.runLater(() -> {
+                    tableView.setItems(FXCollections.observableList((ArrayList<DailyTotalAnalyticModel>)data));
+                    progressLayout.setVisible(false);
+                    dailyTotalAnalyticsLayout.setVisible(true);
+                });
+            }
 
-        task.setOnSucceeded((WorkerStateEvent e)->{
-            tableView.setItems(FXCollections.observableList(task.getValue()));
-            progressLayout.setVisible(false);
-            dailyTotalAnalyticsLayout.setVisible(true);
+            @Override
+            public void onError(String msg) {
+
+            }
+
+            @Override
+            public void updateProgress(double current, double total) {
+                Platform.runLater(() -> {
+                    progressLayout.setProgress(current / total);
+                });
+
+            }
         });
+
 
         TaskManager.getInstance().executeInstantTask(task);
 
@@ -251,7 +271,7 @@ public class DailyTotalAnalyticsController implements BackButtonInterface {
     @Override
     public void cleanUp() {
         if(task!=null)
-            task.cancel();
+            task.setCancelled(true);
     }
 
     /*

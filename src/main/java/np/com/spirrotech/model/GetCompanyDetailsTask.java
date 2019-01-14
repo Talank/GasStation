@@ -1,6 +1,5 @@
 package np.com.spirrotech.model;
 
-import javafx.concurrent.Task;
 import np.com.spirrotech.dao.CreditDetailsModel;
 import np.com.spirrotech.utils.nepali_date.NepaliDateGenerator;
 import np.com.spirrotech.utils.tasks.Tasks;
@@ -11,7 +10,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GetCompanyDetailsTask extends Task<List<List<CreditDetailsModel>>> {
+public class GetCompanyDetailsTask extends Tasks {
 
 
     private String tableName;
@@ -21,7 +20,7 @@ public class GetCompanyDetailsTask extends Task<List<List<CreditDetailsModel>>> 
     }
 
     @Override
-    protected List<List<CreditDetailsModel>> call() throws Exception {
+    public void execute() {
         List<List<CreditDetailsModel>> mainList=new ArrayList<>();
         int totalSize,currentSize=0;
         try {
@@ -67,7 +66,7 @@ public class GetCompanyDetailsTask extends Task<List<List<CreditDetailsModel>>> 
                             model.setSqlDate(resultSet.getDate(7));
                             smallList.add(model);
                         } else {
-                            
+
                             //add the data to smallList
                             model = new CreditDetailsModel("XXXX",resultSet.getString(2),generator.convertDate(resultSet.getDate(7)),String.valueOf(resultSet.getInt(5)),resultSet.getString(6),resultSet.getString(4));
                             model.setTransactionID(resultSet.getInt(1));
@@ -81,7 +80,7 @@ public class GetCompanyDetailsTask extends Task<List<List<CreditDetailsModel>>> 
                         i++; //increment the index
                     }
                     if(create) {
-                        
+
                         smallList=new ArrayList<>(); //create a new ArrayList()
 
                         //we are adding the result to the smallList, because we are in the iteration and , there is data in the current iteration
@@ -120,7 +119,7 @@ public class GetCompanyDetailsTask extends Task<List<List<CreditDetailsModel>>> 
             System.out.println(e.getMessage());
         }
 
-        return mainList;
+        taskInterface.onComplete(mainList);
     }
 
 }

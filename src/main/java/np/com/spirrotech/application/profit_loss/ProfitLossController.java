@@ -5,6 +5,7 @@ import com.jfoenix.controls.JFXRadioButton;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.validation.RequiredFieldValidator;
 
+import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -34,10 +35,12 @@ import np.com.spirrotech.dao.RefillModel;
 import np.com.spirrotech.model.GetRefillTask;
 import np.com.spirrotech.utils.nepaliPriceFormat.Precision;
 import np.com.spirrotech.utils.nepaliPriceFormat.PriceFormat;
+import np.com.spirrotech.utils.tasks.TaskInterface;
 import np.com.spirrotech.utils.tasks.TaskManager;
 
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 
 
@@ -163,7 +166,36 @@ public class ProfitLossController implements BackButtonInterface {
         progressLayout.setVisible(true);
 
         task=new GetRefillTask();
-        progressLayout.setProgressProperty(task.progressProperty());
+
+        task.addTaskInterfaceListener(new TaskInterface() {
+            @Override
+            public void onComplete(Object data) {
+                Platform.runLater(() -> {
+                    dieselTableData=FXCollections.observableList(((ArrayList<ArrayList<RefillModel>>) data).get(0));
+                    petrolTableData=FXCollections.observableList(((ArrayList<ArrayList<RefillModel>>) data).get(1));
+
+                    dieselTable.setItems(dieselTableData);
+                    petrolTable.setItems(petrolTableData);
+
+                    progressLayout.setVisible(false);
+                    profitLossLayout.setVisible(true);
+                });
+            }
+
+            @Override
+            public void onError(String msg) {
+
+            }
+
+            @Override
+            public void updateProgress(double current, double total) {
+
+                Platform.runLater(() -> {
+                    progressLayout.setProgress(current / total);
+                });
+
+            }
+        });
 
 
         dieselExpected.setCellValueFactory(new PropertyValueFactory<>("expectedString"));
@@ -348,17 +380,6 @@ public class ProfitLossController implements BackButtonInterface {
         });
 
 
-        task.setOnSucceeded((WorkerStateEvent e)->{
-
-            dieselTableData=FXCollections.observableList(task.getValue().get(0));
-            petrolTableData=FXCollections.observableList(task.getValue().get(1));
-
-            dieselTable.setItems(dieselTableData);
-            petrolTable.setItems(petrolTableData);
-
-            progressLayout.setVisible(false);
-            profitLossLayout.setVisible(true);
-        });
 
         TaskManager.getInstance().executeInstantTask(task);
 
@@ -386,7 +407,7 @@ public class ProfitLossController implements BackButtonInterface {
     @Override
     public void cleanUp() {
         if(task!=null)
-            task.cancel();
+            task.setCancelled(true);
     }
 
     public void addDieselModel(RefillModel model) {

@@ -2,6 +2,7 @@ package np.com.spirrotech.application.profit_loss.dialogs.refill;
 
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.validation.RequiredFieldValidator;
+import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -170,8 +171,16 @@ public class RefillDialogController implements BottomBarInterface {
                             }
 
                             @Override
-                            public void onError() {
-                                bottomBar.setErrorText("Petrol Tanker Provided.");
+                            public void onError(String msg) {
+                                Platform.runLater(() -> {
+                                    bottomBar.setErrorText("Petrol Tanker Provided.");
+                                });
+
+                            }
+
+                            @Override
+                            public void updateProgress(double current, double total) {
+
                             }
                         });
                         TaskManager.getInstance().executeTask(task);
@@ -215,9 +224,18 @@ public class RefillDialogController implements BottomBarInterface {
                             }
 
                             @Override
-                            public void onError() {
-                                bottomBar.setErrorText("Diesel Tanker Provided.");
+                            public void onError(String msg) {
+                                Platform.runLater(() -> {
+                                    bottomBar.setErrorText("Diesel Tanker Provided.");
+                                });
+
                             }
+
+                            @Override
+                            public void updateProgress(double current, double total) {
+
+                            }
+
                         });
                         TaskManager.getInstance().executeTask(task);
                         ((Node)e.getSource()).getScene().getWindow().hide();

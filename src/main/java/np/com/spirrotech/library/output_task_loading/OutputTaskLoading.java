@@ -26,8 +26,13 @@ public class OutputTaskLoading extends VBox {
         }
     }
 
+    public void setProgress(double progress) {
+        progressBar.setProgress(progress);
+    }
+
     public void setProgressProperty(ReadOnlyDoubleProperty progressProperty) {
         progressBar.progressProperty().bind(progressProperty);
+
     }
 
 
