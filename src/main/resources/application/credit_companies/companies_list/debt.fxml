@@ -24,8 +24,8 @@
                         <Font size="25.0" />
                      </font>
                      <stylesheets>
-                        <URL value="@../../../../java/np/com/spirrotech/css/appColorPalette.css" />
-                        <URL value="@../../../../java/np/com/spirrotech/css/componentStyles.css" />
+                        <URL value="@../../../css/appColorPalette.css" />
+                        <URL value="@../../../css/componentStyles.css" />
                      </stylesheets>
                      <styleClass>
                         <String fx:value="inputTextFieldColor" />
@@ -37,7 +37,7 @@
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </padding>
             </HBox>
-            <JFXListView fx:id="debtList" maxHeight="1.7976931348623157E308" styleClass="list-view" stylesheets="@../../../../java/np/com/spirrotech/css/listItemStyle.css" verticalGap="10.0" VBox.vgrow="ALWAYS" />
+            <JFXListView fx:id="debtList" maxHeight="1.7976931348623157E308" styleClass="list-view" stylesheets="@../../../css/listItemStyle.css" verticalGap="10.0" VBox.vgrow="ALWAYS" />
          </children>
       </VBox>
    </center>

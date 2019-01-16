@@ -21,7 +21,7 @@
             <VBox spacing="10.0">
                <HBox>
                   <children>
-                        <JFXListView fx:id="debtList" prefHeight="400.0" styleClass="list-view" stylesheets="@../../../java/np/com/spirrotech/css/listItemStyle.css" HBox.hgrow="ALWAYS">
+                        <JFXListView fx:id="debtList" prefHeight="400.0" styleClass="list-view" stylesheets="@../../css/listItemStyle.css" HBox.hgrow="ALWAYS">
                         <padding>
                            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                         </padding>
@@ -35,8 +35,8 @@
                                         <Font size="25.0" />
                                     </font>
                               <stylesheets>
-                                 <URL value="@../../../java/np/com/spirrotech/css/appColorPalette.css" />
-                                 <URL value="@../../../java/np/com/spirrotech/css/componentStyles.css" />
+                                 <URL value="@../../css/appColorPalette.css" />
+                                 <URL value="@../../css/componentStyles.css" />
                               </stylesheets>
                               <styleClass>
                                  <String fx:value="removeButtonColor" />
@@ -49,8 +49,8 @@
                                  <Font size="25.0" />
                               </font>
                               <stylesheets>
-                                 <URL value="@../../../java/np/com/spirrotech/css/appColorPalette.css" />
-                                 <URL value="@../../../java/np/com/spirrotech/css/componentStyles.css" />
+                                 <URL value="@../../css/appColorPalette.css" />
+                                 <URL value="@../../css/componentStyles.css" />
                               </stylesheets>
                               <styleClass>
                                  <String fx:value="generalButtonColor" />
@@ -63,8 +63,8 @@
                                         <Font size="25.0" />
                                     </font>
                               <stylesheets>
-                                 <URL value="@../../../java/np/com/spirrotech/css/appColorPalette.css" />
-                                 <URL value="@../../../java/np/com/spirrotech/css/componentStyles.css" />
+                                 <URL value="@../../css/appColorPalette.css" />
+                                 <URL value="@../../css/componentStyles.css" />
                               </stylesheets>
                               <styleClass>
                                  <String fx:value="addButtonColor" />
@@ -77,8 +77,8 @@
                                  <Font size="25.0" />
                               </font>
                               <stylesheets>
-                                 <URL value="@../../../java/np/com/spirrotech/css/appColorPalette.css" />
-                                 <URL value="@../../../java/np/com/spirrotech/css/componentStyles.css" />
+                                 <URL value="@../../css/appColorPalette.css" />
+                                 <URL value="@../../css/componentStyles.css" />
                               </stylesheets>
                               <styleClass>
                                  <String fx:value="removeButtonColor" />
@@ -91,8 +91,8 @@
                                         <Font size="25.0" />
                                     </font>
                               <stylesheets>
-                                 <URL value="@../../../java/np/com/spirrotech/css/appColorPalette.css" />
-                                 <URL value="@../../../java/np/com/spirrotech/css/componentStyles.css" />
+                                 <URL value="@../../css/appColorPalette.css" />
+                                 <URL value="@../../css/componentStyles.css" />
                               </stylesheets>
                               <styleClass>
                                  <String fx:value="clearButtonColor" />
@@ -107,9 +107,9 @@
                      </VBox>
                   </children>
                </HBox>
-               <VBox alignment="CENTER" layoutX="10.0" layoutY="564.0" spacing="5.0" styleClass="settingsItemStyle" stylesheets="@../../../java/np/com/spirrotech/css/settingStyle.css">
+               <VBox alignment="CENTER" layoutX="10.0" layoutY="564.0" spacing="5.0" styleClass="settingsItemStyle" stylesheets="@../../css/settingStyle.css">
                   <children>
-                     <Label styleClass="settingsTitleText" stylesheets="@../../../java/np/com/spirrotech/css/settingStyle.css" text="Setup Oil Stock">
+                     <Label styleClass="settingsTitleText" stylesheets="@../../css/settingStyle.css" text="Setup Oil Stock">
                         <font>
                            <Font name="System Bold" size="30.0" />
                         </font>
@@ -189,8 +189,8 @@
                            <Font size="25.0" />
                         </font>
                         <stylesheets>
-                           <URL value="@../../../java/np/com/spirrotech/css/appColorPalette.css" />
-                           <URL value="@../../../java/np/com/spirrotech/css/componentStyles.css" />
+                           <URL value="@../../css/appColorPalette.css" />
+                           <URL value="@../../css/componentStyles.css" />
                         </stylesheets>
                         <styleClass>
                            <String fx:value="generalButton" />
@@ -202,9 +202,9 @@
                      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                   </padding>
                </VBox>
-               <VBox alignment="CENTER" layoutX="10.0" layoutY="564.0" spacing="10.0" styleClass="settingsItemStyle" stylesheets="@../../../java/np/com/spirrotech/css/settingStyle.css">
+               <VBox alignment="CENTER" layoutX="10.0" layoutY="564.0" spacing="10.0" styleClass="settingsItemStyle" stylesheets="@../../css/settingStyle.css">
                   <children>
-                     <Label styleClass="settingsTitleText" stylesheets="@../../../java/np/com/spirrotech/css/settingStyle.css" text="Setup Counter Stock">
+                     <Label styleClass="settingsTitleText" stylesheets="@../../css/settingStyle.css" text="Setup Counter Stock">
                         <font>
                            <Font name="System Bold" size="30.0" />
                         </font>
@@ -249,8 +249,8 @@
                            <Font size="25.0" />
                         </font>
                         <stylesheets>
-                           <URL value="@../../../java/np/com/spirrotech/css/appColorPalette.css" />
-                           <URL value="@../../../java/np/com/spirrotech/css/componentStyles.css" />
+                           <URL value="@../../css/appColorPalette.css" />
+                           <URL value="@../../css/componentStyles.css" />
                         </stylesheets>
                         <styleClass>
                            <String fx:value="generalButtonColor" />
@@ -262,9 +262,9 @@
                      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                   </padding>
                </VBox>
-               <VBox alignment="CENTER" layoutX="10.0" layoutY="425.0" styleClass="settingsItemStyle" stylesheets="@../../../java/np/com/spirrotech/css/settingStyle.css">
+               <VBox alignment="CENTER" layoutX="10.0" layoutY="425.0" styleClass="settingsItemStyle" stylesheets="@../../css/settingStyle.css">
                   <children>
-                     <Label styleClass="settingsTitleText" stylesheets="@../../../java/np/com/spirrotech/css/settingStyle.css" text="Setup Meter Readings">
+                     <Label styleClass="settingsTitleText" stylesheets="@../../css/settingStyle.css" text="Setup Meter Readings">
                         <font>
                            <Font name="System Bold" size="30.0" />
                         </font>
@@ -344,8 +344,8 @@
                            <Font size="25.0" />
                         </font>
                         <stylesheets>
-                           <URL value="@../../../java/np/com/spirrotech/css/appColorPalette.css" />
-                           <URL value="@../../../java/np/com/spirrotech/css/componentStyles.css" />
+                           <URL value="@../../css/appColorPalette.css" />
+                           <URL value="@../../css/componentStyles.css" />
                         </stylesheets>
                         <styleClass>
                            <String fx:value="generalButtonColor" />
@@ -357,9 +357,9 @@
                      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                   </padding>
                </VBox>
-               <VBox alignment="CENTER" layoutX="10.0" layoutY="1228.0" styleClass="settingsItemStyle" stylesheets="@../../../java/np/com/spirrotech/css/settingStyle.css">
+               <VBox alignment="CENTER" layoutX="10.0" layoutY="1228.0" styleClass="settingsItemStyle" stylesheets="@../../css/settingStyle.css">
                   <children>
-                     <Label styleClass="settingsTitleText" stylesheets="@../../../java/np/com/spirrotech/css/settingStyle.css" text="Setup Printers">
+                     <Label styleClass="settingsTitleText" stylesheets="@../../css/settingStyle.css" text="Setup Printers">
                         <font>
                            <Font name="System Bold" size="30.0" />
                         </font>
@@ -423,8 +423,8 @@
                            <Font size="25.0" />
                         </font>
                         <stylesheets>
-                           <URL value="@../../../java/np/com/spirrotech/css/appColorPalette.css" />
-                           <URL value="@../../../java/np/com/spirrotech/css/componentStyles.css" />
+                           <URL value="@../../css/appColorPalette.css" />
+                           <URL value="@../../css/componentStyles.css" />
                         </stylesheets>
                         <styleClass>
                            <String fx:value="generalButton" />
@@ -436,9 +436,9 @@
                      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                   </padding>
                </VBox>
-               <VBox alignment="CENTER" styleClass="settingsItemStyle" stylesheets="@../../../java/np/com/spirrotech/css/settingStyle.css">
+               <VBox alignment="CENTER" styleClass="settingsItemStyle" stylesheets="@../../css/settingStyle.css">
                   <children>
-                     <Label styleClass="settingsTitleText" stylesheets="@../../../java/np/com/spirrotech/css/settingStyle.css" text="Change UserName And Password">
+                     <Label styleClass="settingsTitleText" stylesheets="@../../css/settingStyle.css" text="Change UserName And Password">
                         <font>
                            <Font name="System Bold" size="30.0" />
                         </font>
@@ -472,8 +472,8 @@
                            <Font size="25.0" />
                         </font>
                         <stylesheets>
-                           <URL value="@../../../java/np/com/spirrotech/css/appColorPalette.css" />
-                           <URL value="@../../../java/np/com/spirrotech/css/componentStyles.css" />
+                           <URL value="@../../css/appColorPalette.css" />
+                           <URL value="@../../css/componentStyles.css" />
                         </stylesheets>
                         <styleClass>
                            <String fx:value="generalButton" />
@@ -485,9 +485,9 @@
                      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                   </padding>
                </VBox>
-               <VBox alignment="CENTER" layoutX="10.0" layoutY="425.0" styleClass="settingsItemStyle" stylesheets="@../../../java/np/com/spirrotech/css/settingStyle.css">
+               <VBox alignment="CENTER" layoutX="10.0" layoutY="425.0" styleClass="settingsItemStyle" stylesheets="@../../css/settingStyle.css">
                   <children>
-                     <Label styleClass="settingsTitleText" stylesheets="@../../../java/np/com/spirrotech/css/settingStyle.css" text="Change Oil Rates">
+                     <Label styleClass="settingsTitleText" stylesheets="@../../css/settingStyle.css" text="Change Oil Rates">
                         <font>
                            <Font name="System Bold" size="30.0" />
                         </font>
@@ -567,8 +567,8 @@
                            <Font size="25.0" />
                         </font>
                         <stylesheets>
-                           <URL value="@../../../java/np/com/spirrotech/css/appColorPalette.css" />
-                           <URL value="@../../../java/np/com/spirrotech/css/componentStyles.css" />
+                           <URL value="@../../css/appColorPalette.css" />
+                           <URL value="@../../css/componentStyles.css" />
                         </stylesheets>
                         <styleClass>
                            <String fx:value="generalButton" />
@@ -583,9 +583,9 @@
 
                <!--Adding new field-->
 
-               <VBox alignment="CENTER" layoutX="10.0" layoutY="425.0" styleClass="settingsItemStyle" stylesheets="@../../../java/np/com/spirrotech/css/settingStyle.css">
+               <VBox alignment="CENTER" layoutX="10.0" layoutY="425.0" styleClass="settingsItemStyle" stylesheets="@../../css/settingStyle.css">
                   <children>
-                     <Label styleClass="settingsTitleText" stylesheets="@../../../java/np/com/spirrotech/css/settingStyle.css" text="Petrol Pump Expenditure">
+                     <Label styleClass="settingsTitleText" stylesheets="@../../css/settingStyle.css" text="Petrol Pump Expenditure">
                         <font>
                            <Font name="System Bold" size="30.0" />
                         </font>
@@ -602,8 +602,8 @@
                                  <Font size="25.0" />
                               </font>
                               <stylesheets>
-                                 <URL value="@../../../java/np/com/spirrotech/css/appColorPalette.css" />
-                                 <URL value="@../../../java/np/com/spirrotech/css/componentStyles.css" />
+                                 <URL value="@../../css/appColorPalette.css" />
+                                 <URL value="@../../css/componentStyles.css" />
                               </stylesheets>
                               <styleClass>
                                  <String fx:value="addButtonColor" />
@@ -615,8 +615,8 @@
                                  <Font size="25.0" />
                               </font>
                               <stylesheets>
-                                 <URL value="@../../../java/np/com/spirrotech/css/appColorPalette.css" />
-                                 <URL value="@../../../java/np/com/spirrotech/css/componentStyles.css" />
+                                 <URL value="@../../css/appColorPalette.css" />
+                                 <URL value="@../../css/componentStyles.css" />
                               </stylesheets>
                               <styleClass>
                                  <String fx:value="clearButtonColor" />
@@ -633,9 +633,9 @@
                      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                   </padding>
                </VBox>
-               <VBox alignment="CENTER" layoutX="10.0" layoutY="1416.0" styleClass="settingsItemStyle" stylesheets="@../../../java/np/com/spirrotech/css/settingStyle.css">
+               <VBox alignment="CENTER" layoutX="10.0" layoutY="1416.0" styleClass="settingsItemStyle" stylesheets="@../../css/settingStyle.css">
                   <children>
-                     <Label styleClass="settingsTitleText" stylesheets="@../../../java/np/com/spirrotech/css/settingStyle.css" text="Clear Daily Analytics">
+                     <Label styleClass="settingsTitleText" stylesheets="@../../css/settingStyle.css" text="Clear Daily Analytics">
                         <font>
                            <Font name="System Bold" size="30.0" />
                         </font>
@@ -650,8 +650,8 @@
                            <Font size="25.0" />
                         </font>
                         <stylesheets>
-                           <URL value="@../../../java/np/com/spirrotech/css/appColorPalette.css" />
-                           <URL value="@../../../java/np/com/spirrotech/css/componentStyles.css" />
+                           <URL value="@../../css/appColorPalette.css" />
+                           <URL value="@../../css/componentStyles.css" />
                         </stylesheets>
                         <styleClass>
                            <String fx:value="clearButtonColor" />
@@ -663,9 +663,9 @@
                      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                   </padding>
                </VBox>
-               <VBox alignment="CENTER" layoutX="10.0" layoutY="1814.0" styleClass="settingsItemStyle" stylesheets="@../../../java/np/com/spirrotech/css/settingStyle.css">
+               <VBox alignment="CENTER" layoutX="10.0" layoutY="1814.0" styleClass="settingsItemStyle" stylesheets="@../../css/settingStyle.css">
                   <children>
-                     <Label styleClass="settingsTitleText" stylesheets="@../../../java/np/com/spirrotech/css/settingStyle.css" text="Clear Petrol Refill">
+                     <Label styleClass="settingsTitleText" stylesheets="@../../css/settingStyle.css" text="Clear Petrol Refill">
                         <font>
                            <Font name="System Bold" size="30.0" />
                         </font>
@@ -680,8 +680,8 @@
                            <Font size="25.0" />
                         </font>
                         <stylesheets>
-                           <URL value="@../../../java/np/com/spirrotech/css/componentStyles.css" />
-                           <URL value="@../../../java/np/com/spirrotech/css/appColorPalette.css" />
+                           <URL value="@../../css/componentStyles.css" />
+                           <URL value="@../../css/appColorPalette.css" />
                         </stylesheets>
                         <styleClass>
                            <String fx:value="generalButton" />
@@ -693,9 +693,9 @@
                      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                   </padding>
                </VBox>
-               <VBox alignment="CENTER" layoutX="10.0" layoutY="1963.0" styleClass="settingsItemStyle" stylesheets="@../../../java/np/com/spirrotech/css/settingStyle.css">
+               <VBox alignment="CENTER" layoutX="10.0" layoutY="1963.0" styleClass="settingsItemStyle" stylesheets="@../../css/settingStyle.css">
                   <children>
-                     <Label styleClass="settingsTitleText" stylesheets="@../../../java/np/com/spirrotech/css/settingStyle.css" text="Clear Diesel Refill">
+                     <Label styleClass="settingsTitleText" stylesheets="@../../css/settingStyle.css" text="Clear Diesel Refill">
                         <font>
                            <Font name="System Bold" size="30.0" />
                         </font>
@@ -710,8 +710,8 @@
                            <Font size="25.0" />
                         </font>
                         <stylesheets>
-                           <URL value="@../../../java/np/com/spirrotech/css/appColorPalette.css" />
-                           <URL value="@../../../java/np/com/spirrotech/css/componentStyles.css" />
+                           <URL value="@../../css/appColorPalette.css" />
+                           <URL value="@../../css/componentStyles.css" />
                         </stylesheets>
                         <styleClass>
                            <String fx:value="clearButtonColor" />

@@ -19,7 +19,7 @@
       <StackPane fx:id="mainHome" BorderPane.alignment="CENTER" />
    </center>
    <top>
-      <GridPane alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="150.0" stylesheets="@../../../java/np/com/spirrotech/css/appHomeStyle.css" BorderPane.alignment="CENTER">
+      <GridPane alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="150.0" stylesheets="@../../css/appHomeStyle.css" BorderPane.alignment="CENTER">
         <columnConstraints>
           <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="280.0" />
           <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="280.0" />
@@ -31,37 +31,37 @@
           <RowConstraints minHeight="10.0" vgrow="ALWAYS" />
         </rowConstraints>
          <children>
-            <VBox alignment="CENTER" styleClass="toolBarBubbleColor" stylesheets="@../../../java/np/com/spirrotech/css/appHomeStyle.css">
+            <VBox alignment="CENTER" styleClass="toolBarBubbleColor" stylesheets="@../../css/appHomeStyle.css">
                <children>
-                  <Label styleClass="toolBarBubbleInfoText" stylesheets="@../../../java/np/com/spirrotech/css/appHomeStyle.css" text="Diesel Rate:" />
-                  <Label fx:id="dieselRate" styleClass="toolBarBubbleDataText" stylesheets="@../../../java/np/com/spirrotech/css/appHomeStyle.css" text="Rs. 0.00" />
+                  <Label styleClass="toolBarBubbleInfoText" stylesheets="@../../css/appHomeStyle.css" text="Diesel Rate:" />
+                  <Label fx:id="dieselRate" styleClass="toolBarBubbleDataText" stylesheets="@../../css/appHomeStyle.css" text="Rs. 0.00" />
                </children>
                <GridPane.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </GridPane.margin>
             </VBox>
-            <VBox alignment="CENTER" styleClass="toolBarBubbleColor" stylesheets="@../../../java/np/com/spirrotech/css/appHomeStyle.css" GridPane.columnIndex="1">
+            <VBox alignment="CENTER" styleClass="toolBarBubbleColor" stylesheets="@../../css/appHomeStyle.css" GridPane.columnIndex="1">
                <children>
-                  <Label styleClass="toolBarBubbleInfoText" stylesheets="@../../../java/np/com/spirrotech/css/appHomeStyle.css" text="Petrol Rate:" />
-                  <Label fx:id="petrolRate" styleClass="toolBarBubbleDataText" stylesheets="@../../../java/np/com/spirrotech/css/appHomeStyle.css" text="Rs. 0.00" />
+                  <Label styleClass="toolBarBubbleInfoText" stylesheets="@../../css/appHomeStyle.css" text="Petrol Rate:" />
+                  <Label fx:id="petrolRate" styleClass="toolBarBubbleDataText" stylesheets="@../../css/appHomeStyle.css" text="Rs. 0.00" />
                </children>
                <GridPane.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </GridPane.margin>
             </VBox>
-            <VBox alignment="CENTER" layoutX="266.0" layoutY="10.0" styleClass="toolBarBubbleColor" stylesheets="@../../../java/np/com/spirrotech/css/appHomeStyle.css" GridPane.columnIndex="3">
+            <VBox alignment="CENTER" layoutX="266.0" layoutY="10.0" styleClass="toolBarBubbleColor" stylesheets="@../../css/appHomeStyle.css" GridPane.columnIndex="3">
                <children>
-                  <Label styleClass="toolBarBubbleInfoText" stylesheets="@../../../java/np/com/spirrotech/css/appHomeStyle.css" text="Diesel Stock:" />
-                  <Label fx:id="dieselStock" alignment="TOP_LEFT" styleClass="toolBarBubbleDataText" stylesheets="@../../../java/np/com/spirrotech/css/appHomeStyle.css" text="0.00 L" />
+                  <Label styleClass="toolBarBubbleInfoText" stylesheets="@../../css/appHomeStyle.css" text="Diesel Stock:" />
+                  <Label fx:id="dieselStock" alignment="TOP_LEFT" styleClass="toolBarBubbleDataText" stylesheets="@../../css/appHomeStyle.css" text="0.00 L" />
                </children>
                <GridPane.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </GridPane.margin>
             </VBox>
-            <VBox alignment="CENTER" layoutX="10.0" layoutY="10.0" styleClass="toolBarBubbleColor" stylesheets="@../../../java/np/com/spirrotech/css/appHomeStyle.css" GridPane.columnIndex="4">
+            <VBox alignment="CENTER" layoutX="10.0" layoutY="10.0" styleClass="toolBarBubbleColor" stylesheets="@../../css/appHomeStyle.css" GridPane.columnIndex="4">
                <children>
-                  <Label styleClass="toolBarBubbleInfoText" stylesheets="@../../../java/np/com/spirrotech/css/appHomeStyle.css" text="Petrol Stock:" />
-                  <Label fx:id="petrolStock" styleClass="toolBarBubbleDataText" stylesheets="@../../../java/np/com/spirrotech/css/appHomeStyle.css" text="0.00L" />
+                  <Label styleClass="toolBarBubbleInfoText" stylesheets="@../../css/appHomeStyle.css" text="Petrol Stock:" />
+                  <Label fx:id="petrolStock" styleClass="toolBarBubbleDataText" stylesheets="@../../css/appHomeStyle.css" text="0.00L" />
                </children>
                <GridPane.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -74,8 +74,8 @@
                         <Font name="System Bold" size="20.0" />
                      </font>
                      <stylesheets>
-                        <URL value="@../../../java/np/com/spirrotech/css/appHomeStyle.css" />
-                        <URL value="@../../../java/np/com/spirrotech/css/appColorPalette.css" />
+                        <URL value="@../../css/appHomeStyle.css" />
+                        <URL value="@../../css/appColorPalette.css" />
                      </stylesheets>
                      <styleClass>
                         <String fx:value="settingsButton" />

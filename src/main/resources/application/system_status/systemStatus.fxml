@@ -25,7 +25,7 @@
                      <children>
                         <StackPane>
                            <children>
-                              <JFXListView fx:id="expenditureList" prefHeight="400.0" styleClass="list-view" stylesheets="@../../../java/np/com/spirrotech/css/listItemStyle.css" visible="false" />
+                              <JFXListView fx:id="expenditureList" prefHeight="400.0" styleClass="list-view" stylesheets="@../../css/listItemStyle.css" visible="false" />
                               <OutputTaskLoading fx:id="progressLayout" />
                            </children>
                         </StackPane>

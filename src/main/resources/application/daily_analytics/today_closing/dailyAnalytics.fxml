@@ -20,7 +20,7 @@
                <children>
                   <HBox>
                      <children>
-                        <Label styleClass="dailyAnalyticsTitle" stylesheets="@../../../../java/np/com/spirrotech/css/appHomeStyle.css" text="Diesel Analytics">
+                        <Label styleClass="dailyAnalyticsTitle" stylesheets="@../../../css/appHomeStyle.css" text="Diesel Analytics">
                            <font>
                               <Font name="System Bold" size="20.0" />
                            </font>
@@ -43,7 +43,7 @@
                      <children>
                         <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0">
                            <children>
-                              <Label styleClass="dailyAnalyticsText" stylesheets="@../../../../java/np/com/spirrotech/css/appHomeStyle.css" text="Instant Transaction:">
+                              <Label styleClass="dailyAnalyticsText" stylesheets="@../../../css/appHomeStyle.css" text="Instant Transaction:">
                                  <font>
                                     <Font size="20.0" />
                                  </font>
@@ -52,7 +52,7 @@
                         </HBox>
                         <HBox GridPane.columnIndex="1">
                            <children>
-                              <Label fx:id="dInitial" styleClass="dailyAnalyticsData" stylesheets="@../../../../java/np/com/spirrotech/css/appHomeStyle.css" text="2300 L">
+                              <Label fx:id="dInitial" styleClass="dailyAnalyticsData" stylesheets="@../../../css/appHomeStyle.css" text="2300 L">
                                  <font>
                                     <Font name="System Bold" size="20.0" />
                                  </font>
@@ -64,7 +64,7 @@
                         </HBox>
                         <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
                            <children>
-                              <Label styleClass="dailyAnalyticsText" stylesheets="@../../../../java/np/com/spirrotech/css/appHomeStyle.css" text="Credit Transaction:">
+                              <Label styleClass="dailyAnalyticsText" stylesheets="@../../../css/appHomeStyle.css" text="Credit Transaction:">
                                  <font>
                                     <Font size="20.0" />
                                  </font>
@@ -73,7 +73,7 @@
                         </HBox>
                         <HBox GridPane.columnIndex="1" GridPane.rowIndex="1">
                            <children>
-                              <Label fx:id="dFinal" styleClass="dailyAnalyticsData" stylesheets="@../../../../java/np/com/spirrotech/css/appHomeStyle.css" text="4500 L">
+                              <Label fx:id="dFinal" styleClass="dailyAnalyticsData" stylesheets="@../../../css/appHomeStyle.css" text="4500 L">
                                  <font>
                                     <Font name="System Bold" size="20.0" />
                                  </font>
@@ -85,7 +85,7 @@
                         </HBox>
                         <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2">
                            <children>
-                              <Label styleClass="dailyAnalyticsText" stylesheets="@../../../../java/np/com/spirrotech/css/appHomeStyle.css" text="Net Income:">
+                              <Label styleClass="dailyAnalyticsText" stylesheets="@../../../css/appHomeStyle.css" text="Net Income:">
                                  <font>
                                     <Font size="20.0" />
                                  </font>
@@ -94,7 +94,7 @@
                         </HBox>
                         <HBox GridPane.columnIndex="1" GridPane.rowIndex="2">
                            <children>
-                              <Label fx:id="dNet" styleClass="dailyAnalyticsData" stylesheets="@../../../../java/np/com/spirrotech/css/appHomeStyle.css" text="Rs.24000/-" underline="true">
+                              <Label fx:id="dNet" styleClass="dailyAnalyticsData" stylesheets="@../../../css/appHomeStyle.css" text="Rs.24000/-" underline="true">
                                  <font>
                                     <Font name="System Bold" size="20.0" />
                                  </font>
@@ -118,7 +118,7 @@
                <children>
                   <HBox>
                      <children>
-                        <Label styleClass="dailyAnalyticsTitle" stylesheets="@../../../../java/np/com/spirrotech/css/appHomeStyle.css" text="Petrol Analytics">
+                        <Label styleClass="dailyAnalyticsTitle" stylesheets="@../../../css/appHomeStyle.css" text="Petrol Analytics">
                            <font>
                               <Font name="System Bold" size="20.0" />
                            </font>
@@ -140,7 +140,7 @@
                      <children>
                         <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0">
                            <children>
-                              <Label styleClass="dailyAnalyticsText" stylesheets="@../../../../java/np/com/spirrotech/css/appHomeStyle.css" text="Instant Transaction:">
+                              <Label styleClass="dailyAnalyticsText" stylesheets="@../../../css/appHomeStyle.css" text="Instant Transaction:">
                                  <font>
                                     <Font size="20.0" />
                                  </font>
@@ -149,7 +149,7 @@
                         </HBox>
                         <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
                            <children>
-                              <Label fx:id="pInitial" styleClass="dailyAnalyticsData" stylesheets="@../../../../java/np/com/spirrotech/css/appHomeStyle.css" text="2300 L">
+                              <Label fx:id="pInitial" styleClass="dailyAnalyticsData" stylesheets="@../../../css/appHomeStyle.css" text="2300 L">
                                  <font>
                                     <Font name="System Bold" size="20.0" />
                                  </font>
@@ -158,7 +158,7 @@
                         </HBox>
                         <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
                            <children>
-                              <Label styleClass="dailyAnalyticsText" stylesheets="@../../../../java/np/com/spirrotech/css/appHomeStyle.css" text="Credit Transaction:">
+                              <Label styleClass="dailyAnalyticsText" stylesheets="@../../../css/appHomeStyle.css" text="Credit Transaction:">
                                  <font>
                                     <Font size="20.0" />
                                  </font>
@@ -167,7 +167,7 @@
                         </HBox>
                         <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                            <children>
-                              <Label fx:id="pFinal" styleClass="dailyAnalyticsData" stylesheets="@../../../../java/np/com/spirrotech/css/appHomeStyle.css" text="4500 L">
+                              <Label fx:id="pFinal" styleClass="dailyAnalyticsData" stylesheets="@../../../css/appHomeStyle.css" text="4500 L">
                                  <font>
                                     <Font name="System Bold" size="20.0" />
                                  </font>
@@ -176,7 +176,7 @@
                         </HBox>
                         <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2">
                            <children>
-                              <Label styleClass="dailyAnalyticsText" stylesheets="@../../../../java/np/com/spirrotech/css/appHomeStyle.css" text="Net Income:">
+                              <Label styleClass="dailyAnalyticsText" stylesheets="@../../../css/appHomeStyle.css" text="Net Income:">
                                  <font>
                                     <Font size="20.0" />
                                  </font>
@@ -185,7 +185,7 @@
                         </HBox>
                         <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                            <children>
-                              <Label fx:id="pNet" styleClass="dailyAnalyticsData" stylesheets="@../../../../java/np/com/spirrotech/css/appHomeStyle.css" text="Rs.24000/-" underline="true">
+                              <Label fx:id="pNet" styleClass="dailyAnalyticsData" stylesheets="@../../../css/appHomeStyle.css" text="Rs.24000/-" underline="true">
                                  <font>
                                     <Font name="System Bold" size="20.0" />
                                  </font>
@@ -206,7 +206,7 @@
                <children>
                   <HBox>
                      <children>
-                        <Label styleClass="dailyAnalyticsTitle" stylesheets="@../../../../java/np/com/spirrotech/css/appHomeStyle.css" text="Extra Analytics">
+                        <Label styleClass="dailyAnalyticsTitle" stylesheets="@../../../css/appHomeStyle.css" text="Extra Analytics">
                            <font>
                               <Font name="System Bold" size="20.0" />
                            </font>
@@ -228,7 +228,7 @@
                      <children>
                         <HBox alignment="CENTER_RIGHT">
                            <children>
-                              <Label styleClass="dailyAnalyticsText" stylesheets="@../../../../java/np/com/spirrotech/css/appHomeStyle.css" text="Instant Transaction:">
+                              <Label styleClass="dailyAnalyticsText" stylesheets="@../../../css/appHomeStyle.css" text="Instant Transaction:">
                                  <font>
                                     <Font size="20.0" />
                                  </font>
@@ -237,7 +237,7 @@
                         </HBox>
                         <HBox GridPane.columnIndex="1">
                            <children>
-                              <Label fx:id="cInitial" styleClass="dailyAnalyticsData" stylesheets="@../../../../java/np/com/spirrotech/css/appHomeStyle.css" text="Rs.2000">
+                              <Label fx:id="cInitial" styleClass="dailyAnalyticsData" stylesheets="@../../../css/appHomeStyle.css" text="Rs.2000">
                                  <font>
                                     <Font name="System Bold" size="20.0" />
                                  </font>
@@ -249,7 +249,7 @@
                         </HBox>
                         <HBox alignment="CENTER_RIGHT" GridPane.rowIndex="1">
                            <children>
-                              <Label styleClass="dailyAnalyticsText" stylesheets="@../../../../java/np/com/spirrotech/css/appHomeStyle.css" text="Credit Transaction:">
+                              <Label styleClass="dailyAnalyticsText" stylesheets="@../../../css/appHomeStyle.css" text="Credit Transaction:">
                                  <font>
                                     <Font size="20.0" />
                                  </font>
@@ -258,7 +258,7 @@
                         </HBox>
                         <HBox GridPane.columnIndex="1" GridPane.rowIndex="1">
                            <children>
-                              <Label fx:id="cFinal" styleClass="dailyAnalyticsData" stylesheets="@../../../../java/np/com/spirrotech/css/appHomeStyle.css" text="Rs.3500">
+                              <Label fx:id="cFinal" styleClass="dailyAnalyticsData" stylesheets="@../../../css/appHomeStyle.css" text="Rs.3500">
                                  <font>
                                     <Font name="System Bold" size="20.0" />
                                  </font>
@@ -282,7 +282,7 @@
                <children>
                   <HBox>
                      <children>
-                        <Label styleClass="dailyAnalyticsTitle" stylesheets="@../../../../java/np/com/spirrotech/css/appHomeStyle.css" text="Income Analytics">
+                        <Label styleClass="dailyAnalyticsTitle" stylesheets="@../../../css/appHomeStyle.css" text="Income Analytics">
                            <font>
                               <Font name="System Bold" size="20.0" />
                            </font>
@@ -304,7 +304,7 @@
                      <children>
                         <HBox alignment="CENTER_RIGHT">
                            <children>
-                              <Label styleClass="dailyAnalyticsText" stylesheets="@../../../../java/np/com/spirrotech/css/appHomeStyle.css" text="Net Oil Income:">
+                              <Label styleClass="dailyAnalyticsText" stylesheets="@../../../css/appHomeStyle.css" text="Net Oil Income:">
                                  <font>
                                     <Font size="20.0" />
                                  </font>
@@ -313,7 +313,7 @@
                         </HBox>
                         <HBox GridPane.columnIndex="1">
                            <children>
-                              <Label fx:id="netOil" styleClass="dailyAnalyticsData" stylesheets="@../../../../java/np/com/spirrotech/css/appHomeStyle.css" text="Rs.2000">
+                              <Label fx:id="netOil" styleClass="dailyAnalyticsData" stylesheets="@../../../css/appHomeStyle.css" text="Rs.2000">
                                  <font>
                                     <Font name="System Bold" size="20.0" />
                                  </font>
@@ -325,7 +325,7 @@
                         </HBox>
                         <HBox alignment="CENTER_RIGHT" GridPane.rowIndex="1">
                            <children>
-                              <Label styleClass="dailyAnalyticsText" stylesheets="@../../../../java/np/com/spirrotech/css/appHomeStyle.css" text="Net Extra Income:">
+                              <Label styleClass="dailyAnalyticsText" stylesheets="@../../../css/appHomeStyle.css" text="Net Extra Income:">
                                  <font>
                                     <Font size="20.0" />
                                  </font>
@@ -334,7 +334,7 @@
                         </HBox>
                         <HBox GridPane.columnIndex="1" GridPane.rowIndex="1">
                            <children>
-                              <Label fx:id="netExtra" styleClass="dailyAnalyticsData" stylesheets="@../../../../java/np/com/spirrotech/css/appHomeStyle.css" text="Rs.3500">
+                              <Label fx:id="netExtra" styleClass="dailyAnalyticsData" stylesheets="@../../../css/appHomeStyle.css" text="Rs.3500">
                                  <font>
                                     <Font name="System Bold" size="20.0" />
                                  </font>

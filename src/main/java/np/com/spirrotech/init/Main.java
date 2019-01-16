@@ -45,11 +45,11 @@ public class Main extends Application {
         if(Tasks.setupConnection()&&initializeSystem.customExecute()) {
             TaskManager.getInstance();
             startup=true;
-            loader=new FXMLLoader(getClass().getResource("view/appHome.fxml"));
+            loader=new FXMLLoader(getClass().getClassLoader().getResource("application/home/appHome.fxml"));
         } else {
             msg=initializeSystem.getErrorMessage();
             startup=false;
-            loader=new FXMLLoader(getClass().getResource("view/dialogs/errorDialog.fxml"));
+            loader=new FXMLLoader(getClass().getClassLoader().getResource("library/error_dialog/errorDialog.fxml"));
         }
         root = loader.load();
 

@@ -31,29 +31,29 @@
 }
 
 .closeButtonIcon {
-    -fx-background-image: url("../resources/closing.png");
+    -fx-background-image: url("../images/closing.png");
 }
 
 .editButtonIcon {
-    -fx-background-image: url("../resources/edit.png");
+    -fx-background-image: url("../images/edit.png");
 }
 
 .payButtonIcon {
-    -fx-background-image: url("../resources/pay.png");
+    -fx-background-image: url("../images/pay.png");
 }
 
 .removeButtonIcon {
-    -fx-background-image: url("../resources/subtract.png");
+    -fx-background-image: url("../images/subtract.png");
 }
 
 .clearButtonIcon {
-    -fx-background-image: url("../resources/delete.png");
+    -fx-background-image: url("../images/delete.png");
 }
 
 .addButtonIcon {
-    -fx-background-image: url("../resources/add.png");
+    -fx-background-image: url("../images/add.png");
 }
 
 .adminButtonIcon {
-    -fx-background-image: url("../resources/admin.png");
+    -fx-background-image: url("../images/admin.png");
 }

@@ -53,8 +53,8 @@
                         <Font size="25.0" />
                      </font>
                      <stylesheets>
-                        <URL value="@../../../../../../sample/css/appColorPalette.css" />
-                        <URL value="@../../../../../../sample/css/componentStyles.css" />
+                        <URL value="@../../css/appColorPalette.css" />
+                        <URL value="@../../css/componentStyles.css" />
                      </stylesheets>
                      <styleClass>
                         <String fx:value="inputTextFieldColor" />
@@ -83,8 +83,8 @@
                                     <Insets />
                                  </HBox.margin>
                                  <stylesheets>
-                                    <URL value="@../../../../../../sample/css/componentStyles.css" />
-                                    <URL value="@../../../../../../sample/css/appColorPalette.css" />
+                                    <URL value="@../../css/componentStyles.css" />
+                                    <URL value="@../../css/appColorPalette.css" />
                                  </stylesheets>
                                  <styleClass>
                                     <String fx:value="inputTextField" />
@@ -106,8 +106,8 @@
                                     <Font size="25.0" />
                                  </font>
                                  <stylesheets>
-                                    <URL value="@../../../../../../sample/css/componentStyles.css" />
-                                    <URL value="@../../../../../../sample/css/appColorPalette.css" />
+                                    <URL value="@../../css/componentStyles.css" />
+                                    <URL value="@../../css/appColorPalette.css" />
                                  </stylesheets>
                                  <styleClass>
                                     <String fx:value="inputTextField" />
@@ -130,8 +130,8 @@
                                     <Font size="25.0" />
                                  </font>
                                  <stylesheets>
-                                    <URL value="@../../../../../../sample/css/componentStyles.css" />
-                                    <URL value="@../../../../../../sample/css/appColorPalette.css" />
+                                    <URL value="@../../css/componentStyles.css" />
+                                    <URL value="@../../css/appColorPalette.css" />
                                  </stylesheets>
                                  <styleClass>
                                     <String fx:value="inputTextField" />
@@ -160,8 +160,8 @@
                                     <Insets />
                                  </HBox.margin>
                                  <stylesheets>
-                                    <URL value="@../../../../../../sample/css/componentStyles.css" />
-                                    <URL value="@../../../../../../sample/css/appColorPalette.css" />
+                                    <URL value="@../../css/componentStyles.css" />
+                                    <URL value="@../../css/appColorPalette.css" />
                                  </stylesheets>
                                  <styleClass>
                                     <String fx:value="inputTextField" />
@@ -183,8 +183,8 @@
                                     <Font size="25.0" />
                                  </font>
                                  <stylesheets>
-                                    <URL value="@../../../../../../sample/css/componentStyles.css" />
-                                    <URL value="@../../../../../../sample/css/appColorPalette.css" />
+                                    <URL value="@../../css/componentStyles.css" />
+                                    <URL value="@../../css/appColorPalette.css" />
                                  </stylesheets>
                                  <styleClass>
                                     <String fx:value="inputTextField" />
@@ -206,8 +206,8 @@
                                     <Font size="25.0" />
                                  </font>
                                  <stylesheets>
-                                    <URL value="@../../../../../../sample/css/componentStyles.css" />
-                                    <URL value="@../../../../../../sample/css/appColorPalette.css" />
+                                    <URL value="@../../css/componentStyles.css" />
+                                    <URL value="@../../css/appColorPalette.css" />
                                  </stylesheets>
                                  <styleClass>
                                     <String fx:value="inputTextField" />
@@ -270,8 +270,8 @@
                   <Font size="25.0" />
                </font>
                <stylesheets>
-                  <URL value="@../../../../../../sample/css/appColorPalette.css" />
-                  <URL value="@../../../../../../sample/css/componentStyles.css" />
+                  <URL value="@../../css/appColorPalette.css" />
+                  <URL value="@../../css/componentStyles.css" />
                </stylesheets>
                <styleClass>
                   <String fx:value="countButtonColor" />
@@ -280,8 +280,8 @@
             </JFXButton>
             <JFXButton fx:id="addItems" buttonType="RAISED" onMouseClicked="#addNewItem" prefHeight="80.0" prefWidth="80.0">
                <stylesheets>
-                  <URL value="@../../../../../../sample/css/componentStyles.css" />
-                  <URL value="@../../../../../../sample/css/appColorPalette.css" />
+                  <URL value="@../../css/componentStyles.css" />
+                  <URL value="@../../css/appColorPalette.css" />
                </stylesheets>
                <styleClass>
                   <String fx:value="billingRoundButton" />
@@ -291,8 +291,8 @@
             </JFXButton>
             <JFXButton buttonType="RAISED" onMouseClicked="#deleteItem" prefHeight="80.0" prefWidth="80.0">
                <stylesheets>
-                  <URL value="@../../../../../../sample/css/componentStyles.css" />
-                  <URL value="@../../../../../../sample/css/appColorPalette.css" />
+                  <URL value="@../../css/componentStyles.css" />
+                  <URL value="@../../css/appColorPalette.css" />
                </stylesheets>
                <styleClass>
                   <String fx:value="billingRoundButton" />
@@ -302,8 +302,8 @@
             </JFXButton>
              <JFXButton buttonType="RAISED" onMouseClicked="#clearSelection" prefHeight="80.0" prefWidth="80.0">
                <stylesheets>
-                  <URL value="@../../../../../../sample/css/componentStyles.css" />
-                  <URL value="@../../../../../../sample/css/appColorPalette.css" />
+                  <URL value="@../../css/componentStyles.css" />
+                  <URL value="@../../css/appColorPalette.css" />
                </stylesheets>
                <styleClass>
                   <String fx:value="billingRoundButton" />

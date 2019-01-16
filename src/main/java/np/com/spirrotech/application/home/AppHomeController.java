@@ -59,7 +59,7 @@ public class AppHomeController {
 
         snackBar=new JFXSnackbar(root);
         //Note we are not using relative paths now, because JAR file doesn't know .., as it is a file system property
-        snackBar.getStylesheets().add(getClass().getClassLoader().getResource("np/com/spirrotech/css/appHomeStyle.css").toExternalForm());
+        snackBar.getStylesheets().add(getClass().getClassLoader().getResource("css/appHomeStyle.css").toExternalForm());
 
         dieselRate.setText("Rs. "+(priceFormat.format(precision.format(SystemStatus.getdRate()))));
         petrolRate.setText("Rs. "+(priceFormat.format(precision.format(SystemStatus.getpRate()))));

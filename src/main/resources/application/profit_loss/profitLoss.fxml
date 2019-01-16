@@ -35,8 +35,8 @@
                                           <Font size="25.0" />
                                        </font>
                                        <stylesheets>
-                                          <URL value="@../../../java/np/com/spirrotech/css/appColorPalette.css" />
-                                          <URL value="@../../../java/np/com/spirrotech/css/componentStyles.css" />
+                                          <URL value="@../../css/appColorPalette.css" />
+                                          <URL value="@../../css/componentStyles.css" />
                                        </stylesheets>
                                        <styleClass>
                                           <String fx:value="inputTextField" />
@@ -51,8 +51,8 @@
                                     <Font size="25.0" />
                                  </font>
                                  <stylesheets>
-                                    <URL value="@../../../java/np/com/spirrotech/css/componentStyles.css" />
-                                    <URL value="@../../../java/np/com/spirrotech/css/appColorPalette.css" />
+                                    <URL value="@../../css/componentStyles.css" />
+                                    <URL value="@../../css/appColorPalette.css" />
                                  </stylesheets>
                                  <styleClass>
                                     <String fx:value="generalButton" />
@@ -66,8 +66,8 @@
                               <Font size="25.0" />
                            </font>
                            <stylesheets>
-                              <URL value="@../../../java/np/com/spirrotech/css/componentStyles.css" />
-                              <URL value="@../../../java/np/com/spirrotech/css/appColorPalette.css" />
+                              <URL value="@../../css/componentStyles.css" />
+                              <URL value="@../../css/appColorPalette.css" />
                            </stylesheets>
                            <styleClass>
                               <String fx:value="generalButton" />

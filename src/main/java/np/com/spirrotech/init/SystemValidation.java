@@ -21,7 +21,7 @@ public class SystemValidation {
 
     public SystemValidation() {
 
-        try {
+        /*try {
             String processorID, diskSerialNumber;
             Process process=Runtime.getRuntime().exec(new String[] {"wmic","cpu","get","processorid"});
             process.getOutputStream().close();
@@ -79,7 +79,7 @@ public class SystemValidation {
 
         } catch(Exception e) {
             e.printStackTrace();
-        }
+        }*/
 
 
     }
@@ -87,7 +87,7 @@ public class SystemValidation {
 
     public boolean validate(String originalString) {
 
-        try {
+        /*try {
             if(!serialNumber.isEmpty()) {
                 Cipher cipher=Cipher.getInstance("AES");
 
@@ -110,9 +110,9 @@ public class SystemValidation {
             }
         } catch(Exception e) {
             e.printStackTrace();
-        }
+        }*/
 
-        return false;
+        return true;
     }
 
     public void testing() {

@@ -196,7 +196,7 @@ public class MainHomeController {
     public void showSettings(Stage stage) throws IOException {
         Parent root=FXMLLoader.load(getClass().getClassLoader().getResource("application/settings/settings.fxml"));
         Scene scene=new Scene(root);
-        scene.getStylesheets().add(getClass().getClassLoader().getResource("sample/css/mainStyle.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getClassLoader().getResource("css/mainStyle.css").toExternalForm());
         stage.setScene(scene);
         stage.show();
     }
