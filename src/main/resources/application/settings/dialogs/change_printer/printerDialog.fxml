@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<?import np.com.spirrotech.library.dialog_toolbar.DialogToolBar?>
+<?import np.com.spirrotech.library.dialog_bottombar.DialogBottomBar?>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="np.com.spirrotech.application.settings.dialogs.change_printer.PrinterDialogController">
+   <center>
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <Label text="Bill Printer">
+                     <font>
+                        <Font name="System Bold" size="25.0" />
+                     </font>
+                  </Label>
+                  <JFXComboBox fx:id="billPrinterName" focusTraversable="false" labelFloat="true" promptText="Select Printer" />
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <Label text="Analytics Printer">
+                     <font>
+                        <Font name="System Bold" size="25.0" />
+                     </font>
+                  </Label>
+                  <JFXComboBox fx:id="analyticsPrinterName" focusTraversable="false" labelFloat="true" promptText="Select Printer" />
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+   </center>
+
+    <top>
+        <DialogToolBar fx:id="toolBar"/>
+    </top>
+
+    <bottom>
+        <DialogBottomBar fx:id="bottomBar"/>
+    </bottom>
+
+</BorderPane>

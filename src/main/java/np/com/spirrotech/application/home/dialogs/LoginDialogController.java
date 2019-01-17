@@ -1,0 +1,163 @@
+package np.com.spirrotech.application.home.dialogs;
+
+
+import com.jfoenix.controls.JFXPasswordField;
+import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.validation.RequiredFieldValidator;
+import javafx.application.Platform;
+import javafx.beans.value.ObservableValue;
+import javafx.concurrent.WorkerStateEvent;
+import javafx.fxml.FXML;
+
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import np.com.spirrotech.application.home.AppHomeController;
+
+import np.com.spirrotech.library.error_dialog.ErrorDialogController;
+import np.com.spirrotech.library.dialog_bottombar.BottomBarInterface;
+import np.com.spirrotech.library.dialog_bottombar.DialogBottomBar;
+import np.com.spirrotech.library.dialog_toolbar.DialogToolBar;
+import np.com.spirrotech.dao.AdminUser;
+import np.com.spirrotech.model.GetAdminUser;
+import np.com.spirrotech.utils.tasks.TaskInterface;
+import np.com.spirrotech.utils.tasks.TaskManager;
+
+import java.io.IOException;
+
+public class LoginDialogController implements BottomBarInterface {
+
+
+    @FXML
+    private JFXTextField username;
+
+    @FXML
+    private DialogToolBar toolBar;
+
+    @FXML
+    private JFXPasswordField password;
+
+    @FXML
+    private DialogBottomBar bottomBar;
+
+    private int status=0;
+
+    private Stage stage;
+
+    @FXML
+    public void initialize() {
+
+        toolBar.setDialogTitle("Login");
+
+        bottomBar.setButtonText("LOGIN");
+        bottomBar.setBottomBarInterface(this);
+
+        RequiredFieldValidator usernameValidator=new RequiredFieldValidator();
+        usernameValidator.setMessage("UserName Cannot Be Empty");
+        username.getValidators().add(usernameValidator);
+
+
+        RequiredFieldValidator passwordValidator=new RequiredFieldValidator();
+        passwordValidator.setMessage("Password Cannot Be Empty");
+        password.getValidators().add(passwordValidator);
+
+        username.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)->{
+            if(newValue.isEmpty())
+                username.validate();
+            else
+                username.resetValidation();
+        });
+
+        password.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)->{
+            if(newValue.isEmpty())
+                password.validate();
+            else
+                password.resetValidation();
+        });
+
+
+    }
+
+    @Override
+    public void performAction(MouseEvent e) throws IOException {
+        int status=0;
+
+        if(username.getText().trim().isEmpty()) {
+            username.validate();
+            status++;
+        }
+
+        if(password.getText().isEmpty()) {
+            password.validate();
+            status++;
+        }
+
+
+        if(status==0) {
+            AdminUser user=new AdminUser();
+            user.initializeAdmin(username.getText().trim(),password.getText().trim());
+            GetAdminUser task=new GetAdminUser();
+
+            task.addTaskInterfaceListener(new TaskInterface() {
+                @Override
+                public void onComplete(Object data) {
+
+                    Platform.runLater(() -> {
+                        try {
+                            if(user.validate((AdminUser) data)) {
+                                BorderPane borderPane=FXMLLoader.load(getClass().getClassLoader().getResource("application/settings/settings.fxml"));
+                                AppHomeController.getInstance().loadStages(borderPane);
+
+                                Stage loginWindow=(Stage)((Node)e.getSource()).getScene().getWindow();
+                                loginWindow.close();
+
+                            } else {
+                                FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("library/error_dialog/errorDialog.fxml"));
+                                Parent root=loader.load();
+                                ErrorDialogController controller=loader.getController();
+                                controller.setTitle("Login Error");
+                                controller.setErrorMessage("Invalid Username and Password Provided.Please Try Again Later.");
+                                Stage stage=new Stage();
+                                stage.setScene(new Scene(root));
+                                stage.initModality(Modality.APPLICATION_MODAL);
+                                stage.show();
+                            }
+                        } catch(IOException e2) {
+                            e2.printStackTrace();
+                        }
+                    });
+
+
+                }
+
+                @Override
+                public void onError(String msg) {
+
+                }
+
+                @Override
+                public void updateProgress(double current, double total) {
+
+                }
+            });
+
+            TaskManager.getInstance().executeInstantTask(task);
+
+        }
+    }
+
+    public void setStage(Stage stage) {
+        this.stage=stage;
+    }
+
+    public void setStatus(int status) {
+        this.status=status;
+    }
+
+}

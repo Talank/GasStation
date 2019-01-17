@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<?import np.com.spirrotech.library.dialog_bottombar.DialogBottomBar?>
+<?import np.com.spirrotech.library.dialog_toolbar.DialogToolBar?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="np.com.spirrotech.application.settings.dialogs.change_oil_stock.OilStockDialogController">
+   <center>
+      <VBox alignment="CENTER" fillWidth="false" prefHeight="200.0" prefWidth="100.0" spacing="50.0" BorderPane.alignment="CENTER">
+         <children>
+            <JFXTextField fx:id="dieselStockValue" labelFloat="true" promptText="Diesel Stock" unFocusColor="#0eff7b">
+               <font>
+                  <Font size="25.0" />
+               </font>
+            </JFXTextField>
+            <JFXTextField fx:id="petrolStockValue" labelFloat="true" promptText="Petrol Stock" unFocusColor="#27ff32">
+               <font>
+                  <Font size="25.0" />
+               </font>
+            </JFXTextField>
+         </children>
+      </VBox>
+   </center>
+
+    <bottom>
+        <DialogBottomBar fx:id="bottomBar"/>
+    </bottom>
+
+    <top>
+        <DialogToolBar fx:id="toolBar"/>
+    </top>
+</BorderPane>

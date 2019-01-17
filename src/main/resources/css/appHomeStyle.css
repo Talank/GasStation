@@ -1,0 +1,47 @@
+
+
+.toolBarBubbleColor {
+    -fx-background-color:#33b5e5;
+    -fx-background-radius:50px;
+    -fx-effect:dropshadow(gaussian,#000000,10,0.0,0,2);
+}
+
+.jfx-snackbar-content {
+    -fx-background-color: #000000;
+}
+
+.jfx-snackbar-toast {
+    -fx-text-fill:#ffffff;
+}
+
+.toolBarBubbleInfoText {
+    -fx-font-size:25px;
+}
+
+.toolBarBubbleDataText{
+    -fx-font-size:25px;
+    -fx-font-weight:bold;
+}
+
+.dailyAnalyticsTitle {
+    -fx-font-size:25px;
+    -fx-font-weight:bold;
+}
+
+.dailyAnalyticsText {
+    -fx-font-size:25px;
+}
+
+.dailyAnalyticsData {
+    -fx-font-size:25px;
+    -fx-font-weight:bold;
+}
+
+.settingsButton {
+    -fx-focus-color:transparent;
+    -fx-faint-focus-color:transparent;
+    -fx-background-image:url('../images/settings.png');
+    -fx-background-size:100% 100%;
+}
+
+
