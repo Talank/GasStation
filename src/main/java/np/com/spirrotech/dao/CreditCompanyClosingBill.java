@@ -115,36 +115,41 @@ public class CreditCompanyClosingBill {
 
 
         //specify the top row columns names
+
+        Label sn = new Label("S.N");
+        sn.setFont(Font.font("Verdana", FontWeight.BOLD,7.7));
+        mainContent.add(sn, 0,0);
+
         Label type = new Label("Type");
         type.setFont(Font.font("Verdana", FontWeight.BOLD,7.7));
 
-        mainContent.add(type, 0,0);
+        mainContent.add(type, 1,0);
 
         Label vehicleNo = new Label("V.N");
         vehicleNo.setFont(Font.font("Verdana", FontWeight.BOLD,7.7));
-        mainContent.add(vehicleNo, 1, 0);
+        mainContent.add(vehicleNo, 2, 0);
 
         Label rate = new Label("Rate");
         rate.setFont(Font.font("Verdana", FontWeight.BOLD,7.7));
-        mainContent.add(rate, 2, 0);
+        mainContent.add(rate, 3, 0);
 
         Label volume = new Label("Volume");
         volume.setFont(Font.font("Verdana", FontWeight.BOLD,7.7));
-        mainContent.add(volume, 3, 0);
+        mainContent.add(volume, 4, 0);
 
         Label price = new Label("Price");
         price.setFont(Font.font("Verdana", FontWeight.BOLD,7.7));
-        mainContent.add(price, 4, 0);
+        mainContent.add(price, 5, 0);
 
         Label date = new Label("Date");
         date.setFont(Font.font("Verdana", FontWeight.BOLD,7.7));
-        mainContent.add(date, 5, 0);
+        mainContent.add(date, 6, 0);
 
         //separator
         Separator horizontal = new Separator(Orientation.HORIZONTAL);
 
         GridPane.setConstraints(horizontal, 0, 1);
-        GridPane.setColumnSpan(horizontal, 6);
+        GridPane.setColumnSpan(horizontal, 7);
 
         mainContent.getChildren().add(horizontal);
 
@@ -158,6 +163,8 @@ public class CreditCompanyClosingBill {
 
         Label pageNo = new Label();
         mainLayout.getChildren().add(pageNo);
+
+        int serialNumber = 1;
 
         int totalSize = 0;
         int pageRows = 45; //no of rows to print in single page
@@ -192,29 +199,37 @@ public class CreditCompanyClosingBill {
 
                     //add the respective data
 
-                    label = new Label(model.getItemName());
+                    label = new Label(serialNumber + ".");
                     label.setFont(Font.font("Verdana", FontWeight.NORMAL,7.7));
                     mainContent.add(label, 0, count);
 
-                    label = new Label(model.getVehicleNo());
+                    label = new Label(model.getItemName());
                     label.setFont(Font.font("Verdana", FontWeight.NORMAL,7.7));
                     mainContent.add(label, 1, count);
 
-                    label = new Label(priceFormat.format(precision.format(Float.parseFloat(model.getRate()))));
+                    label = new Label(model.getVehicleNo());
                     label.setFont(Font.font("Verdana", FontWeight.NORMAL,7.7));
                     mainContent.add(label, 2, count);
 
-                    label = new Label(priceFormat.format(precision.format(Float.parseFloat(model.getVolume()))));
+                    label = new Label(priceFormat.format(precision.format(Float.parseFloat(model.getRate()))));
                     label.setFont(Font.font("Verdana", FontWeight.NORMAL,7.7));
                     mainContent.add(label, 3, count);
 
-                    label = new Label(priceFormat.format(precision.format(Float.parseFloat(model.getPrice()))));
+                    label = new Label(priceFormat.format(precision.format(Float.parseFloat(model.getVolume()))));
                     label.setFont(Font.font("Verdana", FontWeight.NORMAL,7.7));
                     mainContent.add(label, 4, count);
 
-                    label = new Label(model.getDate());
+                    label = new Label(priceFormat.format(precision.format(Float.parseFloat(model.getPrice()))));
                     label.setFont(Font.font("Verdana", FontWeight.NORMAL,7.7));
                     mainContent.add(label, 5, count);
+
+                    label = new Label(model.getDate());
+                    label.setFont(Font.font("Verdana", FontWeight.NORMAL,7.7));
+                    mainContent.add(label, 6, count);
+
+
+                    //increment the serial number
+                    serialNumber++;
 
 
 
@@ -240,15 +255,16 @@ public class CreditCompanyClosingBill {
                         renderCount = 1;
                         mainContent.getChildren().clear();
 
-                        mainContent.add(type, 0,0);
-                        mainContent.add(vehicleNo, 1, 0);
-                        mainContent.add(rate, 2, 0);
-                        mainContent.add(volume, 3, 0);
-                        mainContent.add(price, 4, 0);
-                        mainContent.add(date, 5, 0);
+                        mainContent.add(sn, 0, 0);
+                        mainContent.add(type, 1,0);
+                        mainContent.add(vehicleNo, 2, 0);
+                        mainContent.add(rate, 3, 0);
+                        mainContent.add(volume, 4, 0);
+                        mainContent.add(price, 5, 0);
+                        mainContent.add(date, 6, 0);
 
                         GridPane.setConstraints(horizontal, 0, 1);
-                        GridPane.setColumnSpan(horizontal, 6);
+                        GridPane.setColumnSpan(horizontal, 7);
 
                         //add the row to the grid pane
                         mainContent.getChildren().add(horizontal);
@@ -266,7 +282,7 @@ public class CreditCompanyClosingBill {
                     transactionSep = new Separator(Orientation.HORIZONTAL);
 
                     GridPane.setConstraints(transactionSep, 0, count);
-                    GridPane.setColumnSpan(transactionSep, 6);
+                    GridPane.setColumnSpan(transactionSep, 7);
                     mainContent.getChildren().add(transactionSep);
                 }
 
@@ -274,7 +290,7 @@ public class CreditCompanyClosingBill {
 
             if (count != 2) {//means we have some remaining print to do
 
-                if ((renderCount + 3.5) <= pageRows) {//add the total amount to the last row, (+5 , 2 for the separator, and 1 for the total Amount row, 2 for page number), the rows fits into the same page
+                if ((renderCount + 4.5) <= pageRows) {//add the total amount to the last row, (+5 , 2 for the separator, and 1 for the total Amount row, 2 for page number), the rows fits into the same page
 
 
                     totalPane.getChildren().clear();
@@ -284,9 +300,35 @@ public class CreditCompanyClosingBill {
                     count = 0;//this is the row of the totalPane, not the mainContent, so reset the count
                     transactionSep = new Separator(Orientation.HORIZONTAL);
                     GridPane.setConstraints(transactionSep, 0, count);
-                    GridPane.setColumnSpan(transactionSep, 6);
+                    GridPane.setColumnSpan(transactionSep, 7);
                     totalPane.getChildren().add(transactionSep);
 
+
+                    count++;
+
+                    Label volumeInfo = new Label("Diesel Vol:");
+                    volumeInfo.setFont(Font.font("Verdana", FontWeight.BOLD,7.7));
+                    totalPane.add(volumeInfo, 0, count);
+
+                    volumeInfo = new Label(priceFormat.format(precision.format(task.getDieselVolume())) + " Lts");
+                    volumeInfo.setFont(Font.font("Verdana", FontWeight.BOLD,7.7));
+                    totalPane.add(volumeInfo, 1, count);
+
+                    volumeInfo = new Label("Petrol Vol:");
+                    volumeInfo.setFont(Font.font("Verdana", FontWeight.BOLD,7.7));
+                    totalPane.add(volumeInfo, 2, count);
+
+                    volumeInfo = new Label(priceFormat.format(precision.format(task.getPetrolVolume())) + " Lts");
+                    volumeInfo.setFont(Font.font("Verdana", FontWeight.BOLD,7.7));
+                    totalPane.add(volumeInfo, 3, count);
+
+                    //increment the count
+                    count++;
+
+                    transactionSep = new Separator(Orientation.HORIZONTAL);
+                    GridPane.setConstraints(transactionSep, 0, count);
+                    GridPane.setColumnSpan(transactionSep, 7);
+                    totalPane.getChildren().add(transactionSep);
 
                     count++;
 
@@ -318,7 +360,7 @@ public class CreditCompanyClosingBill {
 
                     transactionSep = new Separator(Orientation.HORIZONTAL);
                     GridPane.setConstraints(transactionSep, 0, count);
-                    GridPane.setColumnSpan(transactionSep, 6);
+                    GridPane.setColumnSpan(transactionSep, 7);
                     totalPane.getChildren().add(transactionSep);
 
 
@@ -359,8 +401,34 @@ public class CreditCompanyClosingBill {
 
                     transactionSep = new Separator(Orientation.HORIZONTAL);
                     GridPane.setConstraints(transactionSep, 0, 0);
-                    GridPane.setColumnSpan(transactionSep, 6);
+                    GridPane.setColumnSpan(transactionSep, 7);
                     totalPane.getChildren().add(transactionSep);
+
+                    Label volumeInfo = new Label("Diesel Vol:");
+                    volumeInfo.setFont(Font.font("Verdana", FontWeight.BOLD,7.7));
+                    totalPane.add(volumeInfo, 0, count);
+
+                    volumeInfo = new Label(priceFormat.format(precision.format(task.getDieselVolume())) + " Lts");
+                    volumeInfo.setFont(Font.font("Verdana", FontWeight.BOLD,7.7));
+                    totalPane.add(volumeInfo, 1, count);
+
+                    volumeInfo = new Label("Petrol Vol:");
+                    volumeInfo.setFont(Font.font("Verdana", FontWeight.BOLD,7.7));
+                    totalPane.add(volumeInfo, 2, count);
+
+                    volumeInfo = new Label(priceFormat.format(precision.format(task.getPetrolVolume())) + " Lts");
+                    volumeInfo.setFont(Font.font("Verdana", FontWeight.BOLD,7.7));
+                    totalPane.add(volumeInfo, 3, count);
+
+                    //increment the count
+                    count++;
+
+                    transactionSep = new Separator(Orientation.HORIZONTAL);
+                    GridPane.setConstraints(transactionSep, 0, count);
+                    GridPane.setColumnSpan(transactionSep, 7);
+                    totalPane.getChildren().add(transactionSep);
+
+                    count++;
 
                     Label due = new Label("Due: Rs ");
                     due.setFont(Font.font("Verdana", FontWeight.BOLD,7.7));
@@ -391,7 +459,7 @@ public class CreditCompanyClosingBill {
 
                     transactionSep = new Separator(Orientation.HORIZONTAL);
                     GridPane.setConstraints(transactionSep, 0, count);
-                    GridPane.setColumnSpan(transactionSep, 6);
+                    GridPane.setColumnSpan(transactionSep, 7);
                     totalPane.getChildren().add(transactionSep);
 
                     pageNo.setText("--" + (page+1) + "--");
@@ -417,8 +485,34 @@ public class CreditCompanyClosingBill {
 
                 transactionSep = new Separator(Orientation.HORIZONTAL);
                 GridPane.setConstraints(transactionSep, 0, 0);
-                GridPane.setColumnSpan(transactionSep, 6);
+                GridPane.setColumnSpan(transactionSep, 7);
                 totalPane.getChildren().add(transactionSep);
+
+                Label volumeInfo = new Label("Diesel Vol:");
+                volumeInfo.setFont(Font.font("Verdana", FontWeight.BOLD,7.7));
+                totalPane.add(volumeInfo, 0, count);
+
+                volumeInfo = new Label(priceFormat.format(precision.format(task.getDieselVolume())) + " Lts");
+                volumeInfo.setFont(Font.font("Verdana", FontWeight.BOLD,7.7));
+                totalPane.add(volumeInfo, 1, count);
+
+                volumeInfo = new Label("Petrol Vol:");
+                volumeInfo.setFont(Font.font("Verdana", FontWeight.BOLD,7.7));
+                totalPane.add(volumeInfo, 2, count);
+
+                volumeInfo = new Label(priceFormat.format(precision.format(task.getPetrolVolume())) + " Lts");
+                volumeInfo.setFont(Font.font("Verdana", FontWeight.BOLD,7.7));
+                totalPane.add(volumeInfo, 3, count);
+
+                //increment the count
+                count++;
+
+                transactionSep = new Separator(Orientation.HORIZONTAL);
+                GridPane.setConstraints(transactionSep, 0, count);
+                GridPane.setColumnSpan(transactionSep, 7);
+                totalPane.getChildren().add(transactionSep);
+
+                count++;
 
                 Label due = new Label("Due: Rs ");
                 due.setFont(Font.font("Verdana", FontWeight.BOLD,7.7));
@@ -448,7 +542,7 @@ public class CreditCompanyClosingBill {
 
                 transactionSep = new Separator(Orientation.HORIZONTAL);
                 GridPane.setConstraints(transactionSep, 0, count);
-                GridPane.setColumnSpan(transactionSep, 6);
+                GridPane.setColumnSpan(transactionSep, 7);
                 totalPane.getChildren().add(transactionSep);
 
 

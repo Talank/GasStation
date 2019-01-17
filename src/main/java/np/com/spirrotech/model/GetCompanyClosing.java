@@ -3,7 +3,6 @@ package np.com.spirrotech.model;
 import np.com.spirrotech.dao.CreditDetailsModel;
 import np.com.spirrotech.dao.DebtListModel;
 import np.com.spirrotech.utils.databases.DatabaseHandler;
-import np.com.spirrotech.utils.nepaliPriceFormat.Precision;
 import np.com.spirrotech.utils.nepali_date.NepaliDateGenerator;
 import np.com.spirrotech.utils.tasks.Tasks;
 
@@ -13,8 +12,7 @@ import java.util.List;
 
 public class GetCompanyClosing {
     private DebtListModel model;
-    private float total,due, prepaid;
-    private Precision precision=new Precision();
+    private float total,due, prepaid, petrolVolume = 0, dieselVolume = 0;
 
     public GetCompanyClosing(DebtListModel model){
         this.model = model;
@@ -60,34 +58,48 @@ public class GetCompanyClosing {
                 //store the first data information in the array list
                 if(resultSet.getString(2).startsWith("D")||resultSet.getString(2).startsWith("P")) {//the row is for oil transaction
 
+                    //add the diesel or petrol volume
+                    if (resultSet.getString(2).startsWith("D")) {
+                        dieselVolume = dieselVolume + resultSet.getFloat(5);
+                    } else {
+                        petrolVolume = petrolVolume + resultSet.getFloat(5);
+                    }
+
                     //add the data to smallList
-                    smallList.add(new CreditDetailsModel(resultSet.getString(3),resultSet.getString(2),generator.convertDate(resultSet.getDate(7)),precision.format(resultSet.getFloat(5)),precision.format(resultSet.getFloat(6)),precision.format(resultSet.getFloat(4))));
+                    smallList.add(new CreditDetailsModel(resultSet.getString(3),resultSet.getString(2),generator.convertDate(resultSet.getDate(7)),resultSet.getString(5),resultSet.getString(6),resultSet.getString(4)));
                 } else {
 
                     //add the data to smallList
-                    smallList.add(new CreditDetailsModel("XXXX",resultSet.getString(2),generator.convertDate(resultSet.getDate(7)),String.valueOf(resultSet.getInt(5)),precision.format(resultSet.getFloat(6)),precision.format(resultSet.getFloat(4))));
+                    smallList.add(new CreditDetailsModel("XXXX",resultSet.getString(2),generator.convertDate(resultSet.getDate(7)),String.valueOf(resultSet.getInt(5)),resultSet.getString(6),resultSet.getString(4)));
                 }
 
 
                 //iterate through all the rows in the table
                 while(resultSet.next()) {
 
+                    //check for both petrol and diesel
+                    if (resultSet.getString(2).startsWith("D")) {
+                        dieselVolume = dieselVolume + resultSet.getFloat(5);
+                    } else if(resultSet.getString(2).startsWith("P")) {
+                        petrolVolume = petrolVolume + resultSet.getFloat(5);
+                    }
+
                     if(i==resultSet.getInt(1)) {
 
                         if(resultSet.getString(2).startsWith("D")||resultSet.getString(2).startsWith("P")) {//the row is for oil transaction
 
                             //add the data to smallList
-                            smallList.add(new CreditDetailsModel(resultSet.getString(3),resultSet.getString(2),generator.convertDate(resultSet.getDate(7)),precision.format(resultSet.getFloat(5)),precision.format(resultSet.getFloat(6)),precision.format(resultSet.getFloat(4))));
+                            smallList.add(new CreditDetailsModel(resultSet.getString(3),resultSet.getString(2),generator.convertDate(resultSet.getDate(7)),resultSet.getString(5),resultSet.getString(6),resultSet.getString(4)));
                         } else {
 
                             //add the data to smallList
-                            smallList.add(new CreditDetailsModel("XXXX",resultSet.getString(2),generator.convertDate(resultSet.getDate(7)),precision.format(resultSet.getFloat(5)),precision.format(resultSet.getFloat(6)),precision.format(resultSet.getFloat(4))));
+                            smallList.add(new CreditDetailsModel("XXXX",resultSet.getString(2),generator.convertDate(resultSet.getDate(7)),String.valueOf(resultSet.getInt(5)),resultSet.getString(6),resultSet.getString(4)));
                         }
 
                     } else {//the index is different from the initial index, i.e this is the next transaction
                         mainList.add(smallList); //add the list to the mainList
                         create=true; //to indicate to create another object for storing the next transaction set
-                       // i++; //increment the index (this is the bug)
+                        // i++; //increment the index (this is the bug)
 
                         i = resultSet.getInt(1); //assign the new transaction id to the  i
                     }
@@ -98,10 +110,10 @@ public class GetCompanyClosing {
                         //we are adding the result to the smallList, because we are in the iteration and , there is data in the current iteration
                         if(resultSet.getString(2).startsWith("D")||resultSet.getString(2).startsWith("P")) {
 
-                            smallList.add(new CreditDetailsModel(resultSet.getString(3),resultSet.getString(2),generator.convertDate(resultSet.getDate(7)),precision.format(resultSet.getFloat(5)),precision.format(resultSet.getFloat(6)),precision.format(resultSet.getFloat(4))));
+                            smallList.add(new CreditDetailsModel(resultSet.getString(3),resultSet.getString(2),generator.convertDate(resultSet.getDate(7)),resultSet.getString(5),resultSet.getString(6),resultSet.getString(4)));
                         } else {
 
-                            smallList.add(new CreditDetailsModel("XXXX",resultSet.getString(2),generator.convertDate(resultSet.getDate(7)),String.valueOf(resultSet.getInt(5)),precision.format(resultSet.getFloat(6)),precision.format(resultSet.getFloat(4))));
+                            smallList.add(new CreditDetailsModel("XXXX",resultSet.getString(2),generator.convertDate(resultSet.getDate(7)),String.valueOf(resultSet.getInt(5)),resultSet.getString(6),resultSet.getString(4)));
                         }
                         create=false;
                     }
@@ -150,5 +162,13 @@ public class GetCompanyClosing {
 
     public float getPrepaid() {
         return prepaid;
+    }
+
+    public float getPetrolVolume() {
+        return petrolVolume;
+    }
+
+    public float getDieselVolume() {
+        return dieselVolume;
     }
 }

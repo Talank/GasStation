@@ -2,7 +2,9 @@ package np.com.spirrotech.utils.databases;
 
 
 
-import np.com.spirrotech.Reference;
+
+
+import np.com.spirrotech.config.Reference;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
