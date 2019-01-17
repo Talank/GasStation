@@ -1,6 +1,7 @@
 package np.com.spirrotech.model;
 
 import np.com.spirrotech.dao.CreditDetailsModel;
+import np.com.spirrotech.utils.nepaliPriceFormat.Precision;
 import np.com.spirrotech.utils.nepali_date.NepaliDateGenerator;
 import np.com.spirrotech.utils.tasks.Tasks;
 
@@ -22,6 +23,7 @@ public class GetCompanyDetailsTask extends Tasks {
     @Override
     public void execute() {
         List<List<CreditDetailsModel>> mainList=new ArrayList<>();
+        Precision precision=new Precision();
         int totalSize,currentSize=0;
         try {
 
@@ -61,7 +63,7 @@ public class GetCompanyDetailsTask extends Tasks {
 
 
                             //add the data to smallList
-                            model = new CreditDetailsModel(resultSet.getString(4),resultSet.getString(3),generator.convertDate(resultSet.getDate(8)),resultSet.getString(6),resultSet.getString(7),resultSet.getString(5));
+                            model = new CreditDetailsModel(resultSet.getString(4),resultSet.getString(3),generator.convertDate(resultSet.getDate(8)),precision.format(resultSet.getFloat(6)),precision.format(resultSet.getFloat(7)),precision.format(resultSet.getFloat(5)));
                             //store the primary key
                             model.setPrimaryID(resultSet.getInt(1));
                             model.setTransactionID(resultSet.getInt(2));
@@ -70,7 +72,7 @@ public class GetCompanyDetailsTask extends Tasks {
                         } else {
 
                             //add the data to smallList
-                            model = new CreditDetailsModel("XXXX",resultSet.getString(3),generator.convertDate(resultSet.getDate(8)),String.valueOf(resultSet.getInt(6)),resultSet.getString(7),resultSet.getString(5));
+                            model = new CreditDetailsModel("XXXX",resultSet.getString(3),generator.convertDate(resultSet.getDate(8)),String.valueOf(resultSet.getInt(6)),precision.format(resultSet.getFloat(7)),precision.format(resultSet.getFloat(5)));
                             //store the primary key
                             model.setPrimaryID(resultSet.getInt(1));
                             model.setTransactionID(resultSet.getInt(2));
@@ -90,7 +92,7 @@ public class GetCompanyDetailsTask extends Tasks {
                         //we are adding the result to the smallList, because we are in the iteration and , there is data in the current iteration
                         if(resultSet.getString(3).startsWith("D")||resultSet.getString(3).startsWith("P")) {
 
-                            model = new CreditDetailsModel(resultSet.getString(4),resultSet.getString(3),generator.convertDate(resultSet.getDate(8)),resultSet.getString(6),resultSet.getString(7),resultSet.getString(5));
+                            model = new CreditDetailsModel(resultSet.getString(4),resultSet.getString(3),generator.convertDate(resultSet.getDate(8)),precision.format(resultSet.getFloat(6)),precision.format(resultSet.getFloat(7)),precision.format(resultSet.getFloat(5)));
                             //store the primary key
                             model.setPrimaryID(resultSet.getInt(1));
                             model.setTransactionID(resultSet.getInt(2));
@@ -98,7 +100,7 @@ public class GetCompanyDetailsTask extends Tasks {
                             smallList.add(model);
                         } else {
 
-                            model = new CreditDetailsModel("XXXX",resultSet.getString(3),generator.convertDate(resultSet.getDate(8)),String.valueOf(resultSet.getInt(6)),resultSet.getString(7),resultSet.getString(5));
+                            model = new CreditDetailsModel("XXXX",resultSet.getString(3),generator.convertDate(resultSet.getDate(8)),String.valueOf(resultSet.getInt(6)),precision.format(resultSet.getFloat(7)),precision.format(resultSet.getFloat(5)));
                             //store the primary key
                             model.setPrimaryID(resultSet.getInt(1));
                             model.setTransactionID(resultSet.getInt(2));

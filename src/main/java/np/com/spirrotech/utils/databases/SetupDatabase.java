@@ -2,7 +2,7 @@ package np.com.spirrotech.utils.databases;
 
 
 
-import np.com.spirrotech.config.Reference;
+import np.com.spirrotech.Reference;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -17,7 +17,7 @@ public class SetupDatabase {
     public static boolean setupDatabase() {
         try {
             Class.forName(DRIVER);
-            connection=DriverManager.getConnection(Reference.SETUP_URL);
+            connection=DriverManager.getConnection(Reference.JDBC_URL);
             if(connection!=null) {
                 System.out.println("Connection Established");
                 if(createTable())

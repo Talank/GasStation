@@ -116,7 +116,7 @@ public class StoreCreditTransactionTask extends Tasks {
                     total+=transaction.getPrice();
 
                     storeCredit.setString(3,transaction.getVehicleNo());
-                    storeCredit.setString(5,new Precision().format(transaction.getVolume()));
+                    storeCredit.setFloat(5,transaction.getVolume());
 
                 }
                 storeCredit.addBatch();
