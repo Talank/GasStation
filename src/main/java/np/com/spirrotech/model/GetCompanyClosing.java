@@ -35,7 +35,7 @@ public class GetCompanyClosing {
                 resultSet.next();
                 total = (resultSet.getString(1) != null)? Float.parseFloat(resultSet.getString(1)): 0;
 
-                resultSet=getDetails.executeQuery("SELECT * FROM " + DatabaseHandler.generateTableName(model.getCompanyName()) + " WHERE DATE<'" + model.getExpireDate() + "' ORDER BY DATE ASC");
+                resultSet=getDetails.executeQuery("SELECT TRANSACTION_ID, TYPE, VEHICLE_NO, RATE, VOLUME, PRICE, DATE FROM " + DatabaseHandler.generateTableName(model.getCompanyName()) + " WHERE DATE<'" + model.getExpireDate() + "' ORDER BY DATE ASC");
             } else {//the company is not expired
 
                 //we get the entire data from the company table
@@ -43,7 +43,7 @@ public class GetCompanyClosing {
                 resultSet.next();
                 total = (resultSet.getString(1) != null)? Float.parseFloat(resultSet.getString(1)): 0;
 
-                resultSet=getDetails.executeQuery("SELECT * FROM "+DatabaseHandler.generateTableName(model.getCompanyName()) + " ORDER BY DATE ASC");
+                resultSet=getDetails.executeQuery("SELECT TRANSACTION_ID, TYPE, VEHICLE_NO, RATE, VOLUME, PRICE, DATE FROM "+DatabaseHandler.generateTableName(model.getCompanyName()) + " ORDER BY DATE ASC");
             }
 
             List<CreditDetailsModel> smallList=new ArrayList<>();

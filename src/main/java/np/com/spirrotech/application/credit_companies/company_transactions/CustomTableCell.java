@@ -225,38 +225,42 @@ public class CustomTableCell extends TableCell<CreditDetailsModel, String> {
 
     @Override
     public void startEdit() {
-        super.startEdit();
+        //skip the editing for the price field
+        if (!getTableColumn().getId().equals("price")) {
+            super.startEdit();
+            //initialize the text field
+            if (editField == null) {
+                createTextField();
+            }
 
-        //initialize the text field
-        if (editField == null) {
-            createTextField();
+            //load the formatted text in the text field
+            if (getTableColumn().getId().equals("date")) {
+                ParseNepaliDate parseNepaliDate = new ParseNepaliDate(getItem());
+                editField.setText(parseNepaliDate.getnYear() + "-" + parseNepaliDate.getnMonth() + "-" + parseNepaliDate.getnDay());
+            } else {
+                editField.setText(parseCellString());
+            }
+
+            try {
+                editField.textProperty().removeListener(changeListener);
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+
+            //check if the column is for numerical data, then add the field validators to the text field
+            if (getTableColumn().getId().equals("rate") || getTableColumn().getId().equals("quantity")) {
+                editField.textProperty().addListener(changeListener);
+            }
+
+            //set the current cell layout to the text field
+            setGraphic(editField);
+            setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+
+            //select all the data inside the text field
+            editField.selectAll();
         }
 
-        //load the formatted text in the text field
-        if (getTableColumn().getId().equals("date")) {
-            ParseNepaliDate parseNepaliDate = new ParseNepaliDate(getItem());
-            editField.setText(parseNepaliDate.getnYear() + "-" + parseNepaliDate.getnMonth() + "-" + parseNepaliDate.getnDay());
-        } else {
-            editField.setText(parseCellString());
-        }
 
-        try {
-            editField.textProperty().removeListener(changeListener);
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
-
-        //check if the column is for numerical data, then add the field validators to the text field
-        if (getTableColumn().getId().equals("rate") || getTableColumn().getId().equals("quantity")) {
-            editField.textProperty().addListener(changeListener);
-        }
-
-        //set the current cell layout to the text field
-        setGraphic(editField);
-        setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-
-        //select all the data inside the text field
-        editField.selectAll();
     }
 
     @Override
@@ -283,24 +287,30 @@ public class CustomTableCell extends TableCell<CreditDetailsModel, String> {
         } else {
             //the current cell is being edited
             if (isEditing()) {
-                if (editField != null) {
 
-                    if (getTableColumn().getId().equals("date")) {
-                        ParseNepaliDate parseNepaliDate = new ParseNepaliDate(item);
-                        editField.setText(parseNepaliDate.getnYear() + "-" + parseNepaliDate.getnMonth() + "-" + parseNepaliDate.getnDay());
-                    } else {
-                        editField.setText(parseCellString());
+                //skip the price field , as it not editable
+                if (!getTableColumn().getId().equals("price")) {
+                    if (editField != null) {
+
+                        if (getTableColumn().getId().equals("date")) {
+                            ParseNepaliDate parseNepaliDate = new ParseNepaliDate(item);
+                            editField.setText(parseNepaliDate.getnYear() + "-" + parseNepaliDate.getnMonth() + "-" + parseNepaliDate.getnDay());
+                        } else {
+                            editField.setText(parseCellString());
+                        }
+
+
                     }
 
-
+                    setGraphic(editField);
+                    setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
                 }
 
-                setGraphic(editField);
-                setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+
             } else {
 
                 //check if the column is for numerical data, then convert the data by adding comma
-                if (getTableColumn().getId().equals("rate") || getTableColumn().getId().equals("quantity")) {
+                if (getTableColumn().getId().equals("rate") || getTableColumn().getId().equals("quantity") || getTableColumn().getId().equals("price")) {
                     item = priceFormat.format(precision.format(Float.parseFloat(item)));
                 }
 

@@ -37,7 +37,7 @@ public class GetCompanyDetailsTask extends Tasks {
 
 
             //select all the data from the table name
-            resultSet=getDetails.executeQuery("SELECT * FROM "+tableName);
+            resultSet=getDetails.executeQuery("SELECT ID, TRANSACTION_ID, TYPE, VEHICLE_NO, RATE, VOLUME, PRICE, DATE FROM "+tableName);
 
             List<CreditDetailsModel> smallList=new ArrayList<>();
             int  i=1;//index used to group the transactions having same TransactionID
@@ -55,22 +55,26 @@ public class GetCompanyDetailsTask extends Tasks {
                     mainList.clear();//clear the mainList (free memory)
                     break;
                 } else {
-                    if(i==resultSet.getInt(1)) {
+                    if(i==resultSet.getInt(2)) {
 
-                        if(resultSet.getString(2).startsWith("D")||resultSet.getString(2).startsWith("P")) {//the row is for oil transaction
+                        if(resultSet.getString(3).startsWith("D")||resultSet.getString(3).startsWith("P")) {//the row is for oil transaction
 
 
                             //add the data to smallList
-                            model = new CreditDetailsModel(resultSet.getString(3),resultSet.getString(2),generator.convertDate(resultSet.getDate(7)),resultSet.getString(5),resultSet.getString(6),resultSet.getString(4));
-                            model.setTransactionID(resultSet.getInt(1));
-                            model.setSqlDate(resultSet.getDate(7));
+                            model = new CreditDetailsModel(resultSet.getString(4),resultSet.getString(3),generator.convertDate(resultSet.getDate(8)),resultSet.getString(6),resultSet.getString(7),resultSet.getString(5));
+                            //store the primary key
+                            model.setPrimaryID(resultSet.getInt(1));
+                            model.setTransactionID(resultSet.getInt(2));
+                            model.setSqlDate(resultSet.getDate(8));
                             smallList.add(model);
                         } else {
 
                             //add the data to smallList
-                            model = new CreditDetailsModel("XXXX",resultSet.getString(2),generator.convertDate(resultSet.getDate(7)),String.valueOf(resultSet.getInt(5)),resultSet.getString(6),resultSet.getString(4));
-                            model.setTransactionID(resultSet.getInt(1));
-                            model.setSqlDate(resultSet.getDate(7));
+                            model = new CreditDetailsModel("XXXX",resultSet.getString(3),generator.convertDate(resultSet.getDate(8)),String.valueOf(resultSet.getInt(6)),resultSet.getString(7),resultSet.getString(5));
+                            //store the primary key
+                            model.setPrimaryID(resultSet.getInt(1));
+                            model.setTransactionID(resultSet.getInt(2));
+                            model.setSqlDate(resultSet.getDate(8));
                             smallList.add(model);
                         }
 
@@ -84,17 +88,21 @@ public class GetCompanyDetailsTask extends Tasks {
                         smallList=new ArrayList<>(); //create a new ArrayList()
 
                         //we are adding the result to the smallList, because we are in the iteration and , there is data in the current iteration
-                        if(resultSet.getString(2).startsWith("D")||resultSet.getString(2).startsWith("P")) {
+                        if(resultSet.getString(3).startsWith("D")||resultSet.getString(3).startsWith("P")) {
 
-                            model = new CreditDetailsModel(resultSet.getString(3),resultSet.getString(2),generator.convertDate(resultSet.getDate(7)),resultSet.getString(5),resultSet.getString(6),resultSet.getString(4));
-                            model.setTransactionID(resultSet.getInt(1));
-                            model.setSqlDate(resultSet.getDate(7));
+                            model = new CreditDetailsModel(resultSet.getString(4),resultSet.getString(3),generator.convertDate(resultSet.getDate(8)),resultSet.getString(6),resultSet.getString(7),resultSet.getString(5));
+                            //store the primary key
+                            model.setPrimaryID(resultSet.getInt(1));
+                            model.setTransactionID(resultSet.getInt(2));
+                            model.setSqlDate(resultSet.getDate(8));
                             smallList.add(model);
                         } else {
 
-                            model = new CreditDetailsModel("XXXX",resultSet.getString(2),generator.convertDate(resultSet.getDate(7)),String.valueOf(resultSet.getInt(5)),resultSet.getString(6),resultSet.getString(4));
-                            model.setTransactionID(resultSet.getInt(1));
-                            model.setSqlDate(resultSet.getDate(7));
+                            model = new CreditDetailsModel("XXXX",resultSet.getString(3),generator.convertDate(resultSet.getDate(8)),String.valueOf(resultSet.getInt(6)),resultSet.getString(7),resultSet.getString(5));
+                            //store the primary key
+                            model.setPrimaryID(resultSet.getInt(1));
+                            model.setTransactionID(resultSet.getInt(2));
+                            model.setSqlDate(resultSet.getDate(8));
                             smallList.add(model);
                         }
                         create=false;

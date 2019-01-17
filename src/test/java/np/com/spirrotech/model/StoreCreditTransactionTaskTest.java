@@ -23,19 +23,19 @@ public class StoreCreditTransactionTaskTest {
         ArrayList<Transaction> transactions;
         StoreCreditTransactionTask task;
 
-        DebtListModel model = new DebtListModel("ABC", "0", 1, 0, 0, 0,"9444111");
+        DebtListModel model = new DebtListModel("Sujal Diary", "0", 1, 0, 0, 0,"9444111");
         LocalDate localDate;
 
         Tasks.setupConnection();
         SystemStatus.setCurrentDate(Date.valueOf(LocalDate.of(2018, 9, 1)));
-        localDate = LocalDate.of(2018, 9, 1);
+        localDate = LocalDate.of(2018, 11, 10);
 
         Transaction.setName(model.getCompanyName());
 
         int j, k, l, m;
 
         for (int i = 0; i < 1; i++) {
-            j = (int) (Math.random() * 1 + 4);//select the no of rows to be added to the company table
+            j = (int) (Math.random() * 1 + 15);//select the no of rows to be added to the company table
             for (k = 0; k < j; k++) {
                 l = (int) (Math.random() * 1 + 5);//set the no of transaction within the Transaction
                 transactions = new ArrayList<>();
@@ -69,7 +69,7 @@ public class StoreCreditTransactionTaskTest {
                     Date transactionDate;
                     transactionDate = SystemStatus.getCurrentDate();
 
-                    PreparedStatement storeCredit = Tasks.getConnection().prepareStatement("INSERT INTO " + tableName + " VALUES(?,?,?,?,?,?,?)");
+                    PreparedStatement storeCredit = Tasks.getConnection().prepareStatement("INSERT INTO " + tableName + "(TRANSACTION_ID, TYPE, VEHICLE_NO, RATE, VOLUME, PRICE, DATE) VALUES(?,?,?,?,?,?,?)");
 
                     for (Transaction transactionses : transactions) {
 

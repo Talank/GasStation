@@ -1,5 +1,6 @@
 package np.com.spirrotech.dao;
 
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 import java.sql.Date;
@@ -7,9 +8,11 @@ import java.sql.Date;
 public class CreditDetailsModel {
     private SimpleStringProperty vehicleNo, itemName,date,volume,price,rate;
 
+    private SimpleIntegerProperty sn;
+
     private Date sqlDate;
 
-    private int transactionID;
+    private int transactionID, primaryID;
 
     public CreditDetailsModel(String vehicleNo, String itemName, String date, String volume, String price, String rate) {
         this.vehicleNo = new SimpleStringProperty(vehicleNo);
@@ -18,6 +21,7 @@ public class CreditDetailsModel {
         this.volume = new SimpleStringProperty(volume);
         this.price = new SimpleStringProperty(price);
         this.rate= new SimpleStringProperty(rate);
+        this.sn = new SimpleIntegerProperty();
     }
 
     public Date getSqlDate() {
@@ -50,6 +54,27 @@ public class CreditDetailsModel {
 
     public SimpleStringProperty volumeProperty() {
         return volume;
+    }
+
+    public int getSn() {
+        return sn.get();
+    }
+
+    public SimpleIntegerProperty snProperty() {
+        return sn;
+    }
+
+    public void setSn(int sn) {
+        this.sn.set(sn);
+    }
+
+    public int getPrimaryID() {
+        return primaryID;
+    }
+
+    public void setPrimaryID(int primaryID) {
+        this.primaryID = primaryID;
+        this.sn.set(primaryID);
     }
 
     public SimpleStringProperty priceProperty() {

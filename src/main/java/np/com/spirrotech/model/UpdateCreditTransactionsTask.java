@@ -35,17 +35,13 @@ public class UpdateCreditTransactionsTask extends Tasks {
             switch (status) {
                 //this is case when either rate or volume is changed, so we need to modify the company's total amount
                 case 0:
-                    update =connection.prepareStatement("UPDATE " + DatabaseHandler.generateTableName(companyName) + " SET RATE=?, VOLUME=?, PRICE=?, DATE=? WHERE TRANSACTION_ID=? AND TYPE=? AND RATE=? AND VOLUME=? AND PRICE=?");
+                    update =connection.prepareStatement("UPDATE " + DatabaseHandler.generateTableName(companyName) + " SET RATE=?, VOLUME=?, PRICE=?, DATE=? WHERE ID=?");
 
                     update.setFloat(1, Float.parseFloat(newModel.getRate()));
                     update.setFloat(2, Float.parseFloat(newModel.getVolume()));
                     update.setFloat(3, Float.parseFloat(newModel.getPrice()));
                     update.setDate(4, newModel.getSqlDate());
-                    update.setInt(5, newModel.getTransactionID());
-                    update.setString(6, oldModel.getItemName());
-                    update.setFloat(7, Float.parseFloat(oldModel.getRate()));
-                    update.setFloat(8, Float.parseFloat(oldModel.getVolume()));
-                    update.setFloat(9, Float.parseFloat(oldModel.getPrice()));
+                    update.setInt(5, newModel.getPrimaryID());
 
                     update.execute();
                     //update the new total in the credit company
@@ -64,6 +60,7 @@ public class UpdateCreditTransactionsTask extends Tasks {
 
                     //this is the case when we need to update the date of the company
                 case 1:
+                    //this query changes the transaction date of the entire entries in the transactions
                     update =connection.prepareStatement("UPDATE " + DatabaseHandler.generateTableName(companyName) + " SET DATE=? WHERE TRANSACTION_ID=?");
 
                     update.setDate(1, newModel.getSqlDate());
@@ -75,31 +72,22 @@ public class UpdateCreditTransactionsTask extends Tasks {
                     break;
                     //this is the normal case
                 case 2:
-                    update = connection.prepareStatement("UPDATE " + DatabaseHandler.generateTableName(companyName) + " SET TYPE=?,VEHICLE_NO=? WHERE TRANSACTION_ID=? AND TYPE=? AND RATE=? AND VOLUME=? AND PRICE=?");
+                    update = connection.prepareStatement("UPDATE " + DatabaseHandler.generateTableName(companyName) + " SET TYPE=?,VEHICLE_NO=? WHERE ID=?");
 
                     update.setString(1, newModel.getItemName());
                     update.setString(2, newModel.getVehicleNo());
-                    update.setInt(3, newModel.getTransactionID());
-                    update.setString(4, oldModel.getItemName());
-                    update.setFloat(5, Float.parseFloat(oldModel.getRate()));
-                    update.setFloat(6, Float.parseFloat(oldModel.getVolume()));
-                    update.setFloat(7, Float.parseFloat(oldModel.getPrice()));
+                    update.setInt(3, newModel.getPrimaryID());
 
                     update.execute();
                     break;
 
                     //case 3 is for changing itemName, rate and price
                 case 3:
-                    update = connection.prepareStatement("UPDATE " + DatabaseHandler.generateTableName(companyName) + " SET TYPE=?,RATE=?,PRICE=? WHERE TRANSACTION_ID=? AND TYPE=? AND VEHICLE_NO=? AND RATE=? AND VOLUME=? AND PRICE=?");
+                    update = connection.prepareStatement("UPDATE " + DatabaseHandler.generateTableName(companyName) + " SET TYPE=?,RATE=?,PRICE=? WHERE ID=?");
                     update.setString(1, newModel.getItemName());
                     update.setFloat(2, Float.parseFloat(newModel.getRate()));
                     update.setFloat(3, Float.parseFloat(newModel.getPrice()));
-                    update.setInt(4, newModel.getTransactionID());
-                    update.setString(5, oldModel.getItemName());
-                    update.setString(6, oldModel.getVehicleNo());
-                    update.setFloat(7, Float.parseFloat(oldModel.getRate()));
-                    update.setFloat(8, Float.parseFloat(oldModel.getVolume()));
-                    update.setFloat(9, Float.parseFloat(oldModel.getPrice()));
+                    update.setInt(4, newModel.getPrimaryID());
 
                     update.execute();
                     break;

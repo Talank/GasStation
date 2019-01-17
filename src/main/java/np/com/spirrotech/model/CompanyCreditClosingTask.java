@@ -48,15 +48,15 @@ public class CompanyCreditClosingTask extends Tasks {
 
                 deleteCredit.execute();
 
-                //Configure the cursor to be updatable
+                //Configure the cursor to be update
 
                 Statement getResults=connection.createStatement(ResultSet.TYPE_FORWARD_ONLY,ResultSet.CONCUR_UPDATABLE);
-                ResultSet totalResult=getResults.executeQuery("SELECT TRANSACTION_ID,PRICE FROM "+tableName);
+                ResultSet totalResult=getResults.executeQuery("SELECT TRANSACTION_ID,PRICE, ID FROM "+tableName);
 
                 //new parameters to be applied to the data existing in the table after expiry period
                 //i.e we start from 0 and transactions having same id are given same number(i.e 0) and the number is incremented when the transaction id differs (i.e another transaction)
 
-                int lastTransaction=1,prevID=0,currentID;
+                int lastTransaction=1,prevID=0,currentID, primaryID = 1;
                 float total=0;
 
                 //read the first data row to initialize and apply to the next while loop
@@ -65,6 +65,7 @@ public class CompanyCreditClosingTask extends Tasks {
                     prevID=totalResult.getInt(1);
                     total+=totalResult.getFloat(2);
                     totalResult.updateInt(1,lastTransaction);//begin from remaining the transaction from 1 and then increment afterward for others transaction not in the same session
+                    totalResult.updateInt(3, primaryID++);//update the primary key of the company table
                     totalResult.updateRow();
                 }
 
@@ -73,7 +74,6 @@ public class CompanyCreditClosingTask extends Tasks {
                 while(totalResult.next()) {
 
                     //get the current transaction id of the row
-
                     currentID=totalResult.getInt(1);
 
                     // if prevID and currentID are equal, then all the transactions are the part of the same session, so we need not update the currentID
@@ -86,13 +86,19 @@ public class CompanyCreditClosingTask extends Tasks {
 
                     total+=totalResult.getFloat(2);
                     totalResult.updateInt(1,lastTransaction);
+                    totalResult.updateInt(3, primaryID++);
                     totalResult.updateRow();
                 }
 
-                //Update the lastTransaction and store it in Transaction_ID of creditCompany table so, next transactions can start from there
+
 
                 lastTransaction++;
 
+                //reset the primary key of the company to start from the current PrimaryID value
+                deleteCredit=connection.prepareStatement("ALTER TABLE " + DatabaseHandler.generateTableName(model.getCompanyName()) + " ALTER COLUMN ID RESTART WITH " + primaryID);
+                deleteCredit.execute();
+
+                //Update the lastTransaction and store it in Transaction_ID of creditCompany table so, next transactions can start from there
                 deleteCredit=connection.prepareStatement("UPDATE CreditCompany SET DUE=DUE+TOTAL-?,TOTAL=?,TRANSACTION_ID=?,PREV_TRANSACTION_ID=? WHERE COMPANY_NAME=?");
                 deleteCredit.setFloat(1,total);
                 deleteCredit.setFloat(2,total);
@@ -101,6 +107,8 @@ public class CompanyCreditClosingTask extends Tasks {
                 deleteCredit.setString(5,model.getCompanyName());
 
                 deleteCredit.execute();
+
+
 
                 totalResult.close();
                 getResults.close();
@@ -123,6 +131,9 @@ public class CompanyCreditClosingTask extends Tasks {
 
                 Statement delete=connection.createStatement();
                 delete.execute("DELETE FROM "+tableName);
+
+                //reset the auto increment primary key
+                delete.execute("ALTER TABLE " + DatabaseHandler.generateTableName(model.getCompanyName()) + " ALTER COLUMN ID RESTART WITH 1");
 
                 PreparedStatement updateCreditCompany=connection.prepareStatement("UPDATE CreditCompany SET DUE=DUE+TOTAL,TOTAL=0.0,TRANSACTION_ID=?,PREV_TRANSACTION_ID=? WHERE company_name=?");
                 updateCreditCompany.setInt(1,1);
