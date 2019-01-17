@@ -1,7 +1,10 @@
 package np.com.spirrotech.application.settings;
 
 import com.jfoenix.controls.JFXListView;
+import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.validation.RequiredFieldValidator;
 import javafx.application.Platform;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.WorkerStateEvent;
@@ -13,9 +16,14 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import np.com.spirrotech.application.credit_companies.companies_list.CreditCompanyListCell;
+import np.com.spirrotech.application.credit_companies.company_transactions.CreditCompanyDetailsController;
+import np.com.spirrotech.application.home.AppHomeController;
 import np.com.spirrotech.application.settings.dialogs.change_counter_stock.CounterStockDialogController;
 import np.com.spirrotech.application.settings.dialogs.change_oil_rates.ChangeRateController;
 import np.com.spirrotech.application.settings.dialogs.change_oil_stock.OilStockDialogController;
@@ -43,6 +51,7 @@ import np.com.spirrotech.utils.tasks.TaskManager;
 import np.com.spirrotech.utils.tasks.Tasks;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 
 /*
@@ -58,6 +67,10 @@ public class SettingsController {
 //  List to hold all the associated companies
     @FXML
     private JFXListView<DebtListModel> debtList;
+
+    private ArrayList<DebtListModel> companyList;
+
+    private ObservableList<DebtListModel> observableList;
 
     @FXML
     private Label petrolStockValue,dieselStockValue,petrolStockDate,dieselStockDate,counterStockDate,
@@ -86,6 +99,9 @@ public class SettingsController {
     }
 
     private String[][] model=null;
+
+    @FXML
+    private JFXTextField searchCompany;
 
     @FXML
     public void initialize() {
@@ -128,6 +144,45 @@ public class SettingsController {
         });
 
         TaskManager.getInstance().executeInstantTask(task);
+
+
+
+
+
+
+        //Validate the input and initialize the debt list
+        RequiredFieldValidator itemNameValidator=new RequiredFieldValidator();
+        itemNameValidator.setMessage("Company name cannot be empty");
+        searchCompany.getValidators().add(itemNameValidator);
+
+
+        searchCompany.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)->{
+            if(!newValue.matches("[a-zA-Z ]*")) {
+                searchCompany.setText(oldValue);
+            } else {
+                if(newValue.isEmpty()) {
+                    searchCompany.validate();
+                } else {
+                    searchCompany.resetValidation();
+                }
+            }
+        });
+
+        //initialize the company list
+
+        companyList = new ArrayList<>();
+
+        //make shallow copy of the list, so that we can independently manipulate the list
+        for (DebtListModel model : CreditCompanyList.getDetailCompanyList()) {
+            companyList.add(model);
+        }
+
+        observableList = FXCollections.observableList(companyList);
+
+
+        debtList.setItems(observableList);
+
+
 
     }
 
@@ -467,6 +522,53 @@ public class SettingsController {
 
     public static SettingsController getInstance() {
         return instance;
+    }
+
+
+
+
+
+    /**
+     *Called in every key press
+     */
+    @FXML
+    void findCompany(KeyEvent event) {
+
+        if (searchCompany.getText().isEmpty()){
+            searchAndAddCompany((""));
+            return;
+        }
+
+        //get the current character
+        if (event.getCharacter().equals("\b") && searchCompany.getText().equals("")) {//check if backspace is pressed and the search field is empty i.e. it is completely cleared, then load all the company list
+            searchAndAddCompany("");
+        } else if (event.getCharacter().equals("\b")) {// if only backspace is pressed then search excluding the backspace
+            searchAndAddCompany(searchCompany.getText());
+        } else {//if other keys are pressed then take into account the current TextField data and the current key press
+            searchAndAddCompany(searchCompany.getText() + event.getCharacter());//when this event is fired, the TextField.getText() returns character excluding this key press as, it is slow to respond, so take into account current key press
+        }
+
+    }
+
+
+
+    private void searchAndAddCompany(String text) {
+
+        debtList.setItems(null);//clear the list
+
+        companyList.clear();//clear the array list
+
+        for (DebtListModel model : CreditCompanyList.getDetailCompanyList()) {//loop through all the companies
+            //if (model.getCompanyName().startsWith(text)) {//text match
+            if (model.getCompanyName().toLowerCase().contains(text.toLowerCase())) {//text match
+                companyList.add(model);//add to the model
+            } else {// no text match
+                companyList.remove(model);//remove from the list
+            }
+        }
+
+        debtList.setItems(observableList);//refresh the list
+
     }
 
 }
