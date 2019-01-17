@@ -9,6 +9,7 @@ import np.com.spirrotech.dao.DebtListModel;
 import np.com.spirrotech.dao.SystemStatus;
 import np.com.spirrotech.utils.databases.DatabaseHandler;
 import np.com.spirrotech.dao.transaction_model.Transaction;
+import np.com.spirrotech.utils.nepaliPriceFormat.Precision;
 import np.com.spirrotech.utils.tasks.Tasks;
 
 import java.sql.*;
@@ -73,6 +74,7 @@ public class StoreCreditTransactionTask extends Tasks {
 
             for(Transaction transaction:instantTransaction) {
 
+
                 storeCredit.setInt(1,model.getTransactionID());
                 storeCredit.setString(2,transaction.getType());
                 storeCredit.setFloat(4,transaction.getRate());
@@ -114,7 +116,7 @@ public class StoreCreditTransactionTask extends Tasks {
                     total+=transaction.getPrice();
 
                     storeCredit.setString(3,transaction.getVehicleNo());
-                    storeCredit.setFloat(5,transaction.getVolume());
+                    storeCredit.setString(5,new Precision().format(transaction.getVolume()));
 
                 }
                 storeCredit.addBatch();

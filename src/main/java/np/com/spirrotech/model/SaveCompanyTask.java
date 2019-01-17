@@ -7,6 +7,7 @@ import np.com.spirrotech.library.SnackBarToastGenerator;
 import np.com.spirrotech.dao.DebtListModel;
 import np.com.spirrotech.dao.SystemStatus;
 import np.com.spirrotech.utils.databases.DatabaseHandler;
+import np.com.spirrotech.utils.nepaliPriceFormat.Precision;
 import np.com.spirrotech.utils.tasks.Tasks;
 
 import java.sql.*;
@@ -58,7 +59,7 @@ public class SaveCompanyTask extends Tasks {
             insertCompany.setDate(3,SystemStatus.getCurrentDate());
             insertCompany.setInt(4,0);
             insertCompany.setString(5,creditCycle);
-            insertCompany.setFloat(6,due);
+            insertCompany.setString(6,new Precision().format(due));
             insertCompany.setFloat(7,0);
             insertCompany.setDate(8,SystemStatus.getCurrentDate());
             insertCompany.setFloat(9,0);
