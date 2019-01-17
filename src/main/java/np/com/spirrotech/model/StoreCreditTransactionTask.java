@@ -69,7 +69,7 @@ public class StoreCreditTransactionTask extends Tasks {
                 transactionDate=SystemStatus.getCurrentDate();
             }
 
-            PreparedStatement storeCredit=connection.prepareStatement("INSERT INTO "+tableName+" VALUES(?,?,?,?,?,?,?)");
+            PreparedStatement storeCredit=connection.prepareStatement("INSERT INTO "+tableName+"(TRANSACTION_ID, TYPE, VEHICLE_NO, RATE, VOLUME, PRICE, DATE) VALUES(?,?,?,?,?,?,?)");
 
             for(Transaction transaction:instantTransaction) {
 
