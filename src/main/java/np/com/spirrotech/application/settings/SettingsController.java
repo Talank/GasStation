@@ -155,7 +155,7 @@ public class SettingsController {
 
         //Validate the input and initialize the debt list
         RequiredFieldValidator itemNameValidator=new RequiredFieldValidator();
-        itemNameValidator.setMessage("Company name cannot be empty");
+        //itemNameValidator.setMessage("Company name cannot be empty");
         searchCompany.getValidators().add(itemNameValidator);
 
 
