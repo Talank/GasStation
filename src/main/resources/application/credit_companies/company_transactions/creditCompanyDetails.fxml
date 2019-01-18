@@ -14,7 +14,7 @@
 <?import np.com.spirrotech.library.toolbar.ToolBar?>
 <?import np.com.spirrotech.library.output_task_loading.OutputTaskLoading?>
 
-<BorderPane xmlns="http://javafx.com/javafx/8.0.162-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="np.com.spirrotech.application.credit_companies.company_transactions.CreditCompanyDetailsController">
+<BorderPane xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="np.com.spirrotech.application.credit_companies.company_transactions.CreditCompanyDetailsController">
    <top>
 
        <ToolBar fx:id="toolBar"/>
@@ -23,11 +23,11 @@
     <center>
       <StackPane BorderPane.alignment="CENTER">
          <children>
-            <VBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+            <HBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" StackPane.alignment="CENTER_LEFT">
                <children>
-                  <TableView fx:id="detailsTableView" editable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" stylesheets="@../../../css/tableView.css" VBox.vgrow="ALWAYS">
+                  <TableView fx:id="detailsTableView" editable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" stylesheets="@../../../css/tableView.css" HBox.hgrow="ALWAYS">
                      <columns>
-                        <TableColumn fx:id="sn" editable="false" maxWidth="-1.0" minWidth="50.0" prefWidth="-1.0" text="S.N" />
+                        <TableColumn fx:id="sn" editable="false" maxWidth="-1.0" minWidth="50.0" prefWidth="-1.0" style="-fx-padding: 0 0 0 5;" text="S.N" />
                         <TableColumn fx:id="itemName" minWidth="100.0" prefWidth="100.0" text="Item Name" />
                         <TableColumn fx:id="vehicleNo" minWidth="100.0" prefWidth="100.0" text="Vehicle NO" />
                         <TableColumn fx:id="rate" minWidth="100.0" prefWidth="100.0" text="Rate" />
@@ -38,8 +38,11 @@
                      <columnResizePolicy>
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                      </columnResizePolicy>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
                   </TableView>
-                  <HBox alignment="CENTER" VBox.vgrow="NEVER">
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="NEVER">
                      <children>
                         <JFXButton buttonType="RAISED" onMouseClicked="#deleteTransaction" prefHeight="80.0" prefWidth="80.0">
                            <stylesheets>
@@ -53,12 +56,9 @@
                            </styleClass>
                         </JFXButton>
                      </children>
-                     <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </padding>
-                  </HBox>
+                  </VBox>
                </children>
-            </VBox>
+            </HBox>
             <OutputTaskLoading fx:id="progressLayout" />
          </children>
       </StackPane>
