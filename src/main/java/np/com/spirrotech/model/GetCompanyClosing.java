@@ -27,7 +27,6 @@ public class GetCompanyClosing {
 
         try {
             Statement getDetails= Tasks.getConnection().createStatement();
-
             ResultSet resultSet;
             //check if the company is expired
             if (model.isExpired()) {//the company is expired
