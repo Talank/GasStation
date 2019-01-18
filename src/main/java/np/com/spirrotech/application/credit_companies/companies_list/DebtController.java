@@ -61,7 +61,14 @@ public class DebtController {
     public void initialize() {
 
         toolBar.setTitle("Credit Company Lists");
-        toolBar.setBackPath(SystemStatus.getMainHomePath());
+
+        //set the listener to the back button click
+        toolBar.setBackButtonInterface(() -> {
+            BorderPane borderPane=FXMLLoader.load(getClass().getClassLoader().getResource(SystemStatus.getMainHomePath()));
+            AppHomeController.getInstance().loadStages(borderPane);
+        });
+
+      //  toolBar.setBackPath(SystemStatus.getMainHomePath());
 
         debtList.setCellFactory(lv->new CreditCompanyListCell());
         debtList.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);

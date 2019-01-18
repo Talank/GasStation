@@ -21,8 +21,10 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import np.com.spirrotech.application.credit_companies.company_transactions.CreditCompanyDetailsController;
 import np.com.spirrotech.application.home.AppHomeController;
 
+import np.com.spirrotech.library.toolbar.BackButtonInterface;
 import np.com.spirrotech.library.toolbar.ToolBar;
 
 import np.com.spirrotech.dao.CreditCompanyList;
@@ -110,8 +112,12 @@ public class CreditBillingController {
     public void initialize() {
         instance=this;
 
-        toolBar.setBackPath(SystemStatus.getMainHomePath());
         toolBar.setTitle("Credit Billing");
+
+        toolBar.setBackButtonInterface(() -> {
+            BorderPane borderPane=FXMLLoader.load(getClass().getClassLoader().getResource(SystemStatus.getMainHomePath()));
+            AppHomeController.getInstance().loadStages(borderPane);
+        });
 
         snackBar =new JFXSnackbar(root);
 
@@ -761,6 +767,37 @@ public class CreditBillingController {
         } else {
             AppHomeController.getInstance().showMessage("No Transaction Detected",1000);
         }
+    }
+
+
+    /**
+     * This functions set the back path that needs to be executed when the back button is pressed
+     * This is used in the case, when the user directly jumps to credit billing from the credit details company table
+     */
+    public void loadForCompanyDetails(String companyName) {
+
+        //make the current company selection
+        ArrayList<String> companyList = new ArrayList<>();
+        companyList.add(companyName);
+        this.companyName.setItems(FXCollections.observableList(companyList));//load the empty  list , as we only want this current company to be visible
+        this.companyName.setValue(companyList.get(0));
+
+
+        //override the back button behaviour when loaded from the creditCompanyDetailsController
+        toolBar.setBackButtonInterface(() -> {
+
+            //get the controller from the fxml loader
+            FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("application/credit_companies/company_transactions/creditCompanyDetails.fxml"));
+
+            BorderPane borderPane=loader.load();
+
+            AppHomeController.getInstance().loadStages(borderPane);
+
+            //set the company name , so the controller can load the data from the database
+            CreditCompanyDetailsController controller=loader.getController();
+            controller.setParameters(companyName);
+        });
+
     }
 
 }

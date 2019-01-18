@@ -19,12 +19,14 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
+import np.com.spirrotech.application.home.AppHomeController;
 import np.com.spirrotech.application.profit_loss.dialogs.refill.RefillDialogController;
 import np.com.spirrotech.application.profit_loss.dialogs.tanker_check.TankRemarkController;
 import np.com.spirrotech.library.output_task_loading.OutputTaskLoading;
@@ -50,7 +52,7 @@ import java.util.ArrayList;
 *
 * */
 
-public class ProfitLossController implements BackButtonInterface {
+public class ProfitLossController {
 
     @FXML
     private JFXButton reFill;
@@ -140,8 +142,14 @@ public class ProfitLossController implements BackButtonInterface {
     public void initialize() {
 
         toolBar.setTitle("ReFill Management");
-        toolBar.setBackPath(SystemStatus.getMainHomePath());
-        toolBar.addBackButtonInterface(this);
+        toolBar.setBackButtonInterface(() -> {
+
+            if(task!=null)
+                task.setCancelled(true);
+
+            BorderPane borderPane=FXMLLoader.load(getClass().getClassLoader().getResource(SystemStatus.getMainHomePath()));
+            AppHomeController.getInstance().loadStages(borderPane);
+        });
 
         precision = new Precision();
         priceFormat = new PriceFormat();
@@ -404,11 +412,6 @@ public class ProfitLossController implements BackButtonInterface {
 
     }
 
-    @Override
-    public void cleanUp() {
-        if(task!=null)
-            task.setCancelled(true);
-    }
 
     public void addDieselModel(RefillModel model) {
         dieselTable.setItems(null);

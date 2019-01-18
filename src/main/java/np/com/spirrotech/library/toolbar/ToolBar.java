@@ -21,8 +21,6 @@ public class ToolBar extends GridPane {
 
     private BackButtonInterface backButtonInterface;
 
-    private String backPath;
-
     public ToolBar() {
         backButtonInterface=null;
         FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("library/toolbar/toolbar.fxml"));
@@ -36,7 +34,7 @@ public class ToolBar extends GridPane {
     }
 
 
-    public void addBackButtonInterface(BackButtonInterface backButtonInterface) {
+    public void setBackButtonInterface(BackButtonInterface backButtonInterface) {
         this.backButtonInterface=backButtonInterface;
     }
 
@@ -44,17 +42,10 @@ public class ToolBar extends GridPane {
         toolbarTitle.setText(title);
     }
 
-    public void setBackPath(String path) {
-        backPath=path;
-    }
-
     @FXML
     public void backToPath(MouseEvent e) throws IOException {
         if(backButtonInterface!=null)
-            backButtonInterface.cleanUp();
-
-        BorderPane borderPane=FXMLLoader.load(getClass().getClassLoader().getResource(backPath));
-        AppHomeController.getInstance().loadStages(borderPane);
+            backButtonInterface.backButtonPressed();
 
     }
 

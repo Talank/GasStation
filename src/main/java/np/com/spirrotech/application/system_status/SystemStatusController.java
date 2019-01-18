@@ -4,8 +4,11 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.layout.BorderPane;
+import np.com.spirrotech.application.home.AppHomeController;
 import np.com.spirrotech.library.NoSelectionModel;
 import np.com.spirrotech.library.output_task_loading.OutputTaskLoading;
 import np.com.spirrotech.library.toolbar.BackButtonInterface;
@@ -21,7 +24,7 @@ import np.com.spirrotech.utils.tasks.TaskManager;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-public class SystemStatusController implements BackButtonInterface {
+public class SystemStatusController {
 
     @FXML
     private Label systemDate;
@@ -57,8 +60,15 @@ public class SystemStatusController implements BackButtonInterface {
     public void initialize() {
 
         toolBar.setTitle("System Status");
-        toolBar.setBackPath(SystemStatus.getMainHomePath());
-        toolBar.addBackButtonInterface(this);
+        toolBar.setBackButtonInterface(() -> {
+
+            if(task!=null) {
+                task.setCancelled(true);
+            }
+
+            BorderPane borderPane= FXMLLoader.load(getClass().getClassLoader().getResource(SystemStatus.getMainHomePath()));
+            AppHomeController.getInstance().loadStages(borderPane);
+        });
 
         precision = new Precision();
 
@@ -116,10 +126,4 @@ public class SystemStatusController implements BackButtonInterface {
 
     }
 
-    @Override
-    public void cleanUp() {
-        if(task!=null) {
-            task.setCancelled(true);
-        }
-    }
 }

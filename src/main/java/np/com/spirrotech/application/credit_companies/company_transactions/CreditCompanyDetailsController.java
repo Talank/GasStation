@@ -16,9 +16,11 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import np.com.spirrotech.application.credit_billing.CreditBillingController;
 import np.com.spirrotech.application.home.AppHomeController;
 import np.com.spirrotech.library.conformation_dialog.ConformationDialogController;
 import np.com.spirrotech.library.output_task_loading.OutputTaskLoading;
@@ -38,7 +40,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CreditCompanyDetailsController implements BackButtonInterface {
+public class CreditCompanyDetailsController {
 
     @FXML
     private ToolBar toolBar;
@@ -90,8 +92,15 @@ public class CreditCompanyDetailsController implements BackButtonInterface {
         task=null;
 
         toolBar.setTitle("Company Transactions");
-        toolBar.setBackPath("application/credit_companies/companies_list/debt.fxml");
-        toolBar.addBackButtonInterface(this);
+        toolBar.setBackButtonInterface(() -> {
+            if(task!=null)
+                //cancel the task
+                task.setCancelled(true);
+
+            //load the previous screen
+            BorderPane borderPane=FXMLLoader.load(getClass().getClassLoader().getResource("application/credit_companies/companies_list/debt.fxml"));
+            AppHomeController.getInstance().loadStages(borderPane);
+        });
 
         progressLayout.setVisible(true);
         detailsTableView.setVisible(false);
@@ -154,11 +163,30 @@ public class CreditCompanyDetailsController implements BackButtonInterface {
 
     }
 
-    @Override
-    public void cleanUp() {
-        if(task!=null)
-            //cancel the task
-            task.setCancelled(true);
+
+    /**
+     * Loads the credit billing layout
+     * @param event
+     * @throws IOException
+     */
+
+    @FXML
+    public void loadCreditBilling(MouseEvent event) throws IOException {
+
+        //load the credit billing controller
+
+
+        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("application/credit_billing/creditBilling.fxml"));
+        BorderPane borderPane = loader.load();
+        CreditBillingController controller = loader.getController();
+        controller.loadForCompanyDetails(companyName);
+
+        //load the credit biling layout
+        AppHomeController.getInstance().loadStages(borderPane);
+
+
+
+
     }
 
     @FXML
@@ -217,6 +245,8 @@ public class CreditCompanyDetailsController implements BackButtonInterface {
 
 
     }
+
+
 
     public void setParameters(String companyName) {
         this.companyName = companyName;

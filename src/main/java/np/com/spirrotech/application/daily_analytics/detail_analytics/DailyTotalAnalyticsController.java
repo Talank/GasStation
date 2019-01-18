@@ -15,11 +15,13 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
+import np.com.spirrotech.application.home.AppHomeController;
 import np.com.spirrotech.library.output_task_loading.OutputTaskLoading;
 import np.com.spirrotech.library.toolbar.BackButtonInterface;
 import np.com.spirrotech.library.toolbar.ToolBar;
@@ -48,7 +50,7 @@ import java.util.ArrayList;
 * */
 
 
-public class DailyTotalAnalyticsController implements BackButtonInterface {
+public class DailyTotalAnalyticsController {
 
     @FXML
     private TableView<DailyTotalAnalyticModel> tableView;
@@ -98,8 +100,14 @@ public class DailyTotalAnalyticsController implements BackButtonInterface {
     public void initialize() {
 
         toolBar.setTitle("Daily Analytics");
-        toolBar.setBackPath(SystemStatus.getMainHomePath());
-        toolBar.addBackButtonInterface(this);
+        toolBar.setBackButtonInterface(() -> {
+            //cancel the task if it is still running
+            if(task!=null)
+                task.setCancelled(true);
+
+            BorderPane borderPane=FXMLLoader.load(getClass().getClassLoader().getResource(SystemStatus.getMainHomePath()));
+            AppHomeController.getInstance().loadStages(borderPane);
+        });
 
         priceFormat = new PriceFormat();
         precision = new Precision();
@@ -268,11 +276,6 @@ public class DailyTotalAnalyticsController implements BackButtonInterface {
 
     }
 
-    @Override
-    public void cleanUp() {
-        if(task!=null)
-            task.setCancelled(true);
-    }
 
     /*
     * This Function is called when 'Close' Button is clicked

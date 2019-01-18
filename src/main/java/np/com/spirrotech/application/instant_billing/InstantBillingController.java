@@ -8,6 +8,7 @@ import com.jfoenix.validation.RequiredFieldValidator;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 
 import javafx.scene.input.MouseEvent;
@@ -99,8 +100,11 @@ public class InstantBillingController {
         Transaction.setTotal(0f);
 
 //      General Toolbar setting title and path for the back button
-        toolBar.setBackPath(SystemStatus.getMainHomePath());
         toolBar.setTitle("Instant Billing");
+        toolBar.setBackButtonInterface(() -> {
+            BorderPane borderPane= FXMLLoader.load(getClass().getClassLoader().getResource(SystemStatus.getMainHomePath()));
+            AppHomeController.getInstance().loadStages(borderPane);
+        });
 
 //      Set the Diesel as default selection
         diesel.setSelected(true);

@@ -107,7 +107,10 @@ public class SettingsController {
     public void initialize() {
 
         toolBar.setTitle("Settings");
-        toolBar.setBackPath(SystemStatus.getMainHomePath());
+        toolBar.setBackButtonInterface(() -> {
+            BorderPane borderPane=FXMLLoader.load(getClass().getClassLoader().getResource(SystemStatus.getMainHomePath()));
+            AppHomeController.getInstance().loadStages(borderPane);
+        });
 
         precision = new Precision();
         priceFormat = new PriceFormat();

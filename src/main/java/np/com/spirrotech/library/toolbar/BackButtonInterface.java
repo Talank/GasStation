@@ -1,6 +1,8 @@
 package np.com.spirrotech.library.toolbar;
 
+import java.io.IOException;
+
 public interface BackButtonInterface {
 
-    void cleanUp();
+    void backButtonPressed() throws IOException;
 }

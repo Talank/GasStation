@@ -2,7 +2,10 @@ package np.com.spirrotech.application.daily_analytics.today_closing;
 
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
+import javafx.scene.layout.BorderPane;
+import np.com.spirrotech.application.home.AppHomeController;
 import np.com.spirrotech.library.toolbar.ToolBar;
 import np.com.spirrotech.dao.SystemStatus;
 import np.com.spirrotech.model.TodayClosingTask;
@@ -34,7 +37,10 @@ public class DailyAnalyticsController {
     public void initialize() {
 
         toolBar.setTitle("Today Analytics");//title
-        toolBar.setBackPath("application/daily_analytics/detail_analytics/dailyTotalAnalytics.fxml");
+        toolBar.setBackButtonInterface(() -> {
+            BorderPane borderPane= FXMLLoader.load(getClass().getClassLoader().getResource("application/daily_analytics/detail_analytics/dailyTotalAnalytics.fxml"));
+            AppHomeController.getInstance().loadStages(borderPane);
+        });
 
         precision = new Precision();
         priceFormat = new PriceFormat();
