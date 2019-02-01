@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 
 
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.SelectionMode;
@@ -229,8 +230,14 @@ public class CreditCompanyDetailsController {
                 }
             });
 
-            //set the task to be performed on conformation
-            controller.setTask(task);
+            controller.setConformListener((e) -> {
+                //hide the dialog
+                ((Node)e.getSource()).getScene().getWindow().hide();
+
+
+                //execute the task
+                TaskManager.getInstance().executeTask(task);
+            });
 
             Stage stage=new Stage();
             stage.setTitle("Conformation");

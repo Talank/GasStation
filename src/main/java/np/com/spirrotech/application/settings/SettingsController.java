@@ -11,6 +11,8 @@ import javafx.concurrent.WorkerStateEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.print.PageLayout;
+import javafx.scene.Node;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -35,6 +37,7 @@ import np.com.spirrotech.application.settings.dialogs.edit_company.EditCompanyCo
 
 import np.com.spirrotech.library.SettingsConstants;
 import np.com.spirrotech.library.SnackBarToastGenerator;
+import np.com.spirrotech.library.conformation_dialog.ConformationDialogController;
 import np.com.spirrotech.library.toolbar.ToolBar;
 import np.com.spirrotech.dao.CreditCompanyClosingBill;
 import np.com.spirrotech.dao.CreditCompanyList;
@@ -330,22 +333,46 @@ public class SettingsController {
     }
 
     @FXML
-    public void closeCompany(MouseEvent e) {
+    public void closeCompany(MouseEvent e) throws IOException {
+
+        //show the conformation dialog
 
         DebtListModel model=debtList.getSelectionModel().getSelectedItem();
 
         if (model != null) {
-            CreditCompanyClosingBill bill=new CreditCompanyClosingBill(model);
-            if (bill.printBill()) {
-                showSnackMessage("Company Closed. Printing Bill!");
-            } else {
-                showSnackMessage("Printer Error: Couldn't Close Company Transaction!!");
-            }
+
+            FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("library/conformation_dialog/conformationDialog.fxml"));
+            Parent root=loader.load();
+            ConformationDialogController controller=loader.getController();
+
+            //hook the event listener
+            controller.setConformListener((event) -> {
+
+                //hide the dialog
+                ((Node)event.getSource()).getScene().getWindow().hide();
+
+                //print the bill
+                CreditCompanyClosingBill bill=new CreditCompanyClosingBill(model);
+                if (bill.printBill()) {
+                    showSnackMessage("Company Closed. Printing Bill!");
+                } else {
+                    showSnackMessage("Couldn't Close Company Transaction!!");
+                }
+            });
+
+            controller.setTitle("Conformation");
+            controller.setConformationLabel("The company will be closed?");
+
+            Stage stage=new Stage();
+            stage.setTitle("Close Company");
+            stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("images/logo.png")));
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setScene(new Scene(root));
+            stage.show();
+
+        } else {
+            showSnackMessage("No Company Selected!");
         }
-
-
-
-
 
     }
 
