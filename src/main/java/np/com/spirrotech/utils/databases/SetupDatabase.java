@@ -1,9 +1,6 @@
 package np.com.spirrotech.utils.databases;
 
 
-
-
-
 import np.com.spirrotech.config.Reference;
 
 import java.sql.Connection;

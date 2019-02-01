@@ -93,6 +93,8 @@ public class CompanyCreditClosingTask extends Tasks {
 
 
                 lastTransaction++;
+                totalResult.close();
+                getResults.close();
 
                 //reset the primary key of the company to start from the current PrimaryID value
                 deleteCredit=connection.prepareStatement("ALTER TABLE " + DatabaseHandler.generateTableName(model.getCompanyName()) + " ALTER COLUMN ID RESTART WITH " + primaryID);
@@ -110,8 +112,8 @@ public class CompanyCreditClosingTask extends Tasks {
 
 
 
-                totalResult.close();
-                getResults.close();
+                //totalResult.close();
+                //getResults.close();
                 deleteCredit.close();
 
                 connection.commit();
