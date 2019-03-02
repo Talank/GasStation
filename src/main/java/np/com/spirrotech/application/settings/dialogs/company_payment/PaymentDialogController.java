@@ -65,7 +65,7 @@ public class PaymentDialogController implements BottomBarInterface {
 
 
         payment.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)->{
-            if(!newValue.matches("[0-9]{0,10}")) {
+            if(!newValue.matches("[0-9]{0,10}([\\.][0-9]{0,2})?")) {
                 payment.setText(oldValue);
             } else {
                 if(newValue.isEmpty()) {
