@@ -42,13 +42,47 @@ public class GetCompanyDetailsTask extends Tasks {
             resultSet=getDetails.executeQuery("SELECT ID, TRANSACTION_ID, TYPE, VEHICLE_NO, RATE, VOLUME, PRICE, DATE FROM "+tableName);
 
             List<CreditDetailsModel> smallList=new ArrayList<>();
-            int  i=1;//index used to group the transactions having same TransactionID
+
             boolean create=false;
 
             NepaliDateGenerator generator=new NepaliDateGenerator();
 
             CreditDetailsModel model;
             //iterate through all the rows in the table
+
+            //obtain the initial transaction number from the database,
+            int  i = 0;
+
+            //initialize the first transaction from the database
+
+            if (resultSet.next()) {
+
+                //initialize the transaction id from the first value of the transaction in the database
+                i = resultSet.getInt(2);
+
+                if(resultSet.getString(3).startsWith("D")||resultSet.getString(3).startsWith("P")) {//the row is for oil transaction
+
+
+                    //add the data to smallList
+                    model = new CreditDetailsModel(resultSet.getString(4),resultSet.getString(3),generator.convertDate(resultSet.getDate(8)),precision.format(resultSet.getFloat(6)),precision.format(resultSet.getFloat(7)),precision.format(resultSet.getFloat(5)));
+                    //store the primary key
+                    model.setPrimaryID(resultSet.getInt(1));
+                    model.setTransactionID(resultSet.getInt(2));
+                    model.setSqlDate(resultSet.getDate(8));
+                    smallList.add(model);
+                } else {
+
+                    //add the data to smallList
+                    model = new CreditDetailsModel("XXXX",resultSet.getString(3),generator.convertDate(resultSet.getDate(8)),String.valueOf(resultSet.getInt(6)),precision.format(resultSet.getFloat(7)),precision.format(resultSet.getFloat(5)));
+                    //store the primary key
+                    model.setPrimaryID(resultSet.getInt(1));
+                    model.setTransactionID(resultSet.getInt(2));
+                    model.setSqlDate(resultSet.getDate(8));
+                    smallList.add(model);
+                }
+
+            }
+
             while(resultSet.next()) {
 
                 //check if the task is cancelled
@@ -83,7 +117,7 @@ public class GetCompanyDetailsTask extends Tasks {
                     } else {//the index is different from the initial index, i.e this is the next transaction
                         mainList.add(smallList); //add the list to the mainList
                         create=true; //to indicate to create another object for storing the next transaction set
-                        i++; //increment the index
+                        i = resultSet.getInt(2);//read the next transaction id to group the transactions
                     }
                     if(create) {
 

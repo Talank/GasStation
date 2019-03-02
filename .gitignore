@@ -25,3 +25,21 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+
+#target output
+target/
+
+#database
+ohmoilpump/
+
+#project logs
+OilPumpLog.txt
+
+#Project Meta files
+src/main/java/META-INF/
+
+#Project Config files
+src/main/java/np/com/spirrotech/config/
+
+#Project Validation file(for OS independence)
+src/main/java/np/com/spirrotech/init/SystemValidation.java
