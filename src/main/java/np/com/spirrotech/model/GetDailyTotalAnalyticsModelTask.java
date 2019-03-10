@@ -36,14 +36,12 @@ public class GetDailyTotalAnalyticsModelTask extends Tasks {
             float iPetrolVol = SystemStatus.getfPetrol()-(SystemStatus.getiPetrol()+Float.parseFloat(model.getCPetrolVol()));
 
             if (iDieselVol < 0 || iPetrolVol < 0) {
-                taskInterface.onError("Negative Transaction Detected!");
+                taskInterface.onError("Diesel: " + iDieselVol + ", Petrol: " + iPetrolVol);
+                return;
             } else {
                 model.setIDieselVol(String.valueOf(iDieselVol));
                 model.setIPetrolVol(String.valueOf(iPetrolVol));
             }
-
-
-
 
             model.setOilIncome(SystemStatus.getdRate(),SystemStatus.getpRate());
             model.setTotal();

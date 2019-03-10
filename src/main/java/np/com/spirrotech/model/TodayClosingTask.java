@@ -39,90 +39,89 @@ public class TodayClosingTask extends Tasks {
 
         try {
 
-            if ((SystemStatus.getDieselStock()-Float.parseFloat(model.getIDieselVol())) < 0 || (SystemStatus.getPetrolStock()-Float.parseFloat(model.getIPetrolVol()) < 0)) {
-                ErrorMessageDialogGenerator generator = new ErrorMessageDialogGenerator("Out Of Stock. Please Adjust the stock and try again.","Stock Error");
-                generator.setTasks(this);
-                generator.showDialog();
-            } else {
-                PreparedStatement closing=connection.prepareStatement("UPDATE SystemStatus SET VALUE=?,DATE=? WHERE ID=?");
+            //generate the stocks , and if the stock is negative , use 0 as the user already conformed he will accept 0 stock
+            float dieselStock = (SystemStatus.getDieselStock()-Float.parseFloat(model.getIDieselVol())) < 0 ? 0 : (SystemStatus.getDieselStock()-Float.parseFloat(model.getIDieselVol()));
 
-                closing.setString(1,String.valueOf(SystemStatus.getfDiesel()));
-                closing.setDate(2,SystemStatus.getCurrentDate());
-                closing.setInt(3,11);
-                closing.addBatch();
+            float petrolStock = (SystemStatus.getPetrolStock()-Float.parseFloat(model.getIPetrolVol()) < 0) ? 0 : (SystemStatus.getPetrolStock()-Float.parseFloat(model.getIPetrolVol()));
 
-                closing.setString(1,String.valueOf(SystemStatus.getfPetrol()));
-                closing.setInt(3,12);
-                closing.addBatch();
+            PreparedStatement closing=connection.prepareStatement("UPDATE SystemStatus SET VALUE=?,DATE=? WHERE ID=?");
 
-                closing.setString(1,String.valueOf(SystemStatus.getDieselStock()-Float.parseFloat(model.getIDieselVol())));
-                closing.setInt(3,14);
-                closing.addBatch();
+            closing.setString(1,String.valueOf(SystemStatus.getfDiesel()));
+            closing.setDate(2,SystemStatus.getCurrentDate());
+            closing.setInt(3,11);
+            closing.addBatch();
 
-                closing.setString(1,String.valueOf(SystemStatus.getPetrolStock()-Float.parseFloat(model.getIPetrolVol())));
-                closing.setInt(3,15);
-                closing.addBatch();
+            closing.setString(1,String.valueOf(SystemStatus.getfPetrol()));
+            closing.setInt(3,12);
+            closing.addBatch();
 
-                closing.setString(1,String.valueOf(0));
-                closing.setInt(3,1);
-                closing.addBatch();
+            closing.setString(1,String.valueOf(dieselStock));
+            closing.setInt(3,14);
+            closing.addBatch();
 
-                closing.setString(1,String.valueOf(0));
-                closing.setInt(3,2);
-                closing.addBatch();
+            closing.setString(1,String.valueOf(petrolStock));
+            closing.setInt(3,15);
+            closing.addBatch();
 
-                closing.setString(1,String.valueOf(0));
-                closing.setInt(3,3);
-                closing.addBatch();
+            closing.setString(1,String.valueOf(0));
+            closing.setInt(3,1);
+            closing.addBatch();
 
-                closing.setString(1,String.valueOf(0));
-                closing.setInt(3,4);
-                closing.addBatch();
+            closing.setString(1,String.valueOf(0));
+            closing.setInt(3,2);
+            closing.addBatch();
 
-                closing.setString(1,String.valueOf(0));
-                closing.setInt(3,5);
-                closing.addBatch();
+            closing.setString(1,String.valueOf(0));
+            closing.setInt(3,3);
+            closing.addBatch();
 
-                closing.setString(1,String.valueOf(0));
-                closing.setInt(3,6);
-                closing.addBatch();
+            closing.setString(1,String.valueOf(0));
+            closing.setInt(3,4);
+            closing.addBatch();
 
-                closing.executeBatch();
+            closing.setString(1,String.valueOf(0));
+            closing.setInt(3,5);
+            closing.addBatch();
 
-                closing=connection.prepareStatement("INSERT INTO DailyAnalytics VALUES (?,?,?,?,?,?,?,?)");
-                closing.setFloat(1,Float.parseFloat(model.getIDieselVol()));
-                closing.setFloat(2,Float.parseFloat(model.getIPetrolVol()));
-                closing.setFloat(3,Float.parseFloat(model.getCDieselVol()));
-                closing.setFloat(4,Float.parseFloat(model.getCPetrolVol()));
-                closing.setFloat(5,Float.parseFloat(model.getCExtra()));
-                closing.setFloat(6,SystemStatus.getdRate());
-                closing.setFloat(7,SystemStatus.getpRate());
-                closing.setDate(8,SystemStatus.getCurrentDate());
+            closing.setString(1,String.valueOf(0));
+            closing.setInt(3,6);
+            closing.addBatch();
 
-                closing.execute();
+            closing.executeBatch();
 
-                closing.close();
+            closing=connection.prepareStatement("INSERT INTO DailyAnalytics VALUES (?,?,?,?,?,?,?,?)");
+            closing.setFloat(1,Float.parseFloat(model.getIDieselVol()));
+            closing.setFloat(2,Float.parseFloat(model.getIPetrolVol()));
+            closing.setFloat(3,Float.parseFloat(model.getCDieselVol()));
+            closing.setFloat(4,Float.parseFloat(model.getCPetrolVol()));
+            closing.setFloat(5,Float.parseFloat(model.getCExtra()));
+            closing.setFloat(6,SystemStatus.getdRate());
+            closing.setFloat(7,SystemStatus.getpRate());
+            closing.setDate(8,SystemStatus.getCurrentDate());
 
-                connection.commit();
-                SystemStatus.setDieselStock(SystemStatus.getDieselStock()-Float.parseFloat(model.getIDieselVol()));
-                SystemStatus.setPetrolStock(SystemStatus.getPetrolStock()-Float.parseFloat(model.getIPetrolVol()));
+            closing.execute();
 
-                Platform.runLater(()->AppHomeController.getInstance().setStock());
+            closing.close();
 
-                SnackBarToastGenerator snackBarToastGenerator=new SnackBarToastGenerator("Today Closing SuccessFull. Auto Stock Adjust",1000);
-                snackBarToastGenerator.show();
-                SystemStatus.setiDiesel(SystemStatus.getfDiesel());
-                SystemStatus.setiPetrol(SystemStatus.getfPetrol());
-                SystemStatus.setfDiesel(0f);
-                SystemStatus.setfPetrol(0f);
+            connection.commit();
+            SystemStatus.setDieselStock(dieselStock);
+            SystemStatus.setPetrolStock(petrolStock);
 
-                LocalDate tomorrow=LocalDate.now().plusDays(1);
-                SystemStatus.setTransactionDate(Date.valueOf(tomorrow));
-                SystemStatus.setNepaliTransactionDate((new NepaliDateGenerator(tomorrow)).toString());
+            Platform.runLater(()->AppHomeController.getInstance().setStock());
 
-                SystemLogging.getLogger().fine("Closing Successfully Done. Next Transaction Stored on Date:"+SystemStatus.getTransactionDate());
-                System.out.println("Closing Successfully Done. Next Transaction Stored on Date:"+SystemStatus.getTransactionDate());
-            }
+            SnackBarToastGenerator snackBarToastGenerator=new SnackBarToastGenerator("Today Closing SuccessFull. Auto Stock Adjust",1000);
+            snackBarToastGenerator.show();
+            SystemStatus.setiDiesel(SystemStatus.getfDiesel());
+            SystemStatus.setiPetrol(SystemStatus.getfPetrol());
+            SystemStatus.setfDiesel(0f);
+            SystemStatus.setfPetrol(0f);
+
+            LocalDate tomorrow=LocalDate.now().plusDays(1);
+            SystemStatus.setTransactionDate(Date.valueOf(tomorrow));
+            SystemStatus.setNepaliTransactionDate((new NepaliDateGenerator(tomorrow)).toString());
+
+            SystemLogging.getLogger().fine("Closing Successfully Done. Next Transaction Stored on Date:"+SystemStatus.getTransactionDate());
+            System.out.println("Closing Successfully Done. Next Transaction Stored on Date:"+SystemStatus.getTransactionDate());
 
 
         } catch (SQLException e) {
