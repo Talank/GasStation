@@ -356,7 +356,7 @@ public class SettingsController {
                 if (bill.printBill()) {
                     showSnackMessage("Company Closed. Printing Bill!");
                 } else {
-                    showSnackMessage("Couldn't Close Company Transaction!!");
+                    showSnackMessage("Printer Error: Couldn't Close Company Transaction!!");
                 }
             });
 

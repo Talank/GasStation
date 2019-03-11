@@ -122,7 +122,7 @@ public class RefillDialogController implements BottomBarInterface {
             status++;
         }
 
-        if(tankerNumber.getText().isEmpty()||(tankerNumber.getText().length()<4)) {
+        if(tankerNumber.getText().isEmpty()) {
             tankerNumber.validate();
             status++;
         }
