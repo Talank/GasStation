@@ -243,7 +243,7 @@ public class CreditBillingController {
         rates.getValidators().add(ratesValidator);
 
         itemName.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue)->{
-            if(!newValue.matches("[a-zA-Z ]*")) {
+            if(!newValue.matches("[-a-zA-Z0-9]{0,10}")) {
                 itemName.setText(oldValue);
             } else {
                 if(newValue.isEmpty()&&!force) {
