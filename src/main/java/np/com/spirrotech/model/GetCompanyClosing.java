@@ -69,7 +69,7 @@ public class GetCompanyClosing {
                 } else {
 
                     //add the data to smallList
-                    smallList.add(new CreditDetailsModel("XXXX",resultSet.getString(2),generator.convertDate(resultSet.getDate(7)),String.valueOf(resultSet.getInt(5)),resultSet.getString(6),resultSet.getString(4)));
+                    smallList.add(new CreditDetailsModel(resultSet.getString(3),resultSet.getString(2),generator.convertDate(resultSet.getDate(7)),String.valueOf(resultSet.getInt(5)),resultSet.getString(6),resultSet.getString(4)));
                 }
 
 
@@ -92,7 +92,7 @@ public class GetCompanyClosing {
                         } else {
 
                             //add the data to smallList
-                            smallList.add(new CreditDetailsModel("XXXX",resultSet.getString(2),generator.convertDate(resultSet.getDate(7)),String.valueOf(resultSet.getInt(5)),resultSet.getString(6),resultSet.getString(4)));
+                            smallList.add(new CreditDetailsModel(resultSet.getString(3),resultSet.getString(2),generator.convertDate(resultSet.getDate(7)),String.valueOf(resultSet.getInt(5)),resultSet.getString(6),resultSet.getString(4)));
                         }
 
                     } else {//the index is different from the initial index, i.e this is the next transaction
@@ -112,7 +112,7 @@ public class GetCompanyClosing {
                             smallList.add(new CreditDetailsModel(resultSet.getString(3),resultSet.getString(2),generator.convertDate(resultSet.getDate(7)),resultSet.getString(5),resultSet.getString(6),resultSet.getString(4)));
                         } else {
 
-                            smallList.add(new CreditDetailsModel("XXXX",resultSet.getString(2),generator.convertDate(resultSet.getDate(7)),String.valueOf(resultSet.getInt(5)),resultSet.getString(6),resultSet.getString(4)));
+                            smallList.add(new CreditDetailsModel(resultSet.getString(3),resultSet.getString(2),generator.convertDate(resultSet.getDate(7)),String.valueOf(resultSet.getInt(5)),resultSet.getString(6),resultSet.getString(4)));
                         }
                         create=false;
                     }
