@@ -1,6 +1,7 @@
 package np.com.spirrotech.init;
 
 import javafx.application.Application;
+
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -8,8 +9,6 @@ import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-
-import np.com.spirrotech.config.Reference;
 import np.com.spirrotech.library.error_dialog.ErrorDialogController;
 import np.com.spirrotech.dao.CreditCompanyList;
 import np.com.spirrotech.utils.databases.DatabaseHandler;
@@ -19,8 +18,9 @@ import np.com.spirrotech.dao.SystemStatus;
 import np.com.spirrotech.utils.tasks.TaskManager;
 import np.com.spirrotech.utils.tasks.Tasks;
 
-import java.sql.CallableStatement;
-import java.sql.SQLException;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 
@@ -54,8 +54,33 @@ public class Main extends Application {
             startup=false;
             loader=new FXMLLoader(getClass().getClassLoader().getResource("library/error_dialog/errorDialog.fxml"));
         }
-        root = loader.load();
+        //read the renew status from the database
+        ResultSet resultSet = Tasks.getConnection().createStatement().executeQuery("SELECT VALUE FROM SystemStatus WHERE ID=19");
+        resultSet.next();
+        if (resultSet.getInt(1) == 0) {
+            //the software has not expired
+            //check the date
+            LocalDate today = LocalDate.now();
+            if (today.isAfter(LocalDate.of(2020, 6, 22))) {
+                //the software has expired
+                PreparedStatement expiryUpdate = Tasks.getConnection().prepareStatement("UPDATE SystemStatus SET VALUE=? WHERE ID=19");
+                //set the expiry status of the software
+                expiryUpdate.setString(1, String.valueOf(1));
+                expiryUpdate.execute();
+                expiryUpdate.close();
+                Tasks.getConnection().commit();
+            }
 
+        } else {
+            //the software has expired
+            //set the error message
+            msg = "Unable to start Oil pump service. System files missing!";
+            //disable the startup
+            startup = false;
+            //load the dialog
+            loader=new FXMLLoader(getClass().getClassLoader().getResource("library/error_dialog/errorDialog.fxml"));
+        }
+        root = loader.load();
     }
 
     /**+
@@ -69,6 +94,8 @@ public class Main extends Application {
 
         System.out.println(LocalDateTime.now().getDayOfYear());
         SystemStatus.setStage(primaryStage);
+
+
 
         if(startup) {
             primaryStage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("images/logo.png")));
