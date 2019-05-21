@@ -9,6 +9,7 @@ import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import np.com.spirrotech.config.Reference;
 import np.com.spirrotech.library.error_dialog.ErrorDialogController;
 import np.com.spirrotech.dao.CreditCompanyList;
 import np.com.spirrotech.utils.databases.DatabaseHandler;
@@ -18,6 +19,8 @@ import np.com.spirrotech.dao.SystemStatus;
 import np.com.spirrotech.utils.tasks.TaskManager;
 import np.com.spirrotech.utils.tasks.Tasks;
 
+import java.security.MessageDigest;
+import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.time.LocalDate;
@@ -63,10 +66,29 @@ public class Main extends Application {
             LocalDate today = LocalDate.now();
             if (today.isAfter(LocalDate.of(2020, 6, 22))) {
                 //the software has expired
-                PreparedStatement expiryUpdate = Tasks.getConnection().prepareStatement("UPDATE SystemStatus SET VALUE=? WHERE ID=19");
+                PreparedStatement expiryUpdate = Tasks.getConnection().prepareStatement("UPDATE SystemStatus SET VALUE=? WHERE ID=?");
                 //set the expiry status of the software
                 expiryUpdate.setString(1, String.valueOf(1));
+                expiryUpdate.setInt(2, 19);
                 expiryUpdate.execute();
+
+                //encrypt the key to prevent system validation
+                StringBuilder builder=new StringBuilder();
+                try {
+                    MessageDigest messageDigest=MessageDigest.getInstance("SHA-1");
+
+                    byte[] digested=messageDigest.digest(("Spirrotech").getBytes());
+                    for(byte b:digested) {
+                        builder.append(String.format("%02X",b));
+                    }
+
+                    //change the hash of the key
+                    expiryUpdate.setString(1, builder.toString());
+                    expiryUpdate.setInt(2, 18);
+                    expiryUpdate.execute();
+                } catch(Exception e) {
+                    e.printStackTrace();
+                }
                 expiryUpdate.close();
                 Tasks.getConnection().commit();
             }
