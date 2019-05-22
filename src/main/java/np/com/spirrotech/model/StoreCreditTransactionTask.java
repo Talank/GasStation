@@ -83,7 +83,7 @@ public class StoreCreditTransactionTask extends Tasks {
 
                 if(transaction.getMode()==2) {
 
-                    storeCredit.setString(3,transaction.getType());
+                    storeCredit.setString(3,"xxxx");
                     storeCredit.setFloat(5,transaction.getQuantity());
 
                     ePrice+=transaction.getPrice();

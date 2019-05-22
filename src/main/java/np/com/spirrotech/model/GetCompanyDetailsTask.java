@@ -73,7 +73,7 @@ public class GetCompanyDetailsTask extends Tasks {
                 } else {
 
                     //add the data to smallList
-                    model = new CreditDetailsModel("XXXX",resultSet.getString(3),generator.convertDate(resultSet.getDate(8)),String.valueOf(resultSet.getInt(6)),precision.format(resultSet.getFloat(7)),precision.format(resultSet.getFloat(5)));
+                    model = new CreditDetailsModel(resultSet.getString(4),resultSet.getString(3),generator.convertDate(resultSet.getDate(8)),String.valueOf(resultSet.getInt(6)),precision.format(resultSet.getFloat(7)),precision.format(resultSet.getFloat(5)));
                     //store the primary key
                     model.setPrimaryID(resultSet.getInt(1));
                     model.setTransactionID(resultSet.getInt(2));
@@ -106,7 +106,7 @@ public class GetCompanyDetailsTask extends Tasks {
                         } else {
 
                             //add the data to smallList
-                            model = new CreditDetailsModel("XXXX",resultSet.getString(3),generator.convertDate(resultSet.getDate(8)),String.valueOf(resultSet.getInt(6)),precision.format(resultSet.getFloat(7)),precision.format(resultSet.getFloat(5)));
+                            model = new CreditDetailsModel(resultSet.getString(4),resultSet.getString(3),generator.convertDate(resultSet.getDate(8)),String.valueOf(resultSet.getInt(6)),precision.format(resultSet.getFloat(7)),precision.format(resultSet.getFloat(5)));
                             //store the primary key
                             model.setPrimaryID(resultSet.getInt(1));
                             model.setTransactionID(resultSet.getInt(2));
@@ -134,7 +134,7 @@ public class GetCompanyDetailsTask extends Tasks {
                             smallList.add(model);
                         } else {
 
-                            model = new CreditDetailsModel("XXXX",resultSet.getString(3),generator.convertDate(resultSet.getDate(8)),String.valueOf(resultSet.getInt(6)),precision.format(resultSet.getFloat(7)),precision.format(resultSet.getFloat(5)));
+                            model = new CreditDetailsModel(resultSet.getString(4),resultSet.getString(3),generator.convertDate(resultSet.getDate(8)),String.valueOf(resultSet.getInt(6)),precision.format(resultSet.getFloat(7)),precision.format(resultSet.getFloat(5)));
                             //store the primary key
                             model.setPrimaryID(resultSet.getInt(1));
                             model.setTransactionID(resultSet.getInt(2));

@@ -77,6 +77,8 @@ public class UpdateCreditTransactionsTask extends Tasks {
                     update.setString(1, newModel.getItemName());
                     update.setString(2, newModel.getVehicleNo());
                     update.setInt(3, newModel.getPrimaryID());
+                    System.out.println("VehicleName"+newModel.getVehicleNo());
+                    System.out.println("Primaryid"+newModel.getPrimaryID());
 
                     update.execute();
                     break;
